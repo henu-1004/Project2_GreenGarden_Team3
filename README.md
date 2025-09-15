@@ -139,10 +139,11 @@ BNK 부산은행 금융DT 아카데미 개발자 양성과정 팀 프로젝트
 1. 저장소 클론  
    ```bash
    git clone https://github.com/your-team/kmarket.git
-2.IDE(Eclipse/IntelliJ)에서 Import → Dynamic Web Project
-3.DB 연결 설정 (/resources/db.properties)
-4.Tomcat 실행 후 접속
-http://localhost:8080/kmarket
+   ```
+2. IDE(Eclipse/IntelliJ)에서 Import → Dynamic Web Project
+3. DB 연결 설정 (/resources/db.properties)
+4. Tomcat 실행 후 접속
+```http://localhost:8080/kmarket```
 
 ---
 ## 📌 향후 계획
