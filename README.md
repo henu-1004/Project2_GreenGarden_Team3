@@ -141,8 +141,9 @@ BNK 부산은행 금융DT 아카데미 개발자 양성과정 팀 프로젝트
 2.IDE(Eclipse/IntelliJ)에서 Import → Dynamic Web Project
 3.DB 연결 설정 (/resources/db.properties)
 4.Tomcat 실행 후 접속
-```
 http://localhost:8080/kmarket
+```
+
 ---
 ## 📌 향후 계획
 - 반응형 웹 적용 (모바일 대응)
