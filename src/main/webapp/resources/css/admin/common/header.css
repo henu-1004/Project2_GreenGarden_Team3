@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+/*
+ * 날짜 : 2025/09/16
+ * 이름 : 한탁원
+ * 내용 : admin header - css 초안 작성  
+ */
+#header-wrap {
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+#header-top {
+	text-align: right;
+}
+
+#header-bottom {
+	display: block;
+}
