@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+* {
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	list-style-type: none;
+}
+
+#main {
+	margin: 0 auto;
+	max-width: 1200px;
+}
+
+#content-wrap {	
+	display: flex;
+}
+
+#main-section {
+	width: 100%;
+	border: solid 1px;
+	padding: 10px;
+}
