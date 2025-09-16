@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+/*
+ * 날짜 : 2025/09/15
+ * 이름 : 한탁원
+ * 내용 : 메인 사이드바 - css 초안 작성  
+ */
+aside {
+	width: 300px;
+}
+
+#aside-top {
+	height: 410px;
+	background: #f8f9fa;
+}
+
+#aside-bottom {
+	height: 600px;
+	border: solid 1px;
+	padding: 10px;
+}
+
+#aside-bottom table {
+	
+	border-spacing: 20px;
+}
+
+#aside-bottom table #first {
+	width: 100%;
+	height: auto;
+}
+
+#aside-bottom table #second {
+	width: 80px;
+	height: 80px;
+}
+
+#aside-bottom table #third {
+	width: 80px;
+	height: 80px;
+}
