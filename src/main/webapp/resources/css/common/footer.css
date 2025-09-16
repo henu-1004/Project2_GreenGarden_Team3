@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+/*
+ * 날짜 : 2025/09/15
+ * 이름 : 한탁원
+ * 내용 : footer - css 초안 작성  
+ */
+#footer-wrap {
+	margin: 0 auto;
+	max-width: 1200px;
+	background: #f8f9fa;
+}
+
+#footer-top {
+	padding: 10px;
+	text-align: center;
+}
+
+footer table {
+	width: 100%
+}
