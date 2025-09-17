@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product list</title>
+    <link rel="stylesheet" href="/resources/css/common/headerWithSearch.css">
+    <link rel="stylesheet" href="/resources/css/common/aside_main.css">
+    <link rel="stylesheet" href="/resources/css/common/footer.css">
+    <style>
+        .content-wrap {
+            display: flex;
+        }
+        /*
+            * 상품 목록 페이지에만 적용되는 CSS
+        */
+
+        /* 상품 목록 섹션 전체 컨테이너 */
+        #main-section {
+            width: 900px;
+            margin: 0 auto;
+            /*border: 1px solid #000;*/
+        }
+
+        /* 상단 네비게이션 */
+        .top_nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .top_nav h5 {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .top_nav .page_nation {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .top_nav .page_nation li:not(:last-child)::after {
+            content: " > ";
+            margin-left: 5px;
+            color: #999;
+        }
+
+        /* 상품 정렬 네비게이션 */
+        .sort_nav ul {
+            display: flex;
+            margin: 0 0 20px 0;
+            list-style: none;
+            padding: 0;
+        }
+
+        .sort_nav li a {
+            text-decoration: none;
+            color: #555;
+            padding: 0 10px;
+            border-right: 1px solid #ccc;
+        }
+
+        .sort_nav li:last-child a {
+            border-right: none;
+        }
+
+        .sort_nav li a:hover {
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* 상품 목록 컨테이너 (각 상품 카드를 담는 곳) */
+        .product_list {
+            border: 1px solid #eee; /* 개별 상품 카드를 묶는 컨테이너의 테두리 */
+            padding: 15px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* 상품 이미지 영역 */
+        .product_image {
+            flex-shrink: 0;
+        }
+
+        .product_image img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid black;
+        }
+
+        /* 상품 정보 영역 */
+        .product_info {
+            flex-grow: 1;       /* 남은 공간을 모두 차지 */
+            min-width: 150px;   /* 내용이 너무 줄어들지 않도록 최소 너비 지정 */
+            margin-bottom: 10%;
+        }
+
+        .product_info h6 {
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .product_info p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* 가격 및 할인 정보 */
+        .product_price_info {
+            display: flex;
+            flex-direction: column; /* 세로로 나열 */
+            align-items: flex-start;
+        }
+
+        .price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .price_after {
+            display: flex;
+            align-items: center
+        }
+
+        .original_price {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 0.9em;
+            margin-right: 5px;
+        }
+
+        .discount_rate {
+            color: red;
+            font-weight: bold;
+        }
+
+        .shopping_fee {
+            font-size: 0.9em;
+        }
+
+        /* 상품 메타 정보 (판매자, 평점) */
+        .prodect_meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: auto;
+            font-size: 0.9em;
+            color: #666;
+            gap: 5px;
+        }
+
+        .prodect_meta div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .prodect_meta img {
+            width: 15px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div id="header-wrap">
+            <div id="header-top">
+                <a href="#">로그인</a> <a
+                    href="#">회원가입</a> <a
+                    href="#">마이페이지</a> <a href="#">장바구니</a>
+            </div>
+            <div id="header-middle">
+                <a href="#"><img
+                    src="/resources/images/header_logo.png"
+                    alt="로고1" /></a>
+                <form class="search-form">
+                    <input type="text" placeholder="검색" />
+                    <button type="submit">
+                        <img
+                            src="$/resources/images/search_icon.png"
+                            alt="돋보기" />
+                    </button>
+                </form>
+            </div>
+            <div id="header-bottom">
+                <a href="#">히트상품</a> <a href="#">추천상품</a> <a href="#">최신상품</a> <a
+                    href="#">인기상품</a> <a href="#">할인상품</a>
+            </div>
+        </div>
+    </header>
+    <!-- <jsp:include page="../common/headerWithSearch.jsp" /> -->
+    <main>
+        <div id="main">
+			<div class="content-wrap">
+                <aside id="aside">
+                    <div id="aside-top">
+                        <ul>
+                            <li><a href=#>패션</a></li>
+                            <li><a href=#>가전</a></li>
+                            <li><a href=#>식품</a></li>
+                            <li><a href=#>홈</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="aside-bottom">
+                        <h3>베스트 상품</h3>
+                        <table>
+                            <tr>
+                                <td colspan="2">
+                                    <img id="first" src="/resources/images/sample_thumb.jpg" alt="">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <p>상품명</p>
+                                    <p>30000원</p>
+                                    <p>10%</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="thumb1">
+                                    <img id="second" src="/resources/images/sample_thumb.jpg" alt="">
+                                </td>
+                                <td>
+                                    <p>상품명</p>
+                                    <p>30000원</p>
+                                    <p>10%</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="thumb2">
+                                    <img id="third" src="/resources/images/sample_thumb.jpg" alt=""></td>
+                                <td>
+                                    <p>상품명</p>
+                                    <p>30000원</p>
+                                    <p>10%</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </aside>
+				<!-- <jsp:include page="../common/aside_main.jsp" /> -->
+                <section id="main-section"> <!-- 담당화면 구현 : 상품> 목록(no.2-1) -->
+                    <div class="top_nav">
+                        <h5>상품목록</h5>
+                        <ul class="page_nation">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">패션·의류·뷰티</a></li>
+                            <li><a href="#">남성의류</a></li>
+                        </ul>
+                    </div>
+                    <div class="sort_nav">
+                        <ul>
+                            <li><a href="#">판매많은순</a></li>
+                            <li><a href="#">낮은가격순</a></li>
+                            <li><a href="#">높은가격순</a></li>
+                            <li><a href="#">평점높은순</a></li>
+                            <li><a href="#">후기많은순</a></li>
+                            <li><a href="#">최근등록순</a></li>
+                        </ul>
+                    </div>
+                    <div class="product_list">
+                        <div class="product_image">
+                            <img src="/resources/images/sample_thumb.jpg" alt="상품명">
+                        </div>
+                        <div class="product_info">
+                            <h6>상품명</h6>
+                            <p>간단한 상품 설명</p>
+                        </div>
+                        <div class="product_price_info">
+                            <p class="price">27,000원</p>
+                            <div class="price_after">
+                                <p class="original_price">30,000원(취소선)</p>
+                                <span class="discount_rate">10% ↓</span>
+                            </div>
+                            <p class="shopping_fee">배송비 2,500원</p>
+                            <!-- <img src="#" alt="무료배송"> -->
+                        </div>
+                        <div class="prodect_meta">
+                            <div>🏠판매자</div>
+                            <div><img src="/resources/images/ico_great_seller.gif" alt="메달아이콘" style="width: 80px;"></div>
+                            <div>상품평<img src="/resources/images/rating_star.png" alt="상품점수별아이콘" style="width: 50px;"></div>
+                        </div>
+                    </div>
+                </section>
+			</div>
+		</div>
+	</main>  
+    <footer>
+        <div id="footer-wrap">
+            <div id="footer-top">
+                <a href="#">회사 소개</a> <a href="#">서비스이용약관</a> <a href="#">개인정보처리방침</a>
+                <a href="#">전자금융거래약관</a>
+            </div>
+            <hr>
+            <div>
+                <table>
+                    <tr>
+                        <td><img
+                            src="/resources/images/footer_logo.png"
+                            alt="footer_logo">
+                        </td>
+
+                        <td>
+                            <div>
+                                <h2>(주)케이마켓</h2> <br>
+                                <p>부산광역시 부산진구 중앙대로 300</p>
+                                <p>대표이사 : 홍길동</p>
+                                <p>사업등록번호 : 123-45-12345</p>
+                            </div>
+                        </td>
+
+                        <td>26층</td>
+
+                        <td>
+                            <h2>고객센터</h2> <br>
+                            <p>Tel:1234-5678 평일 09:00~18:00)</p>
+                            <p>전자금융거래 분쟁 담당 : 1234-1234(365일 09:00~18:00)</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </footer>
+    <!-- <jsp:include page="../common/footer.jsp" /> -->
+</body>
+</html>
