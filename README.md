@@ -1,6 +1,11 @@
-피그마 : https://www.figma.com/design/Tr63anCStUp6O9QM1zsnSG/BNK_2%EC%B0%A8_%EC%BC%80%EC%9D%B4%EB%A7%88%EC%BC%93-%EC%87%BC%ED%95%91%EB%AA%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=0-1&p=f&t=OkidTpodIPcO87BU-0
+참고 사이트 (다이소몰): https://www.daisomall.co.kr/ds
 
-엑셀 : https://docs.google.com/spreadsheets/d/19zL2yzpaBrGRmPTm4cGDgpbHTyGyVo3kn_RG8Y1trXk/edit?gid=0#gid=0
+케이마켓피그마 : https://www.figma.com/design/amLy5z6BomEXjUgbAdnB8F/
+
+3조피그마: https://www.figma.com/design/Tr63anCStUp6O9QM1zsnSG/
+
+3조엑셀: https://docs.google.com/spreadsheets/d/19zL2yzpaBrGRmPTm4cGDgpbHTyGyVo3kn_RG8Y1trXk
+
 # Project2_Kmarket_Team3
 # 🛒 Kmarket 프로젝트  
 BNK 부산은행 금융DT 아카데미 개발자 양성과정 팀 프로젝트  
