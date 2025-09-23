@@ -1,0 +1,320 @@
+2025-09-23T16:36:56.926+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Starting GreenGardenApplication using Java 17.0.0.1 with PID 12396 (C:\Users\GGG\Desktop\workspace\Spring\GreenGarden\build\classes\java\main started by GGG in C:\Users\GGG\Desktop\workspace\Spring\GreenGarden)
+2025-09-23T16:36:56.928+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-23T16:36:56.964+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\GGG\.gradle\caches\modules-2\files-2.1\com.oracle.database.jdbc\ojdbc11\23.7.0.25.01\665f52abef9122ce003b5cfc1d9d44f7302e2cfe\ojdbc11-23.7.0.25.01.jar referenced one or more files that do not exist: file:/C:/Users/GGG/.gradle/caches/modules-2/files-2.1/com.oracle.database.jdbc/ojdbc11/23.7.0.25.01/665f52abef9122ce003b5cfc1d9d44f7302e2cfe/oraclepki.jar
+2025-09-23T16:36:56.965+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-23T16:36:56.965+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-09-23T16:36:57.549+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-23T16:36:57.560+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 0 JPA repository interfaces.
+2025-09-23T16:36:57.683+09:00  WARN 12396 --- [GreenGarden] [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[kr.co.greengarden]' package. Please check your configuration.
+2025-09-23T16:36:58.003+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-23T16:36:58.014+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-23T16:36:58.014+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-23T16:36:58.048+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring embedded WebApplicationContext
+2025-09-23T16:36:58.049+09:00  INFO 12396 --- [GreenGarden] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1083 ms
+2025-09-23T16:36:58.211+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-23T16:36:58.258+09:00  INFO 12396 --- [GreenGarden] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-09-23T16:36:58.285+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-23T16:36:58.566+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-23T16:36:58.592+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-23T16:36:58.600+09:00  WARN 12396 --- [GreenGarden] [restartedMain] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+2025-09-23T16:36:59.050+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection oracle.jdbc.driver.T4CConnection@32bfba6b
+2025-09-23T16:36:59.051+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-23T16:36:59.322+09:00  INFO 12396 --- [GreenGarden] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 21.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-23T16:36:59.614+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-23T16:36:59.618+09:00  INFO 12396 --- [GreenGarden] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:36:59.649+09:00  WARN 12396 --- [GreenGarden] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-23T16:36:59.674+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-09-23T16:37:00.028+09:00  WARN 12396 --- [GreenGarden] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: d3bf3135-7928-4059-9a3e-7b210b8d5313
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-09-23T16:37:00.034+09:00  INFO 12396 --- [GreenGarden] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-09-23T16:37:00.147+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-23T16:37:00.175+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/greengarden'
+2025-09-23T16:37:00.182+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Started GreenGardenApplication in 3.686 seconds (process running for 4.534)
+2025-09-23T16:37:19.883+09:00  INFO 12396 --- [GreenGarden] [http-nio-8080-exec-8] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-23T16:37:19.884+09:00  INFO 12396 --- [GreenGarden] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-23T16:37:19.885+09:00  INFO 12396 --- [GreenGarden] [http-nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-09-23T16:38:50.111+09:00  INFO 12396 --- [GreenGarden] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2025-09-23T16:38:50.113+09:00  INFO 12396 --- [GreenGarden] [Thread-7] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-23T16:38:50.176+09:00  INFO 12396 --- [GreenGarden] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-23T16:38:50.180+09:00  INFO 12396 --- [GreenGarden] [Thread-7] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:38:50.182+09:00  INFO 12396 --- [GreenGarden] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-23T16:38:50.190+09:00  INFO 12396 --- [GreenGarden] [Thread-7] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-09-23T16:38:50.261+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Starting GreenGardenApplication using Java 17.0.0.1 with PID 12396 (C:\Users\GGG\Desktop\workspace\Spring\GreenGarden\build\classes\java\main started by GGG in C:\Users\GGG\Desktop\workspace\Spring\GreenGarden)
+2025-09-23T16:38:50.261+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-23T16:38:50.431+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-23T16:38:50.433+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 0 ms. Found 0 JPA repository interfaces.
+2025-09-23T16:38:50.471+09:00  WARN 12396 --- [GreenGarden] [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[kr.co.greengarden]' package. Please check your configuration.
+2025-09-23T16:38:50.599+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-23T16:38:50.601+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-23T16:38:50.601+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-23T16:38:50.617+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring embedded WebApplicationContext
+2025-09-23T16:38:50.617+09:00  INFO 12396 --- [GreenGarden] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 354 ms
+2025-09-23T16:38:50.645+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-23T16:38:50.650+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-23T16:38:50.660+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-23T16:38:50.663+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-09-23T16:38:50.663+09:00  WARN 12396 --- [GreenGarden] [restartedMain] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+2025-09-23T16:38:50.701+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection oracle.jdbc.driver.T4CConnection@5d9da665
+2025-09-23T16:38:50.701+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-09-23T16:38:50.705+09:00  INFO 12396 --- [GreenGarden] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 21.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-23T16:38:50.723+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-23T16:38:50.723+09:00  INFO 12396 --- [GreenGarden] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:38:50.737+09:00  WARN 12396 --- [GreenGarden] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-23T16:38:50.743+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-09-23T16:38:50.831+09:00  WARN 12396 --- [GreenGarden] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 79aefb99-bfce-47d2-9a7b-aa7fa3ac9717
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-09-23T16:38:50.832+09:00  INFO 12396 --- [GreenGarden] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-09-23T16:38:50.854+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-23T16:38:50.865+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/greengarden'
+2025-09-23T16:38:50.868+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Started GreenGardenApplication in 0.632 seconds (process running for 115.22)
+2025-09-23T16:38:50.869+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-09-23T16:39:21.795+09:00  INFO 12396 --- [GreenGarden] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 2 class path changes (1 addition, 1 deletion, 0 modifications)
+2025-09-23T16:39:21.796+09:00  INFO 12396 --- [GreenGarden] [Thread-9] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-23T16:39:21.859+09:00  INFO 12396 --- [GreenGarden] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-23T16:39:21.861+09:00  INFO 12396 --- [GreenGarden] [Thread-9] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:39:21.861+09:00  INFO 12396 --- [GreenGarden] [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-09-23T16:39:21.868+09:00  INFO 12396 --- [GreenGarden] [Thread-9] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+2025-09-23T16:39:21.931+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Starting GreenGardenApplication using Java 17.0.0.1 with PID 12396 (C:\Users\GGG\Desktop\workspace\Spring\GreenGarden\build\classes\java\main started by GGG in C:\Users\GGG\Desktop\workspace\Spring\GreenGarden)
+2025-09-23T16:39:21.931+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-23T16:39:22.084+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-23T16:39:22.085+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 0 ms. Found 0 JPA repository interfaces.
+2025-09-23T16:39:22.115+09:00  WARN 12396 --- [GreenGarden] [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[kr.co.greengarden]' package. Please check your configuration.
+2025-09-23T16:39:22.162+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-23T16:39:22.163+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-23T16:39:22.163+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-23T16:39:22.177+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring embedded WebApplicationContext
+2025-09-23T16:39:22.177+09:00  INFO 12396 --- [GreenGarden] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 244 ms
+2025-09-23T16:39:22.198+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-23T16:39:22.202+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-23T16:39:22.209+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-23T16:39:22.209+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2025-09-23T16:39:22.210+09:00  WARN 12396 --- [GreenGarden] [restartedMain] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+2025-09-23T16:39:22.247+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection oracle.jdbc.driver.T4CConnection@45d9d6da
+2025-09-23T16:39:22.247+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2025-09-23T16:39:22.250+09:00  INFO 12396 --- [GreenGarden] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 21.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-23T16:39:22.264+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-23T16:39:22.264+09:00  INFO 12396 --- [GreenGarden] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:39:22.275+09:00  WARN 12396 --- [GreenGarden] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-23T16:39:22.281+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-09-23T16:39:22.376+09:00  WARN 12396 --- [GreenGarden] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: eaaa52a6-0d83-43bb-8b73-25357dffe051
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-09-23T16:39:22.376+09:00  INFO 12396 --- [GreenGarden] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-09-23T16:39:22.394+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-23T16:39:22.402+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/greengarden'
+2025-09-23T16:39:22.406+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Started GreenGardenApplication in 0.499 seconds (process running for 146.758)
+2025-09-23T16:39:22.407+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-09-23T16:39:54.977+09:00  INFO 12396 --- [GreenGarden] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 1 deletion, 0 modifications)
+2025-09-23T16:39:54.978+09:00  INFO 12396 --- [GreenGarden] [Thread-13] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-23T16:39:55.046+09:00  INFO 12396 --- [GreenGarden] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-23T16:39:55.048+09:00  INFO 12396 --- [GreenGarden] [Thread-13] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:39:55.048+09:00  INFO 12396 --- [GreenGarden] [Thread-13] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown initiated...
+2025-09-23T16:39:55.057+09:00  INFO 12396 --- [GreenGarden] [Thread-13] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Shutdown completed.
+2025-09-23T16:39:55.130+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Starting GreenGardenApplication using Java 17.0.0.1 with PID 12396 (C:\Users\GGG\Desktop\workspace\Spring\GreenGarden\build\classes\java\main started by GGG in C:\Users\GGG\Desktop\workspace\Spring\GreenGarden)
+2025-09-23T16:39:55.130+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-23T16:39:55.284+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-23T16:39:55.286+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 0 ms. Found 0 JPA repository interfaces.
+2025-09-23T16:39:55.317+09:00  WARN 12396 --- [GreenGarden] [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[kr.co.greengarden]' package. Please check your configuration.
+2025-09-23T16:39:55.389+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-23T16:39:55.389+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-23T16:39:55.390+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-23T16:39:55.406+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring embedded WebApplicationContext
+2025-09-23T16:39:55.406+09:00  INFO 12396 --- [GreenGarden] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 275 ms
+2025-09-23T16:39:55.433+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-23T16:39:55.436+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-23T16:39:55.444+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-23T16:39:55.446+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2025-09-23T16:39:55.446+09:00  WARN 12396 --- [GreenGarden] [restartedMain] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+2025-09-23T16:39:55.489+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection oracle.jdbc.driver.T4CConnection@3e5759bb
+2025-09-23T16:39:55.490+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2025-09-23T16:39:55.496+09:00  INFO 12396 --- [GreenGarden] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
+	Database driver: undefined/unknown
+	Database version: 21.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-23T16:39:55.515+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-23T16:39:55.516+09:00  INFO 12396 --- [GreenGarden] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:39:55.529+09:00  WARN 12396 --- [GreenGarden] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-23T16:39:55.536+09:00  WARN 12396 --- [GreenGarden] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 76e0fb20-2430-42eb-912c-2345c7a4ddd5
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-09-23T16:39:55.536+09:00  INFO 12396 --- [GreenGarden] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-09-23T16:39:55.551+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-09-23T16:39:55.632+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-23T16:39:55.640+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/greengarden'
+2025-09-23T16:39:55.643+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Started GreenGardenApplication in 0.54 seconds (process running for 179.996)
+2025-09-23T16:39:55.646+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   SpringBootWebSecurityConfiguration.SecurityFilterChainConfiguration:
+      Did not match:
+         - AllNestedConditions 1 matched 1 did not; NestedCondition on DefaultWebSecurityCondition.Beans @ConditionalOnMissingBean (types: org.springframework.security.web.SecurityFilterChain; SearchStrategy: all) found beans of type 'org.springframework.security.web.SecurityFilterChain' filterChain; NestedCondition on DefaultWebSecurityCondition.Classes @ConditionalOnClass found required classes 'org.springframework.security.web.SecurityFilterChain', 'org.springframework.security.config.annotation.web.builders.HttpSecurity' (DefaultWebSecurityCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2025-09-23T16:39:57.048+09:00  INFO 12396 --- [GreenGarden] [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (1 addition, 0 deletions, 0 modifications)
+2025-09-23T16:39:57.049+09:00  INFO 12396 --- [GreenGarden] [Thread-17] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-23T16:39:57.121+09:00  INFO 12396 --- [GreenGarden] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-23T16:39:57.123+09:00  INFO 12396 --- [GreenGarden] [Thread-17] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:39:57.124+09:00  INFO 12396 --- [GreenGarden] [Thread-17] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown initiated...
+2025-09-23T16:39:57.134+09:00  INFO 12396 --- [GreenGarden] [Thread-17] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Shutdown completed.
+2025-09-23T16:39:57.198+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Starting GreenGardenApplication using Java 17.0.0.1 with PID 12396 (C:\Users\GGG\Desktop\workspace\Spring\GreenGarden\build\classes\java\main started by GGG in C:\Users\GGG\Desktop\workspace\Spring\GreenGarden)
+2025-09-23T16:39:57.198+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-23T16:39:57.381+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-23T16:39:57.382+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 0 ms. Found 0 JPA repository interfaces.
+2025-09-23T16:39:57.422+09:00  WARN 12396 --- [GreenGarden] [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[kr.co.greengarden]' package. Please check your configuration.
+2025-09-23T16:39:57.510+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-23T16:39:57.511+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-23T16:39:57.511+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-23T16:39:57.524+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring embedded WebApplicationContext
+2025-09-23T16:39:57.524+09:00  INFO 12396 --- [GreenGarden] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 325 ms
+2025-09-23T16:39:57.546+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-23T16:39:57.549+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-23T16:39:57.558+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-23T16:39:57.559+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Starting...
+2025-09-23T16:39:57.559+09:00  WARN 12396 --- [GreenGarden] [restartedMain] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+2025-09-23T16:39:57.596+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-5 - Added connection oracle.jdbc.driver.T4CConnection@64a82110
+2025-09-23T16:39:57.596+09:00  INFO 12396 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Start completed.
+2025-09-23T16:39:57.599+09:00  INFO 12396 --- [GreenGarden] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-5)']
+	Database driver: undefined/unknown
+	Database version: 21.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-23T16:39:57.613+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-23T16:39:57.613+09:00  INFO 12396 --- [GreenGarden] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:39:57.625+09:00  WARN 12396 --- [GreenGarden] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-23T16:39:57.631+09:00  WARN 12396 --- [GreenGarden] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 80758620-ac1b-44e4-9211-25c7aa6b0cb1
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-09-23T16:39:57.632+09:00  INFO 12396 --- [GreenGarden] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-09-23T16:39:57.646+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-09-23T16:39:57.716+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-23T16:39:57.723+09:00  INFO 12396 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/greengarden'
+2025-09-23T16:39:57.727+09:00  INFO 12396 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Started GreenGardenApplication in 0.551 seconds (process running for 182.079)
+2025-09-23T16:39:57.727+09:00  INFO 12396 --- [GreenGarden] [restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2025-09-23T16:44:03.606+09:00  INFO 12396 --- [GreenGarden] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-23T16:44:03.672+09:00  INFO 12396 --- [GreenGarden] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-23T16:44:03.673+09:00  INFO 12396 --- [GreenGarden] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:44:03.674+09:00  INFO 12396 --- [GreenGarden] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown initiated...
+2025-09-23T16:44:03.680+09:00  INFO 12396 --- [GreenGarden] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-5 - Shutdown completed.
+2025-09-23T16:44:06.808+09:00  INFO 15968 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Starting GreenGardenApplication using Java 17.0.0.1 with PID 15968 (C:\Users\GGG\Desktop\workspace\Spring\GreenGarden\build\classes\java\main started by GGG in C:\Users\GGG\Desktop\workspace\Spring\GreenGarden)
+2025-09-23T16:44:06.810+09:00  INFO 15968 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : No active profile set, falling back to 1 default profile: "default"
+2025-09-23T16:44:06.847+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.s.b.devtools.restart.ChangeableUrls    : The Class-Path manifest attribute in C:\Users\GGG\.gradle\caches\modules-2\files-2.1\com.oracle.database.jdbc\ojdbc11\23.7.0.25.01\665f52abef9122ce003b5cfc1d9d44f7302e2cfe\ojdbc11-23.7.0.25.01.jar referenced one or more files that do not exist: file:/C:/Users/GGG/.gradle/caches/modules-2/files-2.1/com.oracle.database.jdbc/ojdbc11/23.7.0.25.01/665f52abef9122ce003b5cfc1d9d44f7302e2cfe/oraclepki.jar
+2025-09-23T16:44:06.847+09:00  INFO 15968 --- [GreenGarden] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-09-23T16:44:06.847+09:00  INFO 15968 --- [GreenGarden] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-09-23T16:44:07.436+09:00  INFO 15968 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-23T16:44:07.448+09:00  INFO 15968 --- [GreenGarden] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 0 JPA repository interfaces.
+2025-09-23T16:44:07.558+09:00  WARN 15968 --- [GreenGarden] [restartedMain] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[kr.co.greengarden]' package. Please check your configuration.
+2025-09-23T16:44:07.931+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-23T16:44:07.942+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-23T16:44:07.942+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-09-23T16:44:07.977+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring embedded WebApplicationContext
+2025-09-23T16:44:07.978+09:00  INFO 15968 --- [GreenGarden] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1131 ms
+2025-09-23T16:44:08.148+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-23T16:44:08.195+09:00  INFO 15968 --- [GreenGarden] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-09-23T16:44:08.224+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-23T16:44:08.472+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-23T16:44:08.497+09:00  INFO 15968 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-23T16:44:08.502+09:00  WARN 15968 --- [GreenGarden] [restartedMain] c.zaxxer.hikari.util.DriverDataSource    : Registered driver with driverClassName=oracle.jdbc.driver.OracleDriver was not found, trying direct instantiation.
+2025-09-23T16:44:08.773+09:00  INFO 15968 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection oracle.jdbc.driver.T4CConnection@1778907d
+2025-09-23T16:44:08.774+09:00  INFO 15968 --- [GreenGarden] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-23T16:44:09.016+09:00  INFO 15968 --- [GreenGarden] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 21.3
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-23T16:44:09.315+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-23T16:44:09.319+09:00  INFO 15968 --- [GreenGarden] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:44:09.370+09:00  WARN 15968 --- [GreenGarden] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-23T16:44:09.419+09:00  WARN 15968 --- [GreenGarden] [restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 705ec728-abca-4840-840e-0e8d1c2cf358
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-09-23T16:44:09.429+09:00  INFO 15968 --- [GreenGarden] [restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-09-23T16:44:09.601+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2025-09-23T16:44:09.984+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-09-23T16:44:10.010+09:00  INFO 15968 --- [GreenGarden] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/greengarden'
+2025-09-23T16:44:10.017+09:00  INFO 15968 --- [GreenGarden] [restartedMain] k.co.greengarden.GreenGardenApplication  : Started GreenGardenApplication in 3.621 seconds (process running for 4.108)
+2025-09-23T16:44:13.537+09:00  INFO 15968 --- [GreenGarden] [http-nio-8080-exec-1] o.a.c.c.C.[.[localhost].[/greengarden]   : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-23T16:44:13.537+09:00  INFO 15968 --- [GreenGarden] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-23T16:44:13.538+09:00  INFO 15968 --- [GreenGarden] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2025-09-23T16:45:49.151+09:00  INFO 15968 --- [GreenGarden] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-23T16:45:49.218+09:00  INFO 15968 --- [GreenGarden] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-23T16:45:49.222+09:00  INFO 15968 --- [GreenGarden] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-23T16:45:49.223+09:00  INFO 15968 --- [GreenGarden] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-23T16:45:49.230+09:00  INFO 15968 --- [GreenGarden] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
