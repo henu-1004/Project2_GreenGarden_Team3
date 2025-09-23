@@ -1,30 +1,33 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>header</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/header.css">
-</head>
 <!--
 	날짜 : 2025/09/15
     이름 : 한탁원
     내용 : header 초안 작성
 -->
-<body>
-	<header>
-		<div id="header-wrap">
-			<div id="header-top" >
-				<a href="/kmarket/member/login.do">로그인</a>
-				<a href="/kmarket/member/register.do">회원가입</a>
-				<a href="/kmarket/mypage/list.do">마이페이지</a>
-				<a href="#">장바구니</a>
-			</div>
-			<div id="header-bottom">
-				<a href="#"><img src="${pageContext.request.contextPath}/resources/images/header_logo.png" alt="로고1" /></a>
-			</div>
-		</div>
-	</header>
-</body>
-</html>
+<header th:fragment="header">
+    <div id="header-wrap">
+        <div id="header-top">
+            <a th:href="@{#}">로그인</a>
+            <a th:href="@{#}">회원가입</a>
+            <a th:href="@{#}">마이페이지</a>
+            <a th:href="@{#}">장바구니</a>
+        </div>
+        <div id="header-middle">
+            <a th:href="@{/}" class="logo">
+                <img th:src="@{/images/logo.png}" alt="로고1" />
+            </a>
+            <form class="search-form">
+                <input type="text" placeholder="검색"/>
+                <button type="submit">
+                    <img src="https://placehold.co/18x18/e0e0e0/000000?text=🔍" alt="돋보기" onerror="this.src='https://placehold.co/18x18/e0e0e0/000000?text=🔍';" />
+                </button>
+            </form>
+        </div>
+        <div id="header-bottom">
+            <a th:href="@{#}">반려식물</a>
+            <a th:href="@{#}">공간별</a>
+            <a th:href="@{#}">프랜테리어</a>
+            <a th:href="@{#}">가드닝용품</a>
+            <a th:href="@{#}">식물케어</a>
+        </div>
+    </div>
+</header>
