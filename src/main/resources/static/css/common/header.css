@@ -15,9 +15,74 @@ header {
 }
 
 #header-top {
-	text-align: right;
+    padding: 10px 0;
+    text-align: right;
+}
+
+#header-top a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+#header-middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#header-middle a img {
+    width: 200px;
+    height: auto;
+}
+
+.search-form {
+    position: relative;
+    flex-grow: 1;
+    max-width: 400px;
+}
+
+.search-form input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.search-form button {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-45%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-form button img {
+    width: 30px;
+    height: 30px;
 }
 
 #header-bottom {
-	display: block;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+}
+#header-bottom a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 10px 10px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    white-space: nowrap;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    color: inherit;
 }
