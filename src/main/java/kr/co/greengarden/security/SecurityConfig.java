@@ -16,18 +16,18 @@ public class SecurityConfig {
 
         // 로그인 설정
         http.formLogin(form -> form
-                .loginPage("/user/login")
+                .loginPage("/member/login")
                 .defaultSuccessUrl("/")
                 .failureUrl("/user/login?error=true")
-                .usernameParameter("usid")
-                .passwordParameter("pass")
+                .usernameParameter("memId")
+                .passwordParameter("password")
         );
 
         // 로그아웃 설정
         http.logout(logout -> logout
-                .logoutUrl("/user/logout")
+                .logoutUrl("/member/logout")
                 .invalidateHttpSession(true)
-                .logoutSuccessUrl("/user/login?logout=true"));
+                .logoutSuccessUrl("/member/login?logout=true"));
 
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
@@ -40,6 +40,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // password 암호화 방식
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

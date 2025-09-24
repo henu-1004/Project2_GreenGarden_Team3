@@ -6,8 +6,13 @@
 <header th:fragment="header">
     <div id="header-wrap">
         <div id="header-top">
-            <a th:href="@{#}">로그인</a>
-            <a th:href="@{#}">회원가입</a>
+            <th:block th:unless="${member}">
+                <a th:href="@{/member/login}">로그인</a>
+                <a th:href="@{/member/join}">회원가입</a>
+            </th:block>
+            <th:block th:if="${member}">
+                <a th:href="@{/member/logout}">로그아웃</a>
+            </th:block>
             <a th:href="@{#}">마이페이지</a>
             <a th:href="@{#}">장바구니</a>
         </div>
@@ -15,10 +20,10 @@
             <a th:href="@{/}" class="logo">
                 <img th:src="@{/images/logo.png}" alt="로고1" />
             </a>
-            <form class="search-form">
-                <input type="text" placeholder="검색"/>
+            <form th:action="@{#}" method="get" class="search-form">
+                <input type="text" name="keyword" placeholder="검색"/>
                 <button type="submit">
-                    <img src="https://placehold.co/18x18/e0e0e0/000000?text=🔍" alt="돋보기" onerror="this.src='https://placehold.co/18x18/e0e0e0/000000?text=🔍';" />
+                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />
                 </button>
             </form>
         </div>

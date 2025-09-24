@@ -1,26 +1,26 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>로그인</title>
 </head>
+<!--
+    날짜 : 2025/09/23
+    이름 : 한탁원
+    내용 : 로그인 테스트 화면 구성
+-->
 <body>
-	<main>
-		<div id="main">
-			<jsp:include page="../common/headerWithSearch.jsp" />
+<h3>로그인</h3>
+
+<form method="post">
+    <input type="text" name="memId" placeholder="아이디 입력"><br>
+    <input type="password" name="password" placeholder="비밀번호 입력"><br>
+    <input type="submit" value="로그인"><br>
+</form>
+
+<a th:href="@{/}">처음</a>
+<a th:href="@{/member/signup}">회원가입</a>
 
 
-			<div class="content-wrap">
-				<jsp:include page="../common/aside_main.jsp" />
-				<section id="main-section">
-					
-
-					<jsp:include page="../common/footer.jsp" />
-				</section>
-			</div>
-		</div>
-	</main>
 </body>
 </html>
