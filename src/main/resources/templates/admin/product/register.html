@@ -1,12 +1,149 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>관리자 상품등록</title>
 </head>
+<!--
+    날짜 : 2025/09/24
+    이름 : 한탁원
+    내용 : 관리자 상품 등록 작성
+-->
 <body>
+<h1>상품등록</h1>
+<hr>
+
+<form method="post" th:action="@{/admin/product/register}" enctype="multipart/form-data">
+
+    <input type="hidden" name="seller.mem_id" value="1"/>
+
+    <h3>상품분류</h3>
+    <table>
+        <tr>
+            <td>1차 분류</td>
+            <td>
+                <select name="classification1" id="classification1" required>
+                    <option value="top">상의</option>
+                    <option value="bottom">하의</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>2차 분류</td>
+            <td>
+                <!-- ★ required + data-selected로 복원 -->
+                <select name="classification2" id="classification2" required>
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <h3>기본정보</h3>
+    <table>
+        <tr>
+            <td>상품명</td>
+            <td><input type="text" name="name" required></td>
+        </tr>
+        <tr>
+            <td>기본설명</td>
+            <td><input type="text" name="description"></td>
+        </tr>
+
+        <tr>
+            <td>제조사</td>
+            <td><input type="text" name="manufacturer"></td>
+        </tr>
+
+        <tr>
+            <td>상품금액</td>
+            <td><input type="number" name="price" min="0" step="1" required> 원</td>
+        </tr>
+        <tr>
+            <td>할인율</td>
+            <td><input type="number" name="discount_rate" min="0" max="100" step="1"> %</td>
+        </tr>
+        <tr>
+            <td>포인트</td>
+            <td><input type="number" name="point" min="0" step="1"> 원</td>
+        </tr>
+        <tr>
+            <td>재고수량</td>
+            <td><input type="number" name="stock" min="0" step="1" required> 개</td>
+        </tr>
+        <tr>
+            <td>배송비</td>
+            <td><input type="number" name="delivery_fee" min="0" step="1"> 원</td>
+        </tr>
+
+        <tr>
+            <td rowspan="3">상품이미지</td>
+            <td><input type="file" name="imgFile1" accept="image/*"></td>
+            <td>크기 190x190, 목록용 썸네일 1</td>
+        </tr>
+        <tr>
+            <td><input type="file" name="imgFile2" accept="image/*"></td>
+            <td>크기 230x230, 목록용 썸네일 2</td>
+        </tr>
+        <tr>
+            <td><input type="file" name="imgFile3" accept="image/*"></td>
+            <td>크기 456x456, 목록용 썸네일 3</td>
+        </tr>
+        <tr>
+            <td>상품 상세이미지</td>
+            <td><input type="file" name="imgFile_detail" accept="image/*"></td>
+            <td>가로 940px 권장, 최대 1MB</td>
+        </tr>
+    </table>
+
+    <button type="submit">등록</button>
+</form>
+
+<script>
+    const c1 = document.getElementById('classification1');
+    const c2 = document.getElementById('classification2');
+
+    const subMap = {
+        top: [
+            { value: 'tee',    label: '티셔츠' },
+            { value: 'shirt',  label: '셔츠' },
+            { value: 'hoodie', label: '후드/맨투맨' },
+            { value: 'knit',   label: '니트' }
+        ],
+        bottom: [
+            { value: 'jeans',   label: '청바지' },
+            { value: 'slacks',  label: '슬랙스' },
+            { value: 'shorts',  label: '반바지' },
+            { value: 'jogger',  label: '조거팬츠' }
+        ]
+    };
+
+    function fillSecond(level1, selectedValue) {
+        c2.innerHTML = '';
+        const list = subMap[level1] || [];
+
+        const ph = document.createElement('option');
+        ph.value = '';
+        ph.textContent = '2차 분류 선택';
+        ph.disabled = true;
+        ph.selected = !selectedValue;
+        c2.appendChild(ph);
+
+        for (const {value, label} of list) {
+            const opt = document.createElement('option');
+            opt.value = value;
+            opt.textContent = label;
+            if (selectedValue && selectedValue === value) opt.selected = true;
+            c2.appendChild(opt);
+        }
+        c2.disabled = list.length === 0;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // ★ 처음 로딩 시 기본값(top) 기준으로 2차 분류 채우기
+        fillSecond(c1.value || 'top', c2.getAttribute('data-selected') || '');
+        c1.addEventListener('change', () => fillSecond(c1.value, ''));
+    });
+</script>
 
 </body>
 </html>

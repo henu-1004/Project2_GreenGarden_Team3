@@ -1,17 +1,224 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>관리자 회원목록</title>
 </head>
+<!--
+    날짜 : 2025/09/24
+    이름 : 한탁원
+    내용 : 관리자 회원 목록 작성
+-->
 <body>
-	<main>
-		<div id="main">
 
-			</div>
-		</div>
-	</main>
+<th:block th:replace="~{/admin/common/header :: header}"></th:block>
+
+<h1>회원 목록</h1>
+
+<form method="get" th:action="@{/admin/member/list}">
+    <div th:with="st=${param.searchType != null ? param.searchType[0] : ''}">
+        <select name="searchType" id="searchType">
+            <option value=""        th:selected="${st == ''}">전체</option>
+            <option value="id"   th:selected="${st == 'id'}">아이디</option>
+            <option value="name" th:selected="${st == 'name'}">이름</option>
+            <option value="email"  th:selected="${st == 'email'}">이메일</option>
+            <option value="phone"  th:selected="${st == 'phone'}">휴대폰</option>
+        </select>
+    </div>
+
+    <input type="text" id="keyword" name="keyword"
+           placeholder="검색어를 입력해 주세요" />
+
+    <button type="submit" >검색</button>
+</form>
+
+<form id="bulkForm" th:action="@{/admin/member/deleteSelected}" method="post">
+    <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+<table>
+    <thead>
+    <tr>
+        <th>
+            <input type="checkbox" id="checkAll">
+        </th>
+        <th>번호</th><th>아이디</th><th>이름</th><th>성별</th><th>등급</th>
+        <th>포인트</th><th>이메일</th><th>휴대폰</th><th>가입일</th><th>상태</th><th>관리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member, stat : ${memberGeneralList.content}">
+        <td>
+            <input type="checkbox" class="rowCheck" name="mem_ids" th:value="${member.mem_id}">
+        </td>
+        <td th:text="${memberGeneralList.totalElements - (memberGeneralList.number * memberGeneralList.size + stat.index)}">1</td>
+        <td th:text="${member.id}">aaa</td>
+        <td th:text="${member.name}">홍길동</td>
+        <td th:text="${member.gender}">M</td>
+        <td th:text="${member.grade}">등급</td>
+        <td th:text="${member.point}">포인트</td>
+        <td th:text="${member.email}">a@b.c</td>
+        <td th:text="${member.phone}">010-...</td>
+        <td th:text="${member.created_at}">2025-09-17</td>
+        <td th:text="${member.status}">정상</td>
+        <td>
+            <!-- 테이블 내부 -->
+            <a href="#" class="openRegister" th:attr="data-mem-id=${member.mem_id}, data-url=@{/admin/member/modify}">관리</a>
+            <a href="#" class="changeStatus">중지</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+    <button type="submit" id="bulkDeleteBtn">선택삭제</button>
+</form>
+<!-- 페이징 (그대로 사용 가능) -->
+<div class="pagination"
+     th:with="
+        page=${memberGeneralList},
+        now=${page.number},
+        total=${page.totalPages},
+        size=${page.size},
+        block=${5},
+        start=${(now / block) * block},
+        end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
+        prev=${ (now > 0) ? (now - 1) : 0 },
+        next=${ ((now + 1) < total) ? (now + 1) : (total - 1) },
+        st=${param.searchType != null ? param.searchType[0] : ''},
+        kw=${param.keyword    != null ? param.keyword[0]    : ''}
+     ">
+    <div th:if="${total > 0}">
+        <a th:href="@{|?page=0&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.first} ? ' disabled'">« 처음</a>
+
+        <a th:href="@{|?page=${prev}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
+
+        <th:block th:each="i : ${#numbers.sequence(start, end)}">
+            <a th:href="@{|?page=${i}&size=${size}&searchType=${st}&keyword=${kw}|}"
+               th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
+        </th:block>
+
+        <a th:href="@{|?page=${next}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.last} ? ' disabled'">다음 ›</a>
+
+        <a th:href="@{|?page=${total - 1}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.last} ? ' disabled'">마지막 »</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkAll = document.getElementById("checkAll");
+        const checks   = document.querySelectorAll(".rowCheck");
+        const form     = document.getElementById("bulkForm");
+        const delBtn   = document.getElementById("bulkDeleteBtn");
+
+        // 전체선택/해제
+        checkAll.addEventListener("change", () => {
+            checks.forEach(ch => ch.checked = checkAll.checked);
+        });
+
+        // 개별 체크 변화에 따라 헤더 체크박스 상태 업데이트
+        checks.forEach(ch => ch.addEventListener("change", () => {
+            const all = checks.length;
+            const on  = [...checks].filter(c => c.checked).length;
+            checkAll.checked = (all === on);
+            checkAll.indeterminate = (on > 0 && on < all);
+        }));
+
+        // 삭제 전 확인 + 아무것도 선택 안 했을 때 방지
+        delBtn.addEventListener("click", (e) => {
+            const hasSelected = [...checks].some(c => c.checked);
+            if (!hasSelected) {
+                e.preventDefault();
+                alert("삭제할 회원을 선택하세요.");
+                return;
+            }
+            if (!confirm("선택한 회원을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+
+<!-- 모달 -->
+<div id="memberModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <iframe id="modalFrame" style="width:100%; height:500px; border:none;"></iframe>
+    </div>
+</div>
+
+<style>
+    .modal {
+        position: fixed;
+        z-index: 999;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+        background: #fff;
+        margin: 5% auto;
+        padding: 20px;
+        width: 80%;
+        border-radius: 8px;
+        position: relative;
+    }
+    .close {
+        position: absolute;
+        right: 15px; top: 10px;
+        font-size: 24px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const modal = document.getElementById("memberModal");
+        const modalFrame = document.getElementById("modalFrame");
+        const closeBtn = modal.querySelector(".close");
+
+        // 열기
+        document.querySelectorAll(".openRegister").forEach(link => {
+            link.addEventListener("click", function(e) {
+                e.preventDefault();
+                const mem_id = this.getAttribute("data-mem-id");
+                const base   = this.getAttribute("data-url");
+                if (!mem_id || !base) return;
+
+                modalFrame.src = `${base}?mem_id=${encodeURIComponent(mem_id)}`;
+                modal.style.display = "block";
+                document.body.style.overflow = "hidden";
+            });
+        });
+
+        // 닫기 함수
+        function closeModal() {
+            modal.style.display = "none";
+            modalFrame.src = ""; // 리소스 해제
+            document.body.style.overflow = ""; // 스크롤 복구
+        }
+
+        // 닫기 버튼 click/Enter/Space
+        closeBtn.addEventListener("click", closeModal);
+        closeBtn.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") closeModal();
+        });
+
+        // 바깥(오버레이) 클릭 시 닫기
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // ESC 키 닫기
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal.style.display === "block") closeModal();
+        });
+    });
+</script>
+
+
+
 </body>
 </html>

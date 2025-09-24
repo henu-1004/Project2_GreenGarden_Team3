@@ -33,8 +33,6 @@ public class MemberDTO {
 
     private String addressDetail;
 
-    private String status;
-
     public Member toEntity() {
         return Member.builder()
                      .memId(memId)
@@ -43,7 +41,6 @@ public class MemberDTO {
                      .zipCode(zipCode)
                      .addressBasic(addressBasic)
                      .addressDetail(addressDetail)
-                     .status(status)
                      .build();
     }
 }

@@ -12,3 +12,140 @@
     list-style-type: none;
 }
 
+#main {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+#best_title {
+    background-color: #66968c;
+    padding: 5px 15px ;
+    margin-top : 20px;
+}
+
+#best_title a {
+    color : white;
+    font-size : 26px;
+}
+
+#best_top {
+    height: 500px;
+    padding: 20px 0;
+    display: flex;
+    gap: 20px;
+}
+
+.best_top_product {
+    padding : 20px;
+    height: auto;
+    text-align: center;
+    align-items: center;
+    border: solid 1px;
+    border-color: #66968c;
+    flex: 1;
+}
+
+.best_top_product img {
+    width : 350px;
+    height : 350px;
+}
+
+#best_bottom {
+    height: 400px;
+    padding-bottom: 20px;
+    display:flex;
+    gap:20px;
+}
+
+.best_bottom_product {
+    padding : 20px;
+    height: auto;
+    text-align: center;
+    align-items: center;
+    border : solid 1px;
+    border-color: #66968c;
+    flex:1;
+}
+
+.best_bottom_product img {
+    width : 250px;
+    height : 250px;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 한 줄에 4개 */
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.products_item {
+    padding : 10px 0;
+    height: auto;
+    text-align: center;
+    align-items: center;
+    border: solid 1px;
+    border-color: #66968c;
+    flex: 1;
+}
+
+.products_item img {
+    width: 200px;
+    height: 200px;
+}
+
+.right {
+    position: relative;
+    overflow: visible;
+} /* 밖으로 나가도 보이게 */
+
+.right::after {
+    content: attr(title);
+    font-size: 30px;
+    position: absolute;
+    right: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 100%;
+    background: #66968c;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-orientation: upright;
+    letter-spacing: 2px;
+    z-index: 10;
+    writing-mode: vertical-rl;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+.left {
+    position: relative;
+    overflow: visible;
+} /* 밖으로 나가도 보이게 */
+
+.left::after {
+    content: attr(title);
+    font-size: 30px;
+    position: absolute;
+    left: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 100%;
+    background: #66968c;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-orientation: upright;
+    letter-spacing: 2px;
+    z-index: 10;
+    writing-mode: vertical-rl;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+}
+
+.left::after .hit_title {
+    content: "ed";
+}
