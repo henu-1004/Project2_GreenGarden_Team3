@@ -1,17 +1,217 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>관리자 상점목록</title>
 </head>
+<!--
+    날짜 : 2025/09/24
+    이름 : 한탁원
+    내용 : 관리자 상점 목록 작성
+-->
 <body>
-	<main>
-		<div id="main">
+<th:block th:replace="~{/admin/common/header :: header}"></th:block>
 
-			</div>
-		</div>
-	</main>
+<!-- 검색 -->
+<form method="get" th:action="@{/admin/shop/list}">
+    <div th:with="st=${param.searchType != null ? param.searchType[0] : ''}">
+        <select name="searchType" id="searchType">
+            <option value="" th:selected="${st == ''}">전체</option>
+            <option value="company" th:selected="${st == 'company'}">상호명</option>
+            <option value="representative" th:selected="${st == 'representative'}">대표</option>
+            <option value="tin" th:selected="${st == 'tin'}">사업자등록번호</option>
+            <option value="tel" th:selected="${st == 'tel'}">연락처</option>
+        </select>
+    </div>
+
+    <input type="text" id="keyword" name="keyword" placeholder="검색어"/>
+    <button type="submit">검색</button>
+</form>
+
+
+<form id="shopBulkForm" th:action="@{/admin/shop/deleteSelected}" method="post">
+    <h1>상점 목록</h1>
+    <table>
+        <tr>
+            <th><input type="checkbox" id="shopCheckAll"></th>
+            <th>번호</th>
+            <th>상호명</th>
+            <th>대표</th>
+            <th>사업자등록번호</th>
+            <th>통신판매업번호</th>
+            <th>연락처</th>
+            <th>운영</th>
+            <th>관리</th>
+        </tr>
+        <tr th:each="seller, stat : ${shopList.content}">
+            <td><input type="checkbox" class="shopRowCheck" name="mem_ids" th:value="${seller.mem_id}"></td>
+            <td th:text="${shopList.totalElements - (shopList.number * shopList.size + stat.index)}">1</td>
+            <td th:text="${seller.company}">aaa</td>
+            <td th:text="${seller.representative}">홍길동</td>
+            <td th:text="${seller.tin}">M</td>
+            <td th:text="${seller.business_number}">a@b.c</td>
+            <td th:text="${seller.tel}">010-...</td>
+            <td>상태</td>
+            <td><a th:href="@{#}">관리</a></td>
+        </tr>
+    </table>
+
+    <button type="submit" id="shopBulkDeleteBtn">선택 삭제</button>
+    <a href="#" id="openRegister">상점등록</a>
+</form>
+
+<script>
+    // 체크박스 일괄선택 & 삭제 확인
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkAll = document.getElementById("shopCheckAll");
+        const checks = document.querySelectorAll(".shopRowCheck");
+        const delBtn = document.getElementById("shopBulkDeleteBtn");
+
+        checkAll?.addEventListener("change", () => {
+            checks.forEach(ch => ch.checked = checkAll.checked);
+        });
+        checks.forEach(ch => ch.addEventListener("change", () => {
+            const all = checks.length;
+            const on = [...checks].filter(c => c.checked).length;
+            checkAll.checked = (all === on);
+            checkAll.indeterminate = (on > 0 && on < all);
+        }));
+        delBtn?.addEventListener("click", (e) => {
+            const hasSelected = [...checks].some(c => c.checked);
+            if (!hasSelected) {
+                e.preventDefault();
+                alert("삭제할 상점을 선택하세요.");
+                return;
+            }
+            if (!confirm("선택한 상점을 삭제하시겠습니까?")) e.preventDefault();
+        });
+    });
+</script>
+
+<!-- 페이징 -->
+<div class="pagination"
+     th:with="
+        page=${shopList},
+        now=${page.number},
+        total=${page.totalPages},
+        size=${page.size},
+        block=${5},
+        start=${(now / block) * block},
+        end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
+        prev=${ (now > 0) ? (now - 1) : 0 },
+        next=${ ((now + 1) < total) ? (now + 1) : (total - 1) },
+        st=${param.searchType != null ? param.searchType[0] : ''},
+        kw=${param.keyword    != null ? param.keyword[0]    : ''}
+     ">
+    <div th:if="${total > 0}">
+        <a th:href="@{|?page=0&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.first} ? ' disabled'">« 처음</a>
+
+        <a th:href="@{|?page=${prev}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
+
+        <th:block th:each="i : ${#numbers.sequence(start, end)}">
+            <a th:href="@{|?page=${i}&size=${size}&searchType=${st}&keyword=${kw}|}"
+               th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
+        </th:block>
+
+        <a th:href="@{|?page=${next}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.last} ? ' disabled'">다음 ›</a>
+
+        <a th:href="@{|?page=${total - 1}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.last} ? ' disabled'">마지막 »</a>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="registerModal" class="modal" style="display:none;">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button type="button" class="modal-close" aria-label="닫기">&times;</button>
+        <h2 id="modalTitle" class="modal-title">상점 등록</h2>
+
+        <!-- 별도 페이지를 그대로 표시 -->
+        <iframe id="registerFrame" th:src="@{/admin/shop/register}"
+                width="100%" height="520" frameborder="0"></iframe>
+    </div>
+</div>
+
+<style>
+    .modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+    }
+
+    .modal-backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-dialog {
+        position: relative;
+        z-index: 1001;
+        width: min(820px, 92vw);
+        max-height: 90vh;
+        margin: 5vh auto;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, .2);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-title {
+        margin: 0;
+        padding: 16px 24px;
+        border-bottom: 1px solid #eee;
+        font-size: 18px;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        border: 0;
+        background: transparent;
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    .modal-dialog .modal-body {
+        padding: 0 24px 24px;
+    }
+</style>
+
+<script th:inline="javascript">
+    const modal = document.getElementById('registerModal');
+    const btnOpen = document.getElementById('openRegister');
+    const btnClose = modal.querySelector('.modal-close');
+    const backdrop = modal.querySelector('.modal-backdrop');
+    const frame = document.getElementById('registerFrame');
+
+    // 필요 시 폼 초기화를 위해 새로고침: frame.contentWindow.location.reload()
+    function openModal() {
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // 뒤 스크롤 잠금
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';       // 잠금 해제
+    }
+
+    btnOpen?.addEventListener('click', e => {
+        e.preventDefault();
+        openModal();
+    });
+    btnClose?.addEventListener('click', closeModal);
+    backdrop?.addEventListener('click', closeModal);
+    window.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && modal.style.display !== 'none') closeModal();
+    });
+</script>
+
 </body>
 </html>

@@ -1,35 +1,159 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/admin/product/list.css">
+    <meta charset="UTF-8">
+    <title>관리자 상품목록</title>
 </head>
-<!-- 
-	날짜 : 2025/09/16
-	이름 : 한탁원
-	내용 : 상품 목록 작성
- -->
+<!--
+    날짜 : 2025/09/24
+    이름 : 한탁원
+    내용 : 관리자 상품 목록 작성
+-->
 <body>
-	<jsp:include page="../common/header.jsp" />
-	<main>
-		<div id="main">
-			<div id="content-wrap">
-				<jsp:include page="../common/aside.jsp" />
-				<section id="main-section">
-					<div id="title">
-						<h1>관리자메인</h1>
-						<p>HOME > 관리자 메인
-						<p>
-					</div>
-				</section>
-			</div>
-		</div>
-	</main>
-	<jsp:include page="../common/footer.jsp" />
+
+<th:block th:replace="~{/admin/common/header :: header}"></th:block>
+
+<!-- 검색 -->
+<form method="get" th:action="@{/admin/product/list}">
+    <div th:with="st=${param.searchType != null ? param.searchType[0] : ''}">
+        <select name="searchType" id="searchType">
+            <option value=""        th:selected="${st == ''}">전체</option>
+            <option value="name"    th:selected="${st == 'name'}">상품명</option>
+            <option value="proNo"  th:selected="${st == 'proNo'}">상품코드</option>
+            <option value="company" th:selected="${st == 'company'}">판매자</option>
+        </select>
+    </div>
+
+    <input type="text" id="keyword" name="keyword" placeholder="검색어"
+           th:value="${param.keyword != null ? param.keyword[0] : ''}"/>
+    <button type="submit">검색</button>
+</form>
+
+<form id="productBulkForm" th:action="@{/admin/product/deleteSelected}" method="post">
+
+    <h1>상품 목록</h1>
+    <table>
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="productCheckAll"></th>
+            <th>번호</th>
+            <th>이미지</th>
+            <th>상품코드</th>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>할인율</th>
+            <th>포인트</th>
+            <th>재고</th>
+            <th>판매자</th>
+            <th>조회수</th>
+            <th>관리</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="prod, stat : ${productList.content}">
+            <td>
+                <!-- 일괄삭제용 체크: pro_no 또는 pro_id 등 삭제 키에 맞춰 value 설정 -->
+                <input type="checkbox" class="productRowCheck" name="proIds"
+                       th:value="${prod.proId}">
+            </td>
+
+            <!-- 역순 번호: 전체건수 - (현재페이지 시작 idx + row idx) -->
+            <td th:text="${productList.totalElements - (productList.number * productList.size + stat.index)}">1</td>
+
+
+            <td th:with="img=${prod.img1}">
+                <img th:if="${prod.img1}" th:src="@{${prod.img1}}"
+                     alt="thumb" width="60" height="60" style="object-fit:cover" loading="lazy">
+            </td>
+
+
+            <td th:text="${prod.proNo}">P0001</td>
+            <td th:text="${prod.name}">상품명</td>
+
+            <td th:text="${#numbers.formatInteger(prod.price, 3, 'COMMA')}">10,000</td>
+            <td th:text="${prod.discountRate}">0</td>
+            <td th:text="${prod.point}">0</td>
+            <td th:text="${prod.stock}">0</td>
+            <td th:text="${prod.company}">판매자</td>
+            <td th:text="${prod.views}">0</td>
+
+            <td>
+                <a href="#" class="openModify"
+                   th:attr="data-pro-no=${prod.proNo}, data-url=@{/admin/product/modify}">관리</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <button type="submit" id="productBulkDeleteBtn">선택 삭제</button>
+    <a th:href="@{/admin/product/register}" id="">상품등록</a>
+</form>
+
+<!-- 체크박스 일괄선택 & 삭제 확인 -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkAll = document.getElementById("productCheckAll");
+        const checks   = document.querySelectorAll(".productRowCheck");
+        const delBtn   = document.getElementById("productBulkDeleteBtn");
+
+        checkAll?.addEventListener("change", () => {
+            checks.forEach(ch => ch.checked = checkAll.checked);
+        });
+
+        checks.forEach(ch => ch.addEventListener("change", () => {
+            const all = checks.length;
+            const on  = [...checks].filter(c => c.checked).length;
+            checkAll.checked = (all === on);
+            checkAll.indeterminate = (on > 0 && on < all);
+        }));
+
+        delBtn?.addEventListener("click", (e) => {
+            const hasSelected = [...checks].some(c => c.checked);
+            if (!hasSelected) {
+                e.preventDefault();
+                alert("삭제할 상품을 선택하세요.");
+                return;
+            }
+            if (!confirm("선택한 상품을 삭제하시겠습니까?")) e.preventDefault();
+        });
+    });
+</script>
+
+<!-- 페이징 -->
+<div class="pagination"
+     th:with="
+        page=${productList},
+        now=${page.number},
+        total=${page.totalPages},
+        size=${page.size},
+        block=${5},
+        start=${(now / block) * block},
+        end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
+        prev=${ (now > 0) ? (now - 1) : 0 },
+        next=${ ((now + 1) < total) ? (now + 1) : (total - 1) },
+        st=${param.searchType != null ? param.searchType[0] : ''},
+        kw=${param.keyword    != null ? param.keyword[0]    : ''}
+     ">
+    <div th:if="${total > 0}">
+        <a th:href="@{|?page=0&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.first} ? ' disabled'">« 처음</a>
+
+        <a th:href="@{|?page=${prev}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
+
+        <th:block th:each="i : ${#numbers.sequence(start, end)}">
+            <a th:href="@{|?page=${i}&size=${size}&searchType=${st}&keyword=${kw}|}"
+               th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
+        </th:block>
+
+        <a th:href="@{|?page=${next}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.last} ? ' disabled'">다음 ›</a>
+
+        <a th:href="@{|?page=${total - 1}&size=${size}&searchType=${st}&keyword=${kw}|}"
+           th:classappend="${page.last} ? ' disabled'">마지막 »</a>
+    </div>
+</div>
 
 </body>
 </html>

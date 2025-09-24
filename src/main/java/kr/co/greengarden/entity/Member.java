@@ -40,16 +40,13 @@ public class Member {
     private LocalDateTime joinDate;
 
     @Column
+    private String zipCode;
+
+    @Column
     private String addressBasic;
 
     @Column
     private String addressDetail;
-
-    @Column
-    private String zipCode;
-
-    @Column
-    private String status;
 
     public MemberDTO toDTO() {
         return MemberDTO.builder()
@@ -59,7 +56,6 @@ public class Member {
                         .zipCode(zipCode)
                         .addressBasic(addressBasic)
                         .addressDetail(addressDetail)
-                        .status(status)
                         .build();
     }
 }

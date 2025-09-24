@@ -30,17 +30,7 @@ public class MemberService {
         return memberRepository.findById(memId);
     }
 
-    @Transactional
-    public void save(MemberDTO memberDTO){
 
-        // 암호화
-        String plain = memberDTO.getPassword();
-        String encoded = passwordEncoder.encode(plain);
-
-        memberDTO.setPassword(encoded);
-
-        memberRepository.save(memberDTO.toEntity());
-    }
 
     public void modify(MemberDTO memberDTO) {
         memberRepository.save(memberDTO.toEntity());

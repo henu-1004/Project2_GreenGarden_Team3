@@ -1,26 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>회원가입 구분</title>
 </head>
+<!--
+    날짜 : 2025/09/24
+    이름 : 한탁원
+    내용 : 회원가입 구분 자성
+-->
 <body>
-	<main>
-		<div id="main">
-			<jsp:include page="../common/headerWithSearch.jsp" />
-
-
-			<div class="content-wrap">
-				<jsp:include page="../common/aside_main.jsp" />
-				<section id="main-section">
-					
-
-					<jsp:include page="../common/footer.jsp" />
-				</section>
-			</div>
-		</div>
-	</main>
+<a th:href="@{/member/register}">일반회원가입</a>
+<a th:href="@{/member/registerSeller}">판매회원가입</a>
 </body>
 </html>

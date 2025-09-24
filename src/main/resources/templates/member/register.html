@@ -14,21 +14,29 @@
 <form th:action="@{/member/register}" method="post">
     <input type="text" name="memId" placeholder="아이디 입력"><br>
     <input type="text" name="password" placeholder="비밀번호 입력"><br>
+    <input type="text" name="name" placeholder="이름 입력"><br>
+    <input type="date" name="birth" placeholder="날짜 선택"><br>
+    <label>
+        <input type="radio" name="gender" value="M"> 남
+    </label>
+    <label>
+        <input type="radio" name="gender" value="F"> 여
+    </label><br>
+    <input type="text" name="email" placeholder="이메일 입력"><br>
+    <input type="text" name="phone" placeholder="휴대폰 입력"><br>
 
-    <input type="text" id="zip_code" name="zipCde"
+    <input type="text" id="zip_code" name="zipCode"
            placeholder="우편번호" onclick="postcode()" readonly> <br>
     <input type="text" id="address_basic" name="addressBasic"
            placeholder="기본주소" readonly> <br>
     <input type="text" id="address_detail" name="addressDetail"
            placeholder="상세주소">
-
     <input type="hidden" name="joinDate" id="joinDate" value="">
     <input type="hidden" name="role" value="GENERAL">
-    <input type="hidden" name="status" value="NORMAL">
+    <input type="hidden" name="status" value="NORMAL"><br>
     <input type="submit" value="회원가입"><br>
 </form>
 </body>
-
 
 <script>
     const today = new Date();

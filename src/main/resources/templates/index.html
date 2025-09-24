@@ -5,101 +5,74 @@
     <title>메인 페이지</title>
     <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
-</head>
+</head>.
+<!--
+    날짜 : 2025/09/23
+    이름 : 한탁원
+    내용 : Index 화면 구성
+-->
 <body>
 <div th:replace="~{/common/header :: header}"></div>
 <main>
     <div id="main">
-        <section id="banner">
-            <img th:src="@{/images/slider_item1.jpg}" alt="슬라이드">
-        </section>
 
         <div class="content-wrap">
             <section id="main-section">
-                <img th:src="@{/images/slider_item1.jpg}" alt="슬라이드">
 
                 <div class="product">
-                    <h2>히트상품</h2>
-                    <table>
-                        <tr>
-                            <th:block th:each="i, iterStat : ${#numbers.sequence(1, 7)}">
-                                <td align="center">
-                                    <img th:src="@{/images/sample_thumb.jpg}" alt="상품">
-                                    <p>상품명</p>
-                                    <span><a>30,000원</a><a>10%</a></span><br>
-                                    <span><a>27,000원</a><button>무료배송</button></span>
-                                </td>
-                                <!-- 4개마다 줄바꿈 -->
-                                <th:block th:if="${iterStat.count % 4 == 0}">
-                        </tr>
-                        <tr>
-                            </th:block>
-                            </th:block>
-                        </tr>
-                    </table>
+                    <div id="best_title"><a>B E S T</a></div>
+                    <div id="best_top">
+                        <div class="best_top_product" th:each="i, iterStat : ${#numbers.sequence(1, 2)}">
+                            <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                            <p>상품명</p>
+                            <span><a>30,000원</a><a>10%</a></span><br>
+                            <span><a>27,000원</a><button>무료배송</button></span>
+                        </div>
+                    </div>
+                    <div id="best_bottom">
+                        <div class="best_bottom_product" th:each="i, iterStat : ${#numbers.sequence(1, 3)}">
+                            <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                            <p>상품명</p>
+                            <span><a>30,000원</a><a>10%</a></span><br>
+                            <span><a>27,000원</a><button>무료배송</button></span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="product">
-                    <h2>추천상품</h2>
-                    <table>
-                        <tr>
-                            <th:block th:each="i, iterStat : ${#numbers.sequence(1, 7)}">
-                                <td align="center">
-                                    <img th:src="@{/images/sample_thumb.jpg}" alt="상품">
-                                    <p>상품명</p>
-                                    <span><a>30,000원</a><a>10%</a></span><br>
-                                    <span><a>27,000원</a><button>무료배송</button></span>
-                                </td>
-                                <!-- 4개마다 줄바꿈 -->
-                                <th:block th:if="${iterStat.count % 4 == 0}">
-                        </tr>
-                        <tr>
-                            </th:block>
-                            </th:block>
-                        </tr>
-                    </table>
+                <div class="products right" title="HIT">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
                 </div>
 
-                <div class="product">
-                    <h2>최신상품</h2>
-                    <table>
-                        <tr>
-                            <th:block th:each="i, iterStat : ${#numbers.sequence(1, 7)}">
-                                <td align="center">
-                                    <img th:src="@{/images/sample_thumb.jpg}" alt="상품">
-                                    <p>상품명</p>
-                                    <span><a>30,000원</a><a>10%</a></span><br>
-                                    <span><a>27,000원</a><button>무료배송</button></span>
-                                </td>
-                                <!-- 4개마다 줄바꿈 -->
-                                <th:block th:if="${iterStat.count % 4 == 0}">
-                        </tr>
-                        <tr>
-                            </th:block>
-                            </th:block>
-                        </tr>
-                    </table>
+                <div class="products left" title="NEW">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
                 </div>
 
-                <div class="product">
-                    <h2>할인상품</h2>
-                    <table>
-                        <tr>
-                            <th:block th:each="i, iterStat : ${#numbers.sequence(1, 7)}">
-                                <td align="center">
-                                    <img th:src="@{/images/sample_thumb.jpg}" alt="상품">
-                                    <p>상품명</p>
-                                    <span><a>30,000원</a><a>10%</a></span><br>
-                                    <span><a>27,000원</a><button>무료배송</button></span>
-                                </td>
-                                <!-- 4개마다 줄바꿈 -->
-                                <th:block th:if="${iterStat.count % 4 == 0}">
-                        </tr>
-                        <tr>
-                            </th:block>
-                            </th:block>
-                        </tr>
-                    </table>
+                <div class="products right" title="BRAND LEADER">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
+                </div>
+
+                <div class="products left" title="SALE">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
                 </div>
 
                 <div th:replace="~{/common/footer :: footer}"></div>
