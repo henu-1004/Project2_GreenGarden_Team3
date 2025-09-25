@@ -1,16 +1,188 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <meta charset="UTF-8">
+  <title>마이페이지 | Green Garden</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<main>
-		<div id="main">
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="top-menu">
+      <a href="#">로그인</a> | 
+      <a href="#">회원가입</a> | 
+      <a href="#">마이페이지</a> | 
+      <a href="#">장바구니</a>
+    </div>
+    <h1 class="logo"><a href="index.html">Green Garden</a></h1>
+  </header>
 
-		</div>
-	</main>
+  <!-- 메인 레이아웃 -->
+  <main class="mypage-container">
+    <!-- 사이드바 -->
+    <aside class="sidebar">
+      <h3>나의 쇼핑정보</h3>
+      <ul>
+        <li><a href="#">전체주문내역</a></li>
+        <li><a href="#">포인트내역</a></li>
+        <li><a href="#">쿠폰</a></li>
+        <li><a href="#">나의리뷰</a></li>
+        <li><a href="#" onclick="openInquiryModal()">문의하기</a></li>
+        <li><a href="#">나의설정</a></li>
+      </ul>
+    </aside>
+
+    <!-- 콘텐츠 -->
+    <section class="content">
+      <!-- 상단 요약 정보 -->
+      <div class="summary-box">
+        <div class="item"><span>주문</span><strong>2</strong></div>
+        <div class="item"><span>쿠폰</span><strong>1</strong></div>
+        <div class="item"><span>포인트</span><strong>1000</strong></div>
+        <div class="item"><span>문의</span><strong>1</strong></div>
+      </div>
+
+      <!-- 배너 -->
+      <div class="banner">810 × 86 배너 광고</div>
+
+      <!-- 최근 주문내역 -->
+      <div class="section-header">
+        <h2>최근주문내역</h2>
+        <a href="#" class="more">더보기 ></a>
+      </div>
+
+      <div class="order-list">
+        <div class="order-item">
+          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
+          <div class="info">
+            <p class="date">2022-12-13</p>
+            <p class="order-num">주문번호 : 202212341</p>
+            <p class="product">샘플 상품 (1개)</p>
+            <p class="price">34,000원</p>
+          </div>
+          <div class="status">배송완료</div>
+          <div class="actions">
+            <button onclick="openOrderModal()">주문상세</button>
+            <button>구매확정</button>
+            <button>리뷰작성</button>
+            <button>교환</button>
+            <button>반품</button>
+          </div>
+        </div>
+
+        <div class="order-item">
+          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
+          <div class="info">
+            <p class="date">2022-12-13</p>
+            <p class="order-num">주문번호 : 202212342</p>
+            <p class="product">샘플 상품 (2개)</p>
+            <p class="price">15,000원</p>
+          </div>
+          <div class="status">배송중</div>
+          <div class="actions">
+            <button onclick="openOrderModal()">주문상세</button>
+            <button>구매확정</button>
+            <button>리뷰작성</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 포인트 적립내역 -->
+      <div class="section-header">
+        <h2>포인트적립내역</h2>
+      </div>
+      <div class="point-list">
+        <p>포인트 적립/사용 내역이 여기에 표시됩니다.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- 주문상세 모달 -->
+  <div id="orderModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>주문상세 <span class="date">2022-12-13</span></h2>
+        <span class="close" onclick="closeOrderModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <h3>주문정보</h3>
+        <table>
+          <tr><td>날짜</td><td>2022-12-13</td></tr>
+          <tr><td>상품명</td><td>샘플 상품 (1개)</td></tr>
+          <tr><td>결제금액</td><td>34,000원</td></tr>
+          <tr><td>상태</td><td>배송중</td></tr>
+        </table>
+
+        <h3>배송정보</h3>
+        <table>
+          <tr><td>이름</td><td>홍길동</td></tr>
+          <tr><td>연락처</td><td>010-1234-1001</td></tr>
+          <tr><td>주소</td><td>[부산시 남구 대연동 1210] 1004호</td></tr>
+          <tr><td>배송요청사항</td><td>없음</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 문의하기 모달 -->
+  <div id="inquiryModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>문의하기</h2>
+        <span class="close" onclick="closeInquiryModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>문의유형</label>
+          <label><input type="radio" name="type"> 상품</label>
+          <label><input type="radio" name="type"> 배송</label>
+          <label><input type="radio" name="type"> 반품/취소</label>
+          <label><input type="radio" name="type"> 교환</label>
+          <label><input type="radio" name="type"> 기타</label>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" value="chh**@gmail.com">
+        </div>
+
+        <div class="form-group">
+          <label>제목</label>
+          <input type="text">
+        </div>
+
+        <div class="form-group">
+          <label>내용</label>
+          <textarea rows="5"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn-primary">등록하기</button>
+          <button class="btn-secondary" onclick="closeInquiryModal()">취소</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p>© Green Garden. All rights reserved.</p>
+  </footer>
+
+  <!-- 스크립트 -->
+  <script>
+    function openOrderModal() {
+      document.getElementById("orderModal").style.display = "flex";
+    }
+    function closeOrderModal() {
+      document.getElementById("orderModal").style.display = "none";
+    }
+    function openInquiryModal() {
+      document.getElementById("inquiryModal").style.display = "flex";
+    }
+    function closeInquiryModal() {
+      document.getElementById("inquiryModal").style.display = "none";
+    }
+  </script>
 </body>
 </html>
