@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>마이페이지 | Green Garden</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 헤더 -->
+  <header class="header">
+    <div class="top-menu">
+      <a href="#">로그인</a> | 
+      <a href="#">회원가입</a> | 
+      <a href="#">마이페이지</a> | 
+      <a href="#">장바구니</a>
+    </div>
+    <h1 class="logo"><a href="index.html">Green Garden</a></h1>
+  </header>
+
+  <!-- 메인 레이아웃 -->
+  <main class="mypage-container">
+    <!-- 사이드바 -->
+    <aside class="sidebar">
+      <h3>나의 쇼핑정보</h3>
+      <ul>
+        <li><a href="#">전체주문내역</a></li>
+        <li><a href="#">포인트내역</a></li>
+        <li><a href="#">쿠폰</a></li>
+        <li><a href="#">나의리뷰</a></li>
+        <li><a href="#">문의하기</a></li>
+        <li><a href="#">내회원정보</a></li>
+      </ul>
+    </aside>
+
+    <!-- 콘텐츠 -->
+    <section class="content">
+      <!-- 상단 배너 -->
+      <div class="banner">810 × 86 배너 광고</div>
+
+      <h2>전체주문내역</h2>
+
+      <!-- 기간검색 -->
+      <div class="filter">
+        <label>기간검색 :</label>
+        <input type="date"> ~ <input type="date">
+        <button>조회</button>
+      </div>
+
+      <!-- 주문 리스트 -->
+      <div class="order-list">
+        <!-- 주문 아이템 -->
+        <div class="order-item">
+          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
+          <div class="info">
+            <p>주문일자 : 2022-12-13</p>
+            <p>주문번호 : 202212341</p>
+            <p>상품명 : (주) Green Garden 샘플상품 1개</p>
+            <p class="price">34,000원</p>
+          </div>
+          <div class="actions">
+            <button>구매확정</button>
+            <button>리뷰작성</button>
+          </div>
+        </div>
+
+        <div class="order-item">
+          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
+          <div class="info">
+            <p>주문일자 : 2022-12-13</p>
+            <p>주문번호 : 202212342</p>
+            <p>상품명 : (주) Green Garden 샘플상품 2개</p>
+            <p class="price">15,000원</p>
+          </div>
+          <div class="actions">
+            <button>구매확정</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 페이지네이션 -->
+      <div class="pagination">
+        <a href="#">이전</a>
+        <a href="#">1</a>
+        <a href="#">2</a>
+        <a href="#">3</a>
+        <a href="#">다음</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p>© Green Garden. All rights reserved.</p>
+  </footer>
+</body>
+</html>
