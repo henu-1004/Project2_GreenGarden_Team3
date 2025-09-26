@@ -1,16 +1,149 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>고객센터 - 통합 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}">
+
 </head>
 <body>
-	<main>
-		<div id="main">
+<div class="main-wrapper">
+    <div class="header">
+        <div class="header-logo">
+            <a href="#">
+                <img src="/webapp/resources/images/header_logo.png" alt="로고1" />
+            </a>
+        </div>
+        <div class="header-nav">
+            <a href="/kmarket/member/login.do">로그인</a>
+            <a href="/kmarket/member/register.do">회원가입</a>
+            <a href="/kmarket/mypage/list.do">마이페이지</a>
+            <a href="#">장바구니</a>
+        </div>
+    </div>
 
-		</div>
-	</main>
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="cs-breadcrumb">
+                <a href="#">홈</a>
+                <span>></span>
+                <a href="#" class="active-breadcrumb">공지사항</a>
+            </div>
+            <ul>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">공지사항</a>
+                    </div>
+                    <ul class="submenu open">
+                        <li class="active"><a href="#">전체</a></li>
+                        <li><a href="#">고객서비스</a></li>
+                        <li><a href="#">안전거래</a></li>
+                        <li><a href="#">위해상품</a></li>
+                        <li><a href="#">버전관리</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <section id="main-section">
+            <h1 class="cs-main-title">공지사항</h1>
+
+            <div class="cs-section">
+                <div class="cs-content">
+                    <ul class="cs-notice-list">
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 해외결제차 징 문자주의</span>
+                            <span class="cs-notice-date">22.10.31</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 개인정보 처리방침 변경 안내</span>
+                            <span class="cs-notice-date">22.09.15</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                            <span class="cs-notice-date">22.08.10</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                            <span class="cs-notice-date">22.08.10</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                            <span class="cs-notice-date">22.08.10</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 로젠택배 배송지연 안내</span>
+                            <span class="cs-notice-date">22.07.25</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 반품/교환 배송비 변경 안내</span>
+                            <span class="cs-notice-date">22.07.20</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 개인정보 보호정책 업데이트</span>
+                            <span class="cs-notice-date">22.07.15</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 서버 안정화 작업 안내</span>
+                            <span class="cs-notice-date">22.07.01</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cs-pagination">
+                <a href="#" class="prev">&lt; 이전</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#" class="next">다음 &gt;</a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div id="footer-wrap">
+            <div id="footer-top">
+                <a href="#">회사 소개</a>
+                <a href="#">서비스이용약관</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">전자금융거래약관</a>
+            </div>
+            <hr>
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <img src="/webapp/resources/images/footer_logo.png" alt="footer_logo">
+                        </td>
+                        <td class="footer-col">
+                            <div>
+                                <h2>(주)케이마켓</h2> <br>
+                                <p>부산광역시 부산진구 중앙대로 300 26층</p>
+                                <p>대표이사 : 홍길동</p>
+                                <p>사업등록번호 : 123-45-12345</p>
+                            </div>
+                        </td>
+                        <td class="footer-col">
+                            <h2>고객센터</h2> <br>
+                            <p>Tel:1234-5678 평일 09:00~18:00</p>
+                            <p>전자금융거래 분쟁 담당 : 1234-1234 (365일 09:00~18:00)</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </footer>
+</div>
+<script>
+    // 사이드바 메뉴 토글 기능
+    document.querySelectorAll(".menu-title").forEach(title => {
+        title.addEventListener("click", () => {
+            const parent = title.parentElement;
+            parent.classList.toggle("open");
+        });
+    });
+</script>
 </body>
 </html>

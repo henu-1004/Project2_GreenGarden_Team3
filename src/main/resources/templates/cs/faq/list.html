@@ -1,16 +1,286 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>고객센터 - 통합 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}">
+
 </head>
 <body>
-	<main>
-		<div id="main">
+<div class="main-wrapper">
+    <div class="header">
+        <div class="header-logo">
+            <a href="#">
+                <img src="/webapp/resources/images/header_logo.png" alt="로고1" />
+            </a>
+        </div>
+        <div class="header-nav">
+            <a href="/kmarket/member/login.do">로그인</a>
+            <a href="/kmarket/member/register.do">회원가입</a>
+            <a href="/kmarket/mypage/list.do">마이페이지</a>
+            <a href="#">장바구니</a>
+        </div>
+    </div>
 
-		</div>
-	</main>
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="cs-breadcrumb">
+                <a href="#">홈</a>
+                <span>></span>
+                <a href="#" class="active-breadcrumb">자주묻는 질문</a>
+            </div>
+            <ul>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">자주묻는 질문</a>
+                    </div>
+                    <ul class="submenu open">
+                        <li class="active"><a href="#">전체</a></li>
+                        <li><a href="#">회원</a></li>
+                        <li><a href="#">쿠폰/이벤트</a></li>
+                        <li><a href="#">주문/결제</a></li>
+                        <li><a href="#">배송</a></li>
+                        <li><a href="#">취소/반품/교환</a></li>
+                        <li><a href="#">여행/숙박/항공</a></li>
+                        <li><a href="#">안전거래</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <section id="main-section">
+            <h1 class="cs-main-title">자주묻는 질문</h1>
+
+            <div class="cs-section">
+                <div class="cs-content">
+                    <div class="faq-block">
+                        <h3>가입</h3>
+                        <ul>
+                            <li class="faq-item">케이마켓 회원가입은 어떻게 하나요?</li>
+                            <li class="faq-item">회원가입 시 인증은 어떻게 하나요?</li>
+                            <li class="faq-item">사업자 회원가입은 어떻게 하나요?</li>
+                            <li class="faq-item" style="display: none;">회원가입 시 필요한 정보는 무엇인가요?</li>
+                            <li class="faq-item" style="display: none;">외국인도 회원가입이 가능한가요?</li>
+                            <li class="faq-item" style="display: none;">만 14세 미만도 가입할 수 있나요?</li>
+                            <li class="faq-item" style="display: none;">이메일 인증이 안돼요</li>
+                            <li class="faq-item" style="display: none;">휴대폰 인증이 안돼요</li>
+                            <li class="faq-item" style="display: none;">중복 가입을 했어요</li>
+                            <li class="faq-item" style="display: none;">가입 완료 후 무엇을 해야 하나요?</li>
+                        </ul>
+                        <div class="more-btn" onclick="toggleMore(this)">더보기</div>
+                    </div>
+
+                    <div class="faq-block">
+                        <h3>탈퇴</h3>
+                        <ul>
+                            <li class="faq-item">회원탈퇴는 어떻게 하나요?</li>
+                            <li class="faq-item">회원탈퇴 시 개인정보는 어떻게 처리되나요?</li>
+                            <li class="faq-item">탈퇴 후 재가입이 가능한가요?</li>
+                            <li class="faq-item hidden">탈퇴 시 주의사항이 있나요?</li>
+                            <li class="faq-item hidden">탈퇴 후 포인트는 어떻게 되나요?</li>
+                            <li class="faq-item hidden">탈퇴 후 쿠폰은 어떻게 되나요?</li>
+                            <li class="faq-item hidden">탈퇴가 안돼요</li>
+                            <li class="faq-item hidden">탈퇴 철회가 가능한가요?</li>
+                            <li class="faq-item hidden">휴면계정 해제는 어떻게 하나요?</li>
+                            <li class="faq-item hidden">탈퇴 후 같은 정보로 재가입이 가능한가요?</li>
+                        </ul>
+                        <div class="more-btn" onclick="toggleMore(this)">더보기</div>
+                    </div>
+
+                    <div class="faq-block">
+                        <h3>회원정보</h3>
+                        <ul>
+                            <li class="faq-item">아이디/비밀번호를 잃어버렸어요</li>
+                            <li class="faq-item">회원정보는 어떻게 수정하나요?</li>
+                            <li class="faq-item">휴대폰 번호를 변경하고 싶어요</li>
+                            <li class="faq-item hidden">이메일 주소를 변경하고 싶어요</li>
+                            <li class="faq-item hidden">비밀번호를 변경하고 싶어요</li>
+                            <li class="faq-item hidden">주소지를 변경하고 싶어요</li>
+                            <li class="faq-item hidden">프로필 사진을 변경하고 싶어요</li>
+                            <li class="faq-item hidden">닉네임을 변경하고 싶어요</li>
+                            <li class="faq-item hidden">생년월일 정보가 틀렸어요</li>
+                            <li class="faq-item hidden">성별 정보를 변경하고 싶어요</li>
+                        </ul>
+                        <div class="more-btn" onclick="toggleMore(this)">더보기</div>
+                    </div>
+
+                    <div class="faq-block">
+                        <h3>주문</h3>
+                        <ul>
+                            <li class="faq-item">주문은 어떻게 하나요?</li>
+                            <li class="faq-item">주문내역은 어디서 확인하나요?</li>
+                            <li class="faq-item">주문취소는 언제까지 가능한가요?</li>
+                            <li class="faq-item hidden">주문 수량을 변경하고 싶어요</li>
+                            <li class="faq-item hidden">주문 후 배송지 변경이 가능한가요?</li>
+                            <li class="faq-item hidden">주문확인서는 어디서 받나요?</li>
+                            <li class="faq-item hidden">주문이 안돼요</li>
+                            <li class="faq-item hidden">품절상품을 주문했어요</li>
+                            <li class="faq-item hidden">주문 실수를 했어요</li>
+                            <li class="faq-item hidden">예약주문은 어떻게 하나요?</li>
+                        </ul>
+                        <div class="more-btn" onclick="toggleMore(this)">더보기</div>
+                    </div>
+
+                    <div class="faq-block">
+                        <h3>결제</h3>
+                        <ul>
+                            <li class="faq-item">결제 방법에는 어떤 것들이 있나요?</li>
+                            <li class="faq-item">무통장입금은 어떻게 하나요?</li>
+                            <li class="faq-item">결제오류가 발생했어요</li>
+                            <li class="faq-item hidden">카드 할부는 어떻게 하나요?</li>
+                            <li class="faq-item hidden">포인트 결제는 어떻게 하나요?</li>
+                            <li class="faq-item hidden">쿠폰 사용은 어떻게 하나요?</li>
+                            <li class="faq-item hidden">결제 취소는 언제 되나요?</li>
+                            <li class="faq-item hidden">결제 실패 시 어떻게 하나요?</li>
+                            <li class="faq-item hidden">영수증은 어디서 받나요?</li>
+                            <li class="faq-item hidden">현금영수증은 어떻게 발급받나요?</li>
+                        </ul>
+                        <div class="more-btn" onclick="toggleMore(this)">더보기</div>
+                    </div>
+
+                    <div class="faq-block">
+                        <h3>배송</h3>
+                        <ul>
+                            <li class="faq-item">배송료는 얼마인가요?</li>
+                            <li class="faq-item">배송기간은 얼마나 걸리나요?</li>
+                            <li class="faq-item">배송지 변경은 가능한가요?</li>
+                            <li class="faq-item hidden">배송 추적은 어떻게 하나요?</li>
+                            <li class="faq-item hidden">배송이 지연되고 있어요</li>
+                            <li class="faq-item hidden">배송 시간 지정이 가능한가요?</li>
+                            <li class="faq-item hidden">배송업체는 어디인가요?</li>
+                            <li class="faq-item hidden">당일배송 서비스가 있나요?</li>
+                            <li class="faq-item hidden">배송비 환불은 언제 받나요?</li>
+                            <li class="faq-item hidden">해외배송도 가능한가요?</li>
+                        </ul>
+                        <div class="more-btn" onclick="toggleMore(this)">더보기</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div id="footer-wrap">
+            <div id="footer-top">
+                <a href="#">회사 소개</a>
+                <a href="#">서비스이용약관</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">전자금융거래약관</a>
+            </div>
+            <hr>
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <img src="/webapp/resources/images/footer_logo.png" alt="footer_logo">
+                        </td>
+                        <td class="footer-col">
+                            <div>
+                                <h2>(주)케이마켓</h2> <br>
+                                <p>부산광역시 부산진구 중앙대로 300 26층</p>
+                                <p>대표이사 : 홍길동</p>
+                                <p>사업등록번호 : 123-45-12345</p>
+                            </div>
+                        </td>
+                        <td class="footer-col">
+                            <h2>고객센터</h2> <br>
+                            <p>Tel:1234-5678 평일 09:00~18:00</p>
+                            <p>전자금융거래 분쟁 담당 : 1234-1234 (365일 09:00~18:00)</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </footer>
+</div>
+<script>
+
+        // 사이드바 메뉴 토글 기능
+        document.querySelectorAll(".menu-title").forEach(title => {
+        title.addEventListener("click", () => {
+            const parent = title.parentElement;
+            parent.classList.toggle("open");
+        });
+    });
+
+        // 더보기/접기 기능
+        function toggleMore(button) {
+        const block = button.parentElement;
+        const hiddenItems = block.querySelectorAll('.faq-item');
+
+        if (button.textContent === '더보기') {
+        // 모든 아이템 보이기
+        hiddenItems.forEach((item, index) => {
+        if (index >= 3) {
+        item.style.display = 'block';
+    }
+    });
+        button.textContent = '접기';
+    } else {
+        // 처음 3개만 보이기
+        hiddenItems.forEach((item, index) => {
+        if (index >= 3) {
+        item.style.display = 'none';
+    }
+    });
+        button.textContent = '더보기';
+    }
+    }
+</script>
+
+<style>
+    .faq-block {
+        border: 1px solid #e0e0e0;
+        margin-bottom: 20px;
+        border-radius: 5px;
+    }
+
+    .faq-block h3 {
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 15px 20px;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .faq-block ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .faq-block li {
+        padding: 15px 20px;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+    }
+
+    .faq-block li:last-child {
+        border-bottom: none;
+    }
+
+    .faq-block li:hover {
+        background-color: #f8f9fa;
+    }
+
+    .faq-item.hidden {
+        display: none;
+    }
+
+    .more-btn {
+        text-align: center;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-top: 1px solid #e0e0e0;
+        cursor: pointer;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .more-btn:hover {
+        background-color: #e9ecef;
+    }
+</style>
 </body>
 </html>
