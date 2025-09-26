@@ -1,4 +1,4 @@
-package kr.co.greengarden.controller;
+package kr.co.greengarden.controller.product;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

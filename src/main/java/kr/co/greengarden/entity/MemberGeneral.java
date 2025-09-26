@@ -47,7 +47,7 @@ public class MemberGeneral {
     @Column
     private String status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name="memId")
     private Member member;

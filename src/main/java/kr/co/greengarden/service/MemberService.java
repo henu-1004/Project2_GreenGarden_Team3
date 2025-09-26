@@ -30,8 +30,6 @@ public class MemberService {
         return memberRepository.findById(memId);
     }
 
-
-
     public void modify(MemberDTO memberDTO) {
         memberRepository.save(memberDTO.toEntity());
     }

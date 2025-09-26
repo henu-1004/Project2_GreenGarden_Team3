@@ -76,7 +76,7 @@ public class Product {
     public ProductDTO toDTO() {
         return ProductDTO.builder()
                 .proId(this.proId)
-                .memId(this.seller != null ? this.seller.getMemId() : 0) // seller가 null일 경우 0
+                .memId(seller.getMemId())
                 .proNo(this.proNo)
                 .classification1(this.classification1)
                 .classification2(this.classification2)

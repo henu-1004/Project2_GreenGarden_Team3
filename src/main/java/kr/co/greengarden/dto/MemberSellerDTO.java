@@ -17,7 +17,7 @@ import lombok.*;
 @Builder
 public class MemberSellerDTO {
 
-    private int memId;
+    private String memId;
     private String company;
     private String representative;
     private String tin;
