@@ -1,17 +1,212 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>버전관리</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+
+        .info-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .info-box {
+            background: #f3f7f6;
+            padding: 15px;
+            border: 0 solid #eee;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+        .page-title h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .breadcrumb {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .tab-menu {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab-menu button {
+            border: 1px solid #ccc;
+            width: 100%;
+            border-bottom: 1px solid #000;
+            background: #f7f7f7;
+            padding: 8px 20px;
+            cursor: pointer;
+        }
+        .tab-menu button.active {
+            background: #fff;
+            border-top: 3px solid #000;
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-bottom: 2px solid #fff;
+            font-weight: bold;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            background: #f3f7f6;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        td a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .banner{
+            text-align: left;
+        }
+
+        .img-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 50px;
+            background: #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .btn {
+            background: #175a48;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn.gray {
+            background: #ccc;
+            color: #333;
+        }
+        .btn.gray a {
+            color: #333;
+            text-decoration: none;
+        }
+        .btn-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn-wrap a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-	<main>
-		<div id="main">
+<main>
+    <div id="main">
 
-			</div>
-		</div>
-	</main>
+        <!-- 타이틀 & 경로 -->
+        <div class="page-title">
+            <h2>버전관리</h2>
+            <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>버전관리</strong></div>
+        </div>
+
+        <!-- (1) 버전정보 -->
+        <div class="info-title">
+            <h2>버전 목록</h2>
+        </div>
+        <div class="info-box">
+            <strong>사이트 버전 목록입니다.</strong>
+        </div>
+
+        <div class="info-title">
+            <h2>버전정보</h2>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>번호</th>
+                <th>버전</th>
+                <th>작성자</th>
+                <th>등록일시</th>
+                <th>변경내역</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>1</td>
+                <td>0.0.1-SNAPSHOT</td>
+                <td>yingbbang</td>
+                <td>2024.10.13 17:12:00</td>
+                <td><a href="#">[확인]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>2</td>
+                <td>0.0.1-SNAPSHOT</td>
+                <td>yingbbang</td>
+                <td>2024.10.13 17:12:00</td>
+                <td><a href="#">[확인]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>3</td>
+                <td>0.0.1-SNAPSHOT</td>
+                <td>yingbbang</td>
+                <td>2024.10.13 17:12:00</td>
+                <td><a href="#">[확인]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>4</td>
+                <td>0.0.1-SNAPSHOT</td>
+                <td>yingbbang</td>
+                <td>2024.10.13 17:12:00</td>
+                <td><a href="#">[확인]</a></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 하단 버튼 -->
+        <div class="btn-wrap">
+            <button class="btn gray"><a href="#">선택삭제</a></button>
+            <button class="btn"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;등록&nbsp;&nbsp;&nbsp;&nbsp;</a></button>
+        </div>
+
+    </div>
+</main>
 </body>
 </html>
