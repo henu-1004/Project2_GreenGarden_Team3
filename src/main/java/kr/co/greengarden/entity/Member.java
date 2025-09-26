@@ -1,14 +1,8 @@
 package kr.co.greengarden.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kr.co.greengarden.dto.MemberDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -24,6 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "TB_MEMBER")
+@ToString(exclude = {"general", "seller", "grade", "point"})
 public class Member {
 
     @Id
@@ -47,6 +42,18 @@ public class Member {
 
     @Column
     private String addressDetail;
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private MemberGeneral general;
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private MemberSeller seller;
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private Grade grade;
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private Point point;
 
     public MemberDTO toDTO() {
         return MemberDTO.builder()

@@ -1,0 +1,32 @@
+logging:
+    file:
+        name: logs/greengarden.log
+    level:
+        root: info
+mybatis:
+    mapper-locations: classpath:mappers/**/*.xml
+server:
+    port: 8080
+    servlet:
+        context-path: /greengarden
+spring:
+    application:
+        name: GreenGarden
+        version: ${version}
+    datasource:
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        password: 1234
+        url: jdbc:oracle:thin:@localhost:1521:xe
+        username: hanto
+    devtools:
+        livereload:
+            enabled: true
+    jpa:
+        hibernate:
+            ddl-auto: update
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+            hibernate:
+                format_sql: true
+                show_sql: true

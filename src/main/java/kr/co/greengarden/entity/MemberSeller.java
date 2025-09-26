@@ -23,7 +23,7 @@ import java.util.List;
 public class MemberSeller {
 
     @Id
-    private int memId;
+    private String memId;
     @Column
     private String company;
     @Column
@@ -39,7 +39,7 @@ public class MemberSeller {
     @Column
     private String status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name="memId")
     private Member member;
