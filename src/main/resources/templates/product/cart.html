@@ -1,26 +1,95 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product cart</title>
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/product/cart.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
-			<jsp:include page="../common/headerWithSearch.jsp" />
+<div th:replace="~{/common/header :: header}"></div>
+<main>
+    <div class="content-wrap">
+        <div th:replace="~{/product/aside :: aside}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>장바구니</h5>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">마이페이지</a></li>
+                    <li><a href="#">장바구니</a></li>
+                </ul>
+            </div>
+            <div class="cart-contain">
+                <form action="#" id="cart-form">
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th class="col-check"><input type="checkbox" id="checkAll"/></th>
+                                <th class="col-item">상품명</th>
+                                <th class="col-count">수량</th>
+                                <th class="col-price">판매가</th>
+                                <th class="col-dis">할인</th>
+                                <th class="col-point">포인트</th>
+                                <th class="col-fee">배송비</th>
+                                <th class="col-sum">총합</th>
+                                <th class="col-del">삭제</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-items">
 
 
-			<div class="content-wrap">
-				<jsp:include page="../common/aside_main.jsp" />
-				<section id="main-section">
-					
+                        </tbody>
+                    </table>
 
-					<jsp:include page="../common/footer.jsp" />
-				</section>
-			</div>
-		</div>
-	</main>
+                    <div class="cart-summary">
+                        <h5>전체 합계</h5>
+                        <div>
+                            <span>상 품 수 : </span><span id="item-count">0</span>
+                            <span>상 품 금 액 : </span><span id="total-price">0</span>
+                            <span>할 인 금 액 : </span><span id="discount-amount">0</span>
+                            <span>배 송 비 : </span><span id="shipping-fee">0</span>
+                            <span>전체 주문 금액 : </span><span id="final-total">0</span>
+                            <span>적립 포인트 : </span><span id="earned-points">0</span>
+                        </div>
+
+                        <div class="cart-action">
+                            <button type="button" id="checkout-btn">주문하기</button>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</main>
+<footer>
+<div class="footer-container">
+    <div class="footer-logo">Green Garden</div>
+    <div class="footer-info">
+        <p>사업자등록번호: 123-45-12345 | 대표이사: 홍길동 | 고객센터: 123-4567 | 이메일: example@kmarket.net</p>
+        <p>주소: 부산광역시 부산진구 중앙대로 300</p>
+    </div>
+    <p class="copyright">COPYRIGHT © K-MARKET ALL RIGHTS RESERVED.</p>
+</div>
+</footer>
+<script>
+    function changeMainImage(thumb) {
+        const mainImage = document.getElementById('main-product-image');
+        mainImage.src = thumb.src;
+        mainImage.alt = thumb.alt;
+    }
+
+    function scrollThumbs(direction) {
+        const container = document.querySelector('.product-thumbnails');
+        const scrollAmount = 100; // 스크롤할 양
+        container.scrollBy({
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>
 </body>
 </html>

@@ -14,4 +14,20 @@ public class ProductController {
     public String productViewPage() {
         return "product/view";
     }
+
+    @GetMapping("/product/cart")
+    public String cartPage() {
+        return "product/cart";
+    }
+
+    @GetMapping("/product/order")
+    public String orderPage() {
+        return "product/order";
+    }
+
+    @GetMapping("/product/complete")
+    public String completePage() {
+        return "product/complete";
+    }
+
 }

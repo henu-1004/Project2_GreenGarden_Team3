@@ -22,177 +22,6 @@ body {
     padding-top: 20px;
 }
 
-/* 사이드 공간 전체 위치 및 여유 */
-aside {
-    width: 250px; /* 고정 너비 */
-    flex-shrink: 0;
-    padding: 0;
-}
-
-/* 사이드-탑 .메뉴(필터) 스타일 */
-/* filter div에 테두리 추가 */
-.filter-div {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 10px 20px;
-    width: 100%;
-    box-sizing: border-box;
-    background-color: white;
-}
-
-.filter-title {
-    font-size: 15pt;
-    font-weight: bold;
-    font-color: #66968c;
-    margin-bottom: 20px;
-}
-
-.filter-section {
-    margin-bottom: 10px;
-    border-top: 1px solid #ddd;
-}
-
-
-.filter-section h4 {
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-.filter-list,
-.color-list,
-.size-list,
-.price-list {
-    list-style: none;
-    padding: 10px 0;
-    margin: 10px;
-}
-
-.filter-list li {
-    margin-bottom: 10px;
-}
-
-.filter-list label {
-    display: flex;
-    align-items: center;
-    font-size: 0.95em;
-    cursor: pointer;
-}
-
-.filter-list input[type="radio"],
-.filter-list input[type="checkbox"] {
-    margin-right: 8px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 16px;
-    height: 16px;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    outline: none;
-    cursor: pointer;
-    position: relative;
-}
-
-.filter-list input[type="radio"] {
-    border-radius: 50%;
-}
-
-.filter-list input[type="radio"]:checked,
-.filter-list input[type="checkbox"]:checked {
-    background-color: #558B2F;
-    border-color: #558B2F;
-}
-
-.filter-list input[type="checkbox"]:checked::after {
-    content: '✔';
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 12px;
-}
-
-.price-range {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 5px;
-}
-.price-range-label {
-    font-size: 1em;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-/* 별점 필터 */
-.review-filter ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.review-filter li {
-    margin-bottom: 10px;
-}
-.star-rating {
-    color: #ffc107;
-}
-.star-rating.gray {
-    color: #ccc;
-}
-
-/* 베스트 상품 스타일 추가 */
-#aside-bottom {
-    background: white;
-    padding: 10px;
-    margin-top: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #e0e0e0;
-    /* aside의 너비에 맞게 조정 */
-    box-sizing: border-box;
-    width: 100%;
-}
-
-#aside-bottom * {
-    box-sizing: border-box;
-}
-
-#aside-bottom table {
-    width: 100%;
-    border-spacing: 0;
-    border-collapse: collapse;
-}
-
-#aside-bottom td {
-    padding: 10px;
-    vertical-align: top;
-}
-
-/* 베스트 상품 목록 p 태그의 마진을 제거하여 간격을 조절합니다. */
-#aside-bottom p {
-    margin: 0;
-}
-
-#aside-bottom table #first {
-    width: 100%;
-    height: auto;
-}
-
-#aside-bottom table img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
-
-#aside-bottom table #second,
-#aside-bottom table #third {
-    width: 80px;
-    height: 80px;
-}
-
 /* 메인 섹션 */
 #main-section {
     width: 930px;
@@ -205,6 +34,7 @@ aside {
     box-sizing: border-box;
 }
 
+/* 탑 페이지 네이션 */
 .top_nav {
     display: flex;
     justify-content: space-between;
@@ -234,6 +64,7 @@ aside {
     color: #999;
 }
 
+/* 상품 정렬 */
 .sort_nav ul {
     display: flex;
     margin: 0 0 20px 0;
@@ -382,7 +213,7 @@ aside {
     font-weight: bold;
 }
 
-/* 푸터 스타일 */
+/* 푸터 스타일  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 footer {
     background: #f8f9fa;
     padding: 50px 0;

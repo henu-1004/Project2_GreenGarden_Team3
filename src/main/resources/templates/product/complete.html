@@ -1,26 +1,79 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product complete</title>
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/viewAside.css}">
+    <link rel="stylesheet" th:href="@{/css/product/complete.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
-			<jsp:include page="../common/headerWithSearch.jsp" />
+<div th:replace="~{/common/header :: header}"></div>
+<main>
+    <div class="content-wrap">
+        <div th:replace="~{product/viewAside :: viewAside}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h1>주문하기</h1>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">장바구니</a></li>
+                    <li><a href="#">주문하기</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>고객님의 주문이 정상적으로 완료되었습니다.</h3>
+                <div class="cart-contain">
+                    <form action="#" id="cart-form">
+                        <table class="cart-table">
+                            <thead>
+                            <tr>
+                                <th class="col-check"><input type="checkbox" id="checkAll"/></th>
+                                <th class="col-item">상품명</th>
+                                <th class="col-count">수량</th>
+                                <th class="col-price">판매가</th>
+                                <th class="col-dis">할인</th>
+                                <th class="col-point">포인트</th>
+                                <th class="col-fee">배송비</th>
+                                <th class="col-sum">총합</th>
+                                <th class="col-del">삭제</th>
+                            </tr>
+                            </thead>
+                            <tbody id="cart-items">
 
 
-			<div class="content-wrap">
-				<jsp:include page="../common/aside_main.jsp" />
-				<section id="main-section">
-					
+                            </tbody>
+                        </table>
 
-					<jsp:include page="../common/footer.jsp" />
-				</section>
-			</div>
-		</div>
-	</main>
+                        <div class="cart-summary">
+                            <h5>전체 합계</h5>
+                            <div>
+                                <span>상 품 수 : </span><span id="item-count">0</span>
+                                <span>상 품 금 액 : </span><span id="total-price">0</span>
+                                <span>할 인 금 액 : </span><span id="discount-amount">0</span>
+                                <span>배 송 비 : </span><span id="shipping-fee">0</span>
+                                <span>전체 주문 금액 : </span><span id="final-total">0</span>
+                                <span>적립 포인트 : </span><span id="earned-points">0</span>
+                            </div>
+
+                            <div class="cart-action">
+                                <button type="button" id="checkout-btn">주문하기</button>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <h2>주문정보</h2>
+
+                </div>
+
+            </div>
+
+
+        </section>
+    </div>
+</main>
 </body>
 </html>

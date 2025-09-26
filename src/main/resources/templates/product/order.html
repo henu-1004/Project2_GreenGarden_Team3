@@ -1,26 +1,130 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product order</title>
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/viewAside.css}">
+    <link rel="stylesheet" th:href="@{/css/product/order.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
-			<jsp:include page="../common/headerWithSearch.jsp" />
+<div th:replace="~{/common/header :: header}"></div>
+<main>
+    <div class="content-wrap">
+        <div th:replace="~{product/viewAside :: viewAside}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h1>주문하기</h1>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">장바구니</a></li>
+                    <li><a href="#">주문하기</a></li>
+                </ul>
+            </div>
+            <div id="order-contain">
+                <h2>주문자 정보</h2>
+                <div class="form-group">
+                    <label>이름</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>이메일</label>
+                    <input type="email">
+                </div>
+                <div class="form-group">
+                    <label>연락처</label>
+                    <input type="text">
+                </div>
 
+                <h2>배송 정보</h2>
+                <div class="form-group">
+                    <label>이름</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>연락처</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>주소</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>배송 메모</label>
+                    <textarea></textarea>
+                </div>
 
-			<div class="content-wrap">
-				<jsp:include page="../common/aside_main.jsp" />
-				<section id="main-section">
-					
+                <h2>주문 상품</h2>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>상품명</th>
+                        <th>수량</th>
+                        <th>가격</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>[단독특가] 체크 셔츠</td>
+                        <td>1</td>
+                        <td>59,900원</td>
+                    </tr>
+                    </tbody>
+                </table>
 
-					<jsp:include page="../common/footer.jsp" />
-				</section>
-			</div>
-		</div>
-	</main>
+                <h2>결제 정보</h2>
+                <div class="form-group">
+                    <label>결제 방법</label>
+                    <select>
+                        <option>카드 결제</option>
+                        <option>계좌 이체</option>
+                        <option>휴대폰 결제</option>
+                    </select>
+                </div>
+
+                <h2>주문 동의</h2>
+                <div class="form-group">
+                    <input type="checkbox"> 구매조건 확인 및 결제진행 동의
+                </div>
+
+                <div class="total-price">
+                    총 결제 금액: <strong>62,900원</strong>
+                </div>
+
+                <div class="btn-wrap">
+                    <button class="btn btn-primary">주문하기</button>
+                    <button class="btn btn-secondary">주문취소</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">Green Garden</div>
+        <div class="footer-info">
+            <p>사업자등록번호: 123-45-12345 | 대표이사: 홍길동 | 고객센터: 123-4567 | 이메일: example@kmarket.net</p>
+            <p>주소: 부산광역시 부산진구 중앙대로 300</p>
+        </div>
+        <p class="copyright">COPYRIGHT © K-MARKET ALL RIGHTS RESERVED.</p>
+    </div>
+</footer>
+<script>
+    function changeMainImage(thumb) {
+        const mainImage = document.getElementById('main-product-image');
+        mainImage.src = thumb.src;
+        mainImage.alt = thumb.alt;
+    }
+
+    function scrollThumbs(direction) {
+        const container = document.querySelector('.product-thumbnails');
+        const scrollAmount = 100; // 스크롤할 양
+        container.scrollBy({
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>
 </body>
 </html>
