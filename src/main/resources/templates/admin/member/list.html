@@ -11,7 +11,7 @@
 -->
 <body>
 
-<th:block th:replace="~{/admin/common/header :: header}"></th:block>
+<div th:replace="~{/admin/common/header :: header}"></div>
 
 <h1>회원 목록</h1>
 
@@ -47,21 +47,21 @@
     <tbody>
     <tr th:each="member, stat : ${memberGeneralList.content}">
         <td>
-            <input type="checkbox" class="rowCheck" name="mem_ids" th:value="${member.mem_id}">
+            <input type="checkbox" class="rowCheck" name="mem_ids" th:value="${member.memId}">
         </td>
         <td th:text="${memberGeneralList.totalElements - (memberGeneralList.number * memberGeneralList.size + stat.index)}">1</td>
-        <td th:text="${member.id}">aaa</td>
+        <td th:text="${member.memId}">aaa</td>
         <td th:text="${member.name}">홍길동</td>
         <td th:text="${member.gender}">M</td>
         <td th:text="${member.grade}">등급</td>
-        <td th:text="${member.point}">포인트</td>
+        <td th:text="${member.totalPoint}">포인트</td>
         <td th:text="${member.email}">a@b.c</td>
         <td th:text="${member.phone}">010-...</td>
-        <td th:text="${member.created_at}">2025-09-17</td>
+        <td th:text="${member.createdAt}">2025-09-17</td>
         <td th:text="${member.status}">정상</td>
         <td>
             <!-- 테이블 내부 -->
-            <a href="#" class="openRegister" th:attr="data-mem-id=${member.mem_id}, data-url=@{/admin/member/modify}">관리</a>
+            <a href="#" class="openRegister" th:attr="data-mem-id=${member.memId}, data-url=@{/admin/member/modify}">관리</a>
             <a href="#" class="changeStatus">중지</a>
         </td>
     </tr>

@@ -1,17 +1,267 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>기본설정 - 버전 정보</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0 0 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-left: none;
+            border-right: none;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        .page-title h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .breadcrumb strong {
+            font-weight: bold;
+        }
+
+        .btn-wrap {
+            margin-bottom: 50px;
+        }
+        .btn-wrap .btn {
+            margin-bottom: 50px;
+            margin-top: 0px;
+            background: #175a48;
+            color: #fff;
+            padding: 8px 15px ;
+            border: none;
+            cursor: pointer;
+            float: right;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .form-row label {
+            width: 150px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .form-row input[type="text"],
+        .form-row input[type="email"] {
+            flex: 0;
+            padding: 2px;
+            border: 1px solid #ccc;
+            background: #f3f7f6;
+            color: #666;
+            box-sizing: border-box;
+        }
+        .form-row .desc {
+            margin-left: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .info-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #333;
+        }
+        .info-box {
+            background: #f3f7f6;
+            padding: 15px;
+            border: 0 solid #eee;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .version-box {
+            border: 0px solid #ddd;
+            border-top: none;
+        }
+        .version-box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        .version-box th,
+        .version-box td {
+            padding: 8px;
+            text-align: left;
+        }
+        .version-box th {
+            background: #f3f7f6;
+            font-weight: normal;
+            width: 120px;
+        }
+        .version-box td strong {
+            font-weight: bold;
+        }
+        .version-box input[type="file"],
+        .version-box input[type="text"] {
+            flex: 0;
+            padding: 2px;
+            border: 1px solid #ccc;
+            background: #f3f7f6;
+            color: #666;
+            box-sizing: border-box;
+            width: 200px;
+        }
+    </style>
 </head>
 <body>
-	<main>
-		<div id="main">
+<main>
+    <div id="main">
 
-			</div>
-		</div>
-	</main>
+        <!-- (1) 버전정보 -->
+        <div class="page-title">
+            <h2>기본설정</h2>
+            <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>기본설정</strong></div>
+        </div>
+
+        <div class="info-title"><h2>버전정보</h2></div>
+        <div class="info-box">
+            <strong>현재 사이트 버전입니다.</strong>
+        </div>
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><strong>사이트 버전</strong></th>
+                    <td><strong>1.0.1-RELEASE</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- (2) 사이트 -->
+        <div class="info-title"><h2>사이트</h2></div>
+        <div class="info-box">
+            <strong>브라우저 탭, 헤더 및 푸터 노출 정보 입니다.</strong>
+        </div>
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><label><strong>제목</strong></label></th>
+                    <td><input type="text" value="그린가든"></td>
+                </tr>
+                <tr>
+                    <th><label><strong>제목</strong></label></th>
+                    <td><input type="text" value="마음을 심고 가꾸는 공간"></td>
+                </tr>
+            </table>
+            <div class="btn-wrap">
+                <button class="btn">수정하기</button>
+            </div>
+        </div>
+
+        <!-- (3) 로고 -->
+        <div class="info-title"><h2>로고</h2></div>
+        <div class="info-box">
+            <strong>브라우저 탭, 헤더 및 푸터 노출 정보 입니다.</strong>
+        </div>
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><strong>헤더 로고</strong></th>
+                    <td><input type="file"> <span class="desc">크기 370 x 76 권장</span></td>
+                </tr>
+                <tr>
+                    <th><strong>푸터 로고</strong></th>
+                    <td><input type="file"> <span class="desc">크기 155 x 36 권장</span></td>
+                </tr>
+                <tr>
+                    <th><strong>파비콘</strong></th>
+                    <td><input type="file"> <span class="desc">크기 32 x 32 권장</span></td>
+                </tr>
+            </table>
+            <div class="btn-wrap">
+                <button class="btn">수정하기</button>
+            </div>
+        </div>
+
+        <!-- (4) 기업정보 -->
+        <div class="info-title"><h2>기업 정보</h2></div>
+        <div class="info-box">
+            <strong>푸터에 노출되는 기업 정보입니다.</strong>
+        </div>
+        <div class="version-box">
+            <table>
+                <tr><th><label><strong>제목</strong></label></th><td><input type="text" value="그린가든"></td></tr>
+                <tr><th><label><strong>부제</strong></label></th><td><input type="text" value="마음을 심고 가꾸는 공간"></td></tr>
+                <tr><th><label><strong>사업자등록번호</strong></label></th><td><input type="text" value="123-12-12345"></td></tr>
+                <tr><th><label><strong>통신판매업신고</strong></label></th><td><input type="text" value="2024-부산남구-1234"></td></tr>
+                <tr><th><label><strong>기본주소</strong></label></th><td><input type="text" value="부산광역시 남구"></td></tr>
+                <tr><th><label><strong>상세주소</strong></label></th><td><input type="text" value="문현금융로 30"></td></tr>
+            </table>
+            <div class="btn-wrap">
+                <button class="btn">수정하기</button>
+            </div>
+        </div>
+
+        <!-- (5) 고객센터 -->
+        <div class="info-title"><h2>고객센터</h2></div>
+        <div class="info-box">
+            <strong>푸터에 노출되는 기업 정보입니다.</strong>
+        </div>
+        <div class="version-box">
+            <table>
+                <tr><th><label><strong>제목</strong></label></th><td><input type="text" value="02-1234-5678"></td></tr>
+                <tr><th><label><strong>업무시간</strong></label></th><td><input type="text" value="평일 09:00 ~ 18:00"></td></tr>
+                <tr><th><label><strong>이메일</strong></label></th><td><input type="text" value="admin@greenGarden.com"></td></tr>
+                <tr><th><label><strong>전자금융거래 분쟁담당</strong></label></th><td><input type="text" value="1234-1234"></td></tr>
+            </table>
+            <div class="btn-wrap">
+                <button class="btn">수정하기</button>
+            </div>
+        </div>
+
+        <!-- (6) 카피라이트 -->
+        <div class="info-title"><h2>카피라이트</h2></div>
+        <div class="info-box">
+            <strong>푸터에 노출되는 기업 정보입니다.</strong>
+        </div>
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><label><strong>카피라이트</strong></label></th>
+                    <td><input type="text" value="Copyright greenGarden. All rights reserved." style="width:300px;"></td>
+                </tr>
+            </table>
+            <div class="btn-wrap">
+                <button class="btn">수정하기</button>
+            </div>
+        </div>
+
+    </div>
+</main>
 </body>
 </html>

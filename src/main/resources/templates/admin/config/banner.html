@@ -1,17 +1,262 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>배너관리 - 메인상단배너</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+
+        /* 안내 박스 */
+        .info-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .info-box {
+            background: #f7f8fa;
+            padding: 15px;
+            border: 0 solid #eee;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        /* 페이지 타이틀 */
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+        .page-title h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .breadcrumb {
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* 탭 메뉴 */
+        .tab-menu {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab-menu button {
+            border: 1px solid #ccc;
+            width: 100%;
+            border-bottom: 1px solid #000;
+            background: #f7f7f7;
+            padding: 8px 20px;
+            cursor: pointer;
+        }
+        .tab-menu button.active {
+            background: #fff;
+            border-top: 3px solid #000;
+            border-left: 1px solid #000;
+            border-right: 1px solid #000;
+            border-bottom: 2px solid #fff;
+            font-weight: bold;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+        }
+        th {
+            background: #f7f8fa;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        td a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .banner {
+            text-align: left;
+        }
+
+        .img-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px;
+            height: 50px;
+            background: #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* 버튼 */
+        .btn {
+            background: #175a48;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn.gray {
+            background: #ccc;
+            color: #333;
+        }
+
+        .btn.gray a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .btn-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-wrap a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-	<main>
-		<div id="main">
+<main>
+    <div id="main">
 
-			</div>
-		</div>
-	</main>
+        <!-- 페이지 타이틀 -->
+        <div class="page-title">
+            <h2>배너관리</h2>
+            <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>배너관리</strong></div>
+        </div>
+
+        <!-- 탭 메뉴 -->
+        <div class="tab-menu">
+            <button class="active">메인상단배너</button>
+            <button>메인슬라이더배너</button>
+            <button>제품상세보기배너</button>
+            <button>회원로그인배너</button>
+            <button>마이페이지배너</button>
+        </div>
+
+        <!-- 메인 상단배너 테이블 -->
+        <div class="info-title">
+            <h2>버전정보</h2>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>번호</th>
+                <th>이미지</th>
+                <th>배너정보</th>
+                <th>배너위치</th>
+                <th>시작일</th>
+                <th>종료일</th>
+                <th>시작시간</th>
+                <th>종료시간</th>
+                <th>관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>1</td>
+                <td><img src="/images/thumbnail_logo.png"></td>
+                <td class="banner">
+                    배너명<br>
+                    크기 : 1200x80<br>
+                    배경색 : #ffff00<br>
+                    배너링크
+                </td>
+                <td>배너위치</td>
+                <td>시작일</td>
+                <td>종료일</td>
+                <td>시작시간</td>
+                <td>종료시간</td>
+                <td><a href="#">[활성화]</a> <a href="#">[비활성]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>2</td>
+                <td><img src="/images/thumbnail_logo.png"></td>
+                <td class="banner">
+                    배너명<br>
+                    크기 : 1200x80<br>
+                    배경색 : #ffff00<br>
+                    배너링크
+                </td>
+                <td>배너위치</td>
+                <td>시작일</td>
+                <td>종료일</td>
+                <td>시작시간</td>
+                <td>종료시간</td>
+                <td><a href="#">[활성화]</a> <a href="#">[비활성]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>3</td>
+                <td><img src="/images/thumbnail_logo.png"></td>
+                <td class="banner">
+                    배너명<br>
+                    크기 : 1200x80<br>
+                    배경색 : #ffff00<br>
+                    배너링크
+                </td>
+                <td>배너위치</td>
+                <td>시작일</td>
+                <td>종료일</td>
+                <td>시작시간</td>
+                <td>종료시간</td>
+                <td><a href="#">[활성화]</a> <a href="#">[비활성]</a></td>
+            </tr>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>4</td>
+                <td><img src="/images/thumbnail_logo.png"></td>
+                <td class="banner">
+                    배너명<br>
+                    크기 : 1200x80<br>
+                    배경색 : #ffff00<br>
+                    배너링크
+                </td>
+                <td>배너위치</td>
+                <td>시작일</td>
+                <td>종료일</td>
+                <td>시작시간</td>
+                <td>종료시간</td>
+                <td><a href="#">[활성화]</a> <a href="#">[비활성]</a></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 하단 버튼 -->
+        <div class="btn-wrap">
+            <button class="btn gray"><a href="#">선택삭제</a></button>
+            <button class="btn"><a href="#">배너등록</a></button>
+        </div>
+
+    </div>
+</main>
 </body>
 </html>

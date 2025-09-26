@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class ProductDTO {
 
     private int proId;
-    private int memId;
+    private String memId;
     private String proNo;
     private String classification1;
     private String classification2;
@@ -37,7 +37,7 @@ public class ProductDTO {
     private String imgDetail;
     private int views;
 
-    public Product toEntity( MemberSeller seller) {
+    public Product toEntity(MemberSeller seller) {
         return Product.builder()
                 .proId(proId)
                 .seller(seller)
