@@ -29,4 +29,16 @@ public class MainController {
 
         return "index";
     }
+
+    /*
+     * 날짜 : 2025/09/26
+     * 이름 : 박효빈
+     * 내용 : MainController + cs index page 추가 연결
+     */
+    @GetMapping(value = {"/cs"})
+    public String csindexpage() {
+
+
+        return "cs/cs_index";
+    }
 }

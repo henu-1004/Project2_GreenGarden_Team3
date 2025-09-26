@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>고객센터 - 통합 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}">
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="header">
+        <div class="header-logo">
+            <a href="#">
+                <img th:src="@{/images/logo.png}" alt="메인로고">
+
+            </a>
+        </div>
+        <div class="header-nav">
+            <a href="/kmarket/member/login.do">로그인</a>
+            <a href="/kmarket/member/register.do">회원가입</a>
+            <a href="/kmarket/mypage/list.do">마이페이지</a>
+            <a href="#">장바구니</a>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <a href="#">
+                    <img id=cs-logo th:src="@{/images/logo.png}" alt="메인로고">
+                </a>
+                <h2>고객센터</h2>
+            </div>
+            <ul>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">환경설정</a>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#">기본설정</a></li>
+                        <li><a href="#">단체설정</a></li>
+                        <li><a href="#">입력관리</a></li>
+                        <li><a href="#">알림/결재관리</a></li>
+                        <li><a href="#">버전관리</a></li>
+                    </ul>
+                </li>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">상담관리</a>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#">상담일지</a></li>
+                        <li><a href="#">매출현황</a></li>
+                    </ul>
+                </li>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">회원관리</a>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#">회원관리</a></li>
+                        <li><a href="#">포인트관리</a></li>
+                    </ul>
+                </li>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">주문관리</a>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#">주문관리</a></li>
+                        <li><a href="#">배송관리</a></li>
+                    </ul>
+                </li>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">고객센터</a>
+                    </div>
+                    <ul class="submenu">
+                        <li><a href="#" class="dynamic-menu" data-page="notice">공지사항</a></li>
+                        <li><a href="#" class="dynamic-menu" data-page="inquiry">문의게시판</a></li>
+                        <li><a href="#" class="dynamic-menu" data-page="faq">FAQ</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <section id="main-section">
+            <div id="dynamic-content">
+                <h1 class="cs-main-title"> 어떤 도움이 필요하신가요 ?</h1>
+
+                <div class="cs-section">
+                    <div class="cs-section-header">
+                        <div class="cs-section-title">공지사항</div>
+                        <a th:href="@{cs/notice/list}" class="cs-view-all">전체보기</a>
+                    </div>
+                    <div class="cs-content">
+                        <ul class="cs-notice-list">
+                            <li class="cs-notice-item">
+                                <span class="cs-notice-title">[안내] 해외결제차 징 문자주의</span>
+                                <span class="cs-notice-date">22.10.31</span>
+                            </li>
+                            <li class="cs-notice-item">
+                                <span class="cs-notice-title">[안내] 개인정보 처리방침 변경 안내</span>
+                                <span class="cs-notice-date">22.09.15</span>
+                            </li>
+                            <li class="cs-notice-item">
+                                <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                                <span class="cs-notice-date">22.08.10</span>
+                            </li>
+                            <li class="cs-notice-item">
+                                <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                                <span class="cs-notice-date">22.08.10</span>
+                            </li>
+                            <li class="cs-notice-item">
+                                <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                                <span class="cs-notice-date">22.08.10</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cs-section">
+                    <div class="cs-section-header">
+                        <div class="cs-section-title">자주하는질문</div>
+                        <a href="#" class="cs-view-all">전체보기</a>
+                    </div>
+                    <div class="cs-content">
+                        <div class="cs-category-grid">
+                            <div class="cs-category-item">
+                                <div class="cs-category-icon"></div>
+                                <div class="cs-category-name">회원</div>
+                            </div>
+                            <div class="cs-category-item">
+                                <div class="cs-category-icon"></div>
+                                <div class="cs-category-name">쿠폰/이벤트</div>
+                            </div>
+                            <div class="cs-category-item">
+                                <div class="cs-category-icon"></div>
+                                <div class="cs-category-name">주문/결제</div>
+                            </div>
+                            <div class="cs-category-item">
+                                <div class="cs-category-icon"></div>
+                                <div class="cs-category-name">배송</div>
+                            </div>
+                            <div class="cs-category-item">
+                                <div class="cs-category-icon"></div>
+                                <div class="cs-category-name">취소/반품/환불</div>
+                            </div>
+                            <div class="cs-category-item">
+                                <div class="cs-category-icon"></div>
+                                <div class="cs-category-name">안전결제</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cs-section">
+                    <div class="cs-section-header">
+                        <div class="cs-section-title">문의하기</div>
+                        <a href="#" class="cs-view-all">전체보기</a>
+                    </div>
+                    <div class="cs-content">
+                        <ul class="cs-inquiry-list">
+                            <li class="cs-inquiry-item">
+                                <div class="cs-inquiry-title">[회원] 개인회원과 법인회원에 차이가 있나요?</div>
+                                <div class="cs-inquiry-meta">
+                                    <span class="cs-inquiry-user">chh***</span>
+                                    <span class="cs-inquiry-date">22.10.31</span>
+                                </div>
+                            </li>
+                            <li class="cs-inquiry-item">
+                                <div class="cs-inquiry-title">[쿠폰/이벤트] 스마일포인트는 어디에 사용하나요?</div>
+                                <div class="cs-inquiry-meta">
+                                    <span class="cs-inquiry-user">hyb***</span>
+                                    <span class="cs-inquiry-date">22.10.31</span>
+                                </div>
+                            </li>
+                            <li class="cs-inquiry-item">
+                                <div class="cs-inquiry-title">[배송] 주문한 상품은 언제 배송되나요?</div>
+                                <div class="cs-inquiry-meta">
+                                    <span class="cs-inquiry-user">chh***</span>
+                                    <span class="cs-inquiry-date">22.10.31</span>
+                                </div>
+                            </li>
+                            <li class="cs-inquiry-item">
+                                <div class="cs-inquiry-title">[주문/결제] 신용카드 결제 중 오류가 난 경우 어떻게 하나요?</div>
+                                <div class="cs-inquiry-meta">
+                                    <span class="cs-inquiry-user">hyb***</span>
+                                    <span class="cs-inquiry-date">22.10.31</span>
+                                </div>
+                            </li>
+                            <li class="cs-inquiry-item">
+                                <div class="cs-inquiry-title">[취소/반품/교환] 주문을 취소하고 싶어요.</div>
+                                <div class="cs-inquiry-meta">
+                                    <span class="cs-inquiry-user">chh***</span>
+                                    <span class="cs-inquiry-date">22.10.31</span>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="cs-inquiry-write">
+                            <a href="#">문의글 작성 &gt;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cs-section">
+                    <div class="cs-section-header">
+                        <div class="cs-section-title">1:1 상담안내</div>
+                    </div>
+                    <div class="cs-content">
+                        <div class="cs-consult">
+                            <div class="cs-consult-box">
+                                <div class="cs-consult-title">이용안내</div>
+                                <div class="cs-consult-phone">1566 - 0001</div>
+                                <div class="cs-consult-desc">일반회원 / 비회원<br>평일 09:00 ~ 18:00</div>
+                                <div class="cs-small-title">스마일클럽 전용</div>
+                                <div class="cs-consult-phone">1566 - 0002</div>
+                                <div class="cs-consult-desc">365일 09:00 ~ 18:00</div>
+                            </div>
+                            <div class="cs-consult-box">
+                                <div class="cs-consult-title">판매상담이용안내</div>
+                                <div class="cs-consult-phone">1566 - 5700</div>
+                                <div class="cs-consult-desc">판매고객<br>평일 09:00 ~ 18:00</div>
+                                <div class="cs-small-title">판매자 가입 및 서류접수 안내</div>
+                                <div class="cs-consult-desc">(판매자 가입 및 증빙서류 등록 방법 안내)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div id="footer-wrap">
+            <div id="footer-top">
+                <a href="#">회사 소개</a>
+                <a href="#">서비스이용약관</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">전자금융거래약관</a>
+            </div>
+            <hr>
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                            <img id= foot-logo th:src="@{/images/logo.png}" alt="메인로고">
+                        </td>
+                        <td class="footer-col">
+                            <div>
+                                <h2>(주)케이마켓</h2> <br>
+                                <p>부산광역시 부산진구 중앙대로 300 26층</p>
+                                <p>대표이사 : 홍길동</p>
+                                <p>사업등록번호 : 123-45-12345</p>
+                            </div>
+                        </td>
+                        <td class="footer-col">
+                            <h2>고객센터</h2> <br>
+                            <p>Tel:1234-5678 평일 09:00~18:00</p>
+                            <p>전자금융거래 분쟁 담당 : 1234-1234 (365일 09:00~18:00)</p>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // 사이드바 메뉴 토글 기능
+    document.querySelectorAll(".menu-title").forEach(title => {
+        title.addEventListener("click", () => {
+            const parent = title.parentElement;
+            parent.classList.toggle("open");
+        });
+    });
+    // 메인 콘텐츠 동적 변경 기능
+    const dynamicContent = document.getElementById('dynamic-content');
+
+    // 공지사항, 문의게시판, FAQ 링크를 찾아 이벤트 리스너 추가
+    document.querySelectorAll(".dynamic-menu").forEach(link => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault(); // 기본 링크 이동 방지
+            const page = e.target.dataset.page; // data-page 속성 값 가져오기
+
+            switch(page) {
+                case 'notice':
+                    dynamicContent.innerHTML = `
+                    <div class="cs-main-container">
+                        <h1 class="cs-main-title">공지사항</h1>
+                        <div class="cs-section">
+                            <div class="cs-content">
+                                <ul class="cs-notice-list">
+                                    <li class="cs-notice-item">
+                                        <span class="cs-notice-title">[안내] 공지사항 1</span>
+                                        <span class="cs-notice-date">22.10.31</span>
+                                    </li>
+                                    <li class="cs-notice-item">
+                                        <span class="cs-notice-title">[안내] 공지사항 2</span>
+                                        <span class="cs-notice-date">22.09.15</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    break;
+                case 'inquiry':
+                    dynamicContent.innerHTML = `
+                    <div class="cs-main-container">
+                        <h1 class="cs-main-title">문의게시판</h1>
+                        <div class="cs-section">
+                            <div class="cs-content">
+                                <ul class="cs-inquiry-list">
+                                    <li class="cs-inquiry-item">
+                                        <div class="cs-inquiry-title">[회원] 문의글 1</div>
+                                        <div class="cs-inquiry-meta">
+                                            <span class="cs-inquiry-user">user1***</span>
+                                            <span class="cs-inquiry-date">22.10.31</span>
+                                        </div>
+                                    </li>
+                                    <li class="cs-inquiry-item">
+                                        <div class="cs-inquiry-title">[쿠폰/이벤트] 문의글 2</div>
+                                        <div class="cs-inquiry-meta">
+                                            <span class="cs-inquiry-user">user2***</span>
+                                            <span class="cs-inquiry-date">22.10.31</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    break;
+                case 'faq':
+                    dynamicContent.innerHTML = `
+                    <div class="cs-main-container">
+                        <h1 class="cs-main-title">자주하는 질문</h1>
+                        <div class="cs-section">
+                            <div class="cs-content">
+                                <div class="cs-category-grid">
+                                    <div class="cs-category-item">
+                                        <div class="cs-category-icon"></div>
+                                        <div class="cs-category-name">회원</div>
+                                    </div>
+                                    <div class="cs-category-item">
+                                        <div class="cs-category-icon"></div>
+                                        <div class="cs-category-name">쿠폰/이벤트</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                    break;
+            }
+        });
+    });
+</script>
+</body>
+</html>
