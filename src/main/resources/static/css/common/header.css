@@ -5,7 +5,7 @@
  * 이름 : 한탁원
  * 내용 : header - css 초안 작성  
  */
-header {
+header, body {
     background-color: #f3f6f7;
 }
 
@@ -13,9 +13,13 @@ header {
   margin: 0 auto;
   max-width: 1200px;
 }
+#header-top, #header-middle {
+    padding-bottom: 40px;
+}
+
+
 
 #header-top {
-    padding: 10px 0;
     text-align: right;
 }
 
@@ -31,8 +35,9 @@ header {
     align-items: center;
 }
 
+/* 로고 */
 #header-middle a img {
-    width: 200px;
+    width: 400px;
     height: auto;
 }
 
@@ -66,6 +71,7 @@ header {
     height: 30px;
 }
 
+/* header_bottom에 박스 모양과 균등한 간격을 적용 */
 #header-bottom {
     display: flex;
     justify-content: space-between;
@@ -79,6 +85,7 @@ header {
     flex: 1;
     padding: 10px 10px;
     border-radius: 8px;
+    border: 1px solid #e0e0e0;
     background-color: #f8f9fa;
     white-space: nowrap;
     text-align: center;
