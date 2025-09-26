@@ -1,4 +1,8 @@
-
+/*
+    날짜 : 2025/09/26
+    이름 : 이수연
+    내용 : 상품 보기 상단 카테코리 메뉴 CSS
+*/
 /* view-dropNav에 박스 모양과 균등한 간격을 적용 */
 #view-dropNav {
     display: flex;
