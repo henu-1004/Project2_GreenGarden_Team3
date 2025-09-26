@@ -3,14 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>회원가입 구분</title>
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/member/join.css}">
+
 </head>
-<!--
-    날짜 : 2025/09/24
-    이름 : 한탁원
-    내용 : 회원가입 구분 자성
--->
+
 <body>
-<a th:href="@{/member/register}">일반회원가입</a>
-<a th:href="@{/member/registerSeller}">판매회원가입</a>
+    <div th:replace="~{/common/header :: header}"></div>
+
+
+
+    <main id="main-wrap">
+        <div class="welcome-text">
+            <h2>GreenGarden에 오신 것을 환영합니다.</h2>
+        </div>
+
+        <div class="join-cards">
+
+            <div class="card">
+                <div class="card-header personal">일반회원가입</div>
+
+                <div class="card-body">
+                    <p>개인구매회원 (외국인 포함)<br>만 14세 이상 가능</p>
+                    <a th:href="@{/member/register}" class="join-btn">일반회원가입</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header seller">판매회원가입</div>
+
+                <div class="card-body">
+                    <p>사업자판매회원<br>사업자등록증을 보유한 회원</p>
+                    <a th:href="@{/member/registerSeller}" class="join-btn">판매회원가입</a>
+                </div>
+            </div>
+        </div>
+
+
+
+    </main>
+    <div th:replace="~{/common/footer :: footer}"></div>
 </body>
 </html>
