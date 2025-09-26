@@ -1,17 +1,272 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>약관관리</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+
+        table {
+            border-collapse: collapse; /* 선 겹침 방지 */
+            width: 100%;
+            margin: 0 0 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-top: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+            border-left: none;
+            border-right: none;
+        }
+
+        .page-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        .page-title h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .breadcrumb strong {
+            font-weight: bold;
+        }
+
+        .btn-wrap {
+            margin-bottom: 50px;
+        }
+
+        .btn-wrap .btn {
+            margin-bottom: 50px;
+            margin-top: 0px;
+            background: #175a48;
+            color: #fff;
+            padding: 8px 15px ;
+            border: none;
+            cursor: pointer;
+            float: right;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-row label {
+            width: 150px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .form-row input[type="text"],
+        .form-row input[type="email"] {
+            flex: 0;
+            padding: 2px;
+            border: 1px solid #ccc;
+            background: #f3f7f6;
+            color: #666;
+            box-sizing: border-box;
+        }
+
+        .form-row .desc {
+            margin-left: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .info-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .info-box {
+            background: #f3f7f6;
+            padding: 15px;
+            border: 0 solid #eee;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .terms-box {
+            width: 100%;
+            height: 150px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: scroll;
+            background: #f9f9f9;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .version-box {
+            border: 0px solid #ddd;
+            border-top: none;
+        }
+
+        .version-box table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .version-box th,
+        .version-box td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .version-box th {
+            background: #f3f7f6;
+            font-weight: normal;
+            width: 120px;
+        }
+
+        .version-box td strong {
+            font-weight: bold;
+        }
+
+        .version-box input[type="file"],
+        .version-box input[type="text"]  {
+            flex: 0;
+            padding: 2px;
+            border: 1px solid #ccc;
+            background: #f3f7f6;
+            color: #666;
+            box-sizing: border-box;
+            width: 200px;
+        }
+    </style>
 </head>
 <body>
-	<main>
-		<div id="main">
+<main>
+    <div id="main">
 
-			</div>
-		</div>
-	</main>
+        <!-- 타이틀 & 경로 -->
+        <div class="page-title">
+            <h2>약관관리</h2>
+            <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>약관관리</strong></div>
+        </div>
+
+        <!-- (1) 구매회원 약관 -->
+        <div class="info-title">
+            <h2>구매회원 약관</h2>
+        </div>
+        <div class="info-box">
+            <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
+        </div>
+
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><strong>사이트 버전</strong></th>
+                    <td>
+                        <div class="terms-box">
+                            <h3>제 1 조 (목적)</h3>
+                            <p>
+                                이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
+                                (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
+                                케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
+                                전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
+                                권리, 의무를 규정함을 목적으로 합니다.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="btn-wrap">
+            <button class="btn">수정하기</button>
+        </div>
+
+        <!-- (2) 위치정보 이용약관 -->
+        <div class="info-title">
+            <h2>위치정보 이용약관</h2>
+        </div>
+        <div class="info-box">
+            <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
+        </div>
+
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><strong>사이트 버전</strong></th>
+                    <td>
+                        <div class="terms-box">
+                            <h3>제 1 조 (목적)</h3>
+                            <p>
+                                이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
+                                (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
+                                케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
+                                전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
+                                권리, 의무를 규정함을 목적으로 합니다.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="btn-wrap">
+            <button class="btn">수정하기</button>
+        </div>
+
+        <!-- (3) 개인정보처리방침 -->
+        <div class="info-title">
+            <h2>개인정보처리방침</h2>
+        </div>
+        <div class="info-box">
+            <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
+        </div>
+
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><strong>사이트 버전</strong></th>
+                    <td>
+                        <div class="terms-box">
+                            <h3>제 1 조 (목적)</h3>
+                            <p>
+                                이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
+                                (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
+                                케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
+                                전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
+                                권리, 의무를 규정함을 목적으로 합니다.
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="btn-wrap">
+            <button class="btn">수정하기</button>
+        </div>
+
+    </div>
+</main>
 </body>
 </html>
