@@ -1,0 +1,293 @@
+/*
+    날짜 : 2025/09/26
+    이름 : 이수연
+    내용 : 상품 보기 페이지 CSS
+*/
+/* common.css로 분리될 스타일 */
+body, button {
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    min-width: 1200px;
+    margin: 0;
+    padding: 0;
+}
+
+/* 전체 레이아웃 */
+.content-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* 메인 시작 - 상품보기 영역 */
+#main-section {
+    flex-grow: 1;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+}
+
+/* vies css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.product-view-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-view-main {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.product-image-area {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-image-area > img {
+    width: 480px;
+    height: 480px;
+    object-fit: contain;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+}
+.product-thumbnails-container {
+    position: relative;
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+.product-thumbnails {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+    padding: 10px 0;
+    flex-grow: 1;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+.product-thumbnails::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+.product-thumbnails img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    scroll-snap-align: center;
+    border-radius: 4px;
+}
+.thumb-button {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.5em;
+    cursor: pointer;
+    z-index: 10;
+}
+.thumb-button.prev {
+    left: -15px;
+}
+.thumb-button.next {
+    right: -15px;
+}
+
+.product-details-area {
+    flex: 1;
+}
+
+.product-price-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-price {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #558B2F;
+    margin-bottom: 10px;
+}
+
+.product-meta-info {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9em;
+    color: #888;
+}
+
+.product-meta-info span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.product-benefits, .shipping-info, .origin-info, .product-options, .delivery-message, .total-price {
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.product-options .option-item {
+    width: 100%;
+}
+
+.product-options select, .total-price span {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.total-price {
+    justify-content: flex-end;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.total-price span {
+    width: auto;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-buttons button {
+    flex-grow: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    text-transform: uppercase;
+}
+
+.action-buttons .cart-button {
+    background-color: #558B2F;
+}
+
+.action-buttons .buy-button {
+    background-color: #333;
+}
+
+/* 상품 상세 정보 및 리뷰 섹션 */
+.info-section, .review-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+.info-section h3, .review-section h3 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.info-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+.info-table th, .info-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+    font-size: 0.9em;
+}
+.info-table th {
+    background-color: #f8f8f8;
+    width: 150px;
+    font-weight: bold;
+}
+
+.review-item {
+    border-bottom: 1px solid #eee;
+    padding: 20px 0;
+}
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.review-rating {
+    color: #ffc107;
+}
+.review-content {
+    line-height: 1.5;
+    margin-top: 10px;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 5px;
+}
+.pagination a {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+.pagination a.active {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+}
+
+/* 푸터 스타일 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+footer {
+    background: #333;
+    padding: 50px 0;
+    text-align: center;
+    color: white;
+}
+
+.footer-container {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.footer-logo {
+    font-size: 2em;
+    font-weight: bold;
+    color: #558B2F; /* Green Garden color */
+    margin-bottom: 10px;
+}
+
+.footer-info {
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-top: 20px;
+    color: #ccc;
+}
+
+.copyright {
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 10px;
+}

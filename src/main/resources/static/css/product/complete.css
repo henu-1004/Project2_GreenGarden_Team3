@@ -1,0 +1,68 @@
+/*
+    날짜 : 2025/09/26
+    이름 : 이수연
+    내용 : 주문 완료 페이지 CSS
+*/
+/* common.css로 분리될 스타일 */
+body, button {
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    min-width: 1200px;
+    margin: 0;
+    padding: 0;
+}
+
+/* 전체 레이아웃 */
+.content-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* 메인 시작 - 상품보기 영역 */
+#main-section {
+    flex-grow: 1;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+}
+
+/* 탑 페이지 네이션 */
+.top_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #66968c;
+    margin-bottom: 20px;
+}
+
+.top_nav h5 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.top_nav .page_nation {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.top_nav .page_nation li:not(:last-child)::after {
+    content: " > ";
+    margin-left: 5px;
+    color: #999;
+}
+
+/* order css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */

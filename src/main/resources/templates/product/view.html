@@ -4,28 +4,262 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product view</title>
+    <!--
+        날짜 : 2025/09/26
+        이름 : 이수연
+        내용 : 상품 보기 페이지
+    -->
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/product/viewAside.css}">
     <link rel="stylesheet" th:href="@{/css/product/view.css}">
 </head>
 <body>
+
 <div th:replace="~{/common/header :: header}"></div>
 	<main>
-		<div id="main">
-			<jsp:include page="../common/headerWithSearch.jsp" />
-
-
-			<div class="content-wrap">
-				<jsp:include page="../common/aside_main.jsp" />
-				<section id="main-section">
-					
-
-					<jsp:include page="../common/footer.jsp" />
-				</section>
-			</div>
-		</div>
+        <div class="content-wrap">
+            <!-- 상품 보기만의 카테고리 네비 -->
+            <div th:replace="~{product/viewAside}"></div>
+            <section id="main-section">
+                <div class="product-view-container">
+                    <div class="product-view-main">
+                        <div class="product-image-area">
+                            <img id="main-product-image" src="https://placehold.co/600x600/e0e0e0/000000?text=상품 이미지" alt="Main Product Image" onerror="this.src='https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지';" >
+                            <div class="product-thumbnails-container">
+                                <button class="thumb-button prev" onclick="scrollThumbs(-1)">&#10094;</button>
+                                <div class="product-thumbnails">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+1" alt="Thumbnail 1" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+2" alt="Thumbnail 2" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+3" alt="Thumbnail 3" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+4" alt="Thumbnail 4" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+5" alt="Thumbnail 5" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+6" alt="Thumbnail 6" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+7" alt="Thumbnail 7" onclick="changeMainImage(this)">
+                                </div>
+                                <button class="thumb-button next" onclick="scrollThumbs(1)">&#10095;</button>
+                            </div>
+                        </div>
+                        <div class="product-details-area">
+                            <h2 class="product-price">52,300 원</h2>
+                            <div class="product-benefits">
+                                <span>회원혜택</span>
+                                <span>최대 5% 추가할인, 회원가입 시 3,661원 적립</span>
+                            </div>
+                            <div class="shipping-info">
+                                <span>배송조건</span>
+                                <span>**최: 서울 및 수도권 일부 지역</span>
+                                <span>택배: 전국(제주도 불가)</span>
+                                <button>배송가능지역 확인</button>
+                            </div>
+                            <div class="origin-info">
+                                <span>원산지</span>
+                                <span>하단 별도표기</span>
+                            </div>
+                            <div class="product-options">
+                                <div class="option-item">
+                                    <span>상품옵션</span>
+                                    <select>
+                                        <option>-- 배송방법 선택 --</option>
+                                    </select>
+                                </div>
+                                <div class="option-item">
+                                    <span>추가구성</span>
+                                    <select>
+                                        <option>-- [리뷰 약속 이벤트] 선택 --</option>
+                                    </select>
+                                </div>
+                                <div class="option-item">
+                                    <select>
+                                        <option>-- 화병/꽃가위 선택 --</option>
+                                    </select>
+                                </div>
+                                <div class="option-item">
+                                    <select>
+                                        <option>-- 초콜릿 선택 --</option>
+                                    </select>
+                                </div>
+                                <div class="option-item">
+                                    <select>
+                                        <option>-- 사탕 선택 --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="delivery-message">
+                                <p>전국 당일 퀵 배송 상품이 필요하세요?</p>
+                                <span>&gt;</span>
+                            </div>
+                            <div class="total-price">
+                                <span>총 상품금액</span>
+                                <span>52,300</span>
+                                <span>원</span>
+                            </div>
+                            <div class="action-buttons">
+                                <button class="cart-button">장바구니</button>
+                                <button class="buy-button">구매하기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h3 class="info-title">상품정보 제공고시</h3>
+                    <div class="info-notice">
+                        [전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록된 정보입니다.
+                    </div>
+                    <table class="info-table">
+                        <tbody>
+                        <tr>
+                            <th>상품번호</th>
+                            <td>10010118412</td>
+                        </tr>
+                        <tr>
+                            <th>상품상태</th>
+                            <td>새상품</td>
+                        </tr>
+                        <tr>
+                            <th>부가가치세면세여부</th>
+                            <td>과세상품</td>
+                        </tr>
+                        <tr>
+                            <th>영수증발행</th>
+                            <td>발행가능(신용카드전표)</td>
+                        </tr>
+                        <tr>
+                            <th>사업자구분</th>
+                            <td>통신판매업자</td>
+                        </tr>
+                        <tr>
+                            <th>브랜드</th>
+                            <td>블루포스</td>
+                        </tr>
+                        <tr>
+                            <th>원산지</th>
+                            <td>국내생산</td>
+                        </tr>
+                        <tr>
+                            <th>제조자/수입국</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>제조국</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>취급시주의사항</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>제조연월</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>품질보증기준</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>A/S 책임자</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>전화번호</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="review-section">
+                    <h3 class="review-title">상품리뷰</h3>
+                    <div class="review-list">
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: seo******</span>
+                                <span class="review-meta">작성일: 0000-07-10</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                가격 대비 정말 괜찮은 옷이라 생각되네요 넓은 품...제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요. 아주 약간 루즈한정도...? 그래도 이만한 옷은 없다고 봅니다 깨끗하고 포장도 괜찮고 다음에도 여기서 판매하는 제품들을 구매하고 싶네요. 정말 만족하고 후기 남깁니다 많이 파시길 바래요~
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user1***</span>
+                                <span class="review-meta">작성일: 0000-07-11</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                배송이 정말 빨라서 좋았어요. 상품 품질도 기대 이상입니다.
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user2***</span>
+                                <span class="review-meta">작성일: 0000-07-12</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐</div>
+                            <div class="review-content">
+                                색상이 화면과 조금 다르지만, 전반적으로 만족합니다.
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user3***</span>
+                                <span class="review-meta">작성일: 0000-07-13</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                가격 대비 정말 괜찮은 옷이라 생각되네요 넓은 품...제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요. 아주 약간 루즈한정도...? 그래도 이만한 옷은 없다고 봅니다 깨끗하고 포장도 괜찮고 다음에 여기서 판매하는 제품들을 구매하고 싶네요. 정말 만족하고 후기 남깁니다 많이 파시길 바래요~
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user4***</span>
+                                <span class="review-meta">작성일: 0000-07-14</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                색상이 화면과 조금 다르지만, 전반적으로 만족합니다.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <a href="#" class="prev">&lt; 이전</a>
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#">7</a>
+                        <a href="#" class="next">다음 &gt;</a>
+                    </div>
+                </div>
+            </section>
+        </div>
 	</main>
-<div th:replace="~{/common/footer :: footer}"></div>
-</body>
-</html>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-logo">Green Garden</div>
+            <div class="footer-info">
+                <p>사업자등록번호: 123-45-12345 | 대표이사: 홍길동 | 고객센터: 123-4567 | 이메일: example@kmarket.net</p>
+                <p>주소: 부산광역시 부산진구 중앙대로 300</p>
+            </div>
+            <p class="copyright">COPYRIGHT © K-MARKET ALL RIGHTS RESERVED.</p>
+        </div>
+    </footer>
+    <script>
+        function changeMainImage(thumb) {
+            const mainImage = document.getElementById('main-product-image');
+            mainImage.src = thumb.src;
+            mainImage.alt = thumb.alt;
+        }
+
+        function scrollThumbs(direction) {
+            const container = document.querySelector('.product-thumbnails');
+            const scrollAmount = 100; // 스크롤할 양
+            container.scrollBy({
+                left: direction * scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
