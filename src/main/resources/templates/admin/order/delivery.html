@@ -1,17 +1,125 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin delivery</title>
+    <!--
+        날짜 : 2025/09/28
+        이름 : 이수연
+        내용 : 관리자 배송현황 페이지
+    -->
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/order/delivery.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/order/modalDeliveryDetail.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/_header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/common/_aside :: aside}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>배송현황</h5>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">주문관리</a></li>
+                    <li><a href="#">배송현황</a></li>
+                </ul>
+            </div>
+            <form th:action="@{#}" method="get" class="search-form">
+                <select>
+                    <option>송장번호</option>
+                    <option>주문번호</option>
+                    <option>수령인</option>
+                </select>
+                <input type="text" name="keyword" placeholder="세부 검색을 해보세요"/>
+                <button type="submit">
+                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />
+                </button>
+            </form>
+            <table class="order-table">
+                <tr>
+                    <th>송장번호</th>
+                    <th>택배사</th>
+                    <th>주문번호</th>
+                    <th>수령인</th>
+                    <th>상품명</th>
+                    <th>건수</th>
+                    <th>물품합계</th>
+                    <th>배송비</th>
+                    <th>배송상태</th>
+                    <th>접수일</th>
+                </tr>
+                <tr>
+                    <td><a href="#">10122102315</a></td>
+                    <td>로젝택배</td>
+                    <td><a href="#">10121211341</a></td>
+                    <td>김유신</td>
+                    <td>OOO</td>
+                    <td>3</td>
+                    <td>68,400</td>
+                    <td>무료</td>
+                    <td style="color: dodgerblue">배송준비</td>
+                    <td>2025-10-24 13:45:55</td>
+                </tr>
+                <tr>
+                    <td><a href="#">10122102315</a></td>
+                    <td>한진택배</td>
+                    <td><a href="#">10121211341</a></td>
+                    <td>김유신</td>
+                    <td>OOO</td>
+                    <td>3</td>
+                    <td>68,400</td>
+                    <td>무료</td>
+                    <td style="color: dodgerblue">배송중</td>
+                    <td>2025-10-24 13:45:55</td>
+                </tr>
+                <tr>
+                    <td><a href="#">10122102315</a></td>
+                    <td>우체국</td>
+                    <td><a href="#">10121211341</a></td>
+                    <td>김유신</td>
+                    <td>OOO</td>
+                    <td>3</td>
+                    <td>68,400</td>
+                    <td>무료</td>
+                    <td style="color: red">반품요청</td>
+                    <td>2025-10-24 13:45:55</td>
+                </tr>
+                <tr>
+                    <td><a href="#">10122102315</a></td>
+                    <td>CJ대한통운</td>
+                    <td><a href="#">10121211341</a></td>
+                    <td>김유신</td>
+                    <td>OOO</td>
+                    <td>3</td>
+                    <td>68,400</td>
+                    <td>무료</td>
+                    <td style="color: green">배송완료</td>
+                    <td>2025-10-24 13:45:55</td>
+                </tr>
+            </table>
+            <section class="pagination">
+                <!-- 이전 페이지 버튼 -->
+                <a href="#" class="prev">&lt; 이전</a>
 
-			</div>
-		</div>
-	</main>
+                <!-- 페이지 번호들 -->
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+
+                <!-- 다음 페이지 버튼 -->
+                <a href="#" class="next">다음 &gt;</a>
+            </section>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/_footer :: footer}"></div>
+<div th:replace="~{/admin/order/_deliveryDetail :: modal-delivery-detail}"></div>
 </body>
 </html>

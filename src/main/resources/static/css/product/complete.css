@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
     날짜 : 2025/09/26
     이름 : 이수연
@@ -20,18 +21,26 @@ body {
 }
 
 /* 전체 레이아웃 */
+/* 3. aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content_wrap 컨테이너를 header-wrap과 동일하게 설정 */
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
+    display: flex;
+    gap: 20px;
+    /* 상단 정렬 */
+    align-items: flex-start;
+    padding-top: 20px;
 }
 
-/* 메인 시작 - 상품보기 영역 */
+/* 메인 섹션 */
 #main-section {
-    flex-grow: 1;
-    background: white;
-    padding: 30px;
+    width: 930px;
+    flex-shrink: 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background: white;
+    /* aside와 상단선을 맞춤 */
     box-sizing: border-box;
 }
 
@@ -65,4 +74,85 @@ body {
     color: #999;
 }
 
-/* order css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* complete css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+
+/* 배송정보, 결제정보 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.del_info, .order-info {
+    width: 70%;
+    margin: 0 15px;
+    border-collapse: collapse;
+    border-top: 2px solid #66968c;
+    border-bottom: 2px solid #66968c;
+}
+
+.del_info th, .order-info  th {
+    background-color: #f3f7f6;
+}
+
+.del_info th, .order-info  th,
+.del_info td, .order-info td {
+    padding: 8px;
+    text-align: left;
+}
+
+/* 주문상품 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* 주문상품 리스트 */
+.cart_table {
+    width: 95%;
+    border-collapse: collapse;
+    text-align: center;
+    align-items: center;
+    margin: 0 20px;
+}
+
+.cart_table th {
+    padding: 10px;
+    border-top: 2px solid #66968c;
+    border-bottom: 2px solid #66968c;
+    background-color: #f3f7f6;
+}
+
+.cart_table td {
+    padding: 10px;
+    border-bottom: 1px solid #66968c;
+}
+
+.cart_table tbody {
+    align-items: center;
+
+}
+
+/* cart list 영역 ㅡㅡ */
+.product_image {
+    flex-basis: 80px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.col_item_info {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: left;
+    gap: 20px;
+
+}
+
+.product_image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.product_info h6 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product_info p {
+    color: #666;
+    font-size: 0.9em;
+}

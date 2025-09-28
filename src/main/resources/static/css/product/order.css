@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*
     날짜 : 2025/09/26
     이름 : 이수연
@@ -66,10 +67,6 @@ body {
 }
 
 /* order css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
 h1 {
     display: flex;
     align-items: center;
@@ -96,23 +93,81 @@ textarea {
     width: 400px;
     height: 80px;
 }
-table {
-    width: 100%;
+
+/* 주문상품 리스트 */
+.cart_table {
+    width: 95%;
     border-collapse: collapse;
-    margin: 20px 0;
-}
-table, th, td {
-    border: 1px solid #ddd;
-}
-th, td {
-    padding: 10px;
     text-align: center;
+    align-items: center;
+    margin: 0 20px;
 }
-.total-price {
-    text-align: right;
-    font-size: 18px;
-    margin-top: 20px;
+
+.cart_table th {
+    padding: 10px;
+    border-top: 3px solid #a8c6c4;
+    border-bottom: 3px solid #a8c6c4;
 }
+
+.cart_table td {
+    padding: 10px;
+    border-bottom: 1px solid #a8c6c4;
+}
+
+/* cart list 영역 ㅡㅡ */
+.product_image {
+    flex-basis: 80px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.col_item_info {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: left;
+    gap: 20px;
+
+}
+
+.product_image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.product_info h6 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product_info p {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.price_after {
+    display: flex;
+    align-items: center;
+}
+
+.original_price {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.9em;
+    margin-right: 5px;
+}
+
+.discount_rate {
+    color: red;
+    font-weight: bold;
+}
+
+
+/* 마지막 주문/취소하기 버튼 */
 .btn-wrap {
     margin-top: 30px;
     text-align: center;
@@ -130,37 +185,4 @@ th, td {
 }
 .btn-secondary {
     background: #ddd;
-}
-
-/* 푸터 스타일 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
-footer {
-    background: #333;
-    padding: 50px 0;
-    text-align: center;
-    color: white;
-}
-
-.footer-container {
-    margin: 0 auto;
-    max-width: 1200px;
-}
-
-.footer-logo {
-    font-size: 2em;
-    font-weight: bold;
-    color: #558B2F; /* Green Garden color */
-    margin-bottom: 10px;
-}
-
-.footer-info {
-    font-size: 0.9em;
-    line-height: 1.5;
-    margin-top: 20px;
-    color: #ccc;
-}
-
-.copyright {
-    font-size: 0.8em;
-    color: #999;
-    margin-top: 10px;
 }

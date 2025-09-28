@@ -1,17 +1,108 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin list</title>
+    <!--
+        날짜 : 2025/09/28
+        이름 : 이수연
+        내용 : 관리자 쿠폰목록 페이지
+    -->
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/coupon/list.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/coupon/coupon_info.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/_header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/common/_aside :: aside}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h3>쿠폰목록</h3>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">쿠폰관리</a></li>
+                    <li><a href="#">쿠폰목록</a></li>
+                </ul>
+            </div>
+            <form th:action="@{#}" method="get" class="search-form">
+                <select>
+                    <option>쿠폰번호</option>
+                    <option>쿠폰명</option>
+                    <option>발급자</option>
+                </select>
+                <input type="text" name="keyword" placeholder="세부 검색을 해보세요"/>
+                <button type="submit">
+                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />
+                </button>
+            </form>
+            <table class="coupon-table">
+                <tr>
+                    <th>쿠폰번호</th>
+                    <th>쿠폰종류</th>
+                    <th>쿠폰명</th>
+                    <th>혜택</th>
+                    <th style="width: 80px">사용기간</th>
+                    <th>발급자</th>
+                    <th>발급수</th>
+                    <th>사용수</th>
+                    <th>상태</th>
+                    <th style="width: 80px">발급일</th>
+                    <th>관리</th>
+                </tr>
+                <tr>
+                    <td><a href="#">10121211341</a></td>
+                    <td>개별상품 할인</td>
+                    <td>회원가입 축하 쿠폭</td>
+                    <td>15% 할인</td>
+                    <td>2025-10-24 ~ 2025-10-24</td>
+                    <td>(주)다있어</td>
+                    <td>102</td>
+                    <td>43</td>
+                    <td style="color: green">발급중</td>
+                    <td>2025-10-24 13:45:55</td>
+                    <td>
+                        <input type="button" value="종료">
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#">10121211341</a></td>
+                    <td>주문상품 할인</td>
+                    <td>10월 한달 감사 쿠폭</td>
+                    <td>2,000원 할인</td>
+                    <td>2025-10-24 ~ 2025-10-24</td>
+                    <td>(주)다있어</td>
+                    <td>102</td>
+                    <td>43</td>
+                    <td style="color: gray">종류</td>
+                    <td>2025-10-24 13:45:55</td>
+                    <td>
+                        <input type="button" value="종료">
+                    </td>
+                </tr>
+            </table>
+            <section class="pagination">
+                <!-- 이전 페이지 버튼 -->
+                <a href="#" class="prev">&lt; 이전</a>
 
-			</div>
-		</div>
-	</main>
+                <!-- 페이지 번호들 -->
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+
+                <!-- 다음 페이지 버튼 -->
+                <a href="#" class="next">다음 &gt;</a>
+            </section>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/_footer :: footer}"></div>
+<div th:replace="~{/admin/coupon/_coupon_info :: modal-coupon-info}"></div>
 </body>
 </html>

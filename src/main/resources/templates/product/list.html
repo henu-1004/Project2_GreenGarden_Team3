@@ -10,14 +10,15 @@
         내용 : 상품 목록 페이지
     -->
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
-    <link rel="stylesheet" th:href="@{/css/product/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/product/list.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
 <div th:replace="~{/common/header :: header}"></div>
 <main>
     <div class="content-wrap">
-        <div th:replace="~{/product/aside :: aside}"></div>
+        <div th:replace="~{/common/_aside :: aside}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h5>상품목록</h5>
@@ -25,16 +26,6 @@
                     <li><a href="#">Home</a></li>
                     <li><a href="#">반려식물</a></li>
                     <li><a href="#">초보 식집사</a></li>
-                </ul>
-            </div>
-            <div class="sort_nav">
-                <ul>
-                    <li><a href="#">판매많은순</a></li>
-                    <li><a href="#">낮은가격순</a></li>
-                    <li><a href="#">높은가격순</a></li>
-                    <li><a href="#">평점높은순</a></li>
-                    <li><a href="#">후기많은순</a></li>
-                    <li><a href="#">최근등록순</a></li>
                 </ul>
             </div>
             <!-- 상품 목록 반복 영역 -->
@@ -100,21 +91,6 @@
         </section>
     </div>
 </main>
-<footer>
-        <div class="footer-container">
-            <div class="footer-logo">
-                <img src="https://placehold.co/100x30/e0e0e0/000000?text=Logo" alt="Odense Logo">
-            </div>
-            <div class="footer-links">
-                <a href="#">Shop</a>
-                <a href="#">Instagram</a>
-            </div>
-            <div class="footer-info">
-                <p>사업자등록번호: 123-45-12345 | 대표이사: 홍길동 | 고객센터: 123-4567 | 이메일: example@kmarket.net</p>
-                <p>주소: 부산광역시 부산진구 중앙대로 300</p>
-            </div>
-            <p class="copyright">COPYRIGHT © K-MARKET ALL RIGHTS RESERVED.</p>
-        </div>
-    </footer>
+<div th:replace="~{/common/_footer :: footer}"></div>
 </body>
 </html>
