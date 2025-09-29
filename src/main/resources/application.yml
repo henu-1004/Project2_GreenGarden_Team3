@@ -14,10 +14,10 @@ spring:
         name: GreenGarden
         version: ${version}
     datasource:
-        driver-class-name: oracle.jdbc.driver.OracleDriver
-        password: 1234
-        url: jdbc:oracle:thin:@localhost:1521:xe
-        username: hanto
+         driver-class-name: oracle.jdbc.driver.OracleDriver
+         url: jdbc:oracle:thin:@localhost:1521:xe
+         username: tndus159200297
+         password: 1234
     devtools:
         livereload:
             enabled: true
@@ -30,3 +30,5 @@ spring:
             hibernate:
                 format_sql: true
                 show_sql: true
+        autoconfigure:
+          exclude: org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration

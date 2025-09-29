@@ -1,9 +1,13 @@
 @charset "UTF-8";
-
 /*
  * 날짜 : 2025/09/15
  * 이름 : 한탁원
  * 내용 : header - css 초안 작성  
+ */
+/*
+ * 날짜 : 2025/09/25
+ * 이름 : 이수연
+ * 내용 : header - css 수정
  */
 header, body {
     background-color: #f3f6f7;
@@ -26,7 +30,7 @@ header, body {
 #header-top a {
     padding-left: 10px;
     text-decoration: none;
-    color: inherit;
+    color: #175a48; /* 컬러 수정 */
 }
 
 #header-middle {

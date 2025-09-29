@@ -2,7 +2,7 @@
 /*
     날짜 : 2025/09/26
     이름 : 이수연
-    내용 : 상품 목록 페이지 CSS
+    내용 : 상품 검색 페이지 CSS
 */
 
 /* common.css로 분리될 스타일 */
@@ -71,7 +71,7 @@ body {
     color: #999;
 }
 
-/* 상품 정렬 */
+/* 상품 정렬 - 검색 결과 ㅡㅡㅡㅡㅡ */
 .sort_nav ul {
     display: flex;
     margin: 0 0 20px 0;
@@ -93,7 +93,57 @@ body {
     font-weight: bold;
 }
 
-/* 상품 목록 컨테이너 */
+
+/* 검색 결과 - 2차 검색 ㅡㅡㅡㅡㅡ */
+.search-section {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    position: relative; /* input 내부 버튼 위치를 위한 기준점 */
+    display: flex;
+    align-items: center;
+    max-width: 400px;
+}
+
+.search-info {
+    display: flex;
+    align-items: center;
+}
+
+.search-form select,
+.search-form input {
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.search-form select {
+    margin-right: 10px;
+}
+
+.search-form button {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-45%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-form button img {
+    width: 30px;
+    height: 30px;
+}
+
+
+/* 상품 목록 컨테이너 ㅡㅡㅡㅡㅡ */
 .product_list {
     padding: 15px;
     display: flex;

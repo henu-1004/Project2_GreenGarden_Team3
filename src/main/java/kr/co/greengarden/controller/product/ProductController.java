@@ -36,4 +36,9 @@ public class ProductController {
         return "product/complete";
     }
 
+    @GetMapping("/product/search")
+    public String searchPage() {
+        return "product/search";
+    }
+
 }

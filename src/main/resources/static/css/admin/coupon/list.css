@@ -1,12 +1,9 @@
 @charset "UTF-8";
 /*
-    날짜 : 2025/09/26
+    날짜 : 2025/09/28
     이름 : 이수연
-    내용 : 상품 목록 페이지 CSS
+    내용 : 관리자 쿠폰목록 CSS
 */
-
-/* common.css로 분리될 스타일 */
-/* 0. 모든 링크의 파란색과 밑줄을 제거합니다. */
 a {
     text-decoration: none;
     color: inherit;
@@ -30,7 +27,7 @@ body {
 
 /* 메인 섹션 */
 #main-section {
-    width: 930px;
+    width: 1030px;
     flex-shrink: 0;
     padding: 20px;
     border: 1px solid #e0e0e0;
@@ -46,14 +43,13 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 3px solid #ddd;
     margin-bottom: 20px;
 }
 
 .top_nav h5 {
     font-size: 1.2em;
     font-weight: bold;
-    margin: 10px;
 }
 
 .top_nav .page_nation {
@@ -70,124 +66,80 @@ body {
     margin-left: 5px;
     color: #999;
 }
+/* admin list css ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* 검색  ㅡㅡㅡㅡㅡ */
+.search-form {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
 
-/* 상품 정렬 */
-.sort_nav ul {
+    position: relative; /* input 내부 버튼 위치를 위한 기준점 */
     display: flex;
-    margin: 0 0 20px 0;
-    list-style: none;
+    align-items: center;
+    max-width: 400px;
+}
+
+.search-info {
+    display: flex;
+    align-items: center;
+}
+
+.search-form select,
+.search-form input {
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.search-form select {
+    margin-right: 10px;
+}
+
+.search-form button {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-45%);
+    background: none;
+    border: none;
+    cursor: pointer;
     padding: 0;
 }
 
-.sort_nav li a {
-    padding: 0 10px;
-    border-right: 1px solid #ccc;
+.search-form button img {
+    width: 30px;
+    height: 30px;
 }
 
-.sort_nav li:last-child a {
-    border-right: none;
-}
-
-.sort_nav li a:hover {
-    color: #000;
-    font-weight: bold;
-}
-
-/* 상품 목록 컨테이너 */
-.product_list {
-    padding: 15px;
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    border-top: 1px solid #eee;
-}
-
-.product_image {
-    flex-basis: 150px;
-    flex-shrink: 0;
-}
-
-.product_image img {
+/* 주문현황 테이블 디자인 ㅡㅡㅡㅡㅡㅡ */
+.coupon-table {
     width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border: 1px solid black;
-    border-radius: 8px;
-}
-
-.product_info {
-    flex-grow: 1;
-    min-width: 150px;
-}
-
-.product_info h6 {
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.product_info p {
-    color: #666;
-    font-size: 0.9em;
-}
-
-/* 6. product_price_info 내부 요소 간 간격 조정 */
-.product_price_info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    /* gap 속성을 사용하여 요소 간의 간격을 조절합니다. */
-    gap: 0;
-}
-
-/* 가격 정보 p 태그의 기본 마진을 제거하여 간격을 조절합니다. */
-.product_price_info p {
-    margin: 0;
-}
-
-.price {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-}
-
-.price_after {
-    display: flex;
+    border-collapse: collapse;
+    text-align: center;
     align-items: center;
+    font-size: 13px;
 }
 
-.original_price {
-    color: #999;
-    text-decoration: line-through;
-    font-size: 0.9em;
-    margin-right: 5px;
+.coupon-table th {
+    padding: 10px;
+    border-top: 3px solid #ddd;
+    border-bottom: 3px solid #ddd;
 }
 
-.discount_rate {
-    color: red;
-    font-weight: bold;
+.coupon-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
-.shopping_fee {
-    font-size: 0.9em;
+/* 주문번호가 있는 클래스를 지정하여 밑줄을 살림 */
+.coupon-table a {
+    text-decoration: underline; /* 밑줄을 다시 추가 */
 }
 
-.prodect_meta {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: auto;
-    font-size: 0.9em;
-    color: #666;
-    gap: 5px;
-}
 
-.prodect_meta img {
-    width: 15px;
-    vertical-align: middle;
-}
-
-/* 페이지 네이션 */
+/* 페이지 네이션 ㅡㅡㅡㅡㅡ */
 .pagination {
     display: flex;
     justify-content: center; /* 가로 중앙 정렬 */
@@ -215,3 +167,4 @@ body {
     border-color: #333;
     font-weight: bold;
 }
+

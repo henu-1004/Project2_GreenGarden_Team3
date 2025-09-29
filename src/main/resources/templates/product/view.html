@@ -5,24 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>product view</title>
     <!--
-        날짜 : 2025/09/26
+        날짜 : 2025/09/28
         이름 : 이수연
         내용 : 상품 보기 페이지
     -->
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
-    <link rel="stylesheet" th:href="@{/css/product/viewAside.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside_view.css}">
     <link rel="stylesheet" th:href="@{/css/product/view.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
-
 <div th:replace="~{/common/header :: header}"></div>
-	<main>
+<main>
         <div class="content-wrap">
-            <!-- 상품 보기만의 카테고리 네비 -->
-            <div th:replace="~{product/viewAside}"></div>
+            <div th:replace="~{common/_aside_view}"></div>
             <section id="main-section">
-                <div class="product-view-container">
-                    <div class="product-view-main">
+                <div class="top_nav">
+                    <h5>상품보기</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">1차 카테고리명</a></li>
+                        <li><a href="#">2차 카테고리명</a></li>
+                    </ul>
+                </div>
+                <div class="product-view-main">
                         <div class="product-image-area">
                             <img id="main-product-image" src="https://placehold.co/600x600/e0e0e0/000000?text=상품 이미지" alt="Main Product Image" onerror="this.src='https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지';" >
                             <div class="product-thumbnails-container">
@@ -45,9 +51,8 @@
                                 <span>회원혜택</span>
                                 <span>최대 5% 추가할인, 회원가입 시 3,661원 적립</span>
                             </div>
-                            <div class="shipping-info">
+                            <div class="shopping-info">
                                 <span>배송조건</span>
-                                <span>**최: 서울 및 수도권 일부 지역</span>
                                 <span>택배: 전국(제주도 불가)</span>
                                 <button>배송가능지역 확인</button>
                             </div>
@@ -75,18 +80,9 @@
                                 </div>
                                 <div class="option-item">
                                     <select>
-                                        <option>-- 초콜릿 선택 --</option>
+                                        <option>-- 전국 당일 퀵 배송 상품이 필요하세요? --</option>
                                     </select>
                                 </div>
-                                <div class="option-item">
-                                    <select>
-                                        <option>-- 사탕 선택 --</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="delivery-message">
-                                <p>전국 당일 퀵 배송 상품이 필요하세요?</p>
-                                <span>&gt;</span>
                             </div>
                             <div class="total-price">
                                 <span>총 상품금액</span>
@@ -99,7 +95,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
                 <div class="info-section">
                     <h3 class="info-title">상품정보 제공고시</h3>
                     <div class="info-notice">
@@ -235,31 +230,6 @@
             </section>
         </div>
 	</main>
-    <footer>
-        <div class="footer-container">
-            <div class="footer-logo">Green Garden</div>
-            <div class="footer-info">
-                <p>사업자등록번호: 123-45-12345 | 대표이사: 홍길동 | 고객센터: 123-4567 | 이메일: example@kmarket.net</p>
-                <p>주소: 부산광역시 부산진구 중앙대로 300</p>
-            </div>
-            <p class="copyright">COPYRIGHT © K-MARKET ALL RIGHTS RESERVED.</p>
-        </div>
-    </footer>
-    <script>
-        function changeMainImage(thumb) {
-            const mainImage = document.getElementById('main-product-image');
-            mainImage.src = thumb.src;
-            mainImage.alt = thumb.alt;
-        }
-
-        function scrollThumbs(direction) {
-            const container = document.querySelector('.product-thumbnails');
-            const scrollAmount = 100; // 스크롤할 양
-            container.scrollBy({
-                left: direction * scrollAmount,
-                behavior: 'smooth'
-            });
-        }
-    </script>
+<div th:replace="~{/common/_footer :: footer}"></div>
 </body>
 </html>

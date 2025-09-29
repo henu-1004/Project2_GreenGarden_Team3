@@ -1,17 +1,113 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin list</title>
+    <!--
+        날짜 : 2025/09/28
+        이름 : 이수연
+        내용 : 관리자 주문현황 페이지
+    -->
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/order/list.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/order/modalDeliveryInput.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/order/modalOrderDetail.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/_header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/common/_aside :: aside}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>주문현황</h5>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">마이페이지</a></li>
+                    <li><a href="#">장바구니</a></li>
+                </ul>
+            </div>
+            <form th:action="@{#}" method="get" class="search-form">
+                <select>
+                    <option>주문번호</option>
+                    <option>주문자</option>
+                    <option>주문자명</option>
+                </select>
+                <input type="text" name="keyword" placeholder="세부 검색을 해보세요"/>
+                <button type="submit">
+                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />
+                </button>
+            </form>
+            <table class="order-table">
+                <tr>
+                    <th>주문번호</th>
+                    <th>주문자ID</th>
+                    <th>주문자명</th>
+                    <th>주문건수</th>
+                    <th>주문합계</th>
+                    <th style="width: 45px;">결제수단</th>
+                    <th style="width: 45px;">주문상태</th>
+                    <th>주문일</th>
+                    <th>배송</th>
+                </tr>
+                <tr>
+                    <td><a href="#">10121211341</a></td>
+                    <td>abc123</td>
+                    <td>김유신</td>
+                    <td>2</td>
+                    <td>102,900</td>
+                    <td>신용카드</td>
+                    <td style="color: green">결제완료</td>
+                    <td>2025-10-24 13:45:55</td>
+                    <td>
+                        <input type="button" value="배송하기">
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#">10121211341</a></td>
+                    <td>abc123</td>
+                    <td>김춘추</td>
+                    <td>1</td>
+                    <td>36,000</td>
+                    <td>계좌이체</td>
+                    <td style="color: yellowgreen">결제대기</td>
+                    <td>2025-10-24 13:45:55</td>
+                    <td>입력완료</td>
+                </tr>
+                <tr>
+                    <td><a href="#">10121211341</a></td>
+                    <td>abc123</td>
+                    <td>장보고</td>
+                    <td>2</td>
+                    <td>92,000</td>
+                    <td>휴대폰</td>
+                    <td style="color: red">주문취소</td>
+                    <td>2025-10-24 13:45:55</td>
+                    <td>주문취소</td>
+                </tr>
+            </table>
+            <section class="pagination">
+                <!-- 이전 페이지 버튼 -->
+                <a href="#" class="prev">&lt; 이전</a>
 
-			</div>
-		</div>
-	</main>
+                <!-- 페이지 번호들 -->
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+
+                <!-- 다음 페이지 버튼 -->
+                <a href="#" class="next">다음 &gt;</a>
+            </section>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/_footer :: footer}"></div>
+<div th:replace="~{/admin/order/_deliveryInput :: modal-delivery-input}"></div>
+<div th:replace="~{/admin/order/_orderDetail :: modal-order-detail}"></div>
 </body>
 </html>

@@ -1,0 +1,89 @@
+<!--
+    날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : 배송현황 - 배송상세 모달
+-->
+<div class="madal-detail" th:fragment="modal-delivery-detail">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <h3>결제입력</h3>
+                <p class="order-number">'주문번호'</p>
+            </div>
+            <div class="close-btn-wrap">
+                <button class="close-btn">x</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <section class="order_list_section">
+                <h2>상품정보</h2>
+                <table class="cart_table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>상품번호</th>
+                        <th>상품명</th>
+                        <th>판매자</th>
+                        <th>가격</th>
+                        <th>할인</th>
+                        <th>수량</th>
+                        <th>배송비</th>
+                        <th>결제금액</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cart_items">
+                    <tr>
+                        <td class="col_item_info">
+                            <div class="product_image">
+                                <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
+                            </div>
+                        </td>
+                        <td><a href="#">120120021</a></td>
+                        <td>OOO</td>
+                        <td>(주)상호명</td>
+                        <td>29,500원</td>
+                        <td>-1,200원</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>68,400원</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+            <section>
+                <h2>배송정보</h2>
+                <table class="order-info-table">
+                    <tr>
+                        <th>주문번호</th>
+                        <td>2025092116848666</td>
+                    </tr>
+                    <tr>
+                        <th>수령인</th>
+                        <td>김철수</td>
+                    </tr>
+                    <tr>
+                        <th>연락처</th>
+                        <td>010-1234-5678</td>
+                    </tr>
+                    <tr>
+                        <th>배송지 주소</th>
+                        <td>서울특별시 강남구 ...</td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <th>택배사</th>
+                        <td>로젠택배</td>
+                    </tr>
+                    <tr>
+                        <th>송장번호</th>
+                        <td>10122102315</td>
+                    </tr>
+                    <tr>
+                        <th>기타</th>
+                        <td>감사합니다. 수고하세요.</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>

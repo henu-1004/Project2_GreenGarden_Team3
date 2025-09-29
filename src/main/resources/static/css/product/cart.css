@@ -1,11 +1,15 @@
+@charset "UTF-8";
 /*
     날짜 : 2025/09/26
     이름 : 이수연
     내용 : 장바구니 페이지 CSS
 */
-@charset "UTF-8";
+
 /* common.css로 분리될 스타일 */
-/* 0. 모든 링크의 파란색과 밑줄을 제거합니다. */
+body, button {
+    font-family: 'Roboto', sans-serif;
+}
+
 a {
     text-decoration: none;
     color: inherit;
@@ -13,33 +17,27 @@ a {
 
 body {
     min-width: 1200px;
+    margin: 0;
+    padding: 0;
 }
 
-/* 메인 콘텐츠 영역 */
-/* 3. aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content_wrap 컨테이너를 header-wrap과 동일하게 설정 */
+/* 전체 레이아웃 */
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
-    display: flex;
-    gap: 20px;
-    /* 상단 정렬 */
-    align-items: flex-start;
-    padding-top: 20px;
 }
 
-/* 메인 섹션 */
+/* 메인 시작 - 상품보기 영역 */
 #main-section {
-    width: 930px;
-    flex-shrink: 0;
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    flex-grow: 1;
     background: white;
-    /* aside와 상단선을 맞춤 */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     box-sizing: border-box;
 }
 
-/* 탑 페이지 네이션 */
+/* 탑 페이지 네이션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
 .top_nav {
     display: flex;
     justify-content: space-between;
@@ -52,6 +50,7 @@ body {
 .top_nav h5 {
     font-size: 1.2em;
     font-weight: bold;
+    margin: 10px;
 }
 
 .top_nav .page_nation {
@@ -68,75 +67,139 @@ body {
     margin-left: 5px;
     color: #999;
 }
-/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ기본 공통 영역ㅡ*/
-.cart-contain {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.cart-table {
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 여기까지가 기본 공통 영역ㅡ*/
+/* ㅡ여기부터 cart css 영역ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ㅡ*/
+.cart_table {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
 }
 
-.cart-table th {
+.cart_table th {
     padding: 10px;
-    border-top: 4px solid #66968c;
-    border-bottom: 4px solid #66968c;
+    border-top: 3px solid #66968c;
+    border-bottom: 3px solid #66968c;
 }
 
-.cart-table td {
+.cart_table td {
     padding: 10px;
     border-bottom: 1px solid #66968c;
 }
 
-.cart-table thead {
-    background-color: #f3f7f6;
+.cart_table tbody {
+    align-items: center;
+
 }
 
+/* cart list 영역 ㅡㅡ */
 
-
-
-
-
-
-
-/* 푸터 스타일  ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-footer {
-    background: #f8f9fa;
-    padding: 50px 0;
-    text-align: center;
+.product_image {
+    flex-basis: 80px;
+    flex-shrink: 0;
+    margin-left: 10px;
 }
-.footer-container {
-    margin: 0 auto;
-    max-width: 1200px;
-    text-align: center;
-    padding-bottom: 20px;
-}
-.footer-logo {
-    margin-bottom: 20px;
-}
-.footer-logo img {
-    height: 40px;
-}
-.footer-links {
+
+.col_item_info {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    text-align: left;
+    justify-content: left;
     gap: 20px;
-    margin-bottom: 20px;
+
 }
-.footer-info {
-    font-size: 0.9em;
+
+.product_image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.product_info h6 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product_info p {
     color: #666;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    font-size: 0.9em;
 }
-.footer-info p {
-    margin: 0;
+
+.price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
 }
-.copyright {
-    font-size: 0.8em;
+
+.price_after {
+    display: flex;
+    align-items: center;
+}
+
+.original_price {
     color: #999;
+    text-decoration: line-through;
+    font-size: 0.9em;
+    margin-right: 5px;
+}
+
+.discount_rate {
+    color: red;
+    font-weight: bold;
+}
+
+.shopping_fee {
+    font-size: 0.9em;
+}
+
+.col_del_info input {
+    display: block;
+    margin-bottom: 8px;
+    width: 80px;
+    height: 25px;
+    justify-content: center;
+}
+
+/* 총 합계 */
+.cart-summary {
+    width: 50%;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.order-summary {
+    margin: 0 auto;
+}
+
+
+/* 페이지 네이션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
+.pagination {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 30px;
+    gap: 5px; /* 페이지 번호 사이 간격 */
+}
+
+.pagination a {
+    border: 1px solid #ccc; /* 테두리 */
+    padding: 8px 12px; /* 내부 여백 */
+    border-radius: 4px; /* 둥근 모서리 */
+    transition: background-color 0.2s; /* 부드러운 색 변화 */
+    color: #333;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+    font-weight: bold;
 }

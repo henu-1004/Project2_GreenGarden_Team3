@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,14 +10,15 @@
         내용 : 장바구니 페이지 구현
     -->
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
-    <link rel="stylesheet" th:href="@{/css/product/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside_view.css}">
     <link rel="stylesheet" th:href="@{/css/product/cart.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
 <div th:replace="~{/common/header :: header}"></div>
 <main>
     <div class="content-wrap">
-        <div th:replace="~{/product/aside :: aside}"></div>
+        <div th:replace="~{common/_aside_view}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h5>장바구니</h5>
@@ -28,74 +28,110 @@
                     <li><a href="#">장바구니</a></li>
                 </ul>
             </div>
-            <div class="cart-contain">
-                <form action="#" id="cart-form">
-                    <table class="cart-table">
+            <section>
+                <form action="#">
+                    <table class="cart_table">
                         <thead>
                             <tr>
-                                <th class="col-check"><input type="checkbox" id="checkAll"/></th>
-                                <th class="col-item">상품명</th>
-                                <th class="col-count">수량</th>
-                                <th class="col-price">판매가</th>
-                                <th class="col-dis">할인</th>
-                                <th class="col-point">포인트</th>
-                                <th class="col-fee">배송비</th>
-                                <th class="col-sum">총합</th>
-                                <th class="col-del">삭제</th>
+                                <th class="col_check"><input type="checkbox" id="checkAll"/></th>
+                                <th class="col_item">상품명</th>
+                                <th class="col_count">수량</th>
+                                <th class="col_price">판매가</th>
+                                <th class="col_dis">할인</th>
+                                <th class="col_point">포인트</th>
+                                <th class="col_fee">배송비</th>
+                                <th class="col_sum">총합</th>
+                                <th class="col_del">삭제</th>
                             </tr>
                         </thead>
-                        <tbody id="cart-items">
-
+                        <tbody id="cart_items">
+                            <tr>
+                                <td class="col-check"><input type="checkbox" class="checkAll"/></td>
+                                <td class="col_item_info">
+                                    <div class="product_image">
+                                        <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
+                                    </div>
+                                    <div class="product_info">
+                                        <h6>상품명</h6>
+                                        <p>간단한 상품 설명</p>
+                                    </div>
+                                </td>
+                                <td>1개</td>
+                                <td>
+                                    <p class="price">27,000원</p>
+                                </td>
+                                <td>
+                                    <div class="price_after">
+                                        <p class="original_price">30,000원</p>
+                                        <p class="discount_rate">10% ↓</p>
+                                    </div>
+                                </td>
+                                <td>포인트</td>
+                                <td>
+                                    <p class="shopping_fee">배송비 2,500원</p>
+                                </td>
+                                <td>29,500원</td>
+                                <td class="col_del_info">
+                                    <input type="button" value="바로주문">
+                                    <input type="button" value="삭제">
+                                </td>
+                            </tr>
 
                         </tbody>
                     </table>
-
-                    <div class="cart-summary">
-                        <h5>전체 합계</h5>
-                        <div>
-                            <span>상 품 수 : </span><span id="item-count">0</span>
-                            <span>상 품 금 액 : </span><span id="total-price">0</span>
-                            <span>할 인 금 액 : </span><span id="discount-amount">0</span>
-                            <span>배 송 비 : </span><span id="shipping-fee">0</span>
-                            <span>전체 주문 금액 : </span><span id="final-total">0</span>
-                            <span>적립 포인트 : </span><span id="earned-points">0</span>
-                        </div>
+                    <section class="cart-summary">
+                        <h3>전체 합계</h3>
+                        <table border="1" class="order-summary">
+                            <tr>
+                                <th>상 품 수</th>
+                                <td>1개</td>
+                            </tr>
+                            <tr>
+                                <th>상 품 금 액</th>
+                                <td>27,000원</td>
+                            </tr>
+                            <tr>
+                                <th>할 인 금 액</th>
+                                <td>3,000원</td>
+                            </tr>
+                            <tr>
+                                <th>배 송 비</th>
+                                <td>2,500</td>
+                            </tr>
+                            <tr>
+                                <th>총 금 액</th>
+                                <td>29,500원</td>
+                            </tr>
+                            <tr>
+                                <th>적립 포인트</th>
+                                <td>0</td>
+                            </tr>
+                        </table>
 
                         <div class="cart-action">
                             <button type="button" id="checkout-btn">주문하기</button>
 
                         </div>
-                    </div>
+                    </section>
                 </form>
+                <div class="pagination">
+                <!-- 이전 페이지 버튼 -->
+                <a href="#" class="prev">&lt; 이전</a>
+
+                <!-- 페이지 번호들 -->
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+
+                <!-- 다음 페이지 버튼 -->
+                <a href="#" class="next">다음 &gt;</a>
             </div>
+            </section>
         </section>
     </div>
 </main>
-<footer>
-<div class="footer-container">
-    <div class="footer-logo">Green Garden</div>
-    <div class="footer-info">
-        <p>사업자등록번호: 123-45-12345 | 대표이사: 홍길동 | 고객센터: 123-4567 | 이메일: example@kmarket.net</p>
-        <p>주소: 부산광역시 부산진구 중앙대로 300</p>
-    </div>
-    <p class="copyright">COPYRIGHT © K-MARKET ALL RIGHTS RESERVED.</p>
-</div>
-</footer>
-<script>
-    function changeMainImage(thumb) {
-        const mainImage = document.getElementById('main-product-image');
-        mainImage.src = thumb.src;
-        mainImage.alt = thumb.alt;
-    }
-
-    function scrollThumbs(direction) {
-        const container = document.querySelector('.product-thumbnails');
-        const scrollAmount = 100; // 스크롤할 양
-        container.scrollBy({
-            left: direction * scrollAmount,
-            behavior: 'smooth'
-        });
-    }
-</script>
+<div th:replace="~{/common/_footer :: footer}"></div>
 </body>
 </html>
