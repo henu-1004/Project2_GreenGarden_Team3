@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>일반 회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/member/register.css}">
 </head>
 <!--
     날짜 : 2025/09/23
@@ -10,32 +12,79 @@
     내용 : 회원가입(General) 테스트 화면 구성
 -->
 <body>
-<h3>register</h3>
-<form th:action="@{/member/register}" method="post">
-    <input type="text" name="memId" placeholder="아이디 입력"><br>
-    <input type="text" name="password" placeholder="비밀번호 입력"><br>
-    <input type="text" name="name" placeholder="이름 입력"><br>
-    <input type="date" name="birth" placeholder="날짜 선택"><br>
-    <label>
-        <input type="radio" name="gender" value="M"> 남
-    </label>
-    <label>
-        <input type="radio" name="gender" value="F"> 여
-    </label><br>
-    <input type="text" name="email" placeholder="이메일 입력"><br>
-    <input type="text" name="phone" placeholder="휴대폰 입력"><br>
+<div th:replace="~{/common/header :: header}"></div>
 
-    <input type="text" id="zip_code" name="zipCode"
-           placeholder="우편번호" onclick="postcode()" readonly> <br>
-    <input type="text" id="address_basic" name="addressBasic"
-           placeholder="기본주소" readonly> <br>
-    <input type="text" id="address_detail" name="addressDetail"
-           placeholder="상세주소">
-    <input type="hidden" name="joinDate" id="joinDate" value="">
-    <input type="hidden" name="role" value="GENERAL">
-    <input type="hidden" name="status" value="NORMAL"><br>
-    <input type="submit" value="회원가입"><br>
-</form>
+<main class="register-wrap">
+    <h2 class="register-title">일반 회원가입</h2>
+
+    <form th:action="@{/member/register}" method="post">
+
+        <section class="section">
+            <div class="form-grid">
+                <label for="memId">아이디</label>
+                <input id="memId" type="text" name="memId" placeholder="아이디 입력">
+                <span class="muted">영문,숫자 4~12자</span>
+
+                <label for="password">비밀번호</label>
+                <input id="password" type="password" name="password" placeholder="비밀번호 입력">
+                <span class="muted">영문, 숫자, 특수문자 8~12자</span>
+
+                <label for="password2">비밀번호 확인</label>
+                <input id="password2" type="password" name="password2" placeholder="비밀번호 확인">
+                <span></span>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="form-grid">
+                <label for="name">이름</label>
+                <input id="name" type="text" name="name" placeholder="이름 입력">
+                <span></span>
+
+                <label for="birth">생년월일</label>
+                <input id="birth" type="date" name="birth">
+                <span></span>
+
+                <label>성별</label>
+                <div class="gender">
+                    <label>
+                        <input type="radio" name="gender" value="M">남
+                    </label>
+                    <label>
+                        <input type="radio" name="gender" value="F">여
+                    </label>
+                </div>
+                <span></span>
+
+                <label for="email">이메일</label>
+                <input id="email" type="text" name="email" placeholder="이메일 입력">
+                <button type="button" class="subbtn" id="emailBtn">이메일 인증</button>
+
+                <label for="phone">휴대폰</label>
+                <input id="phone" type="text" name="phone" placeholder="휴대폰 입력">
+                <button type="button" class="subbtn" id="phoneBtn">휴대폰 인증</button>
+
+
+                <label for="zip_code">주소</label>
+                <input type="text" id="zip_code" name="zipCode" placeholder="우편번호" onclick="postcode()" readonly>
+                <button type="button" class="subbtn" onclick="postcode()">우편번호 검색</button>
+                <input type="text" id="address_basic" name="addressBasic" placeholder="기본주소" readonly>
+                <input type="text" id="address_detail" name="addressDetail" placeholder="상세주소">
+
+                <input type="hidden" name="joinDate" id="joinDate" value="">
+                <input type="hidden" name="role" value="GENERAL">
+                <input type="hidden" name="status" value="NORMAL"><br>
+
+            </div>
+        </section>
+
+        <div class="actions">
+            <button type="submit">회원가입</button>
+        </div>
+    </form>
+</main>
+
+<div th:replace="~{/common/footer :: footer}"></div>
 </body>
 
 <script>

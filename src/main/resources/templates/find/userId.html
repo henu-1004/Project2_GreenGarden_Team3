@@ -1,26 +1,79 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>회원가입 구분</title>
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/find/userId.css}">
+
 </head>
+
 <body>
-	<main>
-		<div id="main">
-			<jsp:include page="../common/headerWithSearch.jsp" />
+<div th:replace="~{/common/header :: header}"></div>
+
+<main class="find-wrap is-email">
+    <h2 class="find-title">아이디 찾기</h2>
+
+    <section class="section">
+        <div class="fid-tabs">
+            <button type="button" class="find-tab active">이메일 인증</button>
+            <button type="button" class="find-tab">휴대폰 인증</button>
+        </div>
+
+        <form action="@{/member/find/userId}" method="post" class="email-fields">
+            <div class="form-grid">
+                <div class="row-divider"></div>
+
+                <label for="fi-name">이름</label>
+                <input id="fi-name" type="text" name="name" placeholder="이름 입력">
+                <span></span>
+
+                <div class="row-divider"></div>
+
+                <label for="fi-email">이메일</label>
+                <input id="fi-email" type="text" name="eamil" placeholder="이메일 입력">
+                <button type="button" class="subbtn">인증번호 받기</button>
+
+                <span></span>
+                <input id="fi-code" type="text" name="code" placeholder="인증번호 입력">
+                <button type="button" class="subbtn">확인</button>
+            </div>
+        </form>
+
+        <!-- 휴대폰 인증-->
+        <form class="phone-fields">
+            <div class="form-grid">
+                <div class="row-divider"></div>
+
+                <label for="fp-name">이름</label>
+                <input id="fp-phone" type="text" placeholder="휴대폰 번호 입력">
+                <button type="button" class="subbtn">인증번호 받기</button>
+
+                <span></span>
+                <input id="fp-code" type="text" placeholder="인증번호 입력">
+                <button type="button" class="subbtn">확인</button>
+            </div>
+        </form>
+    </section>
+
+    <p class="help">
+        회원가입 시 이메일 주소와 입력한 이메일 주소가 같아야 인증번호를 받을 수 있습니다.<br>
+        인증번호를 입력한 뒤 <strong>확인</strong> 버튼을 누르세요.
+    </p>
+
+    <div class="actions right">
+        <a th:href="@{/member/login}">
+            <button type="button" class="btn btn-ghost">취소</button>
+        </a>
+        <a th:href="@{/member/find/resultId}">
+            <button type="button" class="btn btn-primary">다음</button>
+        </a>
+    </div>
+</main>
 
 
-			<div class="content-wrap">
-				<jsp:include page="../common/aside_main.jsp" />
-				<section id="main-section">
-					
 
-					<jsp:include page="../common/footer.jsp" />
-				</section>
-			</div>
-		</div>
-	</main>
+
+<div th:replace="~{/common/footer :: footer}"></div>
 </body>
 </html>

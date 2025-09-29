@@ -1,0 +1,107 @@
+:root{
+    --brand: #2d6f54;           /* 버튼/포커스 기본 그린 */
+    --line:  #e4e9e7;
+    --muted: #6f7b79;
+}
+
+.registerSeller-wrap{
+    max-width:780px;
+    margin:32px auto;
+    padding:0 16px;
+}
+.registerSeller-title{
+    font-weight:800;
+    font-size:20px;
+    margin-bottom:16px;
+    padding-bottom:12px;
+    border-bottom:2px solid #ddd;
+}
+
+.section{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px;
+    box-shadow:0 2px 8px rgba(17,41,26,.04);
+}
+.section + .section{ margin-top:20px; }
+
+/* 섹션 안에서도 기존 그리드 그대로 사용 */
+.section .form-grid{
+    display:grid;
+    grid-template-columns:150px 230px 140px;
+    gap:12px 18px;
+    align-items:center;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:150px 1fr 140px; /* 라벨 / 입력 / 보조칸 */
+    gap:12px 18px;
+    align-items:center;
+}
+.form-grid .full{grid-column:2 / span 2;}
+.form-grid label{font-weight:600;color:#333;}
+.form-grid input[type="text"],
+.form-grid input[type="password"],
+.form-grid input[type="date"]
+{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #d6dbdb;
+    border-radius:8px;
+    box-sizing:border-box;
+    background: #fff;
+}
+.form-grid input:focus{
+    outline: none;
+    border-color: var(--brand);   /* #2d6f54 */
+    box-shadow: 0 0 0 3px rgba(45,111,84,.12);
+}
+
+#zip_code{ grid-column: 2; }                          /* 2열 */
+button.subbtn[onclick*="postcode"]{ grid-column: 3; } /* 3열 같은 행 */
+#address_basic{ grid-column: 2 / span 2; margin-top: 6px; }
+#address_detail{ grid-column: 2 / span 2; margin-top: 6px; }
+
+.subbtn{
+    border:1px solid #2d6f54;
+    border-radius:8px;
+    padding:10px;
+    cursor:pointer;
+    background:#eaf3ef
+}
+.actions{
+    margin-top:20px;
+    text-align:center;
+    grid-column:1 / -1;
+}
+.actions button{
+    min-width:260px;
+    padding:14px 18px;
+    border:0;
+    border-radius:10px;
+    background: var(--brand);
+    color:#fff;
+    font-weight:800;
+    cursor:pointer;
+    box-shadow: 0 6px 16px rgba(45,111,84,.18);
+    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.actions button:hover{
+    transform: translateY(-1px);
+}
+.actions button:active{
+    transform: translateY(0);
+    box-shadow: 0 3px 10px rgba(45,111,84,.18);
+}
+
+.muted{
+    color:#777;
+    font-size:12px
+}
+.form-grid .muted{
+    justify-self: start;
+    white-space: nowrap;
+    color: var(--muted);
+}
