@@ -1,0 +1,71 @@
+:root{
+    --bg:#f3f7f6;
+    --brand:#175a48;
+    --brand-2:#2b6b34;
+    --muted:#66968c;
+    --line:#e4e9e7;
+}
+
+.find-wrap{
+    max-width:780px;
+    margin:32px auto;
+    padding:0 16px;
+}
+.find-title{
+    font-weight:800;
+    font-size:20px;
+    margin-bottom:16px;
+    padding-bottom:12px;
+    border-bottom:2px solid #ddd;
+}
+
+.section{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px;
+    box-shadow:0 2px 8px rgba(17,41,26,.04);
+}
+
+/* Key–Value 리스트 */
+.kv-grid{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    row-gap:14px;
+    column-gap:18px;
+    align-items:center;
+}
+
+.kv-grid .label{color:#333;font-weight:700;}
+.kv-grid .value{color:#2a2f2e;}
+.kv-grid .row-divider{grid-column:1 / -1;height:1px;background:#edf1f0;margin:6px 0;}
+
+.helper{
+    margin:14px 2px 18px;
+    color:#62716e;
+    line-height:1.55
+}
+
+.actions.right{
+    display:flex;
+    justify-content:flex-end;
+    gap:12px;
+}
+.btn{
+    min-width:120px;
+    height:44px;
+    border-radius:10px;
+    font-weight:700;
+    border:0;
+    cursor:pointer;
+}
+.btn-ghost{
+    background:#e9ecef;
+    color:#555;
+}
+.btn-primary{
+    background:var(--brand);
+    color:#fff;
+    box-shadow:0 6px 16px rgba(23,90,72,.18);
+}
+.btn-primary:hover{background:var(--brand-2);}

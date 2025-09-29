@@ -1,16 +1,82 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>약관동의</title>
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/policy/buyer.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
 
-		</div>
-	</main>
+<div th:replace="~{/common/header :: header}"></div>
+
+<main class="policy-wrap">
+    <div class="policy-layout">
+
+        <aside class="policy-aside">
+            <a class="side-item" href="#"><span class="icon"></span> 패션·의류·뷰티</a>
+            <a class="side-item" href="#"><span class="icon"></span> 가전·디지털</a>
+            <a class="side-item" href="#"><span class="icon"></span> 식품·생필품</a>
+            <a class="side-item" href="#"><span class="icon"></span> 홈·문구·취미</a>
+        </aside>
+
+        <!-- 우측 본문 -->
+        <section class="policy-main">
+
+            <div class="policy-head">
+                <h2 class="policy-title">구매회원 이용약관</h2>
+
+                <!-- 약관 아이콘 -->
+                <nav class="policy-tabs" role="tablist" aria-label="약관 종류">
+                    <a class="policy-tab active" aria-current="page" th:href="@{/policy/buyer}" role="tab">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 12l3 3 7-7"/></svg>
+                        <span>구매회원 약관</span>
+                    </a>
+                    <a class="policy-tab" th:href="@{/policy/seller}" role="tab">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M3 10h18l-2-5H5l-2 5z"/><path d="M9 14h6"/></svg>
+                        <span>판매회원 약관</span>
+                    </a>
+                    <a class="policy-tab" th:href="@{/policy/finance}" role="tab">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><rect x="4.5" y="9" width="15" height="2"/><rect x="5.5" y="14" width="5" height="2"/></svg>
+                        <span>전자금융거래</span>
+                    </a>
+                    <a class="policy-tab" th:href="@{/policy/location}" role="tab">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.8"/></svg>
+                        <span>위치정보 약관</span>
+                    </a>
+                    <a class="policy-tab" th:href="@{/policy/privacy}" role="tab">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 3v5c0 5.5-3.8 8.9-7 10-3.2-1.1-7-4.5-7-10V6l7-3z"/><rect x="9.5" y="11.5" width="5" height="4.5" rx="1.2"/><path d="M12 11.5V10a2 2 0 0 1 4 0v1.5"/></svg>
+                        <span>개인정보처리</span>
+                    </a>
+
+                    <!-- 인쇄 -->
+                    <button type="button" class="policy-print" onclick="window.print()">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M6 9V4h12v5"/><rect x="3" y="9" width="18" height="8" rx="2"/><rect x="7" y="17" width="10" height="3"/>
+                        </svg>
+                        인쇄하기
+                    </button>
+                </nav>
+            </div>
+
+
+            <div class="article-title">제 1 조 (목적)</div>
+            <p class="policy-text">… 약관 본문 …</p>
+
+            <div class="article-title">제 2 조 (약관의 명시, 효력과 개정)</div>
+            <p class="policy-text">… 약관 본문 …</p>
+
+            <div class="article-title">제 3 조</div>
+            <p class="policy-text">… 약관 본문 …</p>
+
+            <div class="article-title">제 4 조</div>
+            <p class="policy-text">… 약관 본문 …</p>
+        </section>
+    </div>
+</main>
+
+
+<div th:replace="~{/common/footer :: footer}"></div>
+
 </body>
 </html>
