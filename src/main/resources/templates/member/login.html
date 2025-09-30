@@ -9,7 +9,7 @@
 <!--
     날짜 : 2025/09/30
     이름 : 이종봉
-    내용 : DTO에 맞게 아이디 비밀번호 수정 및 경로이동추가
+    내용 : 로그인 배너 및 경로이동. (인증로고는 느낌만)
 -->
 <body>
 
@@ -20,7 +20,9 @@
             <h2 class="login-title">로그인</h2>
 
             <div class="login-box">
+
                 <!-- 로그인폼 -->
+
 
                 <form class="login-form" th:action="@{/member/login}" method="POST">
                     <label for="userid">아이디</label>
@@ -34,8 +36,11 @@
 
                 <!-- 오른쪽 배너 -->
                 <div class="login-banner">
-                    <a class="banner-box" href="#"><img th:src="@{/images/greengarden_login_banner_420x260.png}"></a>
-
+                    <a class="banner-box"
+                       href="https://ohou.se/cards/feed?query=%EC%8B%9D%EB%AC%BC"
+                    target="_blank" rel="noopener nofollow"
+                    aria-label="오늘의집 커뮤니티 '식물' 피드로 이동(새창)">
+                        <img th:src="@{/images/greengarden_login_banner.png}"></a>
                 </div>
             </div>
 
@@ -57,10 +62,10 @@
             <!-- 하단 작은 배너 -->
             <div class="sub-banners">
                 <div class="sub-banner"><img th:src="@{/images/badge1_antibiotic_free_en.png}"></div>
-                <div class="sub-banner"></div>
-                <div class="sub-banner"></div>
-                <div class="sub-banner"></div>
-                <div class="sub-banner"></div>
+                <div class="sub-banner"><img th:src="@{/images/badge2_eco_friendly_en.png}"></div>
+                <div class="sub-banner"><img th:src="@{/images/badge3_korea_certified_en.png}"></div>
+                <div class="sub-banner"><img th:src="@{/images/badge4_green_academy_en_green_bg.png}"></div>
+                <div class="sub-banner"><img th:src="@{/images/badge5_non_pesticide_en.png}"></div>
             </div>
         </section>
     </main>

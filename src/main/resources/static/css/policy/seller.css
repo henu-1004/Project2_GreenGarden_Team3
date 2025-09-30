@@ -1,0 +1,135 @@
+:root{
+    --bg:#f3f7f6;
+    --brand:#175a48;
+    --brand-2:#2b6b34;
+    --muted:#66968c;
+    --line:#e4e9e7;
+}
+
+.policy-wrap{
+    max-width:1200px;
+    margin:32px auto;
+    padding:0 16px;
+}
+
+/* 레이아웃: 좌측 사이드바 + 우측 본문 */
+.policy-layout{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    gap:20px;
+}
+
+/* 사이드바 */
+.policy-aside{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px;
+   /* box-shadow:0 2px 8px rgba(17,41,26,.04); */
+    height:max-content;
+}
+.policy-aside a.side-item{
+    display:flex; align-items:center; gap:10px; height:48px; padding:0 12px; margin-bottom:10px;
+    border:1px solid var(--line); border-radius:10px; background:#f7faf9; color:#2a2f2e;
+   /* font-weight:600; text-decoration:none; transition:background .15s, border-color .15s, box-shadow .15s; */
+}
+.policy-aside a.side-item:hover{ background:#eef4f2; border-color:var(--brand); }
+.policy-aside .icon{ width:22px; height:22px; border-radius:6px; border:1px dashed #cfd8d6; background:#eef4f2; }
+
+
+/* 본문 카드 */
+.policy-main{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:18px;
+  /*  box-shadow:0 2px 8px rgba(17,41,26,.04); */
+}
+
+/* 상단: 타이틀 + 탭 */
+.policy-head{
+    display:flex;
+    align-items:center;
+    gap:16px; }
+
+.policy-title{
+    margin:0;
+    white-space:nowrap;
+    line-height:1; }
+
+/* 아이콘 */
+.policy-tabs{
+    flex:1 1 auto;
+    display:grid; gap:12px;
+    grid-template-columns:repeat(5, minmax(140px,1fr));
+}
+.policy-tab{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    min-height:100px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#eef4f2;
+    color:var(--muted);
+    font-weight:800;
+    text-decoration:none;
+  /*  transition:transform .12s, box-shadow .12s, border-color .12s, background .12s; */
+}
+
+/*.policy-tab:hover{ border-color:var(--brand); box-shadow:0 2px 8px rgba(23,90,72,.08); }*/
+/*.policy-tab:focus-visible{ outline:0; box-shadow:0 0 0 3px rgba(23,90,72,.18); }*/
+.policy-tab svg{ width:30px; height:30px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.policy-tab span{ white-space:nowrap; font-size:15px; }
+.policy-tab.active, .policy-tab[aria-current="page"]{ background:var(--brand); color:#fff; border-color:var(--brand); }
+
+/* 인쇄 버튼 */
+.policy-print{
+    grid-column:5;
+    grid-row:2;
+    justify-self:center;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    width:140px;
+    min-height:80px;
+    padding:10px;
+    border:1px dashed var(--line);
+    border-radius:12px;
+    background:#f8fbfa;
+    color:var(--muted);
+    font-weight:700;
+}
+
+.policy-print:hover{
+    border-color:var(--brand);
+    color:var(--brand);
+}
+.policy-print svg{
+    width:30px;
+    height:30px;
+    stroke:currentColor;
+    fill:none;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round; }
+
+
+.article-title{
+    margin-top:20px;
+    padding:10px 0;
+    border-top:1px solid #edf1f0;
+    font-weight:800;
+}
+
+.policy-text{
+    font-size:12px;
+    color:#888;
+    line-height:1.8;
+    margin-top:8px;
+    white-space:pre-line;
+}

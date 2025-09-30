@@ -63,11 +63,16 @@
         width:100%;
         max-width:420px;
         height:200px;
-        border:2px dashed #66968c;
         display:flex;
         justify-content:center;
         align-items:center;
         color:#999;
+    }
+    .banner-box img {
+        width: 100%;       /* 부모 크기에 맞게 꽉 채우기 */
+        height: 100%;      /* 세로도 부모 높이에 맞게 */
+        object-fit: cover; /* 비율 깨지지 않게 채우기 */
+        border-radius: 4px; /* 모서리 살짝 둥글게 (옵션) */
     }
 
     /* 옵션 */
@@ -106,7 +111,13 @@
     }
     .sub-banner {
         flex:1;
-        height:80px;
+        height:100px;
         border:1px solid #ccc;
         background:#f3f7f6;
+    }
+
+    .sub-banner img {
+        width: 100%;        /* 부모 박스 가로에 꽉 차게 */
+        height: 100%;       /* 부모 박스 높이에 꽉 차게 */
+        object-fit: cover;  /* 비율 유지하면서 빈공간 없이 */
     }
