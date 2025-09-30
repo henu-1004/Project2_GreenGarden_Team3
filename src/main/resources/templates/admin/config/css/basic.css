@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    color: #333;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0 0 20px 0;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: none;
+    border-right: none;
+}
+
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.page-title h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.breadcrumb {
+    font-size: 14px;
+    color: #555;
+}
+
+.breadcrumb strong {
+    font-weight: bold;
+}
+
+.btn-wrap {
+    margin-bottom: 50px;
+}
+.btn-wrap .btn {
+    margin-bottom: 50px;
+    margin-top: 0px;
+    background: #175a48;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    float: right;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.form-row label {
+    width: 150px;
+    font-size: 14px;
+    font-weight: bold;
+}
+.form-row input[type="text"],
+.form-row input[type="email"] {
+    flex: 0;
+    padding: 2px;
+    border: 1px solid #ccc;
+    background: #f3f7f6;
+    color: #666;
+    box-sizing: border-box;
+}
+.form-row .desc {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #666;
+}
+
+.info-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #333;
+}
+.info-box {
+    background: #f3f7f6;
+    padding: 15px;
+    border: 0 solid #eee;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.version-box {
+    border: 0px solid #ddd;
+    border-top: none;
+}
+.version-box table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.version-box th,
+.version-box td {
+    padding: 8px;
+    text-align: left;
+}
+.version-box th {
+    background: #f3f7f6;
+    font-weight: normal;
+    width: 120px;
+}
+.version-box td strong {
+    font-weight: bold;
+}
+.version-box input[type="file"],
+.version-box input[type="text"] {
+    flex: 0;
+    padding: 2px;
+    border: 1px solid #ccc;
+    background: #f3f7f6;
+    color: #666;
+    box-sizing: border-box;
+    width: 200px;
+}
