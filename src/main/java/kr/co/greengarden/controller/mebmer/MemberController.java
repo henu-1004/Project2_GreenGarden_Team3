@@ -2,8 +2,10 @@ package kr.co.greengarden.controller.mebmer;
 
 import kr.co.greengarden.dto.MemberDTO;
 import kr.co.greengarden.dto.MemberGeneralDTO;
+import kr.co.greengarden.dto.MemberSellerDTO;
 import kr.co.greengarden.entity.Member;
 import kr.co.greengarden.service.MemberGeneralService;
+import kr.co.greengarden.service.MemberSellerService;
 import kr.co.greengarden.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final MemberGeneralService memberGeneralService;
+    private final MemberSellerService memberSellerService;
 
     @GetMapping("/member/login")
     public String login() {
@@ -37,10 +40,23 @@ public class MemberController {
         return "member/register";
     }
 
+    @GetMapping("/member/registerSeller")
+    public String signupSeller() {
+        return "member/registerSeller";
+    }
+
     @PostMapping("/member/register")
     public String signup(MemberDTO memberDTO, MemberGeneralDTO memberGeneralDTO) {
 
         memberGeneralService.save(memberDTO, memberGeneralDTO);
+
+        return "redirect:/member/login";
+    }
+
+    @PostMapping("/member/registerSeller")
+    public String signupSeller(MemberDTO memberDTO, MemberSellerDTO memberSellerDTO) {
+
+        memberSellerService.save(memberDTO, memberSellerDTO);
 
         return "redirect:/member/login";
     }

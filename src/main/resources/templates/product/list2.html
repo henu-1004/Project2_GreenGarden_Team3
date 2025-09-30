@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product list</title>
+    <!--
+        날짜 : 2025/09/26
+        이름 : 이수연
+        내용 : 상품 목록 페이지
+    -->
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/product/list.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+</head>
+<body>
+<div th:replace="~{/common/header :: header}"></div>
+<main>
+    <div class="content-wrap">
+        <div th:replace="~{/common/_aside :: aside}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>상품목록</h5>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">반려식물</a></li>
+                    <li><a href="#">초보 식집사</a></li>
+                </ul>
+            </div>
+            <!-- 상품 목록 반복 영역 -->
+            <div class="product_list" th:each="product : ${productList}">
+                <div class="product_image">
+                    <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
+                </div>
+                <div class="product_info">
+                    <h6 th:text="${product.name}">상품명</h6>
+                    <p th:text="${product.description}">간단한 상품 설명</p>
+                </div>
+                <div class="product_price_info">
+                    <p class="price" th:text="|${product.price}원|">27,000원</p>
+                    <div class="price_after">
+                        <p class="original_price" th:text="${product.price / (1 - (product.discountRate / 100.0))}">30,000원</p>
+                        <span class="discount_rate" th:text="|${product.discountRate}% ↓|">10% ↓</span>
+                    </div>
+                    <p class="shopping_fee"th:text="|배송비 ${product.deliveryFee}원|">배송비 2,500원</p>
+                </div>
+                <div class="prodect_meta">
+                    <div>🏠 판매자</div>
+                    <div><img src="https://placehold.co/15x15/e0e0e0/000000?text=🏅" alt="메달아이콘" onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=🏅';" ></div>
+                    <div>상품평 <img src="https://placehold.co/15x15/e0e0e0/000000?text=⭐" alt="상품점수별아이콘" onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=⭐';" ></div>
+                </div>
+            </div>
+
+            <div class="pagination">
+                <!-- 이전 페이지 버튼 -->
+                <a href="#" class="prev">&lt; 이전</a>
+
+                <!-- 페이지 번호들 -->
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+
+                <!-- 다음 페이지 버튼 -->
+                <a href="#" class="next">다음 &gt;</a>
+            </div>
+        </section>
+    </div>
+</main>
+<div th:replace="~{/common/footer :: footer}"></div>
+</body>
+</html>

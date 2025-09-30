@@ -26,6 +26,7 @@ public class MemberService {
     public List<Member> getUsers(){
         return memberRepository.findAll();
     }
+
     public Optional<Member> getUser(String memId){
         return memberRepository.findById(memId);
     }

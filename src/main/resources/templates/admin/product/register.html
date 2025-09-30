@@ -15,8 +15,6 @@
 
 <form method="post" th:action="@{/admin/product/register}" enctype="multipart/form-data">
 
-    <input type="hidden" name="seller.mem_id" value="1"/>
-
     <h3>상품분류</h3>
     <table>
         <tr>
@@ -60,7 +58,7 @@
         </tr>
         <tr>
             <td>할인율</td>
-            <td><input type="number" name="discount_rate" min="0" max="100" step="1"> %</td>
+            <td><input type="number" name="discountRate" min="0" max="100" step="1"> %</td>
         </tr>
         <tr>
             <td>포인트</td>
@@ -72,7 +70,7 @@
         </tr>
         <tr>
             <td>배송비</td>
-            <td><input type="number" name="delivery_fee" min="0" step="1"> 원</td>
+            <td><input type="number" name="deliveryFee" min="0" step="1"> 원</td>
         </tr>
 
         <tr>
@@ -90,7 +88,7 @@
         </tr>
         <tr>
             <td>상품 상세이미지</td>
-            <td><input type="file" name="imgFile_detail" accept="image/*"></td>
+            <td><input type="file" name="imgFileDetail" accept="image/*"></td>
             <td>가로 940px 권장, 최대 1MB</td>
         </tr>
     </table>

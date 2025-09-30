@@ -52,7 +52,7 @@ public class AdminMemberController {
     }
 
     @GetMapping("/admin/member/modify")
-    public String modify(@RequestParam("mem_id") String memId, Model model) {
+    public String modify(@RequestParam("memId") String memId, Model model) {
         MemberGerneralModifyDTO memberGeneral = memberGeneralService.findGeneralById(memId);
         model.addAttribute("memberGeneral", memberGeneral);
         return "admin/member/modify";
