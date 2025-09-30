@@ -1,0 +1,38 @@
+/*
+    날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : admin header & css
+*/
+header, body {
+    background-color: #f3f6f7;
+}
+
+#header-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+#header-top, #header-middle {
+    padding-bottom: 40px;
+}
+
+#header-top {
+    text-align: right;
+}
+
+#header-top a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: #175a48; /* 컬러 수정 */
+}
+
+#header-middle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 로고 */
+#header-middle a img {
+    width: 200px;
+    height: auto;
+}

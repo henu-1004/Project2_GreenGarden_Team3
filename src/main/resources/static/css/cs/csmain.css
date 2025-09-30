@@ -1,405 +1,440 @@
-/* 전체 기본 */
+/*
+    날짜 : 2025/09/30
+    이름 : 박효빈
+    내용 : 고객센터 최종 통합 CSS (기존 색상 유지, 화면 설계서 레이아웃 반영)
+*/
+
+/* --- 1. 공통 및 기본 레이아웃 (Layout) --- */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #ffffff; /* 부드러운 오트밀 색상으로 변경하여 따뜻한 배경 느낌 강조 */
-    color: #4A4441; /* 메인 글씨색을 따뜻한 다크 브라운으로 변경 */
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #f3f6f7; /* 전체 배경은 연한 회색 */
+    color: #000;
 }
 
-/* 전체 콘텐츠를 감싸는 래퍼 */
-.main-wrapper {
-    max-width: 1200px;
-    margin: 75px auto;
-    background: #ffffff; /* 컨텐츠 안쪽은 깨끗한 흰색 유지 */
-    border-radius: 30px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1); /* 그림자를 더 깊게 만들어 '창' 느낌 강화 */
-    overflow: hidden; /* 자식 요소의 둥근 모서리가 밖으로 나가지 않도록 설정 */
-}
-
-/* 헤더 */
-.header {
-    background: #f3f7f6; /* 메인 래퍼와 동일한 흰색으로 설정 */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 40px; /* 위아래 패딩을 늘려 헤더 크기를 키움 */
-    border-bottom: 1px solid #E5E4E2; /* 은은한 회색 라인 추가 */
-    border-top-left-radius: 30px; /* 상단 좌측 둥근 모서리 */
-    border-top-right-radius: 30px; /* 상단 우측 둥근 모서리 */
-}
-
-.header-logo img {
-    width: 130px;
-    height: 35px;
-}
-
-/* 헤더 nav 링크 색상 변경 */
-.header-nav a {
-    margin-left: 20px;
-    font-size: 9pt;
-    color: #030303;
-    text-decoration: none;
-    font-weight: bold; /* 글자를 더 눈에 띄게 */
-}
-
-/* 푸터 */
-#footer-wrap {
-    background: #f3f7f6; /* 메인 래퍼와 동일한 흰색으로 설정 */
-    align-items: center;
-    padding: 15px; /* 푸터 패딩을 늘려 여백 확보 */
-    margin: 0 auto;
-    border-top: 1px solid #E5E4E2; /* 은은한 회색 라인 추가 */
-    border-bottom-left-radius: 30px; /* 하단 좌측 둥근 모서리 */
-    border-bottom-right-radius: 30px; /* 하단 우측 둥근 모서리 */
-}
-
-#footer-top {
-    padding: 10px;
-    text-align: center;
-}
-
-/* 푸터 링크 색상 변경 */
-#footer-top a {
-    color: #B2A298; /* 부드러운 회색으로 변경 */
-    text-decoration: none;
-    margin: 0 10px;
-    font-size: 14px;
-}
-
-footer table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.footer-col {
-    vertical-align: top;
-    padding: 0 20px;
-    font-size: 14px;
-    color: #030303; /* 푸터 글씨색을 부드러운 색으로 변경 */
-}
-#foot-logo{
-    width: 120px; /* 너비 */
-    height: 45px; /* 비율 유지 */
-}
-
-/* 메인 컨테이너 */
 .main-container {
-    padding: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0;
     display: flex;
-    gap: 20px;
+    gap: 20px; /* 사이드바와 메인 섹션 사이 간격 */
 }
 
-/* 사이드바 */
-.sidebar {
-    width: 220px;
-    background: #ffffff; /* 따뜻한 아이보리색으로 변경 */
-    border-right: 1px solid #E5E4E2;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
-    border-radius: 10px;
-}
-
-/* 사이드바 로고 및 제목 스타일 */
-.sidebar-logo {
-    text-align: center;
-    padding: 20px 0;
-    border-bottom: 2px solid #EFEAE5;
-    margin-bottom: 15px;
-}
-
-.sidebar-logo img {
-    width: 150px;
-    height: auto;
-}
-
-.sidebar-logo h2 {
-    font-size: 18px;
+/* 메인 타이틀 */
+.cs-main-title {
+    font-size: 1.8em;
     font-weight: bold;
-    color: #030303; /* 따뜻한 다크 브라운으로 변경 */
-    margin-top: 10px;
-    margin-bottom: 0;
+    text-align: left;
+    margin: 0 0 20px 0;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
 }
 
+/* 섹션 공통 (index.html 및 view.html 콘텐츠 컨테이너) */
+.cs-section {
+    /* #main-section에 배경이 생겼으므로, 내부 박스는 배경/테두리 제거 */
+    background: none;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+/* --- 2. 사이드바 (Sidebar) 스타일 (view.html) --- */
+.sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    /* 화면 설계서 스타일: 흰색 배경, 둥근 모서리 */
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0;
+}
+
+/* 브레드크럼 (사이드바 내부 - HTML 구조상 #main-section으로 이동 권장) */
+.cs-breadcrumb {
+    font-size: 0.95em;
+    color: #555;
+    margin: 0;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cs-breadcrumb a {
+    color: #555;
+    text-decoration: none;
+}
+
+.cs-breadcrumb .active-breadcrumb {
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    font-weight: bold;
+}
+
+/* 메뉴 공통 */
 .sidebar ul {
     list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.menu {
-    border-bottom: 2px solid #EFEAE5;
-}
-
-.menu a {
-    text-decoration: none;
-    color: #030303; /* 따뜻한 다크 브라운으로 변경 */
-    display: block;
-}
-
-.menu a:hover {
-    color: #B38F75; /* 따뜻한 로즈 브라운으로 변경 */
-    font-weight: bold;
-}
-
-.menu-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 30px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* 화살표 스타일 수정 */
-.menu-title::after {
-    content: '';
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    background-size: contain;
-    transform: rotate(180deg);
-    transition: transform 0.3s;
-}
-
-.menu.open .menu-title::after {
-    transform: rotate(0deg);
-}
-
-.submenu {
-    color: #9A8A7C; /* 부드러운 회색으로 변경 */
     padding: 0;
     margin: 0;
 }
 
-/*.menu.open .submenu {*/
-/*    display: block;*/
-/*}*/
+/* 1차 메뉴 항목 */
+.sidebar ul > li {
+    position: relative;
+    border-bottom: 1px solid #eee;
+}
+.sidebar ul > li:last-child { border-bottom: none; }
 
-.submenu li a {
-    padding: 8px 15px 8px 50px;
-    font-size: 16px;
-    color: #9A8A7C; /* 부드러운 회색으로 변경 */
+.sidebar .menu-title a {
     display: block;
+    padding: 15px 20px;
+    font-size: 18px;
+    color: #000000;
+    text-align: center;
     text-decoration: none;
-}
-
-.submenu li a:hover {
-    color: #66968c;
-}
-
-.submenu li.active a {
-    color: #66968c; /* 따뜻한 로즈 브라운으로 변경 */
+    transition: all 0.2s;
     font-weight: bold;
 }
 
-/* 메인 콘텐츠 영역 */
+.sidebar .menu-title a:hover {
+    color: #175a48;
+    background-color: #f7fcfb; /* 연한 배경 */
+}
+
+/* 활성화/열린 메뉴 (1차) */
+.sidebar .menu.open .menu-title a,
+.sidebar .menu-title a.active {
+    font-weight: bold;
+    color: #175a48;
+    background-color: #e6f2ed; /* 기존 연초록 배경 유지 */
+}
+
+/* 2차 메뉴 (submenu) */
+.sidebar .submenu {
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    display: block;
+    background-color: #f7f7f7;
+    border-top: 1px solid #eee;
+}
+
+/* 2차 메뉴 항목 */
+.sidebar .submenu li a {
+    display: block;
+    padding: 8px 20px 8px 30px;
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+/* 활성화된 2차 메뉴 */
+.sidebar .submenu li.active a {
+    font-weight: bold;
+    color: #175a48;
+    background-color: #e6f2ed; /* 기존 연초록 배경 유지 */
+}
+
+/* --- 3. 메인 섹션 (Main Section) 스타일 (view.html) --- */
 #main-section {
     flex-grow: 1;
-    padding: 20px 0;
-    background-color: #ffffff;
+    /* 화면 설계서 스타일: 흰색 배경, 둥근 모서리 */
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px 30px;
 }
 
-.cs-main-title {
-    color: #030303; /* 글자색 변경 */
-    text-align: center;
-    font-size: 28px;
+/* 뷰 페이지 헤더: (1)번 영역 */
+.cs-view-header {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.cs-view-category-title {
+    font-size: 1.1em;
+    color: #333;
+    font-weight: 500;
+}
+.cs-view-category {
     font-weight: bold;
-    margin-bottom: 40px;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    margin-right: 5px;
+}
+.cs-view-desc {
+    font-size: 0.9em;
+    color: #888;
 }
 
-/* 아래쪽 섹션 전체에 간격과 둥근 모서리, 그림자 적용 */
-.cs-section {
-    background: #ffffff; /* 섹션 배경색을 따뜻한 아이보리로 변경 */
-    margin: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+/* 공지사항 제목/날짜 박스 */
+.cs-notice-view-box {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
 }
+
+.cs-view-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+
+    margin-bottom: 5px;
+}
+
+.cs-view-date {
+    font-size: 0.85em;
+    color: #888;
+}
+
+/* 뷰 페이지 내용 박스 */
+.cs-content-box {
+    padding: 20px 0;
+    line-height: 1.8;
+    font-size: 0.95em;
+    color: #444;
+    min-height: 200px;
+}
+
+/* 목록 버튼 그룹: (2)번 영역 */
+.cs-button-group {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.cs-button {
+    display: inline-block;
+    padding: 10px 40px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.cs-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* --- 4. Index.html 전용 (CS 메인) 스타일 (기존 코드 유지) --- */
+
+/* 섹션 헤더 공통 */
 .cs-section-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 20px 25px;
-    border-bottom: 1px solid #EFEAE5;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
 }
+
 .cs-section-title {
-    font-size: 18px;
+    font-size: 1.2em;
     font-weight: bold;
-    color: #030303; /* 글자색 변경 */
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
 }
-.cs-content {
-    padding: 25px;
+
+.cs-view-all {
+    font-size: 0.9em;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    text-decoration: none;
+    font-weight: 500;
 }
-.cs-notice-list, .cs-inquiry-list {
+
+.cs-view-all:hover {
+    text-decoration: underline;
+}
+
+/* 공지사항 리스트 */
+.cs-notice-list {
     list-style: none;
     padding: 0;
     margin: 0;
 }
-.cs-notice-item, .cs-inquiry-item {
+
+.cs-notice-item {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #EFEAE5;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 0.95em;
 }
-.cs-notice-item:last-child, .cs-inquiry-item:last-child {
-    border-bottom: none;
+
+.cs-notice-title {
+    color: #333;
 }
-.cs-notice-title, .cs-inquiry-title {
-    color: #030303; /* 글자색 변경 */
+
+.cs-notice-date {
+    color: #888;
+    font-size: 0.85em;
 }
-.cs-notice-date, .cs-inquiry-date {
-    color: #9A8A7C; /* 부드러운 회색으로 변경 */
-    font-size: 14px;
-    margin-left: 20px;
-}
-.cs-view-all {
-    color: #030303; /* 따뜻한 로즈 브라운으로 변경 */
-    text-decoration: none;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-.cs-view-all:after {
-    content: '→';
-}
+
+/* 자주하는 질문 (FAQ) */
 .cs-category-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
 }
+
 .cs-category-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
     text-align: center;
-    padding: 20px 10px;
-    background: #ffffff; /* 배경색 변경 */
-    border-radius: 8px; /* 모서리 둥글게 */
-    transition: all 0.2s;
+    padding: 20px;
+    transition: border-color 0.2s, background 0.2s;
     cursor: pointer;
 }
+
 .cs-category-item:hover {
-    background: #F0EEE9; /* 호버 시 색상 변경 */
-    transform: translateY(-2px);
+    background: #f9fdfb;
+    border-color: #175a48;
 }
+
 .cs-category-icon {
-    width: 60px;
-    height: 60px;
-    background: #ffffff; /* 색상 변경 */
-    border-radius: 8px;
-    margin: 0 auto 10px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #e6f2ed; /* 연초록 배경 유지 */
+    border-radius: 50%;
+    margin: 0 auto 10px;
 }
-.cs-category-icon::before {
-    content: '📁';
-    font-size: 24px;
-}
+
 .cs-category-name {
-    font-size: 14px;
-    color: #4A4441; /* 글자색 변경 */
-    line-height: 1.4;
-}
-.cs-inquiry-status {
-    color: #9A8A7C; /* 부드러운 회색으로 변경 */
-    font-size: 14px;
-}
-.cs-inquiry-write {
-    margin-top: 15px;
-    text-align: left;
-}
-.cs-inquiry-write a {
-    font-size: 14px;
+    font-size: 0.95em;
     font-weight: bold;
-    color: #030303; /* 따뜻한 로즈 브라운으로 변경 */
-    text-decoration: none;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
 }
+
+/* 문의하기 리스트 */
+.cs-inquiry-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-inquiry-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.cs-inquiry-title {
+    font-size: 0.95em;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.cs-inquiry-meta {
+    font-size: 0.85em;
+    color: #888;
+}
+
+.cs-inquiry-write {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.cs-inquiry-write a {
+    font-size: 0.9em;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.cs-inquiry-write a:hover {
+    text-decoration: underline;
+}
+
+/* 1:1 상담 안내 */
 .cs-consult {
     display: flex;
     gap: 20px;
     flex-wrap: wrap;
 }
+
 .cs-consult-box {
     flex: 1;
-    background-color: #ffffff; /* 배경색 변경 */
-    border: 1px solid #E5E4E2;
-    padding: 20px;
-    border-radius: 8px;
     min-width: 280px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 20px;
 }
+
 .cs-consult-title {
+    font-size: 1.1em;
     font-weight: bold;
-    margin-bottom: 15px;
-    font-size: 16px;
+    margin-bottom: 10px;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
 }
+
 .cs-consult-phone {
-    font-size: 22px;
+    font-size: 1.3em;
     font-weight: bold;
-    margin-bottom: 8px;
-    color: #030303; /* 따뜻한 로즈 브라운으로 변경 */
+    margin: 8px 0;
+    color: #558B2F; /* 보조 포인트 컬러 유지 */
 }
+
 .cs-consult-desc {
-    font-size: 14px;
-    color: #030303; /* 부드러운 회색으로 변경 */
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.4;
 }
+
 .cs-small-title {
-    font-size: 14px;
-    margin-top: 12px;
+    font-size: 0.85em;
     font-weight: bold;
+    color: #666;
+    margin-top: 10px;
 }
-#cs-logo {
-    width: 130px; /* 너비 */
-    height: auto; /* 비율 유지 */
-}
-/* 페이지네이션 스타일 */
 .cs-pagination {
-    text-align: center;
-    margin-top: 30px;
+    /* 중앙 정렬 유지 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px; /* 상단 마진 약간 축소 */
+    margin-bottom: 20px;
+    font-size: 0.9em; /* 전체 글자 크기 살짝 줄임 */
 }
 
 .cs-pagination a {
-    display: inline-block;
-    padding: 8px 12px;
-    border: 1px solid #E5E4E2;
-    border-radius: 5px;
-    color: #4A4441;
+    display: block;
+    padding: 6px 10px; /* 내부 여백(패딩) 축소 */
+    margin: 0 3px; /* 버튼 간 간격(마진) 축소 */
+    color: #555;
     text-decoration: none;
-    margin: 0 4px;
-    transition: background-color 0.2s;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.2s;
 }
 
+/* 호버 스타일 */
 .cs-pagination a:hover {
-    background-color: #EFEAE5;
+    color: #175a48;
+    border-color: #175a48;
+    background-color: #f7fcfb;
 }
 
+/* 활성화된 페이지 (현재 페이지) */
 .cs-pagination a.active {
-    background-color: #B2A298;
-    color: #ffffff;
-    border-color: #B2A298;
+    color: #fff;
+    background-color: #175a48;
+    border-color: #175a48;
+    font-weight: bold;
+    pointer-events: none;
 }
 
+/* '이전' 및 '다음' 버튼 */
 .cs-pagination a.prev,
 .cs-pagination a.next {
-    font-weight: bold;
-    color: #9A8A7C;
+    font-weight: 500;
+    color: #333;
+    border: none;
+    padding: 6px 12px; /* 패딩 조정 */
 }
 
-.cs-button-group {
-    text-align: center;
-    padding: 25px;
-    border-top: 1px solid #EFEAE5;
-}
-
-.cs-button {
-    display: inline-block;
-    padding: 12px 25px;
-    background-color: #B38F75;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    border-radius: 5px;
-    transition: background-color 0.2s;
-}
-
-.cs-button:hover {
-    background-color: #9A7B67;
+.cs-pagination a.prev:hover,
+.cs-pagination a.next:hover {
+    color: #175a48;
+    background-color: transparent;
+    text-decoration: underline;
+    border-color: transparent;
 }
