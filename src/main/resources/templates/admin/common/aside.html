@@ -1,26 +1,87 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/css/admin/common/aside.css">
-</head>
 <!--
-	날짜 : 2025/09/15
-    이름 : 한탁원
-    내용 : 정책 - 사이드 바 초안 작성
+	날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : 관리자 사이드 메뉴
 -->
-<body>
-<aside id="aside">
+<link rel="stylesheet" href="../../../static/css/admin/common/aside.css">
+<aside id="aside" th:fragment="aside">
     <ul>
-        <li><a href=#>환경설정</a></li>
-        <li><a href=#>가전</a></li>
-        <li><a href=#>식품</a></li>
-        <li><a href=#>홈</a></li>
+        <li>
+            <a href=#>환경설정</a>
+            <ul class="submenu">
+                <li><a href="#">기본설정</a></li>
+                <li><a href="#">베너관리</a></li>
+                <li><a href="#">약관관리</a></li>
+                <li><a href="#">카테고리</a></li>
+                <li><a href="#">버전관리</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>상점관리</a>
+            <ul>
+                <li><a href="#">상품목록</a></li>
+                <li><a href="#">매출현황</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>회원관리</a>
+            <ul>
+                <li><a href="#">회원목록</a></li>
+                <li><a href="#">포인트관리</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>상품관리</a>
+            <ul>
+                <li><a href="#">상품목록</a></li>
+                <li><a href="#">상품등록</a></li>
+            </ul>
+        </li>
+        <li class="active">
+            <a href=#>주문관리</a>
+            <ul>
+                <li><a href="#">주문현황</a></li>
+                <li><a href="#">배송현황</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">쿠폰관리</a>
+            <ul>
+                <li><a href="#">쿠폰목록</a></li>
+                <li><a href="#">쿠폰발급현황</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>고객센터</a>
+            <ul>
+                <li><a href="#">공지사항</a></li>
+                <li><a href="#">자주 묻는 질문</a></li>
+                <li><a href="#">문의하기</a></li>
+                <li><a href="#">채용하기</a></li>
+            </ul>
+        </li>
     </ul>
 </aside>
-</body>
-</html>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuLinks = document.querySelectorAll('#aside > ul > li > a');
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                const parentLi = this.parentElement;
+
+                // 다른 활성화된 메뉴 닫기
+                document.querySelectorAll('#aside > ul > li.active').forEach(item => {
+                    if (item !== parentLi) {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // 현재 메뉴 토글 (열고 닫기)
+                parentLi.classList.toggle('active');
+            });
+        });
+    });
+</script>
