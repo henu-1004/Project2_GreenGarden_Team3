@@ -17,10 +17,10 @@
     <link rel="stylesheet" th:href="@{/css/admin/order/modalOrderDetail.css}">
 </head>
 <body>
-<div th:replace="~{/admin/common/_header :: header}"></div>
+<div th:replace="~{/admin/common/header :: header}"></div>
 <main>
     <section class="content-wrap">
-        <div th:replace="~{/admin/common/_aside :: aside}"></div>
+        <div th:replace="~{/admin/common/aside :: aside}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h5>주문현황</h5>
@@ -106,7 +106,7 @@
         </section>
     </section>
 </main>
-<div th:replace="~{/admin/common/_footer :: footer}"></div>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 <div th:replace="~{/admin/order/_deliveryInput :: modal-delivery-input}"></div>
 <div th:replace="~{/admin/order/_orderDetail :: modal-order-detail}"></div>
 </body>
