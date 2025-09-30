@@ -61,7 +61,7 @@
         <td th:text="${member.status}">정상</td>
         <td>
             <!-- 테이블 내부 -->
-            <a href="#" class="openRegister" th:attr="data-mem-id=${member.memId}, data-url=@{/admin/member/modify}">관리</a>
+            <a href="#" class="openRegister" th:attr="data-memId=${member.memId}, data-url=@{/admin/member/modify}">관리</a>
             <a href="#" class="changeStatus">중지</a>
         </td>
     </tr>
@@ -183,11 +183,11 @@
         document.querySelectorAll(".openRegister").forEach(link => {
             link.addEventListener("click", function(e) {
                 e.preventDefault();
-                const mem_id = this.getAttribute("data-mem-id");
+                const memId = this.getAttribute("data-memId");
                 const base   = this.getAttribute("data-url");
-                if (!mem_id || !base) return;
+                if (!memId || !base) return;
 
-                modalFrame.src = `${base}?mem_id=${encodeURIComponent(mem_id)}`;
+                modalFrame.src = `${base}?memId=${encodeURIComponent(memId)}`;
                 modal.style.display = "block";
                 document.body.style.overflow = "hidden";
             });

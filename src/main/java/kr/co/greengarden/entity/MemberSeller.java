@@ -31,7 +31,7 @@ public class MemberSeller {
     @Column
     private String tin;
     @Column
-    private String business_number;
+    private String businessNumber;
     @Column
     private String tel;
     @Column
@@ -53,7 +53,7 @@ public class MemberSeller {
                                .company(company)
                                .representative(representative)
                                .tin(tin)
-                               .business_number(business_number)
+                               .businessNumber(businessNumber)
                                .tel(tel)
                                .fax(fax)
                                .status(status)

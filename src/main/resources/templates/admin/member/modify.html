@@ -13,12 +13,10 @@
 <h1>회원수정</h1>
 <form th:action="@{/admin/member/modify}" method="post"  target="_parent">
 
-    <input type="hidden" name="mem_id" th:value="${memberGeneral.mem_id}"/>
-
     <table border="1">
         <tr>
             <td>아이디 :</td>
-            <td><input type="text" name="id" th:value="${memberGeneral.id}" readonly></td>
+            <td><input type="text" name="memId" th:value="${memberGeneral.memId}" readonly></td>
         </tr>
         <tr>
             <td>이름</td>
@@ -59,29 +57,29 @@
             <td rowspan="3">주소</td>
             <td>
                 <input type="text" id="zip_code" name="zipCode"
-                       placeholder="우편번호" onclick="postcode()" th:value="${memberGeneral.zip_code}" readonly>
+                       placeholder="우편번호" onclick="postcode()" th:value="${memberGeneral.zipCode}" readonly>
             </td>
         </tr>
         <tr>
             <td>
                 <input type="text" id="address_basic" name="addressBasic"
-                       placeholder="기본주소" th:value="${memberGeneral.address_basic}" readonly>
+                       placeholder="기본주소" th:value="${memberGeneral.addressBasic}" readonly>
             </td>
         </tr>
         <tr>
             <td>
                 <input type="text" id="address_detail" name="addressDetail"
-                       placeholder="상세주소" th:value="${memberGeneral.address_detail}">
+                       placeholder="상세주소" th:value="${memberGeneral.addressDetail}">
             </td>
         </tr>
 
         <tr>
             <td>가입일</td>
-            <td th:text="${memberGeneral.created_at}">가입일</td>
+            <td th:text="${memberGeneral.createdAt}">가입일</td>
         </tr>
         <tr>
             <td>최근 로그인 날짜</td>
-            <td th:text="${memberGeneral.last_login}">마지막 로그인</td>
+            <td th:text="${memberGeneral.lastLogin}">마지막 로그인</td>
         </tr>
         <tr>
             <td>기타</td>

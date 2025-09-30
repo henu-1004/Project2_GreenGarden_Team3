@@ -44,12 +44,12 @@
             <th>관리</th>
         </tr>
         <tr th:each="seller, stat : ${shopList.content}">
-            <td><input type="checkbox" class="shopRowCheck" name="mem_ids" th:value="${seller.mem_id}"></td>
+            <td><input type="checkbox" class="shopRowCheck" name="memIds" th:value="${seller.memId}"></td>
             <td th:text="${shopList.totalElements - (shopList.number * shopList.size + stat.index)}">1</td>
             <td th:text="${seller.company}">aaa</td>
             <td th:text="${seller.representative}">홍길동</td>
             <td th:text="${seller.tin}">M</td>
-            <td th:text="${seller.business_number}">a@b.c</td>
+            <td th:text="${seller.businessNumber}">a@b.c</td>
             <td th:text="${seller.tel}">010-...</td>
             <td>상태</td>
             <td><a th:href="@{#}">관리</a></td>

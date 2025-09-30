@@ -14,6 +14,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        http.headers(h -> h.frameOptions(fo -> fo.sameOrigin())); // iframe same-origin 허용
+
         // 로그인 설정
         http.formLogin(form -> form
                 .loginPage("/member/login")

@@ -21,7 +21,7 @@ public class MemberSellerDTO {
     private String company;
     private String representative;
     private String tin;
-    private String business_number;
+    private String businessNumber;
     private String tel;
     private String fax;
     private String status;
@@ -31,7 +31,7 @@ public class MemberSellerDTO {
                            .company(company)
                            .representative(representative)
                            .tin(tin)
-                           .business_number(business_number)
+                           .businessNumber(businessNumber)
                            .tel(tel)
                            .fax(fax)
                            .status(status)
