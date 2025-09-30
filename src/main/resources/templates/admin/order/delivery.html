@@ -16,10 +16,10 @@
     <link rel="stylesheet" th:href="@{/css/admin/order/modalDeliveryDetail.css}">
 </head>
 <body>
-<div th:replace="~{/admin/common/_header :: header}"></div>
+<div th:replace="~{admin/common/header :: header}"></div>
 <main>
     <section class="content-wrap">
-        <div th:replace="~{/admin/common/_aside :: aside}"></div>
+        <div th:replace="~{admin/common/aside :: aside}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h5>배송현황</h5>
@@ -119,7 +119,9 @@
         </section>
     </section>
 </main>
-<div th:replace="~{/admin/common/_footer :: footer}"></div>
-<div th:replace="~{/admin/order/_deliveryDetail :: modal-delivery-detail}"></div>
+<div th:replace="~{admin/common/footer :: footer}"></div>
+<div th:replace="~{admin/order/_deliveryDetail :: modal-delivery-detail}"></div>
 </body>
+
+<script th:src="@{/js/admin/aside.js}"></script>
 </html>

@@ -1,17 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>회원수정</title>
+    <link rel="stylesheet" type="text/css" href="css/modify.css">
 </head>
 <!--
-    날짜 : 2025/09/24
-    이름 : 한탁원
-    내용 : 관리자 회원 수정 작성
+    날짜 : 2025/09/30
+    이름 : 조지영
+    내용 : 관리자 회원 수정 작성 (모달+테이블 통합)
 -->
 <body>
-<h1>회원수정</h1>
-<form th:action="@{/admin/member/modify}" method="post"  target="_parent">
+
+<!-- (1) 타이틀 -->
+<div class="modal-header">
+    <span class="modal-title">회원수정</span>
+    <button class="modal-close">X</button>
+</div>
+
+<!-- (2) 본문 -->
+<form th:action="@{/admin/member/modify}" method="post" target="_parent">
 
     <table border="1">
         <tr>
@@ -89,5 +97,6 @@
 
     <input type="submit" value="수정하기">
 </form>
+
 </body>
 </html>

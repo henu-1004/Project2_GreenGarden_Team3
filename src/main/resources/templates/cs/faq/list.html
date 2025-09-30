@@ -1,27 +1,10 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>고객센터 - 통합 페이지</title>
-    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}">
 
-</head>
-<body>
-<div class="main-wrapper">
-    <div class="header">
-        <div class="header-logo">
-            <a href="#">
-                <img src="/webapp/resources/images/header_logo.png" alt="로고1" />
-            </a>
-        </div>
-        <div class="header-nav">
-            <a href="/kmarket/member/login.do">로그인</a>
-            <a href="/kmarket/member/register.do">회원가입</a>
-            <a href="/kmarket/mypage/list.do">마이페이지</a>
-            <a href="#">장바구니</a>
-        </div>
-    </div>
-
+<!--
+  날짜 : 2025/09/29
+  이름 : 박효빈
+  내용 : 박효빈 고객센터 페이지 제작
+-->
+<div th:replace="~{cs/_csheader.html}"></div>
     <div class="main-container">
         <aside class="sidebar">
             <div class="cs-breadcrumb">
@@ -159,128 +142,7 @@
         </section>
     </div>
 
-    <footer>
-        <div id="footer-wrap">
-            <div id="footer-top">
-                <a href="#">회사 소개</a>
-                <a href="#">서비스이용약관</a>
-                <a href="#">개인정보처리방침</a>
-                <a href="#">전자금융거래약관</a>
-            </div>
-            <hr>
-            <div>
-                <table>
-                    <tr>
-                        <td>
-                            <img src="/webapp/resources/images/footer_logo.png" alt="footer_logo">
-                        </td>
-                        <td class="footer-col">
-                            <div>
-                                <h2>(주)케이마켓</h2> <br>
-                                <p>부산광역시 부산진구 중앙대로 300 26층</p>
-                                <p>대표이사 : 홍길동</p>
-                                <p>사업등록번호 : 123-45-12345</p>
-                            </div>
-                        </td>
-                        <td class="footer-col">
-                            <h2>고객센터</h2> <br>
-                            <p>Tel:1234-5678 평일 09:00~18:00</p>
-                            <p>전자금융거래 분쟁 담당 : 1234-1234 (365일 09:00~18:00)</p>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </footer>
-</div>
-<script>
+<div th:replace="~{cs/_csfooter.html}"></div>
 
-        // 사이드바 메뉴 토글 기능
-        document.querySelectorAll(".menu-title").forEach(title => {
-        title.addEventListener("click", () => {
-            const parent = title.parentElement;
-            parent.classList.toggle("open");
-        });
-    });
-
-        // 더보기/접기 기능
-        function toggleMore(button) {
-        const block = button.parentElement;
-        const hiddenItems = block.querySelectorAll('.faq-item');
-
-        if (button.textContent === '더보기') {
-        // 모든 아이템 보이기
-        hiddenItems.forEach((item, index) => {
-        if (index >= 3) {
-        item.style.display = 'block';
-    }
-    });
-        button.textContent = '접기';
-    } else {
-        // 처음 3개만 보이기
-        hiddenItems.forEach((item, index) => {
-        if (index >= 3) {
-        item.style.display = 'none';
-    }
-    });
-        button.textContent = '더보기';
-    }
-    }
-</script>
-
-<style>
-    .faq-block {
-        border: 1px solid #e0e0e0;
-        margin-bottom: 20px;
-        border-radius: 5px;
-    }
-
-    .faq-block h3 {
-        background-color: #f8f9fa;
-        margin: 0;
-        padding: 15px 20px;
-        border-bottom: 1px solid #e0e0e0;
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .faq-block ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    .faq-block li {
-        padding: 15px 20px;
-        border-bottom: 1px solid #f0f0f0;
-        cursor: pointer;
-    }
-
-    .faq-block li:last-child {
-        border-bottom: none;
-    }
-
-    .faq-block li:hover {
-        background-color: #f8f9fa;
-    }
-
-    .faq-item.hidden {
-        display: none;
-    }
-
-    .more-btn {
-        text-align: center;
-        padding: 10px;
-        background-color: #f8f9fa;
-        border-top: 1px solid #e0e0e0;
-        cursor: pointer;
-        color: #007bff;
-        font-weight: bold;
-    }
-
-    .more-btn:hover {
-        background-color: #e9ecef;
-    }
-</style>
 </body>
 </html>

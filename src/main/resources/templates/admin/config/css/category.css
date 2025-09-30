@@ -1,0 +1,222 @@
+/* 전체 기본 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    color: #333;
+    background: #fff;
+}
+
+/* 안내 박스 */
+.info-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #333;
+}
+.info-box {
+    background: #f3f7f6;
+    padding: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* 페이지 타이틀 */
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+.page-title h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.breadcrumb {
+    font-size: 14px;
+    color: #555;
+}
+
+/* 탭 메뉴 */
+.tab-menu {
+    display: flex;
+    margin-bottom: 20px;
+}
+.tab-menu button {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #000;
+    background: #f7f7f7;
+    padding: 8px 20px;
+    cursor: pointer;
+}
+.tab-menu button.active {
+    background: #fff;
+    border-top: 3px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-bottom: 2px solid #fff;
+    font-weight: bold;
+}
+
+/* 테이블 */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+th {
+    background: #f3f7f6;
+    font-weight: bold;
+}
+td a {
+    color: #333;
+    text-decoration: none;
+}
+.banner {
+    text-align: left;
+}
+
+/* 이미지 placeholder */
+.img-box {
+    width: 80px;
+    height: 50px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+}
+
+/* 버튼 */
+.btn {
+    background: #175a48;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+.btn:hover {
+    background: #0f3e32;
+}
+.btn.gray {
+    background: #e0e0e0;
+    color: #333;
+}
+.btn.gray:hover {
+    background: #ccc;
+}
+.btn.red {
+    background: #fff;
+    color: red;
+}
+.btn.red span {
+    border: 1px solid red;
+    padding: 2px 4px;
+}
+.btn.red a {
+    color: red;
+    text-decoration: none;
+}
+.btn.red a:hover {
+    color: red;
+    font-weight: bold;
+}
+
+/* 버튼 그룹 */
+.btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.btn-wrap a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* 컨테이너 */
+.container {
+    display: flex;
+}
+
+/* 사이드바 */
+.sidebar {
+    width: 324px;
+    background: #fff;
+    border-right: 1px solid #ddd;
+}
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.menu {
+    border-bottom: 2px solid #eee;
+}
+.menu a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+}
+.menu a:hover {
+    color: #175a48;
+    font-weight: bold;
+}
+.menu-title {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 12px 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.menu-title .arrow {
+    transition: transform 0.3s;
+}
+.menu.open .menu-title .arrow {
+    transform: rotate(180deg);
+}
+.menu.open .submenu {
+    display: block;
+}
+.submenu {
+    display: none;
+    color: #aaa;
+}
+.submenu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.submenu li {
+    color: #aaa;
+    font-weight: normal;
+    display: block;
+    padding: 5px 0;
+}
+.submenu li a {
+    padding: 8px 15px 8px 50px;
+    font-size: 16px;
+    color: #aaa;
+}
+.submenu li.active {
+    color: #175a48;
+    font-weight: bold;
+}
+.submenu li.disabled {
+    color: #aaa;
+}

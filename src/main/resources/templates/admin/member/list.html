@@ -1,65 +1,97 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>관리자 회원목록</title>
+  <meta charset="UTF-8">
+  <title>회원목록</title>
+    <link rel="stylesheet" type="text/css" href="css/list.css">
 </head>
 <!--
-    날짜 : 2025/09/24
-    이름 : 한탁원
-    내용 : 관리자 회원 목록 작성
+    날짜 : 2025/09/30
+    이름 : 조지영
+    내용 : 관리자 상점 목록 작성
 -->
 <body>
 
-<div th:replace="~{/admin/common/header :: header}"></div>
+<!-- 페이지 타이틀 -->
+  <div class="page-title">
+    <h2>회원목록</h2>
+    <div class="breadcrumb">HOME &gt; 회원관리 &gt; <strong>회원목록</strong></div>
+  </div>
 
-<h1>회원 목록</h1>
 
-<form method="get" th:action="@{/admin/member/list}">
-    <div th:with="st=${param.searchType != null ? param.searchType[0] : ''}">
-        <select name="searchType" id="searchType">
-            <option value=""        th:selected="${st == ''}">전체</option>
-            <option value="id"   th:selected="${st == 'id'}">아이디</option>
-            <option value="name" th:selected="${st == 'name'}">이름</option>
-            <option value="email"  th:selected="${st == 'email'}">이메일</option>
-            <option value="phone"  th:selected="${st == 'phone'}">휴대폰</option>
-        </select>
+<!-- 검색창 + 운영 상태 영역 -->
+<div class="search-area">
+  <div class="search-box">
+    <select id="searchType">
+      <option value="userid">아이디</option>
+      <option value="name">이름</option>
+      <option value="email">이메일</option>
+      <option value="phone">휴대폰</option>
+    </select>
+
+    <input type="text" id="keyword" placeholder="검색어 입력">
+    <button class="btn">검색</button>
+  </div>
+ 
+ 
+</div>
+ 
+
+  <!-- 메인 상단배너 테이블 -->
+  <div class="info-title">
+    <h2>회원목록</h2>
     </div>
-
-    <input type="text" id="keyword" name="keyword"
-           placeholder="검색어를 입력해 주세요" />
-
-    <button type="submit" >검색</button>
-</form>
-
-<form id="bulkForm" th:action="@{/admin/member/deleteSelected}" method="post">
-    <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-<table>
+  <table>
     <thead>
-    <tr>
-        <th>
-            <input type="checkbox" id="checkAll">
-        </th>
-        <th>번호</th><th>아이디</th><th>이름</th><th>성별</th><th>등급</th>
-        <th>포인트</th><th>이메일</th><th>휴대폰</th><th>가입일</th><th>상태</th><th>관리</th>
-    </tr>
+      <tr>
+        <th><input type="checkbox"></th>
+        <th>번호</th>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>성별</th>
+        <th>등급</th>
+        <th>포인트</th>
+        <th>이메일</th>
+        <th>휴대폰</th>
+        <th>가입일</th>
+        <th>상태</th>
+        <th>관리</th>
+      </tr>
     </thead>
     <tbody>
-    <tr th:each="member, stat : ${memberGeneralList.content}">
+      <!--- (1)  -->
+      <tr>
+        <td><input type="checkbox"></td>
+        <td>5</td>
+        <td>xxx</td>
+        <td>정우성</td>
+        <td>M</td>
         <td>
-            <input type="checkbox" class="rowCheck" name="mem_ids" th:value="${member.memId}">
-        </td>
-        <td th:text="${memberGeneralList.totalElements - (memberGeneralList.number * memberGeneralList.size + stat.index)}">1</td>
-        <td th:text="${member.memId}">aaa</td>
-        <td th:text="${member.name}">홍길동</td>
-        <td th:text="${member.gender}">M</td>
-        <td th:text="${member.grade}">등급</td>
-        <td th:text="${member.totalPoint}">포인트</td>
-        <td th:text="${member.email}">a@b.c</td>
-        <td th:text="${member.phone}">010-...</td>
-        <td th:text="${member.createdAt}">2025-09-17</td>
-        <td th:text="${member.status}">정상</td>
+      <select id="searchType">
+      <option value="vvip">vvip</option>
+      <option value="vip">vip</option>
+      <option value="gold">gold</option>
+      <option value="silver">silver</option>
+      <option value="family">family</option>
+      </select></td>
+        <td>15,000</td>
+        <td>xxxx@naver.com</td>
+        <td>010-0000-0000</td>
+        <td>0000-00-00 00:00:00</td>
+        <td><span class="green">정상</span></td>
+        <td>[수정] <br> [중지]</td>
+      </tr>
+      <!--- (1) 배너끝 -->
+
+      <!--- (2)  -->
+      <tr>
+        <td><input type="checkbox"></td>
+        <td>5</td>
+        <td>xxx</td>
+        <td>정우성</td>
+        <td>M</td>
         <td>
+
             <!-- 테이블 내부 -->
             <a href="#" class="openRegister" th:attr="data-memId=${member.memId}, data-url=@{/admin/member/modify}">관리</a>
             <a href="#" class="changeStatus">중지</a>
@@ -218,7 +250,11 @@
     });
 </script>
 
-
-
+  <!-- 하단 버튼 -->
+  <div class="btn-wrap">
+    <button class="btn gray"><a href="#">선택수정</a></button>
+  </div>
+   <!-- 페이지 -->
+  <div class="page">이전 <a href="#">1</a> 2 3 4 5 다음 </div> 
 </body>
 </html>
