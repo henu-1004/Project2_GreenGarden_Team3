@@ -40,10 +40,6 @@ public class MemberController {
         return "member/register";
     }
 
-<<<<<<< Updated upstream
-    @GetMapping("/member/registerSeller")
-    public String signupSeller() {
-=======
     @GetMapping("/member/signup")
     public String signup() {
         return "member/signup";
@@ -51,7 +47,6 @@ public class MemberController {
 
     @GetMapping("/member/registerSeller")
     public String registerSeller() {
->>>>>>> Stashed changes
         return "member/registerSeller";
     }
 
