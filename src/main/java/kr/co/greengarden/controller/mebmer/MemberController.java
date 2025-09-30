@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /*
- * 날짜 : 2025/09/23
- * 이름 : 한탁원
- * 내용 : MemberController 설정
+ * 날짜 : 2025/09/30
+ * 이름 : 이종봉
+ * 내용 : 판매자회원가입, 약관 controller 추가 및 일반회원가입 controller 수정
  */
 @RequiredArgsConstructor
 @Controller
@@ -36,12 +36,22 @@ public class MemberController {
     }
 
     @GetMapping("/member/register")
-    public String signup() {
+    public String register() {
         return "member/register";
     }
 
+<<<<<<< Updated upstream
     @GetMapping("/member/registerSeller")
     public String signupSeller() {
+=======
+    @GetMapping("/member/signup")
+    public String signup() {
+        return "member/signup";
+    }
+
+    @GetMapping("/member/registerSeller")
+    public String registerSeller() {
+>>>>>>> Stashed changes
         return "member/registerSeller";
     }
 
