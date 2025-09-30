@@ -11,7 +11,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: flex; /* <-- 이 속성 flex, none */
+    display: none; /* <-- 이 속성 flex, none */
     justify-content: center;
     align-items: center;
     z-index: 1000;
