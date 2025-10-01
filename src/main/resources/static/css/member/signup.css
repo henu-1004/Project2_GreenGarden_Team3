@@ -69,43 +69,31 @@
         color:#2b3;
     }
 
+
     /* 액션 영역 */
     .signup-actions{
-        text-align:center;
-        margin-top:22px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        margin: 28px 0 8px;        /* 위쪽 여백 넉넉히 */
     }
     .btn.signup-btn{
-        display:none; /* 타입별로 하나만 보이게 */
-        min-width:220px;
-        padding:12px 18px;
-        border-radius:10px;
-        background:var(--brand); color:#fff;
-        font-weight:800;
-        text-decoration:none;
-        letter-spacing:.2px;
-        box-shadow:0 6px 16px rgba(45,111,84,.18);
-        transition:background .15s ease, transform .15s ease, box-shadow .15s ease;
-    }
-    .btn.agree-btn:hover{
-        background:#255e47;
-        transform:translateY(-1px);
-        box-shadow:0 8px 18px rgba(45,111,84,.24);
+        display:none;               /* 타입별로 하나만 보이게 */
+        min-width: 220px;
+        padding: 12px 18px;
+        border-radius: 10px;
+        background: var(--brand);
+        color:#fff;
+        font-weight: 800;
+        text-decoration: none;
+        letter-spacing: .2px;
+        border: 1px solid transparent;
+       /* box-shadow: 0 6px 16px rgba(45,111,84,.18); */
+       /* transition: background .15s ease, transform .15s ease, box-shadow .15s ease; */
     }
 
-    /* ===== 타입 토글(화면 전용) ===== */
-    /* data-type=user: 일반회원 */
-    .agree-page[data-type="user"] .terms-user{ display:block; }
-    .agree-page[data-type="user"] .terms-seller{ display:none; }
-    .agree-page[data-type="user"] .optional-location{ display:block; }
-    .agree-page[data-type="user"] .btn-user{ display:inline-block; }
 
-    /* data-type=seller: 판매회원 */
-    .agree-page[data-type="seller"] .terms-user{ display:none; }
-    .agree-page[data-type="seller"] .terms-seller{ display:block; }
-    .agree-page[data-type="seller"] .optional-location{ display:none; }
-    .agree-page[data-type="seller"] .btn-seller{ display:inline-block; }
+    .signup-page[data-type="user"]   .btn-user{   display:inline-block; }
+    .signup-page[data-type="seller"] .btn-seller{ display:inline-block; }
 
-    /* 반응형 */
-    @media (max-width:768px){
-        .agree-body{ max-height:260px; }
-    }
+

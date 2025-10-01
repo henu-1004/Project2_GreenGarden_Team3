@@ -24,7 +24,7 @@
     border:1px solid var(--line);
     border-radius:12px;
     padding:18px;
-    box-shadow:0 2px 8px rgba(17,41,26,.04);
+  /*  box-shadow:0 2px 8px rgba(17,41,26,.04); */
 }
 
 .find-tabs{
@@ -74,7 +74,7 @@
 .form-grid input:focus{
     outline:none;
     border-color:var(--brand);
-    box-shadow:0 0 0 3px rgba(23,90,72,.12);
+  /*  box-shadow:0 0 0 3px rgba(23,90,72,.12); */
 }
 
 .subbtn{
@@ -121,7 +121,7 @@
 .btn-primary{
     background:var(--brand);
     color:#fff;
-    box-shadow:0 6px 16px rgba(23,90,72,.18);
+   /* box-shadow:0 6px 16px rgba(23,90,72,.18); */
 }
 
 .btn-primary:hover{ background:var(--brand-2); }

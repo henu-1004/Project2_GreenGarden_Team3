@@ -2,10 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입 구분</title>
+    <title>아이디 찾기</title>
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/find/userId.css}">
 
+    <!--
+       날짜 : 2025/09/30
+       이름 : 이종봉
+       내용 : 경로 수정.
+   -->
 </head>
 
 <body>
@@ -20,7 +25,7 @@
             <button type="button" class="find-tab">휴대폰 인증</button>
         </div>
 
-        <form action="@{/member/find/userId}" method="post" class="email-fields">
+        <form th:action="@{/find/userId}" method="post" class="email-fields">
             <div class="form-grid">
                 <div class="row-divider"></div>
 
@@ -65,7 +70,7 @@
         <a th:href="@{/member/login}">
             <button type="button" class="btn btn-ghost">취소</button>
         </a>
-        <a th:href="@{/member/find/resultId}">
+        <a th:href="@{/find/resultId}">
             <button type="button" class="btn btn-primary">다음</button>
         </a>
     </div>

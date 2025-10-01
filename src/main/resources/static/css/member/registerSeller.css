@@ -22,7 +22,7 @@
     border:1px solid var(--line);
     border-radius:12px;
     padding:18px;
-    box-shadow:0 2px 8px rgba(17,41,26,.04);
+   /* box-shadow:0 2px 8px rgba(17,41,26,.04); */
 }
 .section + .section{ margin-top:20px; }
 
@@ -56,7 +56,7 @@
 .form-grid input:focus{
     outline: none;
     border-color: var(--brand);   /* #2d6f54 */
-    box-shadow: 0 0 0 3px rgba(45,111,84,.12);
+   /* box-shadow: 0 0 0 3px rgba(45,111,84,.12); */
 }
 
 #zip_code{ grid-column: 2; }                          /* 2열 */
@@ -85,15 +85,15 @@ button.subbtn[onclick*="postcode"]{ grid-column: 3; } /* 3열 같은 행 */
     color:#fff;
     font-weight:800;
     cursor:pointer;
-    box-shadow: 0 6px 16px rgba(45,111,84,.18);
-    transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+   /* box-shadow: 0 6px 16px rgba(45,111,84,.18);*/
+   /* transition: transform .12s ease, box-shadow .12s ease, background .12s ease;*/
 }
 .actions button:hover{
     transform: translateY(-1px);
 }
 .actions button:active{
     transform: translateY(0);
-    box-shadow: 0 3px 10px rgba(45,111,84,.18);
+   /* box-shadow: 0 3px 10px rgba(45,111,84,.18);*/
 }
 
 .muted{
