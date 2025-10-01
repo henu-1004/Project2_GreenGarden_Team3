@@ -15,15 +15,9 @@ spring:
         version: ${version}
     datasource:
          driver-class-name: oracle.jdbc.driver.OracleDriver
-<<<<<<< Updated upstream
-         url: jdbc:oracle:thin:@43.203.164.115:1522:xe
-         username: team3
-         password: rmflszjavbxj123!
-
          url: jdbc:oracle:thin:@localhost:1521:xe
-         username: 
-         password: 
-
+         username: hyokong
+         password: 1234
     devtools:
         livereload:
             enabled: true
