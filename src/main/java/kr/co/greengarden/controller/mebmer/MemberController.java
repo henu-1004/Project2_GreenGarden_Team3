@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /*
@@ -45,24 +46,15 @@ public class MemberController {
     @GetMapping("/member/signup")
     public String signup(@RequestParam String role, Model model) {
 
-        model.addAttribute("role", role);
-
+        if(role.equals("general")) {
+            model.addAttribute("type", "user");
+        } else if(role.equals("seller")) {
+            model.addAttribute("type", "seller");
+        }
         return "member/signup";
     }
 
-    @GetMapping("/member/termsUser")
-    public String termsUser(Model model) {
-        model.addAttribute("type", "user");
 
-        return "member/signup";
-    }
-
-    @GetMapping("/member/termsSeller")
-    public String termsSeller(Model model){
-        model.addAttribute("type", "seller");
-
-        return "member/signup";
-    }
 
     @GetMapping("/member/registerSeller")
     public String registerSeller() {
