@@ -1,16 +1,129 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<main>
-		<div id="main">
+<!--
+  날짜 : 2025/09/29
+  이름 : 박효빈
+  내용 : 박효빈 고객센터 페이지 제작
+-->
+<div th:replace="~{cs/_csheader.html}"></div>
+<div class="main-container">
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
 
-		</div>
-	</main>
-</body>
-</html>
+    <aside class="sidebar">
+        <div class="cs-breadcrumb">
+            <a href="#">홈</a>
+            <span>></span>
+            <a href="#" class="active-breadcrumb">문의하기</a>
+        </div>
+        <ul>
+            <li class="menu">
+                <div class="menu-title">
+                    <a href="#">문의하기</a>
+                </div>
+                <ul class="submenu open">
+                    <li class="active"><a href="#">회원</a></li>
+                    <li><a href="#">쿠폰/이벤트</a></li>
+                    <li><a href="#">주문/결제</a></li>
+                    <li><a href="#">배송</a></li>
+                    <li><a href="#">취소/반품/교환</a></li>
+                    <li><a href="#">여행/숙박/항공</a></li>
+                    <li><a href="#">안전거래</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <section id="main-section">
+        <h1 class="cs-main-title">회원</h1>
+
+        <div class="cs-section">
+            <!-- 문의하기 버튼 -->
+            <div class="qna-write-btn-area">
+                <a href="#" class="qna-write-btn">문의하기</a>
+            </div>
+
+            <!-- QNA 테이블 -->
+            <div class="cs-content">
+                <table class="qna-table">
+                    <colgroup>
+                        <col style="width: 10%;">
+                        <col style="width: 45%;">
+                        <col style="width: 15%;">
+                        <col style="width: 15%;">
+                        <col style="width: 15%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>유형</th>
+                        <th>제목</th>
+                        <th>답변상태</th>
+                        <th>작성자</th>
+                        <th>날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>가입</td>
+                        <td class="qna-title"><a href="#">가입문의드립니다</a></td>
+                        <td><span class="qna-status completed">답변완료</span></td>
+                        <td>user***</td>
+                        <td>23.10.31</td>
+                    </tr>
+                    <tr>
+                        <td>탈퇴</td>
+                        <td class="qna-title"><a href="#">탈퇴 문의드립니다</a></td>
+                        <td><span class="qna-status completed">답변완료</span></td>
+                        <td>user***</td>
+                        <td>23.10.31</td>
+                    </tr>
+                    <tr>
+                        <td>회원정보</td>
+                        <td class="qna-title"><a href="#">회원정보변경문의입니다</a></td>
+                        <td><span class="qna-status completed">답변완료</span></td>
+                        <td>user***</td>
+                        <td>23.10.31</td>
+                    </tr>
+                    <tr>
+                        <td>가입</td>
+                        <td class="qna-title"><a href="#">회원가입시 이메일 인증 관련</a></td>
+                        <td><span class="qna-status waiting">답변대기</span></td>
+                        <td>user***</td>
+                        <td>23.10.30</td>
+                    </tr>
+                    <tr>
+                        <td>가입</td>
+                        <td class="qna-title"><a href="#">사업자 회원가입 문의</a></td>
+                        <td><span class="qna-status completed">답변완료</span></td>
+                        <td>user***</td>
+                        <td>23.10.29</td>
+                    </tr>
+                    <tr>
+                        <td>탈퇴</td>
+                        <td class="qna-title"><a href="#">탈퇴 후 재가입 가능한가요?</a></td>
+                        <td><span class="qna-status completed">답변완료</span></td>
+                        <td>user***</td>
+                        <td>23.10.28</td>
+                    </tr>
+                    <tr>
+                        <td>회원정보</td>
+                        <td class="qna-title"><a href="#">휴대폰 번호 변경 문의</a></td>
+                        <td><span class="qna-status waiting">답변대기</span></td>
+                        <td>user***</td>
+                        <td>23.10.27</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 페이징 -->
+        <div class="cs-pagination">
+            <a href="#" class="prev">&lt; 이전</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#" class="next">다음 &gt;</a>
+        </div>
+    </section>
+</div>
+<div th:replace="~{cs/_csfooter.html}"></div>

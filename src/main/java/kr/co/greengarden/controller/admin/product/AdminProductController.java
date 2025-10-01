@@ -73,7 +73,7 @@ public class AdminProductController {
 
         Optional<MemberSeller> optionalMember = memberSellerService.getUser(memId);
 
-        System.out.println("유저 : " + optionalMember.get());
+        System.out.println("유저 : " + optionalMember);
         MemberSeller seller = optionalMember.get();
 
         productService.register(productDTO.toEntity(seller));

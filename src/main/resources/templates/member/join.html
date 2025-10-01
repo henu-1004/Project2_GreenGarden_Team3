@@ -25,7 +25,9 @@
 
                 <div class="card-body">
                     <p>개인구매회원 (외국인 포함)<br>만 14세 이상 가능</p>
-                    <a th:href="@{/member/termsUser}" class="join-btn">일반회원가입</a>
+
+                    <a th:href="@{/member/signup(role=general)}" class="join-btn">일반회원가입</a>
+
                 </div>
             </div>
 
@@ -34,7 +36,9 @@
 
                 <div class="card-body">
                     <p>사업자판매회원<br>사업자등록증을 보유한 회원</p>
-                    <a th:href="@{/member/termsSeller}" class="join-btn">판매회원가입</a>
+
+                    <a th:href="@{/member/signup(role=seller)}" class="join-btn">판매회원가입</a>
+
                 </div>
             </div>
         </div>

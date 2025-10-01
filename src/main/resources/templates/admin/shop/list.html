@@ -1,182 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 상점목록</title>
-    <link rel="stylesheet" type="text/css" href="css/list.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>admin shop list</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/shop/list.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
-<!--
-    날짜 : 2025/09/30
-    이름 : 조지영
-    내용 : 관리자 상점 목록 (Thymeleaf 연동)
--->
 <body>
-<th:block th:replace="~{/admin/common/header :: header}"></th:block>
-
-<!-- 페이지 타이틀 -->
-<div class="page-title">
-    <h2>상점목록</h2>
-    <div class="breadcrumb">HOME &gt; 상점관리 &gt; <strong>상점목록</strong></div>
-</div>
-
-<!-- 검색창 + 운영 상태 -->
-<form method="get" th:action="@{/admin/shop/list}">
-    <div class="search-area" th:with="st=${param.searchType != null ? param.searchType[0] : ''}">
-        <div class="search-box">
-            <select name="searchType" id="searchType">
-                <option value="" th:selected="${st == ''}">전체</option>
-                <option value="company" th:selected="${st == 'company'}">상호명</option>
-                <option value="representative" th:selected="${st == 'representative'}">대표</option>
-                <option value="tin" th:selected="${st == 'tin'}">사업자등록번호</option>
-                <option value="tel" th:selected="${st == 'tel'}">연락처</option>
-            </select>
-            <input type="text" id="keyword" name="keyword"
-                   th:value="${param.keyword != null ? param.keyword[0] : ''}"
-                   placeholder="검색어 입력"/>
-            <button type="submit" class="btn">검색</button>
+<div th:replace="~{/admin/common/header :: header}"></div>
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <section id="main-section">
+        <div class="top_nav">
+            <!-- 페이지 타이틀 -->
+            <h5>상점목록</h5>
+            <ul class="page_nation">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">상점관리</a></li>
+                <li><a href="#">상점목록</a></li>
+            </ul>
         </div>
 
-        <!-- 운영 상태 설명 -->
-        <div class="status-info">
-            <span class="dot green"></span> 운영 중&nbsp;&nbsp;
-            <span class="dot red"></span> 운영 중지&nbsp;&nbsp;
-            <span class="dot blue"></span> 운영 준비
+        <!-- 검색창 + 운영 상태 영역 -->
+        <div class="search-area">
+            <div class="search-box">
+                <select id="searchType">
+                    <option value="name">상호명</option>
+                    <option value="owner">대표자</option>
+                    <option value="biznum">사업자등록번호</option>
+                    <option value="phone">연락처</option>
+                </select>
+
+                <input type="text" id="keyword" placeholder="검색어 입력">
+                <button class="btn">검색</button>
+            </div>
+
+            <!-- 운영 상태 설명 -->
+            <div class="status-info">
+                <span class="dot green"></span> 운영 중&nbsp;&nbsp;
+                <span class="dot red"></span> 운영 중지&nbsp;&nbsp;
+                <span class="dot blue"></span> 운영 준비
+            </div>
         </div>
-    </div>
-</form>
 
-<!-- 상점 목록 -->
-<form id="shopBulkForm" th:action="@{/admin/shop/deleteSelected}" method="post">
-    <h1>상점 목록</h1>
-    <table>
-        <thead>
-        <tr>
-            <th><input type="checkbox" id="shopCheckAll"></th>
-            <th>번호</th>
-            <th>상호명</th>
-            <th>대표</th>
-            <th>사업자등록번호</th>
-            <th>통신판매업번호</th>
-            <th>연락처</th>
-            <th>운영</th>
-            <th>관리</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="seller, stat : ${shopList.content}">
-<<<<<<< HEAD
-            <td><input type="checkbox" class="shopRowCheck" name="memIds" th:value="${seller.memId}"></td>
-            <td th:text="${shopList.totalElements - (shopList.number * shopList.size + stat.index)}">1</td>
-            <td th:text="${seller.company}">aaa</td>
-            <td th:text="${seller.representative}">홍길동</td>
-            <td th:text="${seller.tin}">M</td>
-            <td th:text="${seller.businessNumber}">a@b.c</td>
-            <td th:text="${seller.tel}">010-...</td>
-            <td>상태</td>
-            <td><a th:href="@{#}">관리</a></td>
-=======
-            <td><input type="checkbox" class="shopRowCheck" name="mem_ids"
-                       th:value="${seller.mem_id}"></td>
-            <!-- 역순 번호 출력 -->
-            <td th:text="${shopList.totalElements - (shopList.number * shopList.size + stat.index)}">1</td>
-            <td th:text="${seller.company}">상호명</td>
-            <td th:text="${seller.representative}">대표자</td>
-            <td th:text="${seller.tin}">123-45-67890</td>
-            <td th:text="${seller.business_number}">2024-서울강남-00001</td>
-            <td th:text="${seller.tel}">010-0000-0000</td>
-            <td>
-        <span th:classappend="${seller.status == '운영중'} ? 'dot green'
-                        : ${seller.status == '중지'} ? 'dot red'
-                        : 'dot blue'"></span>
-            </td>
-            <td><a th:href="@{/admin/shop/detail(mem_id=${seller.mem_id})}">관리</a></td>
->>>>>>> 706ac0a1ceab244c8e79bf45c97f84295917e713
-        </tr>
-        </tbody>
-    </table>
+        <div class="ji-young-main-area">
+            <!-- 메인 상단배너 테이블 -->
+            <div class="info-title">
+                <h2>버전정보</h2>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>번호</th>
+                    <th>상호명</th>
+                    <th>대표</th>
+                    <th>사업자등록번호</th>
+                    <th>통신판매업번호</th>
+                    <th>연락처</th>
+                    <th>운영</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--- (1)  -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>(주)다나와</td>
+                    <td>정우성</td>
+                    <td>112-12-12345</td>
+                    <td>2024-서울강남-04433</td>
+                    <td>010-1234-1001</td>
+                    <td><span class="dot green"></span></td>
+                    <td>[중단]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
 
-    <!-- 버튼 -->
-    <div class="btn-wrap">
-        <button type="submit" id="shopBulkDeleteBtn" class="btn">선택 삭제</button>
-        <a href="#" id="openRegister" class="btn">상점등록</a>
-    </div>
-</form>
+                <!--- (2)  -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>4</td>
+                    <td>(주)멋남</td>
+                    <td>이정재</td>
+                    <td>112-12-12344</td>
+                    <td>2024-서울강남-04438</td>
+                    <td>010-1234-1002</td>
+                    <td><span class="dot green"></span></td>
+                    <td>[중단]</td>
+                </tr>
+                <!--- (2) 배너끝 -->
 
-<!-- 페이징 -->
-<div class="pagination"
-     th:with="
-        page=${shopList},
-        now=${page.number},
-        total=${page.totalPages},
-        size=${page.size},
-        block=${5},
-        start=${(now / block) * block},
-        end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
-        prev=${ (now > 0) ? (now - 1) : 0 },
-        next=${ ((now + 1) < total) ? (now + 1) : (total - 1) },
-        st=${param.searchType != null ? param.searchType[0] : ''},
-        kw=${param.keyword    != null ? param.keyword[0]    : ''}">
-    <div th:if="${total > 0}">
-        <a th:href="@{|?page=0&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.first} ? ' disabled'">« 처음</a>
-        <a th:href="@{|?page=${prev}&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
-        <th:block th:each="i : ${#numbers.sequence(start, end)}">
-            <a th:href="@{|?page=${i}&size=${size}&searchType=${st}&keyword=${kw}|}"
-               th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
-        </th:block>
-        <a th:href="@{|?page=${next}&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.last} ? ' disabled'">다음 ›</a>
-        <a th:href="@{|?page=${total - 1}&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.last} ? ' disabled'">마지막 »</a>
-    </div>
-</div>
+                <!--- (3)  -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>3</td>
+                    <td>(주)컴퓨존</td>
+                    <td>장동건</td>
+                    <td>112-12-12343</td>
+                    <td>2024-서울강남-04429</td>
+                    <td>010-1234-1003</td>
+                    <td><span class="dot green"></span></td>
+                    <td>[중단]</td>
+                </tr>
+                <!--- (3) 배너끝 -->
+
+                <!--- (4)  -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>2</td>
+                    <td>누리푸드</td>
+                    <td>조인성</td>
+                    <td>112-12-12342</td>
+                    <td>2024-부산진구-01139</td>
+                    <td>010-1234-1004</td>
+                    <td><span class="dot red"></span></td>
+                    <td>[재개]</td>
+                </tr>
+                <!--- (4) 배너끝 -->
+
+                <!--- (5)  -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>굿바디스포츠</td>
+                    <td>강동원</td>
+                    <td>112-12-12341</td>
+                    <td>2024-서울강남-04425</td>
+                    <td>010-1234-1005</td>
+                    <td><span class="dot blue"></span></td>
+                    <td>[승인]</td>
+                </tr>
+                <!--- (5) 배너끝 -->
 
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const checkAll = document.getElementById("shopCheckAll");
-        const checks = document.querySelectorAll(".shopRowCheck");
-        const delBtn = document.getElementById("shopBulkDeleteBtn");
+                </tbody>
+            </table>
+            <!-- 하단 버튼 -->
+            <div class="btn-wrap">
+                <button class="btn gray"><a href="#">선택삭제</a></button>
+                <button class="btn"><a href="#">상점등록</a> </button>
+            </div>
+        </div>
+    </section>
+</section>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 
-        checkAll?.addEventListener("change", () => {
-            checks.forEach(ch => ch.checked = checkAll.checked);
-        });
-        checks.forEach(ch => ch.addEventListener("change", () => {
-            const all = checks.length;
-            const on = [...checks].filter(c => c.checked).length;
-            checkAll.checked = (all === on);
-            checkAll.indeterminate = (on > 0 && on < all);
-        }));
-        delBtn?.addEventListener("click", (e) => {
-            const hasSelected = [...checks].some(c => c.checked);
-            if (!hasSelected) {
-                e.preventDefault();
-                alert("삭제할 상점을 선택하세요.");
-                return;
-            }
-            if (!confirm("선택한 상점을 삭제하시겠습니까?")) e.preventDefault();
-        });
-
-        // 모달
-        const modal = document.getElementById('registerModal');
-        const btnOpen = document.getElementById('openRegister');
-        const btnClose = modal.querySelector('.modal-close');
-        const backdrop = modal.querySelector('.modal-backdrop');
-        btnOpen?.addEventListener('click', e => { e.preventDefault(); modal.style.display = 'block'; });
-        btnClose?.addEventListener('click', () => modal.style.display = 'none');
-        backdrop?.addEventListener('click', () => modal.style.display = 'none');
-    });
-</script>
-<script>
-    document.getElementById("openRegister").addEventListener("click", function(e) {
-        e.preventDefault(); // a 태그의 기본 이동 막기
-        window.open(
-            "register.html",     // 열 페이지
-            "registerPopup",     // 팝업 이름
-            "width=800,height=600,scrollbars=yes,resizable=yes" // 옵션
-        );
-    });
-</script>
 </body>
+<script th:src="@{/js/admin/aside.js}"></script>
 </html>

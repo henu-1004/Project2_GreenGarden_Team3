@@ -1,16 +1,128 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<main>
-		<div id="main">
+<!--
+  날짜 : 2025/10/01
+  이름 : 박효빈
+  내용 : 박효빈 고객센터 QNA 작성 페이지 제작
+-->
+<div th:replace="~{cs/_csheader.html}"></div>
+<div class="main-container">
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
 
-		</div>
-	</main>
+    <aside class="sidebar">
+        <div class="cs-breadcrumb">
+            <a href="#">홈</a>
+            <span>></span>
+            <a href="#" class="active-breadcrumb">문의하기</a>
+        </div>
+
+        <ul>
+            <li class="menu open">
+                <div class="menu-title">
+                    <a href="#">문의하기</a>
+                </div>
+                <ul class="submenu">
+                    <li class="active"><a href="#">회원</a></li>
+                    <li><a href="#">쿠폰/이벤트</a></li>
+                    <li><a href="#">주문/결제</a></li>
+                    <li><a href="#">배송</a></li>
+                    <li><a href="#">취소/반품/교환</a></li>
+                    <li><a href="#">여행/숙박/항공</a></li>
+                    <li><a href="#">안전거래</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <section id="main-section">
+        <h1 class="cs-main-title">문의하기</h1>
+
+        <div class="cs-section">
+            <form class="qna-write-form" method="post" action="#">
+
+                <!-- 문의유형 선택 -->
+                <div class="qna-form-group">
+                    <label class="qna-form-label">
+                        문의유형
+                    </label>
+                    <div class="qna-form-input">
+                        <div class="qna-select-group">
+                            <select name="category1" class="qna-select" id="category1" onchange="updateCategory2()">
+                                <option value="">1차 선택</option>
+                                <option value="회원">회원</option>
+                                <option value="쿠폰/이벤트">쿠폰/이벤트</option>
+                                <option value="주문/결제">주문/결제</option>
+                                <option value="배송">배송</option>
+                                <option value="취소/반품/교환">취소/반품/교환</option>
+                                <option value="여행/숙박/항공">여행/숙박/항공</option>
+                                <option value="안전거래">안전거래</option>
+                            </select>
+
+                            <select name="category2" class="qna-select" id="category2">
+                                <option value="">2차 선택</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 제목 -->
+                <div class="qna-form-group">
+                    <label class="qna-form-label">제목</label>
+                    <div class="qna-form-input">
+                        <input type="text" name="title" class="qna-input" placeholder="제목을 입력하세요" required>
+                    </div>
+                </div>
+
+                <!-- 내용 -->
+                <div class="qna-form-group">
+                    <label class="qna-form-label">내용</label>
+                    <div class="qna-form-input">
+                        <textarea name="content" class="qna-textarea" placeholder="내용을 입력하세요" required></textarea>
+                    </div>
+                </div>
+
+                <!-- 버튼 그룹 -->
+                <div class="qna-button-group">
+                    <button type="button" class="qna-cancel-btn" onclick="history.back()">취소하기</button>
+                    <button type="submit" class="qna-submit-btn">등록하기</button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+</div>
+
+<div th:replace="~{cs/_csfooter.html}"></div>
+
+<script>
+    // 2차 카테고리 데이터
+    const category2Options = {
+        "회원": ["가입", "탈퇴", "회원정보"],
+        "쿠폰/이벤트": ["쿠폰", "이벤트", "적립금"],
+        "주문/결제": ["주문", "결제", "영수증"],
+        "배송": ["배송조회", "배송지연", "배송지변경"],
+        "취소/반품/교환": ["주문취소", "반품", "교환"],
+        "여행/숙박/항공": ["여행", "숙박", "항공"],
+        "안전거래": ["안전거래", "사기신고", "분쟁조정"]
+    };
+
+    // 1차 카테고리 변경 시 2차 카테고리 업데이트
+    function updateCategory2() {
+        const category1 = document.getElementById('category1').value;
+        const category2Select = document.getElementById('category2');
+
+        // 2차 카테고리 초기화
+        category2Select.innerHTML = '<option value="">2차 선택</option>';
+
+        // 1차 카테고리가 선택되었을 때
+        if (category1 && category2Options[category1]) {
+            category2Options[category1].forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option;
+                optionElement.textContent = option;
+                category2Select.appendChild(optionElement);
+            });
+        }
+    }
+</script>
+
 </body>
 </html>

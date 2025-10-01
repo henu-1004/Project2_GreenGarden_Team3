@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product view</title>
+    <!--
+        날짜 : 2025/09/28
+        이름 : 이수연
+        내용 : 상품 보기 페이지
+    -->
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside_view.css}">
+    <link rel="stylesheet" th:href="@{/css/product/view.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+</head>
+<body>
+<div th:replace="~{/common/header :: header}"></div>
+<main>
+        <div class="content-wrap">
+            <div th:replace="~{common/aside_view}"></div>
+            <section id="main-section">
+                <div class="top_nav">
+                    <h5>상품보기</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">[[${product.classification1}]]</a></li>
+                        <li><a href="#">[[${product.classification2}]]</a></li>
+                    </ul>
+                </div>
+                <div class="product-view-main">
+                        <div class="product-image-area">
+                            <img id="main-product-image" src="https://placehold.co/600x600/e0e0e0/000000?text=상품 이미지" alt="Main Product Image" onerror="this.src='https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지';" >
+                            <div class="product-thumbnails-container">
+                                <button class="thumb-button prev" onclick="scrollThumbs(-1)">&#10094;</button>
+                                <div class="product-thumbnails">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+1" alt="Thumbnail 1" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+2" alt="Thumbnail 2" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+3" alt="Thumbnail 3" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+4" alt="Thumbnail 4" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+5" alt="Thumbnail 5" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+6" alt="Thumbnail 6" onclick="changeMainImage(this)">
+                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+7" alt="Thumbnail 7" onclick="changeMainImage(this)">
+                                </div>
+                                <button class="thumb-button next" onclick="scrollThumbs(1)">&#10095;</button>
+                            </div>
+                        </div>
+                        <div class="product-details-area">
+                            <input type="hidden" id="product-price" th:value="${product.price}" value="5000">
+                            <input type="hidden" id="delivery-fee" th:value="${product.deliveryFee}" value="3000">
+
+                            <h2 class="product-price">[[${product.price}]]원</h2>
+                            <p th:text="${product.name}">상품명</p>
+                            <p th:text="${product.description}">간단한 설명</p>
+
+                            <form th:action="@{/product/action}" method="post">
+                                <input type="hidden" name="proId" th:value="${product.proId}">
+                                <div class="product-options">
+                                    <div class="option-item">
+                                        <span>상품옵션</span>
+                                        <select>
+                                            <option>-- 배송방법 선택 --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="product-options">
+                                    <div class="quantity-controls">
+                                        <button type="button" id="minus" aria-label="수량 감소">-</button>
+                                        <input type="number" id="quantity" name="quantity" min="1" step="1" value="1" inputmode="numeric">
+                                        <button type="button" id="plus" aria-label="수량 증가">+</button>
+                                    </div>
+                                </div>
+                                <div class="total-price">
+                                    <span>총 상품금액</span> <br>
+                                    <span>배달비: <strong id="delivery-display" th:text="${#numbers.formatInteger(product.deliveryFee, 0)}">3,000</strong> 원</span> <br>
+                                    <span>총 합계: <strong id="total" class="total-price">8,000</strong> 원</span>
+                                </div>
+                                <div class="action-buttons">
+                                    <button class="cart-button" type="submit" name="action" value="cart">
+                                        장바구니
+                                    </button>
+                                    <button class="buy-button" type="submit" name="action" value="order">
+                                        구매하기
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <div class="info-section">
+                    <h3 class="info-title">상품정보 제공고시</h3>
+                    <div class="info-notice">
+                        [전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록된 정보입니다.
+                    </div>
+                    <table class="info-table">
+                        <tbody>
+                        <tr>
+                            <th>상품번호</th>
+                            <td>10010118412</td>
+                        </tr>
+                        <tr>
+                            <th>상품상태</th>
+                            <td>새상품</td>
+                        </tr>
+                        <tr>
+                            <th>부가가치세면세여부</th>
+                            <td>과세상품</td>
+                        </tr>
+                        <tr>
+                            <th>영수증발행</th>
+                            <td>발행가능(신용카드전표)</td>
+                        </tr>
+                        <tr>
+                            <th>사업자구분</th>
+                            <td>통신판매업자</td>
+                        </tr>
+                        <tr>
+                            <th>브랜드</th>
+                            <td>블루포스</td>
+                        </tr>
+                        <tr>
+                            <th>원산지</th>
+                            <td>국내생산</td>
+                        </tr>
+                        <tr>
+                            <th>제조자/수입국</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>제조국</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>취급시주의사항</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>제조연월</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>품질보증기준</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>A/S 책임자</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        <tr>
+                            <th>전화번호</th>
+                            <td>상세정보 직접 입력</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="review-section">
+                    <h3 class="review-title">상품리뷰</h3>
+                    <div class="review-list">
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: seo******</span>
+                                <span class="review-meta">작성일: 0000-07-10</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                가격 대비 정말 괜찮은 옷이라 생각되네요 넓은 품...제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요. 아주 약간 루즈한정도...? 그래도 이만한 옷은 없다고 봅니다 깨끗하고 포장도 괜찮고 다음에도 여기서 판매하는 제품들을 구매하고 싶네요. 정말 만족하고 후기 남깁니다 많이 파시길 바래요~
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user1***</span>
+                                <span class="review-meta">작성일: 0000-07-11</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                배송이 정말 빨라서 좋았어요. 상품 품질도 기대 이상입니다.
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user2***</span>
+                                <span class="review-meta">작성일: 0000-07-12</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐</div>
+                            <div class="review-content">
+                                색상이 화면과 조금 다르지만, 전반적으로 만족합니다.
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user3***</span>
+                                <span class="review-meta">작성일: 0000-07-13</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                가격 대비 정말 괜찮은 옷이라 생각되네요 넓은 품...제가 입기엔 어깨선이 맞고 루즈핏이라 하기도 좀 힘드네요. 아주 약간 루즈한정도...? 그래도 이만한 옷은 없다고 봅니다 깨끗하고 포장도 괜찮고 다음에 여기서 판매하는 제품들을 구매하고 싶네요. 정말 만족하고 후기 남깁니다 많이 파시길 바래요~
+                            </div>
+                        </div>
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-meta">ID: user4***</span>
+                                <span class="review-meta">작성일: 0000-07-14</span>
+                            </div>
+                            <div class="review-rating">⭐⭐⭐⭐</div>
+                            <div class="review-content">
+                                색상이 화면과 조금 다르지만, 전반적으로 만족합니다.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <a href="#" class="prev">&lt; 이전</a>
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#">5</a>
+                        <a href="#">6</a>
+                        <a href="#">7</a>
+                        <a href="#" class="next">다음 &gt;</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+	</main>
+<div th:replace="~{/common/footer :: footer}"></div>
+</body>
+
+<script>
+    // 페이지 로드 시 실행
+    document.addEventListener('DOMContentLoaded', function() {
+        // 상품 정보 (Thymeleaf에서 받아온 데이터)
+        const productData = {
+            price: parseInt(document.getElementById('product-price').value) || 5000,
+            deliveryFee: parseInt(document.getElementById('delivery-fee').value) || 3000
+        };
+
+        // DOM 요소들
+        const minusBtn = document.getElementById('minus');
+        const plusBtn = document.getElementById('plus');
+        const quantityInput = document.getElementById('quantity');
+        const deliveryDisplay = document.getElementById('delivery-display');
+        const total = document.getElementById('total');
+
+        // 숫자를 천 단위로 포맷팅하는 함수
+        function formatNumber(num) {
+            return num.toLocaleString('ko-KR');
+        }
+
+        // 가격을 업데이트하는 함수
+        function updatePrices() {
+            const quantity = parseInt(quantityInput.value) || 1;
+            const totalAmount = (productData.price * quantity) + productData.deliveryFee;
+
+            // 가격 표시 업데이트
+            deliveryDisplay.textContent = formatNumber(productData.deliveryFee);
+            total.textContent = formatNumber(totalAmount);
+
+            // 마이너스 버튼 활성화/비활성화
+            minusBtn.disabled = quantity <= 1;
+        }
+
+        // 수량 감소 버튼 이벤트
+        minusBtn.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value) || 1;
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                updatePrices();
+            }
+        });
+
+        // 수량 증가 버튼 이벤트
+        plusBtn.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value) || 1;
+            quantityInput.value = currentValue + 1;
+            updatePrices();
+        });
+
+        // 수량 입력 필드 직접 변경 이벤트
+        quantityInput.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            if (value < 1 || isNaN(value)) {
+                this.value = 1;
+            }
+            updatePrices();
+        });
+
+        // 키보드 이벤트 (Enter, 화살표 키)
+        quantityInput.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                plusBtn.click();
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                minusBtn.click();
+            }
+        });
+
+        // 초기 가격 설정
+        updatePrices();
+    });
+
+    // 썸네일 이미지 변경 함수
+    function changeMainImage(thumbnail) {
+        const mainImage = document.getElementById('main-product-image');
+        mainImage.src = thumbnail.src.replace('80x80', '600x600');
+    }
+
+    // 썸네일 스크롤 함수
+    function scrollThumbs(direction) {
+        const container = document.querySelector('.product-thumbnails');
+        const scrollAmount = 100;
+        container.scrollBy({
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>
+</html>

@@ -78,13 +78,20 @@
                     <p>위치기반 서비스 제공에 대한 안내가 들어갑니다. …</p>
                 </div>
             </article>
-
+<--!종봉형님 확인하시고 수정진행
             <div class="signup-actions">
                 <a th:if="${type eq 'user'}" th:href="@{/member/register}"
                    class="btn signup-btn btn-user" id="agreeBtnUser" disabled>동의하기</a>
 
                 <a th:if="${type eq 'seller'}" th:href="@{/member/registerSeller}"
                    class="btn signup-btn btn-seller" id="agreeBtnSeller" disabled>동의하기</a>
+          -->
+                <div th:if="${role.equals('general')}">
+                    <a th:href="@{/member/register}" class="btn signup-btn btn-user">동의하기</a>
+                </div>
+                <div th:if="${role.equals('seller')}">
+                    <a th:href="@{/member/registerSeller}" class="btn signup-btn btn-user">동의하기</a>
+                </div>
             </div>
 
         </section>
