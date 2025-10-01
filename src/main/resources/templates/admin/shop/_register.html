@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>상점등록</title>
+    <!--
+    날짜 : 2025/09/30
+    이름 : 조지영
+    내용 : 상점등록 (Thymeleaf 연동)
+    -->
+    <link rel="stylesheet" type="text/css" href="css/register.css">
+</head>
+<body>
+
+<!-- (1) 타이틀 -->
+<div class="modal-header">
+    <span class="modal-title">상점등록</span>
+    <button class="modal-close">X</button>
+</div>
+
+<!-- (2) 본문 -->
+<form th:action="@{/member/register}" method="post">
+    <div class="version-box">
+        <table>
+            <tr>
+                <th>아이디</th>
+                <td><input type="text" name="id" placeholder="아이디 입력"> 영문, 숫자 4~12자 설정</td>
+            </tr>
+            <tr>
+                <th>비밀번호</th>
+                <td><input type="password" name="pwd" placeholder="비밀번호 입력"> 영문, 숫자, 특수문자 8~12자 설정</td>
+            </tr>
+            <tr>
+                <th>비밀번호 확인</th>
+                <td><input type="password" name="pwd_check" placeholder="비밀번호 재입력"></td>
+            </tr>
+            <tr>
+                <th>상호명</th>
+                <td><input type="text" name="name" placeholder="예) (주)GreenGarden"></td>
+            </tr>
+            <tr>
+                <th>대표</th>
+                <td><input type="text" name="ceo" placeholder="대표자명 입력"></td>
+            </tr>
+            <tr>
+                <th>사업자등록번호</th>
+                <td><input type="text" name="biznum" placeholder="예) 123-45-67890"> - 포함 12자리 입력</td>
+            </tr>
+            <tr>
+                <th>통신판매업번호</th>
+                <td><input type="text" name="sale_num" placeholder="예) 2025-부산남구-1234"> - 포함 12자리 입력</td>
+            </tr>
+            <tr>
+                <th>전화번호</th>
+                <td><input type="text" name="phone" placeholder="예) 051-123-4567"></td>
+            </tr>
+            <tr>
+                <th>팩스</th>
+                <td><input type="text" name="fax" placeholder="팩스번호 입력"></td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td>
+                    <input type="text" id="zip_code" name="zip_code" placeholder="우편번호" onclick="postcode()"
+                           readonly><br>
+                    <input type="text" id="address_basic" name="address_basic" placeholder="기본주소" readonly><br>
+                    <input type="text" id="address_detail" name="address_detail" placeholder="상세주소">
+                </td>
+            </tr>
+        </table>
+
+        <input type="hidden" name="role" value="판매자">
+
+        <div class="btn-wrap">
+            <button type="submit" class="btn">등록하기</button>
+        </div>
+    </div>
+</form>
+
+<!-- 다음 우편번호 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function postcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var addr = '';
+                var extraAddr = '';
+
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                if (data.userSelectedType === 'R') {
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    if (extraAddr !== '') {
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                }
+
+                document.getElementById('zip_code').value = data.zonecode;
+                document.getElementById("address_basic").value = addr + extraAddr;
+                document.getElementById("address_detail").focus();
+            }
+        }).open();
+    }
+</script>
+
+</body>
+</html>
