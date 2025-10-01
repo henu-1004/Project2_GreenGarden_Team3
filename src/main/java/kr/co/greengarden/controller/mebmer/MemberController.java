@@ -9,13 +9,14 @@ import kr.co.greengarden.service.MemberSellerService;
 import kr.co.greengarden.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /*
- * 날짜 : 2025/09/30
+ * 날짜 : 2025/10/01
  * 이름 : 이종봉
- * 내용 : 판매자회원가입, 약관 controller 추가 및 일반회원가입 controller 수정
+ * 내용 : 일반/판매자 약관 구분 Controller 추가
  */
 @RequiredArgsConstructor
 @Controller
@@ -42,6 +43,20 @@ public class MemberController {
 
     @GetMapping("/member/signup")
     public String signup() {
+        return "member/signup";
+    }
+
+    @GetMapping("/member/termsUser")
+    public String termsUser(Model model) {
+        model.addAttribute("type", "user");
+
+        return "member/signup";
+    }
+
+    @GetMapping("/member/termsSeller")
+    public String termsSeller(Model model){
+        model.addAttribute("type", "seller");
+
         return "member/signup";
     }
 
