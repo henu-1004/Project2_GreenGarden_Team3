@@ -1,0 +1,425 @@
+/* =========================
+   마이페이지 레이아웃
+   ========================= */
+.mypage-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    gap: 20px;
+}
+
+/* 본문 컨텐츠 */
+.content {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.banner {
+    height: 80px;
+    background: #f3f7f6;
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #999;
+    font-size: 14px;
+}
+
+.content h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #2b6b34;
+}
+
+/* ===== 상단 요약 박스 ===== */
+.summary-box {
+    display: flex;
+    justify-content: space-around;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 10px 0;
+}
+.summary-box .item {
+    text-align: center;
+    flex: 1;
+}
+.summary-box span {
+    display: block;
+    color: #666;
+    font-size: 14px;
+}
+.summary-box strong {
+    font-size: 18px;
+    color: #175a48;
+}
+
+/* ===== 섹션 헤더 ===== */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0 10px;
+}
+.section-header h2 {
+    font-size: 18px;
+    color: #2b6b34;
+}
+.section-header .more {
+    font-size: 14px;
+    color: #175a48;
+}
+
+/* ===== 주문 리스트 ===== */
+.order-list { border-top: 2px solid #175a48; }
+.order-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+.order-item .thumb img {
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+    margin-right: 15px;
+}
+.order-item .info { flex: 1; }
+.order-item .info p { margin-bottom: 5px; }
+.order-item .info .price {
+    font-weight: bold;
+    color: #2b6b34;
+}
+.order-item .status {
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    color: #175a48;
+}
+.order-item .actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.order-item .actions button {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 4px;
+    background: #66968c;
+    color: white;
+    cursor: pointer;
+}
+.order-item .actions button:hover { background: #175a48; }
+
+/* ===== 포인트 리스트 ===== */
+.point-list {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    background: #fafafa;
+    font-size: 14px;
+    color: #555;
+}
+
+/* =========================
+   모달 공통 스타일
+   ========================= */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal-content {
+    background: #fff;
+    border-radius: 8px;
+    width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* 헤더 */
+.modal-header {
+    background: #175a48;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 8px 8px 0 0;
+}
+.modal-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.modal-header .close {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    color: #A8C6C4;
+    transition: 0.2s;
+}
+.modal-header .close:hover { color: #fff; }
+
+/* 본문 */
+.modal-body {
+    padding: 20px;
+    background: #f3f7f6;
+}
+.modal-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+.modal-body table td {
+    border: 1px solid #A8C6C4;
+    padding: 10px;
+    background: #fff;
+}
+
+/* 버튼 */
+.btn-primary {
+    background: #175a48;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-primary:hover { background: #2b6b34; }
+
+.btn-secondary {
+    background: #A8C6C4;
+    color: #175a48;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-secondary:hover {
+    background: #66968c;
+    color: #fff;
+}
+
+/* =========================
+   주문상세 모달 (modal-order)
+   ========================= */
+.modal-order .modal-body {
+    background: #fff;
+    padding: 0;
+}
+
+/* 섹션 공통 */
+.modal-order .section {
+    margin: 0;
+    border-top: 2px solid #175a48;
+}
+
+.modal-order .section h3 {
+    background: #f3f7f6;
+    padding: 10px 15px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #2b6b34;
+    border-bottom: 1px solid #ddd;
+}
+
+/* 테이블 */
+.modal-order table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modal-order table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.modal-order table tr td:first-child {
+    background: #fafafa;
+    width: 120px;
+    font-weight: bold;
+    color: #175a48;
+}
+
+/* 상품 이미지 정렬 */
+.modal-order .product-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.modal-order .product-info img {
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+/* =========================
+   판매자정보 모달 (modal-seller)
+   ========================= */
+.modal-seller .modal-body {
+    padding: 0;
+    background: #fff;
+}
+
+.modal-seller table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modal-seller table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.modal-seller table tr td:first-child {
+    width: 140px;
+    background: #fafafa;
+    font-weight: bold;
+    color: #175a48;
+}
+
+/* 안내문 */
+.modal-seller .notice {
+    font-size: 12px;
+    color: #666;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+    background: #f3f7f6;
+}
+
+/* 문의하기 버튼 */
+.modal-seller .btn-primary {
+    display: block;
+    margin: 15px auto;
+}
+
+/* ===== 문의하기 모달 폼 ===== */
+#inquiryModal .modal-body form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 항목 간격 */
+}
+
+#inquiryModal label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #2b6b34;
+}
+
+#inquiryModal input[type="text"],
+#inquiryModal input[type="email"],
+#inquiryModal textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #A8C6C4;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+#inquiryModal textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* 라디오 버튼 */
+#inquiryModal .radio-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+#inquiryModal .radio-group label {
+    font-weight: normal;
+    color: #333;
+}
+
+/* 버튼 영역 */
+#inquiryModal .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* 구매확정 모달 전용 */
+.modal-confirm .modal-body {
+    text-align: center; /* 메시지 중앙 정렬 */
+    padding: 30px 20px;
+    font-size: 16px;
+    color: #333;
+}
+
+.modal-confirm .actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* 버튼 간격 */
+}
+
+.modal-confirm .actions button {
+    min-width: 100px;
+}
+
+/* 상품평작성 모달 */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: #175a48;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #A8C6C4;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+/* 별점 */
+.star-rating {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.star-rating .selected {
+    color: #ffb400; /* 노란색 별 */
+}
+
+/* 업로드 */
+.upload-box input[type="file"] {
+    display: block;
+    margin-bottom: 8px;
+}

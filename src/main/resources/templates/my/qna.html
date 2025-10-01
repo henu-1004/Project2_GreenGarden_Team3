@@ -1,16 +1,93 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>마이페이지 | Green Garden</title>
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+    <!-- my 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
 
-		</div>
-	</main>
+<!-- 공통 헤더 -->
+<div th:replace="~{/common/header :: header}"></div>
+
+<main class="mypage-container">
+    <!-- 공통 어사이드 -->
+    <div th:replace="~{/common/aside :: aside}"></div>
+
+    <!-- 본문 -->
+    <section class="content">
+        <!-- 요약 박스 -->
+        <div class="summary-box">
+            <div class="item"><span>주문</span><strong>2</strong></div>
+            <div class="item"><span>쿠폰</span><strong>1</strong></div>
+            <div class="item"><span>포인트</span><strong>1000</strong></div>
+            <div class="item"><span>문의</span><strong>1</strong></div>
+        </div>
+
+        <!-- 배너 -->
+        <div class="banner">810 × 86 배너 광고</div>
+
+        <!-- 최근 주문내역 -->
+        <div class="section-header">
+            <h2>최근주문내역</h2>
+            <a th:href="@{/my/order}" class="more">더보기 ></a>
+        </div>
+
+        <div class="order-list">
+            <div class="order-item">
+                <div class="thumb"><img th:src="@{/img/sample.png}" alt="상품"></div>
+                <div class="info">
+                    <p class="date">2022-12-13</p>
+                    <p class="order-num">주문번호 : 202212341</p>
+                    <p class="product">샘플 상품 (1개)</p>
+                    <p class="price">34,000원</p>
+                </div>
+                <div class="status">배송완료</div>
+                <div class="actions">
+                    <button onclick="openOrderModal()">주문상세</button>
+                    <button>구매확정</button>
+                    <button>리뷰작성</button>
+                    <button>교환</button>
+                    <button>반품</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- 공통 푸터 -->
+<div th:replace="~{/common/footer :: footer}"></div>
+
+<!-- 주문상세 모달 -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>주문상세 <span class="date">2022-12-13</span></h2>
+            <span class="close" onclick="closeOrderModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <table>
+                <tr><td>상품명</td><td>샘플 상품</td></tr>
+                <tr><td>결제금액</td><td>34,000원</td></tr>
+                <tr><td>상태</td><td>배송중</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openOrderModal() {
+        document.getElementById("orderModal").style.display = "flex";
+    }
+    function closeOrderModal() {
+        document.getElementById("orderModal").style.display = "none";
+    }
+</script>
+
 </body>
 </html>

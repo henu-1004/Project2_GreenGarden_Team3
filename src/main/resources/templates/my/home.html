@@ -1,188 +1,383 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>마이페이지 | Green Garden</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>마이페이지 | Green Garden</title>
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+    <!-- my 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
-  <!-- 헤더 -->
-  <header class="header">
-    <div class="top-menu">
-      <a href="#">로그인</a> | 
-      <a href="#">회원가입</a> | 
-      <a href="#">마이페이지</a> | 
-      <a href="#">장바구니</a>
-    </div>
-    <h1 class="logo"><a href="index.html">Green Garden</a></h1>
-  </header>
 
-  <!-- 메인 레이아웃 -->
-  <main class="mypage-container">
-    <!-- 사이드바 -->
-    <aside class="sidebar">
-      <h3>나의 쇼핑정보</h3>
-      <ul>
-        <li><a href="#">전체주문내역</a></li>
-        <li><a href="#">포인트내역</a></li>
-        <li><a href="#">쿠폰</a></li>
-        <li><a href="#">나의리뷰</a></li>
-        <li><a href="#" onclick="openInquiryModal()">문의하기</a></li>
-        <li><a href="#">나의설정</a></li>
-      </ul>
-    </aside>
+<!-- 공통 헤더 -->
+<div th:replace="~{/common/header :: header}"></div>
 
-    <!-- 콘텐츠 -->
+<main class="mypage-container">
+    <!-- 어사이드 -->
+    <div th:replace="~{/my/aside :: aside}"></div>
+
+    <!-- 본문 -->
     <section class="content">
-      <!-- 상단 요약 정보 -->
-      <div class="summary-box">
-        <div class="item"><span>주문</span><strong>2</strong></div>
-        <div class="item"><span>쿠폰</span><strong>1</strong></div>
-        <div class="item"><span>포인트</span><strong>1000</strong></div>
-        <div class="item"><span>문의</span><strong>1</strong></div>
-      </div>
-
-      <!-- 배너 -->
-      <div class="banner">810 × 86 배너 광고</div>
-
-      <!-- 최근 주문내역 -->
-      <div class="section-header">
-        <h2>최근주문내역</h2>
-        <a href="#" class="more">더보기 ></a>
-      </div>
-
-      <div class="order-list">
-        <div class="order-item">
-          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
-          <div class="info">
-            <p class="date">2022-12-13</p>
-            <p class="order-num">주문번호 : 202212341</p>
-            <p class="product">샘플 상품 (1개)</p>
-            <p class="price">34,000원</p>
-          </div>
-          <div class="status">배송완료</div>
-          <div class="actions">
-            <button onclick="openOrderModal()">주문상세</button>
-            <button>구매확정</button>
-            <button>리뷰작성</button>
-            <button>교환</button>
-            <button>반품</button>
-          </div>
+        <div class="summary-box">
+            <div class="item"><span>주문</span><strong>2</strong></div>
+            <div class="item"><span>쿠폰</span><strong>1</strong></div>
+            <div class="item"><span>포인트</span><strong>1000</strong></div>
+            <div class="item"><span>문의</span><strong>1</strong></div>
         </div>
 
-        <div class="order-item">
-          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
-          <div class="info">
-            <p class="date">2022-12-13</p>
-            <p class="order-num">주문번호 : 202212342</p>
-            <p class="product">샘플 상품 (2개)</p>
-            <p class="price">15,000원</p>
-          </div>
-          <div class="status">배송중</div>
-          <div class="actions">
-            <button onclick="openOrderModal()">주문상세</button>
-            <button>구매확정</button>
-            <button>리뷰작성</button>
-          </div>
-        </div>
-      </div>
+        <div class="banner">810 × 86 배너 광고</div>
 
-      <!-- 포인트 적립내역 -->
-      <div class="section-header">
-        <h2>포인트적립내역</h2>
-      </div>
-      <div class="point-list">
-        <p>포인트 적립/사용 내역이 여기에 표시됩니다.</p>
-      </div>
+        <div class="section-header">
+            <h2>최근주문내역</h2>
+            <a th:href="@{/my/order}" class="more">더보기 ></a>
+        </div>
+
+        <div class="order-list">
+            <div class="order-item">
+                <div class="thumb"><img th:src="@{/img/sample.png}" alt="상품"></div>
+                <div class="info">
+                    <p class="date">2022-12-13</p>
+                    <p class="order-num">
+                        주문번호 : <a href="javascript:void(0)" onclick="openModal('orderModal')">202212341</a>
+                    </p>
+                    <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal')">㈜그린샵</a>] 샘플 상품 (1개)</p>
+                    <p class="price">34,000원</p>
+                </div>
+                <div class="status">배송완료</div>
+                <div class="actions">
+                    <button onclick="openModal('confirmModal')">구매확정</button>
+                    <button onclick="openModal('reviewModal')">상품평작성</button>
+                    <button onclick="openModal('exchangeModal')">교환신청</button>
+                    <button onclick="openModal('returnModal')">반품신청</button>
+                </div>
+            </div>
+        </div>
     </section>
-  </main>
+</main>
 
-  <!-- 주문상세 모달 -->
-  <div id="orderModal" class="modal">
+<!-- 공통 푸터 -->
+<div th:replace="~{/common/footer :: footer}"></div>
+
+<!-- 1. 주문상세 모달 -->
+<div id="orderModal" class="modal modal-order">
     <div class="modal-content">
-      <div class="modal-header">
-        <h2>주문상세 <span class="date">2022-12-13</span></h2>
-        <span class="close" onclick="closeOrderModal()">&times;</span>
-      </div>
-      <div class="modal-body">
-        <h3>주문정보</h3>
-        <table>
-          <tr><td>날짜</td><td>2022-12-13</td></tr>
-          <tr><td>상품명</td><td>샘플 상품 (1개)</td></tr>
-          <tr><td>결제금액</td><td>34,000원</td></tr>
-          <tr><td>상태</td><td>배송중</td></tr>
-        </table>
+        <div class="modal-header">
+            <h2>주문상세</h2>
+            <span class="date">202x-12-13</span>
+            <span class="close" onclick="closeModal('orderModal')">&times;</span>
+        </div>
+        <div class="modal-body">
 
-        <h3>배송정보</h3>
-        <table>
-          <tr><td>이름</td><td>홍길동</td></tr>
-          <tr><td>연락처</td><td>010-1234-1001</td></tr>
-          <tr><td>주소</td><td>[부산시 남구 대연동 1210] 1004호</td></tr>
-          <tr><td>배송요청사항</td><td>없음</td></tr>
-        </table>
-      </div>
+            <!-- 주문정보 -->
+            <div class="section">
+                <h3>주문정보</h3>
+                <table>
+                    <tr>
+                        <td>날짜</td>
+                        <td>20xx-01-01</td>
+                    </tr>
+                    <tr>
+                        <td>상품정보</td>
+                        <td>
+                            <div class="product-info">
+                                <img src="/img/sample.png" alt="상품">
+                                <div>
+                                    [㈜그린샵] 샘플 상품 (1개)<br>
+                                    주문번호 : 202212341
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>결제금액</td>
+                        <td>
+                            상품가: 34,000원<br>
+                            할인: -3,000원<br>
+                            배송비: 3,000원<br>
+                            <strong>총 결제금액: 34,000원</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>상태</td>
+                        <td>배송완료</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 배송정보 -->
+            <div class="section">
+                <h3>배송정보</h3>
+                <table>
+                    <tr><td>이름</td><td>홍길동</td></tr>
+                    <tr><td>연락처</td><td>010-1234-1001</td></tr>
+                    <tr><td>주소</td><td>[210**] 부산광역시 부산진구 다대동 1211동 1004호</td></tr>
+                    <tr><td>배송메시지</td><td>문앞에 두고 가주세요</td></tr>
+                </table>
+            </div>
+
+        </div>
     </div>
-  </div>
+</div>
 
-  <!-- 문의하기 모달 -->
-  <div id="inquiryModal" class="modal">
+<!-- 2. 판매자정보 모달 -->
+<div id="sellerModal" class="modal modal-seller">
     <div class="modal-content">
-      <div class="modal-header">
-        <h2>문의하기</h2>
-        <span class="close" onclick="closeInquiryModal()">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>문의유형</label>
-          <label><input type="radio" name="type"> 상품</label>
-          <label><input type="radio" name="type"> 배송</label>
-          <label><input type="radio" name="type"> 반품/취소</label>
-          <label><input type="radio" name="type"> 교환</label>
-          <label><input type="radio" name="type"> 기타</label>
+        <div class="modal-header">
+            <h2>판매자정보</h2>
+            <span class="close" onclick="closeModal('sellerModal')">&times;</span>
         </div>
+        <div class="modal-body">
+            <table>
+                <tr><td>판매자 등급</td><td>파워딜러</td></tr>
+                <tr><td>상호</td><td>(주) 그린샵</td></tr>
+                <tr><td>대표자</td><td>홍길동</td></tr>
+                <tr><td>연락처</td><td>051-123-1000</td></tr>
+                <tr><td>FAX</td><td>051-123-1001</td></tr>
+                <tr><td>Email</td><td>company@abc.com</td></tr>
+                <tr><td>사업자번호</td><td>123-12-123457</td></tr>
+                <tr><td>영업소재지</td><td>[210**] 부산광역시 부전구 대연동 1211동 1004호</td></tr>
+            </table>
 
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" value="chh**@gmail.com">
-        </div>
+            <div class="notice">
+                ※ 전자상거래법 제20조 제2항 및 동법 시행령 제25조 제2항에 의거하여<br>
+                소비자에게 고지할 의무가 있습니다.
+            </div>
 
-        <div class="form-group">
-          <label>제목</label>
-          <input type="text">
+            <!-- 버튼 클릭 시 inquiryModal 열림 -->
+            <button class="btn-primary" onclick="openInquiry()">문의하기</button>
         </div>
-
-        <div class="form-group">
-          <label>내용</label>
-          <textarea rows="5"></textarea>
-        </div>
-
-        <div class="form-actions">
-          <button class="btn-primary">등록하기</button>
-          <button class="btn-secondary" onclick="closeInquiryModal()">취소</button>
-        </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <!-- 푸터 -->
-  <footer class="footer">
-    <p>© Green Garden. All rights reserved.</p>
-  </footer>
+<!-- 3. 문의하기 모달 -->
+<div id="inquiryModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>문의하기</h2>
+            <span class="close" onclick="closeModal('inquiryModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div>
+                    <label>문의유형</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="type"> 상품</label>
+                        <label><input type="radio" name="type"> 배송</label>
+                        <label><input type="radio" name="type"> 반품/취소</label>
+                        <label><input type="radio" name="type"> 교환</label>
+                        <label><input type="radio" name="type"> 기타</label>
+                    </div>
+                </div>
 
-  <!-- 스크립트 -->
-  <script>
-    function openOrderModal() {
-      document.getElementById("orderModal").style.display = "flex";
+                <div>
+                    <label>Email</label>
+                    <input type="email" value="chh**@gmail.com">
+                </div>
+
+                <div>
+                    <label>제목</label>
+                    <input type="text">
+                </div>
+
+                <div>
+                    <label>내용</label>
+                    <textarea></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-primary">등록하기</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('inquiryModal')">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- 구매확정 모달 -->
+<div id="confirmModal" class="modal modal-confirm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>구매확정</h2>
+            <span class="close" onclick="closeModal('confirmModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
+            <div class="actions">
+                <button class="btn-primary">확정하기</button>
+                <button class="btn-secondary" onclick="closeModal('confirmModal')">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 상품평작성 모달 -->
+<div id="reviewModal" class="modal">
+    <div class="modal-content modal-review">
+        <div class="modal-header">
+            <h2>상품평작성</h2>
+            <span class="close" onclick="closeModal('reviewModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form>
+                <table class="review-table">
+                    <tr>
+                        <th>상품명</th>
+                        <td>[㈜그린샵] 샘플 상품</td>
+                    </tr>
+                    <tr>
+                        <th>별점</th>
+                        <td class="stars">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td>
+                            <textarea placeholder="최소 10자 이상, 200자 이내 작성해주세요."></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>사진</th>
+                        <td class="file-inputs">
+                            <input type="file"><br>
+                            <input type="file"><br>
+                            <input type="file">
+                        </td>
+                    </tr>
+                </table>
+                <div class="form-actions">
+                    <button type="button" class="btn-primary">작성완료</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('reviewModal')">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- 6. 반품신청 모달 -->
+<div id="returnModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>반품신청</h2>
+            <span class="close" onclick="closeModal('returnModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+
+            <!-- 상품정보 -->
+            <div class="section">
+                <h3>상품정보</h3>
+                <table>
+                    <tr>
+                        <td>날짜</td>
+                        <td>2025-10-01</td>
+                    </tr>
+                    <tr>
+                        <td>상품정보</td>
+                        <td>
+                            <div class="product-info">
+                                <img src="/img/sample.png" alt="상품">
+                                <div>
+                                    [㈜그린샵] 샘플 상품 (1개)<br>
+                                    주문번호 : 202212341
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>결제금액</td>
+                        <td>34,000원</td>
+                    </tr>
+                    <tr>
+                        <td>상태</td>
+                        <td>배송완료</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- 반품정보 입력 -->
+            <div class="section">
+                <h3>반품정보 입력</h3>
+
+                <div class="form-group">
+                    <label>반품유형</label><br>
+                    <label><input type="radio" name="returnType"> 단순변심</label>
+                    <label><input type="radio" name="returnType"> 파손 및 불량</label>
+                    <label><input type="radio" name="returnType"> 주문 실수</label>
+                    <label><input type="radio" name="returnType"> 기타</label>
+                </div>
+
+                <div class="form-group">
+                    <label>사유입력</label>
+                    <textarea rows="4" placeholder="반품 사유를 입력해주세요."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>사진첨부</label>
+                    <input type="file" accept="image/*">
+                </div>
+            </div>
+
+            <!-- 버튼 -->
+            <div class="form-actions">
+                <button type="button" class="btn-primary">반품신청</button>
+                <button type="button" class="btn-secondary" onclick="closeModal('returnModal')">취소</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- 7. 교환신청 모달 -->
+<div id="exchangeModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header"><h2>교환신청</h2><span class="close" onclick="closeModal('exchangeModal')">&times;</span></div>
+        <div class="modal-body">
+            <label>사유 선택</label><br>
+            <select>
+                <option>사이즈 문제</option>
+                <option>색상 문제</option>
+                <option>상품하자</option>
+            </select><br><br>
+            <label>내용</label><br><textarea rows="5"></textarea><br>
+            <button class="btn-primary">신청하기</button>
+            <button class="btn-secondary" onclick="closeModal('exchangeModal')">취소</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(id){
+        document.getElementById(id).style.display="flex";
     }
-    function closeOrderModal() {
-      document.getElementById("orderModal").style.display = "none";
+    function closeModal(id){
+        document.getElementById(id).style.display="none";
     }
-    function openInquiryModal() {
-      document.getElementById("inquiryModal").style.display = "flex";
+
+    // 판매자정보 → 문의하기 버튼 클릭 시 동작
+    function openInquiry(){
+        closeModal('sellerModal');   // 판매자정보 모달 닫기
+        openModal('inquiryModal');   // 문의하기 모달 열기
     }
-    function closeInquiryModal() {
-      document.getElementById("inquiryModal").style.display = "none";
+    function setRating(rating) {
+        const stars = document.querySelectorAll('#reviewModal .star-rating span');
+        stars.forEach((star, index) => {
+            star.classList.toggle('selected', index < rating);
+        });
+        document.getElementById("ratingValue").value = rating;
     }
-  </script>
+</script>
+
+
 </body>
 </html>
