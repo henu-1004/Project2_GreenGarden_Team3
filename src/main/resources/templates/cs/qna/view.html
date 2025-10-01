@@ -1,16 +1,100 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<main>
-		<div id="main">
+<!--
+  날짜 : 2025/10/01
+  이름 : 박효빈
+  내용 : 박효빈 고객센터 QNA view 페이지 제작
+-->
+<div th:replace="~{cs/_csheader.html}"></div>
+<div class="main-container">
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
 
-		</div>
-	</main>
+    <aside class="sidebar">
+        <div class="cs-breadcrumb">
+            <a href="#">홈</a>
+            <span>></span>
+            <a href="#" class="active-breadcrumb">문의하기</a>
+        </div>
+
+        <ul>
+            <li class="menu open">
+                <div class="menu-title">
+                    <a href="#">문의하기</a>
+                </div>
+                <ul class="submenu">
+                    <li class="active"><a href="#">회원</a></li>
+                    <li><a href="#">쿠폰/이벤트</a></li>
+                    <li><a href="#">주문/결제</a></li>
+                    <li><a href="#">배송</a></li>
+                    <li><a href="#">취소/반품/교환</a></li>
+                    <li><a href="#">여행/숙박/항공</a></li>
+                    <li><a href="#">안전거래</a></li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <section id="main-section">
+
+        <h1 class="cs-main-title">문의하기</h1>
+
+        <div class="cs-section">
+
+            <!-- 질문 영역 -->
+            <div class="qna-question-section">
+                <div class="qna-question-header">
+                    <span class="qna-badge question">질문</span>
+                    <span class="qna-view-category">[가입] 가입문의드립니다</span>
+                </div>
+                <div class="qna-meta-info">
+                    <span>user*** 님의 문의내용 입니다.</span>
+                </div>
+                <div class="qna-content-box">
+                    <p>
+                        회원가입 시 필요한 정보가 무엇인가요?
+                        <br>
+                        그리고 고양이도 회원가입이 가능한지 궁금합니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 답변 영역 -->
+            <div class="qna-answer-section">
+                <div class="qna-answer-header">
+                    <span class="qna-badge answer">답변</span>
+                    <span class="qna-answer-title">[답변] 가입문의드립니다</span>
+                </div>
+                <div class="qna-answer-meta">
+                    <span>답변 작성일 : 2023.10.31 | 작성자 : 관리자</span>
+                </div>
+                <div class="qna-content-box">
+                    <p>
+                        안녕하세요.
+                        <br><br>
+                        회원가입 시 필요한 정보는 아래와 같습니다.
+                        <br>
+                        - 이메일 주소
+                        <br>
+                        - 휴대폰 번호
+                        <br>
+                        - 비밀번호
+                        <br>
+                        - 이름
+                        <br><br>
+                        고양이도 회원으로가입도 가능하며, 사진로 본인인증을 진행하시면 됩니다.
+                        <br><br>
+                        감사합니다.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="cs-button-group">
+            <a href="#" class="cs-button">목록</a>
+        </div>
+
+    </section>
+</div>
+<div th:replace="~{cs/_csfooter.html}"></div>
+
 </body>
 </html>
