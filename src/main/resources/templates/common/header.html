@@ -1,3 +1,4 @@
+
 <!--
 	날짜 : 2025/09/15
     이름 : 한탁원
@@ -6,11 +7,11 @@
 <header th:fragment="header">
     <div id="header-wrap">
         <div id="header-top">
-            <th:block th:unless="${member}">
+            <th:block th:if="${#authorization.expression('isAnonymous()')}">
                 <a th:href="@{/member/login}">로그인</a>
                 <a th:href="@{/member/join}">회원가입</a>
             </th:block>
-            <th:block th:if="${member}">
+            <th:block th:if="${#authorization.expression('isAuthenticated()')}">
                 <a th:href="@{/member/logout}">로그아웃</a>
             </th:block>
             <a th:href="@{#}">마이페이지</a>

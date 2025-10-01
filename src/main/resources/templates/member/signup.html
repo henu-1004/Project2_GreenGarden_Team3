@@ -71,8 +71,12 @@
             </article>
 
             <div class="signup-actions">
-                <a th:href="@{/member/register}" class="btn signup-btn btn-user">동의하기</a>
-                <a th:href="@{/member/registerSeller}" class="btn signup-btn btn-seller">동의하기</a>
+                <div th:if="${role.equals('general')}">
+                    <a th:href="@{/member/register}" class="btn signup-btn btn-user">동의하기</a>
+                </div>
+                <div th:if="${role.equals('seller')}">
+                    <a th:href="@{/member/registerSeller}" class="btn signup-btn btn-user">동의하기</a>
+                </div>
             </div>
 
         </section>

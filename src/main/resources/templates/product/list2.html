@@ -18,7 +18,7 @@
 <div th:replace="~{/common/header :: header}"></div>
 <main>
     <div class="content-wrap">
-        <div th:replace="~{/common/_aside :: aside}"></div>
+        <div th:replace="~{/common/aside :: aside}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h5>상품목록</h5>
@@ -30,10 +30,14 @@
             </div>
             <!-- 상품 목록 반복 영역 -->
             <div class="product_list" th:each="product : ${productList}">
+                <a th:href="@{/product/view(proId=${product.proId})}">
                 <div class="product_image">
-                    <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
+                    <div th:with="img=${product.img1}">
+                        <img th:if="${product.img1}" th:src="@{${product.img1}}"
+                             alt="thumb" loading="lazy">
+                    </div>
                 </div>
-                <div class="product_info">
+                    <div class="product_info">
                     <h6 th:text="${product.name}">상품명</h6>
                     <p th:text="${product.description}">간단한 상품 설명</p>
                 </div>
@@ -45,8 +49,9 @@
                     </div>
                     <p class="shopping_fee"th:text="|배송비 ${product.deliveryFee}원|">배송비 2,500원</p>
                 </div>
-                <div class="prodect_meta">
-                    <div>🏠 판매자</div>
+                </a>
+                <div class="product_meta">
+                    <div>🏠[[${product.seller.company}]]</div>
                     <div><img src="https://placehold.co/15x15/e0e0e0/000000?text=🏅" alt="메달아이콘" onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=🏅';" ></div>
                     <div>상품평 <img src="https://placehold.co/15x15/e0e0e0/000000?text=⭐" alt="상품점수별아이콘" onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=⭐';" ></div>
                 </div>

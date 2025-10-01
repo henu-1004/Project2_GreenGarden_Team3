@@ -52,25 +52,25 @@
                                         <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
                                     </div>
                                     <div class="product_info">
-                                        <h6>상품명</h6>
-                                        <p>간단한 상품 설명</p>
+                                        <h6>[[${cart.name}]]</h6>
+                                        <p>[[${cart.description}]]</p>
                                     </div>
                                 </td>
-                                <td>1개</td>
+                                <td>[[${cart.quantity}]]개</td>
                                 <td>
-                                    <p class="price">27,000원</p>
+                                    <p class="price">[[${cart.price}]]원</p>
                                 </td>
                                 <td>
                                     <div class="price_after">
-                                        <p class="original_price">30,000원</p>
-                                        <p class="discount_rate">10% ↓</p>
+                                        <p class="original_price">[[${cart.price / (1 - (cart.discountRate / 100.0))}]]원</p>
+                                        <p class="discount_rate">[[${cart.discountRate}]]% ↓</p>
                                     </div>
                                 </td>
-                                <td>포인트</td>
+                                <td>[[${cart.point * cart.quantity}]]</td>
                                 <td>
-                                    <p class="shopping_fee">배송비 2,500원</p>
+                                    <p class="shopping_fee">배송비 [[${cart.deliveryFee}]]원</p>
                                 </td>
-                                <td>29,500원</td>
+                                <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
                                 <td class="col_del_info">
                                     <input type="button" value="바로주문">
                                     <input type="button" value="삭제">
