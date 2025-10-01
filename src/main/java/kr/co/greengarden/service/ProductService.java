@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
  * 날짜 : 2025/09/24
@@ -25,6 +26,10 @@ public class ProductService {
 
     public void register(Product product){
         productRepository.save(product);
+    };
+
+    public Optional<Product> getProduct(int proId) {
+        return productRepository.findById(proId);
     };
 
     public List<Product> getAllProducts() {

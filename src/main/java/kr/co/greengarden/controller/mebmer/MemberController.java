@@ -9,8 +9,10 @@ import kr.co.greengarden.service.MemberSellerService;
 import kr.co.greengarden.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /*
  * 날짜 : 2025/09/30
@@ -41,7 +43,10 @@ public class MemberController {
     }
 
     @GetMapping("/member/signup")
-    public String signup() {
+    public String signup(@RequestParam String role, Model model) {
+
+        model.addAttribute("role", role);
+
         return "member/signup";
     }
 
