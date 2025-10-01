@@ -8,26 +8,35 @@
 </head>
 <body>
 
+
     <div th:replace="~{/common/header :: header}"></div>
 
-    <main class="signup-page" data-type="user">
+    <main class="signup-page" th:attr="data-type=${type}">
         <section class="signup-wrap">
             <h3 class="signup-title">약관동의</h3>
+
+            <!-- 약관 전체 동의 -->
+            <article class="signup-item">
+                <div class="signup-head">
+                    <strong>(전체) 약관 전체 동의</strong>
+                    <label><input type="checkbox" id="checkAll"> 전체 동의</label>
+                </div>
+            </article>
 
             <article class="signup-item">
                 <div class="signup-head">
                     <strong>(필수) 이용약관</strong>
-                    <label><input type="checkbox" class="ck"> 동의하기</label>
+                    <label><input type="checkbox" class="ck required"> 동의하기</label>
                 </div>
                 <div class="signup-body">
                     <!-- 일반회원(terms)-->
-                    <div class="terms terms-user">
+                    <div class="terms terms-user" th:if="${type eq 'user'}">
                         <h4>이용약관(일반회원)</h4>
                         <p>일반 구매회원(외국인 포함)에 대한 기본 이용약관 내용이 들어갑니다. …</p>
                     </div>
 
                     <!-- 판매회원(tax)-->
-                    <div class="terms terms-seller">
+                    <div class="terms terms-seller" th:if="${type eq 'seller'}">
                         <h4>이용약관(판매회원)</h4>
                         <p>사업자 판매회원 대상의 세무/사업 관련 약관 내용이 들어갑니다. …</p>
                     </div>
@@ -38,7 +47,7 @@
             <article class="signup-item">
                 <div class="signup-head">
                     <strong>(필수) 전자금융 이용약관</strong>
-                    <label><input type="checkbox" class="ck"> 동의하기</label>
+                    <label><input type="checkbox" class="ck required"> 동의하기</label>
                 </div>
                 <div class="signup-body">
                     <h4>전자금융 이용약관</h4>
@@ -50,7 +59,7 @@
             <article class="signup-item">
                 <div class="signup-head">
                     <strong>(필수) 개인정보 수집동의</strong>
-                    <label><input type="checkbox" class="ck"> 동의하기</label>
+                    <label><input type="checkbox" class="ck required"> 동의하기</label>
                 </div>
                 <div class="signup-body">
                     <h4>개인정보 수집동의</h4>
@@ -59,7 +68,7 @@
             </article>
 
             <!-- 위치정보 이용약관 -->
-            <article class="signup-item optional-location">
+            <article class="signup-item optional-location" th:if="${type eq 'user'}">
                 <div class="signup-head">
                     <strong>(선택) 위치정보 이용약관</strong>
                     <label><input type="checkbox" class="ck"> 동의하기</label>
@@ -69,8 +78,14 @@
                     <p>위치기반 서비스 제공에 대한 안내가 들어갑니다. …</p>
                 </div>
             </article>
-
+<--!종봉형님 확인하시고 수정진행
             <div class="signup-actions">
+                <a th:if="${type eq 'user'}" th:href="@{/member/register}"
+                   class="btn signup-btn btn-user" id="agreeBtnUser" disabled>동의하기</a>
+
+                <a th:if="${type eq 'seller'}" th:href="@{/member/registerSeller}"
+                   class="btn signup-btn btn-seller" id="agreeBtnSeller" disabled>동의하기</a>
+          -->
                 <div th:if="${role.equals('general')}">
                     <a th:href="@{/member/register}" class="btn signup-btn btn-user">동의하기</a>
                 </div>
@@ -83,6 +98,45 @@
     </main>
 
     <div th:replace="~{/common/footer :: footer}"></div>
+
+<script>
+
+    // (필수)이용약관 동의하기 체크 후에 동의하기 버튼 클릭 활성화
+    document.addEventListener('DOMContentLoaded', function (){
+        const requiredCks = document.querySelectorAll(".ck.required");
+        const allCks = document.querySelectorAll(".ck"); // 전체 약관
+        const checkAll = document.getElementById("checkAll");
+
+        const btnUser = document.getElementById("agreeBtnUser");
+        const btnSeller = document.getElementById("agreeBtnSeller");
+
+        function toggleBtn(){
+            let allChecked = true;
+            requiredCks.forEach(ck => {
+                if(!ck.checked) allChecked = false;
+            });
+
+            if (btnUser) btnUser.toggleAttribute("disabled", !allChecked);
+            if (btnSeller) btnSeller.toggleAttribute("disabled", !allChecked);
+        }
+
+        // 전체 동의
+        checkAll.addEventListener("change", function (){
+            allCks.forEach(ck => ck.checked = checkAll.checked);
+            toggleBtn();
+        });
+
+        // 개별 체크 및 개별 체크 해제 시 전체 동의도 해제
+        allCks.forEach(ck => ck.addEventListener("change", function (){
+            checkAll.checked = [...allCks].every(c => c.checked);
+            toggleBtn();
+        }));
+
+        // 최초 상태
+        toggleBtn();
+    });
+
+</script>
 
 </body>
 </html>

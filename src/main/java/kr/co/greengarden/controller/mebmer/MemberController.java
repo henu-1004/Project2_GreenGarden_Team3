@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /*
- * 날짜 : 2025/09/30
+ * 날짜 : 2025/10/01
  * 이름 : 이종봉
- * 내용 : 판매자회원가입, 약관 controller 추가 및 일반회원가입 controller 수정
+ * 내용 : 일반/판매자 약관 구분 Controller 추가
  */
 @RequiredArgsConstructor
 @Controller
@@ -46,6 +46,20 @@ public class MemberController {
     public String signup(@RequestParam String role, Model model) {
 
         model.addAttribute("role", role);
+
+        return "member/signup";
+    }
+
+    @GetMapping("/member/termsUser")
+    public String termsUser(Model model) {
+        model.addAttribute("type", "user");
+
+        return "member/signup";
+    }
+
+    @GetMapping("/member/termsSeller")
+    public String termsSeller(Model model){
+        model.addAttribute("type", "seller");
 
         return "member/signup";
     }

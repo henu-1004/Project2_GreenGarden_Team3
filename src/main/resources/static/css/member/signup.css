@@ -96,4 +96,11 @@
     .signup-page[data-type="user"]   .btn-user{   display:inline-block; }
     .signup-page[data-type="seller"] .btn-seller{ display:inline-block; }
 
+    /* 클릭 차단 추가*/
+    .signup-actions .btn[disabled] {
+        background: #ccc;
+        color: #fff;
+        pointer-events: none;
+    }
+
 
