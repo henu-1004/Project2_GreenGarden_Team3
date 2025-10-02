@@ -2,8 +2,13 @@
 /*
  * 날짜 : 2025/09/15 & 2025/09/25
  * 이름 : 한탁원 & 이수연
- * 내용 : header - css 초안 작성 & 수정
+ * 내용 : header - css 초안 작성 & 수정 목록형에 맞게 로고와 검색창 위치, 헤더 전체 높이 수정
  */
+* {
+    margin: 0;
+    padding: 0;
+}
+
 header, body {
     background-color: #f3f6f7;
 }
@@ -29,43 +34,29 @@ header, body {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    text-align: center;
-    padding: 100px;
+    text-align: right;
 }
 
 /* 로고 logo */
 #header-middle a img {
     width: 350px;
     height: auto;
+    padding: 50px 0;
 }
 
-/* header - 바닥(검색창 영역) */
-#header-bottom {
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 100%;
-
-}
-
+/* 검색 */
 .search-form {
     position: relative;
-    max-width: 1000px;
     width: 100%;
-    margin: 15px;
 }
 
 .search-form input {
-    width: 80%;
-    height: 130%;
+    width: 360px;
     padding: 10px 40px 10px 15px;
     border: 3px solid #66968c;
     border-radius: 8px;
-    box-sizing: border-box;
 }
 
 .search-form button {
