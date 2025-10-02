@@ -1,0 +1,85 @@
+@charset "UTF-8";
+/*
+ * 날짜 : 2025/10/01
+ * 이름 : 이수연
+ * 내용 : header - index.ver
+ */
+header, body {
+    background-color: #f3f6f7;
+}
+
+#header-wrap {
+    margin: 0 auto;
+}
+#header-top {
+    height: 100%;
+    padding: 10px;
+}
+
+#header-top {
+    background-color: red;
+    text-align: right;
+}
+
+#header-top a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: #175a48; /* 컬러 수정 */
+}
+
+#header-middle {
+    max-width: 1200px;
+    text-align: center;
+    padding: 80px;
+}
+
+/* 로고 logo */
+#header-middle a img {
+    width: 400px;
+    height: auto;
+}
+
+/* header - 바닥 - 검색창 영역 */
+#header-bottom {
+    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+
+}
+
+.search-form {
+    position: relative;
+    max-width: 1000px;
+    width: 100%;
+    margin: 15px 0;
+    background-color: #F6F6F6;
+}
+
+.search-form input {
+    width: 100%;
+    height: 130%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid #175a48;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin: 0 10px;
+}
+
+.search-form button {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-45%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-form button img {
+    width: 30px;
+    height: 30px;
+}

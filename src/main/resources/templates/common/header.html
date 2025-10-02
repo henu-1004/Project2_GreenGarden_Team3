@@ -29,11 +29,30 @@
             </form>
         </div>
         <div id="header-bottom">
-            <a th:href="@{#}">히트상품</a>
-            <a th:href="@{#}">추천상품</a>
-            <a th:href="@{#}">최신상품</a>
-            <a th:href="@{#}">인기상품</a>
-            <a th:href="@{#}">할인상품</a>
+            <div class="dropdown">
+                <a href="#">반려식물 ▼</a>
+                <div class="dropdown-content">
+                    <a href="#">초보 식집사</a> <!-- 공기 정화, 강한 생명력, 물 주기 쉬운 식물 -->
+                    <a href="#">공간별 추천</a> <!-- 테이블용, 침실용, 거실용, 욕실용, 창가용 -->
+                    <a href="#">종류별 추천</a> <!-- 다육식물, 관엽식물, 선인장, 행잉 플랜트, 허브, 이끼 -->
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">가드닝 용품 ▼</a>
+                <div class="dropdown-content">
+                    <a href="#">화분</a>      <!-- 토분, 플라스틱, 세라믹, 유리 화병, 행잉 화분 -->
+                    <a href="#">흙 & 비료</a> <!-- 비료: 분갈이 흙, 다육이 전용 흙, 마사토, 식물 영양제, 비료 -->
+                    <a href="#">도구</a>      <!-- 분무기, 물 조리개, 삽, 가위 -->
+                </div>
+            </div>
+            <div class="dropdown">
+                <a href="#">큐레이션 & 서비스 ▼</a>
+                <div class="dropdown-content">
+                    <a href="#">플랜테리어</a>       <!-- 추천 세트, 인테리어 스타일별 -->
+                    <a href="#">식물 케어</a>       <!-- 병해충 관리, 분갈이 서비스, 식물 상담 -->
+                    <a href="#">이벤트 & 할인</a>    <!-- 기획전, 타임 세일, 신상품 -->
+                </div>
+            </div>
         </div>
     </div>
 </header>

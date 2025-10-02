@@ -5,6 +5,11 @@
  * 이름 : 한탁원
  * 내용 : index - css 초안 작성
  */
+#slide {
+    border: 1px solid #175a48;
+    height: 200px;
+}
+
 * {
     margin: 0;
     padding: 0;
