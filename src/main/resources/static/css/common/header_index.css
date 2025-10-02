@@ -8,16 +8,14 @@ header, body {
     background-color: #f3f6f7;
 }
 
-#header-wrap {
-    margin: 0 auto;
-}
 #header-top {
-    height: 100%;
     padding: 10px;
+    background-color: #f0f0f0;
 }
 
-#header-top {
-    background-color: red;
+.header-util {
+    max-width: 1200px;
+    margin: 0 auto;
     text-align: right;
 }
 
@@ -29,19 +27,23 @@ header, body {
 
 #header-middle {
     max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    padding: 80px;
+    padding: 100px;
 }
 
 /* 로고 logo */
 #header-middle a img {
-    width: 400px;
+    width: 350px;
     height: auto;
 }
 
 /* header - 바닥 - 검색창 영역 */
 #header-bottom {
-    background-color: red;
+    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,25 +56,22 @@ header, body {
     position: relative;
     max-width: 1000px;
     width: 100%;
-    margin: 15px 0;
-    background-color: #F6F6F6;
+    margin: 15px;
 }
 
 .search-form input {
-    width: 100%;
+    width: 80%;
     height: 130%;
     padding: 10px 40px 10px 15px;
-    border: 1px solid #175a48;
+    border: 3px solid #66968c;
     border-radius: 8px;
     box-sizing: border-box;
-    margin: 0 10px;
 }
 
 .search-form button {
     position: absolute;
     top: 50%;
-    right: 4px;
-    transform: translateY(-45%);
+    transform: translateX(-45px) translateY(-45%);
     background: none;
     border: none;
     cursor: pointer;
@@ -80,6 +79,6 @@ header, body {
 }
 
 .search-form button img {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
 }

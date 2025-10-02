@@ -1,0 +1,36 @@
+<!--
+	날짜 : 2025/09/15
+    이름 : 한탁원
+    내용 : header 초안 작성
+-->
+<header th:fragment="header_index">
+    <div id="header-wrap">
+        <div id="header-top">
+            <div class="header-util">
+                <th:block th:if="${#authorization.expression('isAnonymous()')}">
+                    <a th:href="@{/member/login}">로그인</a>
+                    <a th:href="@{/member/join}">회원가입</a>
+                </th:block>
+                <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                    <a th:href="@{/member/logout}">로그아웃</a>
+                </th:block>
+                <a th:href="@{#}">마이페이지</a>
+                <a th:href="@{#}">장바구니</a>
+            </div>
+        </div>
+        <div id="header-middle">
+            <a th:href="@{/}" class="logo">
+                <img th:src="@{/images/LogoIndex.png}" alt="indexLogo" />
+            </a>
+        </div>
+        <div id="header-bottom">
+            <form th:action="@{#}" method="get" class="search-form">
+                <input type="text" name="keyword" placeholder="검색"/>
+                <button type="submit">
+                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />
+                </button>
+            </form>
+        </div>
+
+    </div>
+</header>
