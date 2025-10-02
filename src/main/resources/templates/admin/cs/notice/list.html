@@ -1,17 +1,159 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>admin Cs Notice list</title>
+    <!-- 날짜 : 2025/10/02 이름 : 박효빈 내용 : 관리자 고객센터 LIST 페이지 -->
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/cs/aside :: aside}"></div>
 
-			</div>
-		</div>
-	</main>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>공지사항 목록</h5>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">마이페이지</a></li>
+                    <li><a href="#">장바구니</a></li>
+                </ul>
+            </div>
+
+            <form th:action="@{#}" method="get" class="search-form">
+                <select name="type">
+                    <option value="" disabled selected>유형선택</option>
+                    <option value="csoption1">회원</option>
+                    <option value="csoption2">배송</option>
+                    <option value="csoption3">쿠폰</option>
+                </select>
+<!--                <input type="text" name="keyword" placeholder="세부 검색을 해보세요" />-->
+<!--                <button type="submit">-->
+<!--                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />-->
+<!--                </button>-->
+            </form>
+
+            <table class="admincsnotice-table">
+                <thead>
+                <tr>
+                    <th style="width: 30px;">
+                        <input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes(this)" />
+                    </th>
+                    <th>번호</th>
+                    <th>유형</th>
+                    <th>제목</th>
+                    <th>조회</th>
+                    <th>날짜</th>
+                    <th style="width: 80px;">관리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
+                    <td>1</td>
+                    <td>고양이서비스</td>
+                    <td>해외결재시 어쩌고저쩌고</td>
+                    <td>999</td>
+                    <td>25.10.02</td>
+                    <td>
+                        <button type="button" class="btn-modify">수정</button>
+                        <button type="button" class="btn-delete">삭제</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
+                    <td>2</td>
+                    <td>고양이서비스</td>
+                    <td>해외결재시 어쩌고저쩌고</td>
+                    <td>999</td>
+                    <td>25.10.02</td>
+                    <td>
+                        <button type="button" class="btn-modify">수정</button>
+                        <button type="button" class="btn-delete">삭제</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
+                    <td>3</td>
+                    <td>고양이서비스</td>
+                    <td>해외결재시 어쩌고저쩌고</td>
+                    <td>999</td>
+                    <td>25.10.02</td>
+                    <td>
+                        <button type="button" class="btn-modify">수정</button>
+                        <button type="button" class="btn-delete">삭제</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
+                    <td>4</td>
+                    <td>고양이서비스</td>
+                    <td>해외결재시 어쩌고저쩌고</td>
+                    <td>999</td>
+                    <td>25.10.02</td>
+                    <td>
+                        <button type="button" class="btn-modify">수정</button>
+                        <button type="button" class="btn-delete">삭제</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
+                    <td>5</td>
+                    <td>고양이서비스</td>
+                    <td>해외결재시 어쩌고저쩌고</td>
+                    <td>999</td>
+                    <td>25.10.02</td>
+                    <td>
+                        <button type="button" class="btn-modify">수정</button>
+                        <button type="button" class="btn-delete">삭제</button>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <section class="pagination">
+                <a href="#" class="prev">&lt; 이전</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#" class="next">다음 &gt;</a>
+            </section>
+
+            <div class="action-buttons">
+                <button type="button" onclick="deleteSelected()" class="btn-delete-all">전체삭제</button>
+                <button type="button" onclick="#" class="btn-write">작성하기</button>
+            </div>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
+
+<script>
+    // 전체 선택/해제
+    function toggleAllCheckboxes(source) {
+        const checkboxes = document.getElementsByName('admincscheck');
+        checkboxes.forEach(cb => cb.checked = source.checked);
+    }
+    // 전체삭제 클릭 시 체크된 항목이 없으면 경고
+    function deleteSelected() {
+        const checkedBoxes = [...document.getElementsByName('admincscheck')].filter(cb => cb.checked);
+        if (checkedBoxes.length === 0) {
+            alert('삭제할 항목을 선택해 주세요.');
+            return;
+        }
+        if (confirm(`${checkedBoxes.length}개 항목을 삭제하시겠습니까?`)) {
+            // TODO: 삭제 처리 로직 추가
+            alert('삭제처리 완료 (예시)');
+        }
+    }
+</script>
 </body>
 </html>

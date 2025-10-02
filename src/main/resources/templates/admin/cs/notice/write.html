@@ -1,17 +1,75 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>admin Cs Notice Write</title>
+    <!-- 날짜 : 2025/10/02 이름 : Gemini 내용 : 관리자 고객센터 공지사항 작성 페이지 -->
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/cs/aside :: aside}"></div>
 
-			</div>
-		</div>
-	</main>
+        <!-- 메인 섹션: 공지사항 작성 -->
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>공지사항 작성</h5>
+                <ul class="page_nation">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a href="#">공지사항</a></li>
+                </ul>
+            </div>
+
+            <form class="admincs-write-form" th:action="@{#}" method="post">
+                <!-- 1. 유형 -->
+                <div class="admincs-view-row admincs-view-type">
+                    <span class="admincs-view-label-text">유형</span>
+                    <div class="admincs-write-input-wrap">
+                        <select name="type" class="admincs-input-select">
+                            <option value="" disabled selected>유형선택</option>
+                            <option value="member">회원</option>
+                            <option value="delivery">배송</option>
+                            <option value="coupon">쿠폰</option>
+                            <option value="others">기타</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 2. 제목 -->
+                <div class="admincs-view-row admincs-view-title">
+                    <span class="admincs-view-label-text">제목</span>
+                    <div class="admincs-write-input-wrap">
+                        <input type="text" name="title" placeholder="제목을 입력합니다." class="admincs-input-text"/>
+                    </div>
+                </div>
+
+                <!-- 3. 내용 -->
+                <div class="admincs-view-content-area admincs-view-content-write">
+                    <span class="admincs-view-label-text">내용</span>
+                    <div class="admincs-write-input-wrap admincs-content-textarea-wrap">
+                        <textarea name="content" placeholder="내용을 입력합니다." class="admincs-input-textarea"></textarea>
+                    </div>
+                </div>
+
+                <!-- 4. 버튼 그룹 -->
+                <div class="admincs-write-actions">
+                    <button type="button" class="btn-cancel" onclick="location.href='/admin/cs/notice'">
+                        <span>취소하기</span>
+                    </button>
+                    <button type="submit" class="btn-register">
+                        <span>등록하기</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
 </html>
