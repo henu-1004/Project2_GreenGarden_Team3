@@ -11,7 +11,7 @@
     -->
     <link rel="stylesheet" th:href="@{/css/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/common/aside.css}">
-    <link rel="stylesheet" th:href="@{/css/product/list.css}">
+    <link rel="stylesheet" th:href="@{/css/product/list2.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
@@ -29,47 +29,71 @@
                 </ul>
             </div>
             <!-- 상품 목록 반복 영역 -->
-            <div class="product_list" th:each="product : ${productList}">
-                <a th:href="@{/product/view(proId=${product.proId})}">
-                <div class="product_image">
-                    <div th:with="img=${product.img1}">
-                        <img th:if="${product.img1}" th:src="@{${product.img1}}"
-                             alt="thumb" loading="lazy">
+            <div class="product_container">
+                <div class="product_list" th:each="product : ${productList}">
+                    <a th:href="@{/product/view(proId=${product.proId})}">
+                        <div class="product_image">
+                            <div th:with="img=${product.img1}">
+                                <img th:if="${product.img1}" th:src="@{${product.img1}}"
+                                     alt="thumb" loading="lazy">
+                            </div>
+                        </div>
+                        <div class="product_info">
+                            <h6 th:text="${product.name}">상품명</h6>
+                            <p th:text="${product.description}">간단한 상품 설명</p>
+                        </div>
+                        <div class="product_price_info">
+                            <p class="price">[[${product.price}]]원</p>
+                            <div class="price_after">
+                                <p class="original_price">[[${product.originalPrice}]] 원</p>
+                                <span class="discount_rate">[[${product.discountRate}]]% ↓</span>
+                            </div>
+                            <p class="shopping_fee">배송비 [[${product.deliveryFee}]]원</p>
+                        </div>
+                    </a>
+                    <div class="product_meta">
+                        <div>🏠[[${product.company}]]</div>
+                        <div><img src="https://placehold.co/15x15/e0e0e0/000000?text=🏅" alt="메달아이콘"
+                                  onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=🏅';"></div>
+                        <div>상품평 <img src="https://placehold.co/15x15/e0e0e0/000000?text=⭐" alt="상품점수별아이콘"
+                                      onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=⭐';"></div>
                     </div>
-                </div>
-                    <div class="product_info">
-                    <h6 th:text="${product.name}">상품명</h6>
-                    <p th:text="${product.description}">간단한 상품 설명</p>
-                </div>
-                <div class="product_price_info">
-                    <p class="price" th:text="|${product.price}원|">27,000원</p>
-                    <div class="price_after">
-                        <p class="original_price" th:text="${product.price / (1 - (product.discountRate / 100.0))}">30,000원</p>
-                        <span class="discount_rate" th:text="|${product.discountRate}% ↓|">10% ↓</span>
-                    </div>
-                    <p class="shopping_fee"th:text="|배송비 ${product.deliveryFee}원|">배송비 2,500원</p>
-                </div>
-                </a>
-                <div class="product_meta">
-                    <div>🏠[[${product.seller.company}]]</div>
-                    <div><img src="https://placehold.co/15x15/e0e0e0/000000?text=🏅" alt="메달아이콘" onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=🏅';" ></div>
-                    <div>상품평 <img src="https://placehold.co/15x15/e0e0e0/000000?text=⭐" alt="상품점수별아이콘" onerror="this.src='https://placehold.co/15x15/e0e0e0/000000?text=⭐';" ></div>
                 </div>
             </div>
 
-            <div class="pagination">
-                <!-- 이전 페이지 버튼 -->
-                <a href="#" class="prev">&lt; 이전</a>
+            <div class="pagination"
+                 th:with="
+                    page=${productList},
+                    now=${page.number},
+                    total=${page.totalPages},
+                    size=${page.size},
+                    block=${5},
+                    start=${ now - (now % block) },
+                    end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
+                    prev=${ (now > 0) ? (now - 1) : 0 },
+                    next=${ ((now + 1) < total) ? (now + 1) : (total - 1) },
+                    sortBy=${sortBy},
+                    direction=${direction},
+                    slug=${slug},
+                 ">
+                <div th:if="${total > 0}">
+                    <a th:href="@{|?page=0&size=${size}&sortBy=${sortBy}&direction=${direction}&slug=${slug}|}"
+                       th:classappend="${page.first} ? ' disabled'">« 처음</a>
 
-                <!-- 페이지 번호들 -->
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
+                    <a th:href="@{|?page=${prev}&size=${size}&sortBy=${sortBy}&direction=${direction}&slug=${slug}|}"
+                       th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
 
-                <!-- 다음 페이지 버튼 -->
-                <a href="#" class="next">다음 &gt;</a>
+                    <th:block th:each="i : ${#numbers.sequence(start, end)}">
+                        <a th:href="@{|?page=${i}&size=${size}&sortBy=${sortBy}&direction=${direction}&slug=${slug}|}"
+                           th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
+                    </th:block>
+
+                    <a th:href="@{|?page=${next}&size=${size}&sortBy=${sortBy}&direction=${direction}&slug=${slug}|}"
+                       th:classappend="${page.last} ? ' disabled'">다음 ›</a>
+
+                    <a th:href="@{|?page=${total - 1}&size=${size}&sortBy=${sortBy}&direction=${direction}&slug=${slug}|}"
+                       th:classappend="${page.last} ? ' disabled'">마지막 »</a>
+                </div>
             </div>
         </section>
     </div>
