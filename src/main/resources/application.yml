@@ -15,15 +15,15 @@ spring:
         version: ${version}
     datasource:
          driver-class-name: oracle.jdbc.driver.OracleDriver
-         url: jdbc:oracle:thin:@43.203.164.115:1522:xe
-         username: team3
-         password: rmflszjavbxj123!
+         url: jdbc:oracle:thin:@localhost:1521:xe
+         username: tndus159200297
+         password: 1234
     devtools:
         livereload:
             enabled: true
     jpa:
         hibernate:
-            ddl-auto: update
+            ddl-auto: create
             naming:
                 physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         properties:

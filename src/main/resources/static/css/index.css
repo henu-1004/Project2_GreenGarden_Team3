@@ -5,9 +5,18 @@
  * 이름 : 한탁원
  * 내용 : index - css 초안 작성
  */
+#Ad-banner-top {
+    width : 1200px;
+    margin: 20px auto;
+    border: 1px solid #66968c;
+    height: 80px;
+}
+
 #slide {
-    border: 1px solid #175a48;
-    height: 200px;
+    width : 1200px;
+    margin: auto;
+    border: 1px solid #66968c;
+    height: 300px;
 }
 
 * {
@@ -20,12 +29,12 @@
 #main {
     margin: 0 auto;
     max-width: 1200px;
+    position: relative; /* 자식 div(aside_view)의 absolute 위치 기준 */
 }
 
 #best_title {
     background-color: #66968c;
     padding: 5px 15px ;
-    margin-top : 20px;
 }
 
 #best_title a {

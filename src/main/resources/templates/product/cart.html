@@ -9,16 +9,14 @@
         이름 : 이수연
         내용 : 장바구니 페이지 구현
     -->
-    <link rel="stylesheet" th:href="@{/css/common/header.css}">
-    <link rel="stylesheet" th:href="@{/css/common/aside_view.css}">
+    <link rel="stylesheet" th:href="@{/css/common/_header.css}">
     <link rel="stylesheet" th:href="@{/css/product/cart.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
-<div th:replace="~{/common/header :: header}"></div>
+<div th:replace="~{/common/header_index :: _header}"></div>
 <main>
     <div class="content-wrap">
-        <div th:replace="~{common/aside_top}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h5>장바구니</h5>

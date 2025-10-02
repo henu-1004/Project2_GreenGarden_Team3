@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <title>메인 페이지</title>
     <link rel="stylesheet" th:href="@{/css/index.css}">
-    <link rel="stylesheet" th:href="@{/css/common/headerIndex.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header_index.css}">
+    <link rel="stylesheet" th:href="@{/css/common/index_nav.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <!--
@@ -13,15 +14,18 @@
     내용 : Index 화면 구성
 -->
 <body>
-<div th:replace="~{/common/_header :: _header}"></div>
+<div th:replace="~{/common/header_index :: header_index}"></div>
 <main>
+    <div id="slide">
+        <div> s l i d e </div>
+    </div>
+    <div th:replace="~{/common/index_nav :: index_nav}"></div> <!-- 카테고리 네비 삽입 -->
+    <div id="Ad-banner-top">
+        상단 베너 광고
+    </div>
     <div id="main">
-
         <div class="content-wrap">
             <section id="main-section">
-                <div id="slide">
-                    <div> s l i d e </div>
-                </div>
                 <div class="product">
                     <div id="best_title"><a>B E S T</a></div>
                     <div id="best_top">
