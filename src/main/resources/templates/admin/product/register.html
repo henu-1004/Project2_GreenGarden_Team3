@@ -21,15 +21,19 @@
             <td>1차 분류</td>
             <td>
                 <select name="classification1" id="classification1" required>
-                    <option value="top">상의</option>
-                    <option value="bottom">하의</option>
+                    <option value="" disabled selected>대분류 선택</option>
+                    <option th:each="slug : ${parentSlugList}"
+                            th:value="${slug.cateId}"
+                            th:text="${slug.name}">
+                    </option>
                 </select>
             </td>
         </tr>
         <tr>
             <td>2차 분류</td>
             <td>
-                <select name="classification2" id="classification2" required>
+                <select name="slug" id="classification2" required>
+                    <option value="" disabled selected>소분류 선택</option>
                 </select>
             </td>
         </tr>
@@ -97,50 +101,34 @@
     <button type="submit">등록</button>
 </form>
 
-<script>
+<script th:inline="javascript">
     const c1 = document.getElementById('classification1');
     const c2 = document.getElementById('classification2');
 
-    const subMap = {
-        top: [
-            { value: 'tee',    label: '티셔츠' },
-            { value: 'shirt',  label: '셔츠' },
-            { value: 'hoodie', label: '후드/맨투맨' },
-            { value: 'knit',   label: '니트' }
-        ],
-        bottom: [
-            { value: 'jeans',   label: '청바지' },
-            { value: 'slacks',  label: '슬랙스' },
-            { value: 'shorts',  label: '반바지' },
-            { value: 'jogger',  label: '조거팬츠' }
-        ]
-    };
+    // 컨텍스트패스 안전하게
+    const base = /*[[@{/admin/product/register/category/}]]*/ '/admin/product/register/category/';
 
-    function fillSecond(level1, selectedValue) {
-        c2.innerHTML = '';
-        const list = subMap[level1] || [];
+    c1.addEventListener('change', async () => {
+        const parentId = c1.value;    // 숫자 ID
+        if (!parentId) return;
 
-        const ph = document.createElement('option');
-        ph.value = '';
-        ph.textContent = '2차 분류 선택';
-        ph.disabled = true;
-        ph.selected = !selectedValue;
-        c2.appendChild(ph);
+        c2.innerHTML = '<option value="" disabled selected>불러오는 중...</option>';
 
-        for (const {value, label} of list) {
-            const opt = document.createElement('option');
-            opt.value = value;
-            opt.textContent = label;
-            if (selectedValue && selectedValue === value) opt.selected = true;
-            c2.appendChild(opt);
+        try {
+            const res = await fetch(base + parentId);
+            if (!res.ok) throw new Error();
+
+            const items = await res.json(); // [{id, slug, name}]
+            c2.innerHTML = '<option value="" disabled selected>소분류 선택</option>';
+            items.forEach(it => {
+                const opt = document.createElement('option');
+                opt.value = it.slug;        // 여기: slug 저장
+                opt.textContent = it.name;
+                c2.appendChild(opt);
+            });
+        } catch (e) {
+            c2.innerHTML = '<option value="">불러오기 실패</option>';
         }
-        c2.disabled = list.length === 0;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        // ★ 처음 로딩 시 기본값(top) 기준으로 2차 분류 채우기
-        fillSecond(c1.value || 'top', c2.getAttribute('data-selected') || '');
-        c1.addEventListener('change', () => fillSecond(c1.value, ''));
     });
 </script>
 

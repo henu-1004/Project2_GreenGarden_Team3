@@ -2,6 +2,7 @@ package kr.co.greengarden.controller.admin.product;
 
 import kr.co.greengarden.dto.ProductDTO;
 import kr.co.greengarden.dto.admin.AdminProductListDTO;
+import kr.co.greengarden.dto.admin.CategorySlugDTO;
 import kr.co.greengarden.entity.Category;
 import kr.co.greengarden.entity.MemberSeller;
 import kr.co.greengarden.handler.ImageHandler;
@@ -40,12 +41,22 @@ public class AdminProductController {
 
         Page<AdminProductListDTO> productList = productService.findProductBySearch(searchType, keyword, page, 5);
         model.addAttribute("productList", productList);
-        return "/admin/product/list";
+        return "admin/product/list";
     }
 
-    @GetMapping("admin/product/register")
-    public String registerForm() {
-        return "/admin/product/register";
+    @GetMapping("/admin/product/register")
+    public String registerForm(Model model) {
+        List<CategorySlugDTO> parentSlugList = categoryService.getCategoryParentSlug();
+
+        model.addAttribute("parentSlugList", parentSlugList);
+
+        return "admin/product/register";
+    }
+
+    @GetMapping("/admin/product/register/category/{parentId}")
+    @ResponseBody
+    public List<CategorySlugDTO> children(@PathVariable int parentId) {
+        return categoryService.getCategoryChildrenSlug(parentId);
     }
 
     @PostMapping("/admin/product/register")
@@ -55,8 +66,7 @@ public class AdminProductController {
                            @RequestParam(required = false) MultipartFile imgFile2,
                            @RequestParam(required = false) MultipartFile imgFile3,
                            @RequestParam(required = false) MultipartFile imgFile_detail,
-                           @RequestParam(required = false) String classification1,
-                           @RequestParam(required = false) String classification2) {
+                           @RequestParam(required = false) String slug) {
 
         try {
             productDTO.setImg1(imageHandler.saveImage(imgFile1, "product"));
@@ -71,18 +81,6 @@ public class AdminProductController {
         Optional<MemberSeller> optionalMember = memberSellerService.getUser(memId);
         MemberSeller seller = memberSellerService.getUser(memId)
                 .orElseThrow(() -> new IllegalStateException("판매자 계정을 찾을 수 없습니다."));
-
-        String slug = productDTO.getCategorySlug();
-        if (slug == null || slug.isBlank()) {
-            slug = (classification2 != null && !classification2.isBlank()
-                    && !"null".equalsIgnoreCase(classification2)
-                    && !"undefined".equalsIgnoreCase(classification2))
-                    ? classification2
-                    : classification1;
-        }
-        if (slug == null || slug.isBlank()) {
-            throw new IllegalArgumentException("카테고리(slug)가 지정되지 않았습니다.");
-        }
 
         Category category = categoryService.getCategoryBySlug(slug);
 

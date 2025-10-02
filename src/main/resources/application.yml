@@ -26,7 +26,7 @@ spring:
         autoconfigure:
             exclude: org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
         hibernate:
-            ddl-auto: create
+            ddl-auto: update
             naming:
                 physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         properties:
