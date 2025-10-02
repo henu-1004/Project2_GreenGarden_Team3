@@ -18,8 +18,6 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class AppConfig implements WebMvcConfigurer {
 
-
-
     private AppInfo appInfo;
 
     @Bean

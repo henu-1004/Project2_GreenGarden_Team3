@@ -14,14 +14,17 @@ spring:
         name: GreenGarden
         version: ${version}
     datasource:
-         driver-class-name: oracle.jdbc.driver.OracleDriver
-         url: jdbc:oracle:thin:@localhost:1521:xe
-         username: tndus159200297
-         password: 1234
+        driver-class-name: oracle.jdbc.driver.OracleDriver
+        password: rmflszjavbxj123!
+        url: jdbc:oracle:thin:@43.203.164.115:1522:xe
+        username: team3
+
     devtools:
         livereload:
             enabled: true
     jpa:
+        autoconfigure:
+            exclude: org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
         hibernate:
             ddl-auto: create
             naming:
@@ -30,5 +33,7 @@ spring:
             hibernate:
                 format_sql: true
                 show_sql: true
-        autoconfigure:
-          exclude: org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+    servlet:
+        multipart:
+            maxFileSize: 10MB
+            maxRequestSize: 30MB

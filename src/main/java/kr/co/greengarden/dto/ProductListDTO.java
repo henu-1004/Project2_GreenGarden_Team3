@@ -9,25 +9,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartListDTO {
-    private int quantity;
+public class ProductListDTO {
+
+    private int proId;
+    private String img1;
     private String name;
     private String description;
-    private String img1;
     private int price;
-    private int discountRate;
-    private int point;
     private int deliveryFee;
+    private int discountRate;
+    private String company;
 
-    public CartListDTO(int quantity, String name, String description, String img1, int price, int discountRate, int point, int deliveryFee) {
-        this.quantity = quantity;
+    public ProductListDTO(int proId, String img1, String name, String description,
+                          int price, int deliveryFee, int discountRate, String company) {
+        this.proId = proId;
+        this.img1 = img1;
         this.name = name;
         this.description = description;
-        this.img1 = img1;
         this.price = price;
-        this.discountRate = discountRate;
-        this.point = point;
         this.deliveryFee = deliveryFee;
+        this.discountRate = discountRate;
+        this.company = company;
     }
 
     private int originalPrice;

@@ -28,11 +28,9 @@ public class Product {
     @Column
     private String proNo;
 
-    @Column
-    private String classification1;
-
-    @Column
-    private String classification2;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CATEGORY_SLUG", referencedColumnName = "SLUG") // 마이그레이션 끝난 뒤 NOT NULL 권장
+    private Category category;
 
     @Column
     private String name;
@@ -78,8 +76,7 @@ public class Product {
                 .proId(this.proId)
                 .memId(seller.getMemId())
                 .proNo(this.proNo)
-                .classification1(this.classification1)
-                .classification2(this.classification2)
+                .categorySlug(category.getSlug())
                 .name(this.name)
                 .description(this.description)
                 .manufacturer(this.manufacturer)

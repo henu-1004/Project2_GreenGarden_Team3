@@ -1,5 +1,6 @@
 package kr.co.greengarden.dto;
 
+import kr.co.greengarden.entity.Category;
 import kr.co.greengarden.entity.MemberSeller;
 import kr.co.greengarden.entity.Product;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,7 @@ public class ProductDTO {
     private int proId;
     private String memId;
     private String proNo;
-    private String classification1;
-    private String classification2;
+    private String categorySlug;
     private String name;
     private String description;
     private String manufacturer;
@@ -37,13 +37,12 @@ public class ProductDTO {
     private String imgDetail;
     private int views;
 
-    public Product toEntity(MemberSeller seller) {
+    public Product toEntity(MemberSeller seller, Category category) {
         return Product.builder()
                 .proId(proId)
                 .seller(seller)
                 .proNo(proNo)
-                .classification1(classification1)
-                .classification2(classification2)
+                .category(category)
                 .name(name)
                 .description(description)
                 .manufacturer(manufacturer)

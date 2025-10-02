@@ -1,21 +1,18 @@
 package kr.co.greengarden.controller.admin.product;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpSession;
 import kr.co.greengarden.dto.ProductDTO;
-import kr.co.greengarden.dto.admin.ProductListDTO;
-import kr.co.greengarden.entity.Member;
+import kr.co.greengarden.dto.admin.AdminProductListDTO;
+import kr.co.greengarden.entity.Category;
 import kr.co.greengarden.entity.MemberSeller;
-import kr.co.greengarden.entity.Product;
 import kr.co.greengarden.handler.ImageHandler;
 import kr.co.greengarden.security.MemberDetails;
+import kr.co.greengarden.service.CategoryService;
 import kr.co.greengarden.service.MemberSellerService;
 import kr.co.greengarden.service.MemberService;
 import kr.co.greengarden.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +28,7 @@ public class AdminProductController {
 
     private final ProductService productService;
     private final MemberSellerService memberSellerService;
+    private final CategoryService categoryService;
     private final MemberService memberService;
     private final ImageHandler imageHandler;
 
@@ -40,7 +38,7 @@ public class AdminProductController {
                            @RequestParam(defaultValue = "0") int page,
                            Model model) {
 
-        Page<ProductListDTO> productList = productService.findProductBySearch(searchType, keyword, page, 5);
+        Page<AdminProductListDTO> productList = productService.findProductBySearch(searchType, keyword, page, 5);
         model.addAttribute("productList", productList);
         return "/admin/product/list";
     }
@@ -56,7 +54,9 @@ public class AdminProductController {
                            @RequestParam(required = false) MultipartFile imgFile1,
                            @RequestParam(required = false) MultipartFile imgFile2,
                            @RequestParam(required = false) MultipartFile imgFile3,
-                           @RequestParam(required = false) MultipartFile imgFile_detail) {
+                           @RequestParam(required = false) MultipartFile imgFile_detail,
+                           @RequestParam(required = false) String classification1,
+                           @RequestParam(required = false) String classification2) {
 
         try {
             productDTO.setImg1(imageHandler.saveImage(imgFile1, "product"));
@@ -68,15 +68,25 @@ public class AdminProductController {
         }
 
         String memId = memberDetails.getUsername();
-
-        System.out.println("로그인된 아이디 : " + memId);
-
         Optional<MemberSeller> optionalMember = memberSellerService.getUser(memId);
+        MemberSeller seller = memberSellerService.getUser(memId)
+                .orElseThrow(() -> new IllegalStateException("판매자 계정을 찾을 수 없습니다."));
 
-        System.out.println("유저 : " + optionalMember);
-        MemberSeller seller = optionalMember.get();
+        String slug = productDTO.getCategorySlug();
+        if (slug == null || slug.isBlank()) {
+            slug = (classification2 != null && !classification2.isBlank()
+                    && !"null".equalsIgnoreCase(classification2)
+                    && !"undefined".equalsIgnoreCase(classification2))
+                    ? classification2
+                    : classification1;
+        }
+        if (slug == null || slug.isBlank()) {
+            throw new IllegalArgumentException("카테고리(slug)가 지정되지 않았습니다.");
+        }
 
-        productService.register(productDTO.toEntity(seller));
+        Category category = categoryService.getCategoryBySlug(slug);
+
+        productService.register(productDTO.toEntity(seller, category));
         return "redirect:/admin/product/list";
     }
 

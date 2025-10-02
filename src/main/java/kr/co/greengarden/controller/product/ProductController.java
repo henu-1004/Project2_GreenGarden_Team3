@@ -7,9 +7,8 @@ package kr.co.greengarden.controller.product;
 */
 import kr.co.greengarden.dto.CartDTO;
 import kr.co.greengarden.dto.CartListDTO;
-import kr.co.greengarden.entity.Cart;
-import kr.co.greengarden.entity.Member;
-import kr.co.greengarden.entity.MemberSeller;
+import kr.co.greengarden.dto.ProductListDTO;
+import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.Product;
 import kr.co.greengarden.security.MemberDetails;
 import kr.co.greengarden.service.CartService;
@@ -17,7 +16,7 @@ import kr.co.greengarden.service.MemberService;
 import kr.co.greengarden.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,11 +42,23 @@ public class ProductController {
     }
 
     @GetMapping("/product/list2")
-    public String productListPage2(Model model) {
+    public String productListPage2(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "proId") String sortBy,
+                                   @RequestParam(defaultValue = "desc") String direction,
+                                   @RequestParam(defaultValue = "plants") String slug,
+                                   Model model) {
 
-        List<Product> productList = productService.getAllProducts();
+        Page<ProductListDTO> productList = productService.getProductCards(page, sortBy, direction, slug);
+
+        for (ProductListDTO p : productList) {
+            int original = (int) Math.ceil(p.getPrice() / (1 - (p.getDiscountRate() / 100.0)));
+            p.setOriginalPrice(original);
+        }
 
         model.addAttribute("productList", productList);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("direction", direction);
+        model.addAttribute("slug", slug);
 
         return "product/list2";
     }
@@ -67,6 +78,10 @@ public class ProductController {
     @GetMapping("/product/cart")
     public String cartPage(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
         List<CartListDTO> cartList = cartService.getCartList(memberDetails.getUsername());
+        for (CartListDTO c : cartList) {
+            int original = (int) Math.ceil(c.getPrice() / (1 - (c.getDiscountRate() / 100.0)));
+            c.setOriginalPrice(original);
+        }
 
         model.addAttribute("cartList", cartList);
 

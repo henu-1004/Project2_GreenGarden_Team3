@@ -24,8 +24,8 @@
                     <h5>상품보기</h5>
                     <ul class="page_nation">
                         <li><a href="#">Home</a></li>
-                        <li><a href="#">[[${product.classification1}]]</a></li>
-                        <li><a href="#">[[${product.classification2}]]</a></li>
+                        <li><a href="#">[[${product.category.parent != null ? product.category.parent.name : product.category.name}]]</a></li>
+                        <li><a href="#">[[${product.category.name}]]</a></li>
                     </ul>
                 </div>
                 <div class="product-view-main">
