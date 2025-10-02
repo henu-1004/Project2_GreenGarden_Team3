@@ -127,6 +127,175 @@
 }
 
 /* =========================
+   포인트적립 내역
+   ========================= */
+.point-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #333;
+}
+.point-table th, .point-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.point-table th {
+    background: #f3f7f6;
+    color: #175a48;
+    font-weight: bold;
+}
+.point-table .plus {
+    color: #175a48;
+    font-weight: bold;
+}
+.point-table .minus {
+    color: #d9534f; /* 차감 */
+    font-weight: bold;
+}
+
+/* =========================
+   상품평 내역
+   ========================= */
+.review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #333;
+}
+.review-table th, .review-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.review-table th {
+    background: #f3f7f6;
+    color: #175a48;
+    font-weight: bold;
+}
+.review-table td:nth-child(3) {
+    text-align: left;
+    max-width: 300px;
+}
+.review-table td:nth-child(4) {
+    color: #ffb400; /* 별점 */
+    font-weight: bold;
+}
+
+/* =========================
+   문의 내역
+   ========================= */
+.inquiry-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #333;
+}
+.inquiry-table th, .inquiry-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.inquiry-table th {
+    background: #f3f7f6;
+    color: #175a48;
+    font-weight: bold;
+}
+.inquiry-table td.status {
+    font-weight: bold;
+}
+.inquiry-table td.status.complete {
+    color: #175a48; /* 답변완료 */
+}
+.inquiry-table td.status.waiting {
+    color: #d9534f; /* 대기중 */
+}
+
+/* =========================
+   나의 설정
+   ========================= */
+.setting-list {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+    padding: 0;
+    margin-bottom: 20px;
+}
+.setting-list ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.setting-list li {
+    border-bottom: 1px solid #eee;
+}
+.setting-list li:last-child {
+    border-bottom: none;
+}
+.setting-list a {
+    display: block;
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.setting-list a:hover {
+    background: #175a48;
+    color: #fff;
+}
+
+/* =========================
+   공통 테이블 (포인트/상품평/문의/설정)
+   ========================= */
+.section-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #333;
+}
+
+.section-table th {
+    background: #f3f7f6;
+    color: #175a48;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px 10px;
+    border-bottom: 2px solid #175a48;
+}
+
+.section-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    background: #fff;
+}
+
+/* 왼쪽 정렬이 필요한 셀 */
+.section-table td.left {
+    text-align: left;
+}
+
+/* 포인트 값 색상 */
+.section-table td.plus { color: #175a48; font-weight: bold; }
+.section-table td.minus { color: #d9534f; font-weight: bold; }
+
+/* 문의 상태 강조 */
+.section-table .status.complete { color: #175a48; font-weight: bold; }
+.section-table .status.waiting { color: #d9534f; font-weight: bold; }
+
+/* hover 효과 */
+.section-table tbody tr:hover {
+    background: #f9fdfc;
+}
+
+
+
+/* =========================
    모달 공통 스타일
    ========================= */
 .modal {
@@ -317,7 +486,7 @@
 #inquiryModal .modal-body form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* 항목 간격 */
+    gap: 15px;
 }
 
 #inquiryModal label {
@@ -365,7 +534,7 @@
 
 /* 구매확정 모달 전용 */
 .modal-confirm .modal-body {
-    text-align: center; /* 메시지 중앙 정렬 */
+    text-align: center;
     padding: 30px 20px;
     font-size: 16px;
     color: #333;
@@ -375,51 +544,409 @@
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    gap: 12px; /* 버튼 간격 */
+    gap: 12px;
 }
 
 .modal-confirm .actions button {
     min-width: 100px;
 }
 
-/* 상품평작성 모달 */
-.form-group {
-    margin-bottom: 15px;
+/* =========================
+   상품평작성 모달 (modal-review)
+   ========================= */
+.modal-content {
+    width: 720px;
+    max-height: 85vh;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 6px;
+.modal-review .modal-body {
+    background: #f3f7f6;
+    padding: 30px 40px;   /* 좌우 padding 균형 */
+    display: flex;
+    justify-content: center;
+}
+
+.modal-review .modal-body form {
+    display: grid;
+    grid-template-columns: 90px 1fr; /* 라벨 폭 조금만 확보 */
+    gap: 20px 25px;
+    align-items: center;
+    width: 100%;
+    max-width: 640px;
+}
+.modal-review .form-group {
+    display: contents;
+}
+
+/* 라벨 정렬 수정 */
+.modal-review label {
+    font-weight: bold;
+    color: #175a48;
+    text-align: left;    /* ← 기존 right → left */
+    padding-right: 10px; /* 너무 붙지 않게만 */
+}
+
+.modal-review p,
+.modal-review textarea,
+.modal-review input[type="file"],
+.modal-review .star-rating,
+.modal-review .upload-area {
+    grid-column: 2;
+    width: 100%;
+}
+
+.modal-review textarea {
+    min-height: 120px;
+    resize: vertical;
+    border: 1px solid #A8C6C4;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* 별점 */
+#starRating span {
+    font-size: 28px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+#starRating span.hovered {
+    color: #ffb400;
+}
+#starRating .selected {
+    color: #ffb400;
+}
+
+/* 버튼 영역 */
+.modal-review .form-actions {
+    grid-column: span 2;
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* 사진 업로드 영역 */
+.upload-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.upload-area input[type="file"] {
+    margin-bottom: 4px;
+}
+
+.upload-area small {
+    font-size: 13px;
+    color: #777;
+}
+
+.preview-area {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.preview-area img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* ========================= 교환신청 모달 ========================= */
+.modal-exchange .modal-body {
+    background: #f3f7f6;
+    padding: 20px;
+}
+
+.modal-exchange .section {
+    margin-bottom: 20px;
+    border-top: 2px solid #175a48;
+}
+
+.modal-exchange .section h3 {
+    background: #f3f7f6;
+    padding: 10px 15px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #2b6b34;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-exchange table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+.modal-exchange table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    font-size: 14px;
+}
+.modal-exchange table tr td:first-child {
+    background: #fafafa;
+    width: 120px;
     font-weight: bold;
     color: #175a48;
 }
 
-.form-group input[type="text"],
-.form-group textarea {
+.modal-exchange .product-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.modal-exchange .product-info img {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.modal-exchange .form-group {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 10px 20px;
+    align-items: start;
+    margin: 10px 0;
+}
+
+.modal-exchange .form-group label {
+    font-weight: bold;
+    color: #175a48;
+    text-align: left;
+    padding-top: 5px;
+}
+
+.modal-exchange .form-group textarea,
+.modal-exchange .form-group select,
+.modal-exchange .form-group input[type="file"] {
     width: 100%;
-    padding: 8px;
+    padding: 6px 8px;
     border: 1px solid #A8C6C4;
     border-radius: 4px;
-    box-sizing: border-box;
+    font-size: 14px;
 }
 
-textarea {
-    resize: none;
+.modal-exchange .form-actions {
+    text-align: center;
+    margin-top: 20px;
 }
 
-/* 별점 */
-.star-rating {
-    font-size: 24px;
-    color: #ccc;
+/* =========================
+   반품신청 모달 (modal-return)
+   ========================= */
+.modal-return .modal-content {
+    width: 720px;
+    max-height: 85vh;
+}
+
+.modal-return .modal-body {
+    background: #f3f7f6;
+    padding: 25px 30px;
+}
+
+/* 섹션 제목 */
+.modal-return .modal-body h3 {
+    margin: 20px 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #175a48;
+}
+
+/* 상품정보 테이블 */
+.modal-return table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.modal-return table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.modal-return table tr td:first-child {
+    width: 120px;
+    background: #fafafa;
+    font-weight: bold;
+    color: #175a48;
+}
+
+/* 상품정보 영역 (이미지 + 텍스트) */
+.modal-return .product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.modal-return .product-info img {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    object-fit: cover;
+}
+.modal-return .product-info div p {
+    margin: 0;
+    font-weight: bold;
+    color: #333;
+}
+.modal-return .product-info div small {
+    color: #777;
+}
+
+/* 입력 폼 */
+.modal-return form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 라벨 */
+.modal-return label {
+    font-weight: bold;
+    color: #2b6b34;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* 라디오 그룹 */
+.modal-return .radio-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.modal-return .radio-group label {
+    font-weight: normal;
+    color: #333;
     cursor: pointer;
 }
 
-.star-rating .selected {
-    color: #ffb400; /* 노란색 별 */
+/* 텍스트에어리어 */
+.modal-return textarea {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #A8C6C4;
+    border-radius: 4px;
+    padding: 10px;
+    resize: vertical;
+    font-size: 14px;
 }
 
-/* 업로드 */
-.upload-box input[type="file"] {
-    display: block;
-    margin-bottom: 8px;
+/* 파일 업로드 */
+.modal-return input[type="file"] {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* 버튼 영역 */
+.modal-return .form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+.modal-return .form-actions button {
+    min-width: 100px;
+}
+
+/* 결제금액 블록 */
+.price-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 14px;
+    color: #333;
+}
+.price-info p {
+    margin: 0;
+}
+.price-info strong {
+    font-weight: bold;
+    color: #175a48;
+}
+/* 포인트 내역 */
+.point-table, .review-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #333;
+}
+
+.point-table th, .point-table td,
+.review-table th, .review-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.point-table th, .review-table th {
+    background: #f3f7f6;
+    color: #175a48;
+    font-weight: bold;
+}
+
+.point-table .plus {
+    color: #175a48;
+    font-weight: bold;
+}
+
+.review-table td:nth-child(3) {
+    text-align: left;
+    max-width: 300px;
+}
+
+.review-table td:nth-child(4) {
+    color: #ffb400; /* 별점 강조 */
+    font-weight: bold;
+}
+
+/* =========================
+   나의 설정 (setting-list)
+   ========================= */
+.setting-list {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fafafa;
+    margin-bottom: 25px;
+    padding: 0;
+}
+
+.setting-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+.setting-item:last-child {
+    border-bottom: none;
+}
+
+.setting-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.setting-top span {
+    font-weight: bold;
+    color: #333;
+}
+
+.setting-top a {
+    font-size: 13px;
+    color: #175a48;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.setting-bottom {
+    font-size: 13px;
+    color: #666;
+    padding-left: 2px;
 }
