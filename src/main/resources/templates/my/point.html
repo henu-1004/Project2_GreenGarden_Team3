@@ -1,16 +1,86 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>별점 Hover 테스트</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            padding: 50px;
+        }
+
+        /* 별점 컨테이너 */
+        #starRating {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            direction: ltr;
+            unicode-bidi: bidi-override;
+        }
+
+        /* 별 스타일 */
+        #starRating span {
+            font-size: 40px;
+            color: #ccc;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.2s;
+            margin-right: 5px;
+        }
+
+        /* hover */
+        #starRating .hovered {
+            color: #ffcc66;
+        }
+
+        /* 클릭 확정 */
+        #starRating .selected {
+            color: #ffb400;
+        }
+    </style>
 </head>
 <body>
-	<main>
-		<div id="main">
 
-		</div>
-	</main>
+<h2>별점 Hover 테스트</h2>
+<div id="starRating">
+    <span data-value="1">★</span>
+    <span data-value="2">★</span>
+    <span data-value="3">★</span>
+    <span data-value="4">★</span>
+    <span data-value="5">★</span>
+</div>
+
+<script>
+    const stars = document.querySelectorAll('#starRating span');
+    let selectedRating = 0;
+
+    stars.forEach((star, index) => {
+        // hover 진입
+        star.addEventListener('mouseenter', () => {
+            console.log("Hover → index:", index, "value:", star.dataset.value);
+            stars.forEach((s, i) => {
+                s.classList.toggle('hovered', i <= index);
+            });
+        });
+
+        // hover 해제
+        star.addEventListener('mouseleave', () => {
+            stars.forEach((s, i) => {
+                s.classList.remove('hovered');
+                s.classList.toggle('selected', i < selectedRating);
+            });
+        });
+
+        // 클릭
+        star.addEventListener('click', () => {
+            selectedRating = parseInt(star.dataset.value);
+            console.log("Click 선택:", selectedRating);
+            stars.forEach((s, i) => {
+                s.classList.toggle('selected', i < selectedRating);
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
