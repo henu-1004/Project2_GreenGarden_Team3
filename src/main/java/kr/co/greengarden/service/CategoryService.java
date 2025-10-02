@@ -2,6 +2,7 @@ package kr.co.greengarden.service;
 
 import kr.co.greengarden.dto.CartDTO;
 import kr.co.greengarden.dto.CartListDTO;
+import kr.co.greengarden.dto.admin.CategorySlugDTO;
 import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.Category;
 import kr.co.greengarden.entity.Member;
@@ -39,5 +40,13 @@ public class CategoryService {
 
     public List<Category> getCategoriesByParent(String parentSlug) {
         return categoryRepository.findByParent_Slug(parentSlug);
+    }
+
+    public List<CategorySlugDTO> getCategoryParentSlug() {
+        return categoryRepository.getParentSlug();
+    }
+
+    public List<CategorySlugDTO> getCategoryChildrenSlug(int parentId) {
+        return categoryRepository.getChilderSlug(parentId);
     }
 }

@@ -6,9 +6,9 @@
 <aside th:fragment="index_nav" id="aside">
     <div id="view-dropNav">
         <div class="dropdown">
-            <a href="#">반려식물 ▼</a>
+            <a th:href="@{/product/list2(slug=plants)}">식물</a>
             <div class="dropdown-content">
-                <a href="#">초보 식집사</a>
+                <a th:href="@{/product/list2(slug=hydroponic-plants)}">수경 재배 식물</a>
                 <a href="#">자취방 필수</a>
                 <a href="#">종류별 추천</a>
             </div>
