@@ -4,9 +4,11 @@ import kr.co.greengarden.dto.MemberDTO;
 import kr.co.greengarden.dto.MemberGeneralDTO;
 import kr.co.greengarden.dto.MemberSellerDTO;
 import kr.co.greengarden.entity.Member;
+import kr.co.greengarden.entity.Terms;
 import kr.co.greengarden.service.MemberGeneralService;
 import kr.co.greengarden.service.MemberSellerService;
 import kr.co.greengarden.service.MemberService;
+import kr.co.greengarden.service.TermsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /*
- * 날짜 : 2025/10/01
+ * 날짜 : 2025/10/02
  * 이름 : 이종봉
- * 내용 : 일반/판매자 약관 구분 Controller 추가
+ * 내용 : 약관 기능구현.
  */
 @RequiredArgsConstructor
 @Controller
@@ -27,6 +29,7 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberGeneralService memberGeneralService;
     private final MemberSellerService memberSellerService;
+    private final TermsService termsService;
 
     @GetMapping("/member/login")
     public String login() {
@@ -46,11 +49,19 @@ public class MemberController {
     @GetMapping("/member/signup")
     public String signup(@RequestParam String role, Model model) {
 
+        String type = null;
+
         if(role.equals("general")) {
+            type = "USER";
             model.addAttribute("type", "user");
         } else if(role.equals("seller")) {
+            type = "SELLER";
             model.addAttribute("type", "seller");
         }
+
+        Terms terms = termsService.getTermsByMemberType(type);
+        model.addAttribute("terms", terms);
+
         return "member/signup";
     }
 

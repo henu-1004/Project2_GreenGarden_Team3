@@ -9,8 +9,8 @@
         이름 : 이수연
         내용 : 상품 주문 페이지
     -->
-    <link rel="stylesheet" th:href="@{/css/common/header.css}">
-    <link rel="stylesheet" th:href="@{/css/common/aside_view.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header_min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/index_nav.css}">
     <link rel="stylesheet" th:href="@{/css/product/order.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
@@ -18,7 +18,7 @@
 <div th:replace="~{/common/header :: header}"></div>
 <main>
     <div class="content-wrap">
-        <div th:replace="~{common/aside_top :: aside_view}"></div>
+        <div th:replace="~{common/index_nav :: aside_view}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h1>주문하기</h1>

@@ -82,6 +82,7 @@ header, body {
     gap: 12px;
     padding: 10px 0;
 }
+
 #header-bottom a {
     display: flex;
     justify-content: center;

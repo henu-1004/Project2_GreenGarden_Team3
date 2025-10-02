@@ -1,17 +1,66 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>admin Cs Notice View</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/cs/aside :: aside}"></div>
 
-			</div>
-		</div>
-	</main>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>공지사항 보기</h5>
+                <ul class="page_nation">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a href="#">공지사항</a></li>
+                </ul>
+            </div>
+
+            <div class="admincs-view-container">
+
+                <div class="admincs-view-row admincs-view-type">
+                    <span class="admincs-view-label-text">유형</span>
+                    <span class="admincs-view-content">고객서비스</span>
+                </div>
+
+                <div class="admincs-view-row admincs-view-title">
+                    <span class="admincs-view-label-text">제목</span>
+                    <span class="admincs-view-content">[ 안내 ] 해외 결제 사칭 문자 주의</span>
+                </div>
+
+                <div class="admincs-view-content-area">
+                    <span class="admincs-view-label-text">내용</span>
+                    <div class="admincs-view-content-text">
+                        <p>안녕하세요. 케이마켓 입니다.</p>
+                        <p>케이마켓 해외직구몰을 사칭하는 피싱 문자가 최근 신고되고 있어 주의 안내드립니다.</p>
+                        <p>아래와 같이 케이마켓 해외직구 승인결제 피싱 문자 또는 발신번호 006, 002 등으로 시작하는 피싱 문자를 수신하신 고객님께서는 전화 또는 문자내기 재회된 번호 / 링크 등을 클릭하지 않도록 주의하여 주시기 바랍니다.</p>
+                    </div>
+                </div>
+
+                <div class="admincs-view-actions">
+                    <button type="button" class="btn-delete">
+                        <span>삭제</span>
+                    </button>
+                    <button type="button" class="btn-modify">
+                        <span>수정</span>
+                    </button>
+                    <button type="button" onclick="location.href='/admin/cs/notice'" class="btn-list">
+                        <span>목록</span>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
 </html>
