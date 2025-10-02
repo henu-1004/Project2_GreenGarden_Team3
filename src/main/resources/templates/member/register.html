@@ -7,9 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/member/register.css}">
 </head>
 <!--
-    날짜 : 2025/09/30
+    날짜 : 2025/10/02
     이름 : 이종봉
-    내용 : DTO에 맞게 아이디.비밀번호 수정
+    내용 : 아이디버튼.
 -->
 <body>
 <div th:replace="~{/common/header :: header}"></div>
@@ -23,11 +23,14 @@
             <div class="form-grid">
                 <label for="memId">아이디</label>
                 <input id="memId" type="text" name="memId" placeholder="아이디 입력">
-                <span class="muted">영문,숫자 4~12자</span>
+                <button type="button" class="subbtn" id="memIdBtn">아이디 중복</button>
+                <span class="uidResult"></span>
+
 
                 <label for="password">비밀번호</label>
                 <input id="password" type="password" name="password" placeholder="비밀번호 입력">
                 <span class="muted">영문, 숫자, 특수문자 8~12자</span>
+                <span class="passResult"></span>
 
                 <label for="password2">비밀번호 확인</label>
                 <input id="password2" type="password" name="password2" placeholder="비밀번호 확인">
@@ -39,7 +42,7 @@
             <div class="form-grid">
                 <label for="name">이름</label>
                 <input id="name" type="text" name="name" placeholder="이름 입력">
-                <span></span>
+                <span class="nameResult"></span>
 
                 <label for="birth">생년월일</label>
                 <input id="birth" type="date" name="birth">
@@ -59,11 +62,12 @@
                 <label for="email">이메일</label>
                 <input id="email" type="text" name="email" placeholder="이메일 입력">
                 <button type="button" class="subbtn" id="emailBtn">이메일 인증</button>
+                <span class="emailResult"></span>
 
                 <label for="phone">휴대폰</label>
                 <input id="phone" type="text" name="phone" placeholder="휴대폰 입력">
                 <button type="button" class="subbtn" id="phoneBtn">휴대폰 인증</button>
-
+                <span class="hpResult"></span>
 
                 <label for="zip_code">주소</label>
                 <input type="text" id="zip_code" name="zipCode" placeholder="우편번호" onclick="postcode()" readonly>

@@ -32,13 +32,13 @@
                     <!-- 일반회원(terms)-->
                     <div class="terms terms-user" th:if="${type eq 'user'}">
                         <h4>이용약관(일반회원)</h4>
-                        <p>일반 구매회원(외국인 포함)에 대한 기본 이용약관 내용이 들어갑니다. …</p>
+                      <p th:text="${terms.termsUse}"></p>
                     </div>
 
                     <!-- 판매회원(tax)-->
                     <div class="terms terms-seller" th:if="${type eq 'seller'}">
                         <h4>이용약관(판매회원)</h4>
-                        <p>사업자 판매회원 대상의 세무/사업 관련 약관 내용이 들어갑니다. …</p>
+                        <p th:text="${terms.termsUse}"></p>
                     </div>
                 </div>
             </article>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="signup-body">
                     <h4>전자금융 이용약관</h4>
-                    <p>전자금융 서비스 이용에 관한 약관 본문이 들어갑니다. …</p>
+                    <p th:text="${terms.termsFin}"></p>
                 </div>
             </article>
 
@@ -63,7 +63,7 @@
                 </div>
                 <div class="signup-body">
                     <h4>개인정보 수집동의</h4>
-                    <p>수집 항목, 이용 목적, 보유기간 등에 대한 안내가 들어갑니다. …</p>
+                    <p th:text="${terms.termsPriv}"></p>
                 </div>
             </article>
 
@@ -75,7 +75,7 @@
                 </div>
                 <div class="signup-body">
                     <h4>위치정보 이용약관</h4>
-                    <p>위치기반 서비스 제공에 대한 안내가 들어갑니다. …</p>
+                    <p th:text="${terms.termsLoc}"></p>
                 </div>
             </article>
 
