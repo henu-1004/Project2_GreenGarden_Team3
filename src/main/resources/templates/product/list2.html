@@ -9,16 +9,16 @@
         이름 : 이수연
         내용 : 상품 목록 페이지
     -->
-    <link rel="stylesheet" th:href="@{/css/common/header_min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/product/list2.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
-<div th:replace="~{/common/header :: header}"></div>
+<div th:replace="~{/common/header_index :: header}"></div>
 <main>
     <div class="content-wrap">
-        <div th:replace="~{/common/aside_left :: aside}"></div>
+        <div th:replace="~{/common/aside :: aside}"></div>
         <section id="main-section">
             <div class="top_nav">
                 <h5>상품목록</h5>

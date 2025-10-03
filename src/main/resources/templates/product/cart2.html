@@ -9,13 +9,13 @@
         이름 : 이수연
         내용 : 장바구니 페이지 구현
     -->
-    <link rel="stylesheet" th:href="@{/css/common/header_min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/index_nav.css}">
     <link rel="stylesheet" th:href="@{/css/product/cart.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
-<div th:replace="~{/common/header :: header}"></div>
+<div th:replace="~{/common/header_index :: header}"></div>
 <main>
     <div class="content-wrap">
         <div th:replace="~{common/index_nav}"></div>

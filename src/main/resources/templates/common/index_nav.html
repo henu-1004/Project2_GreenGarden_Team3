@@ -1,7 +1,7 @@
 <!--
-	날짜 : 2025/09/26
+	날짜 : 2025/09/26 & 2025/10/02
     이름 : 이수연
-    내용 : 바디에서의 카테고리 네비 & 폴더 위치 이동
+    내용 : 카테고리 네비 & 위치 이동
 -->
 <aside th:fragment="index_nav" id="aside">
     <div id="view-dropNav">
@@ -9,26 +9,26 @@
             <a th:href="@{/product/list2(slug=plants)}">식물</a>
             <div class="dropdown-content">
                 <a th:href="@{/product/list2(slug=hydroponic-plants)}">수경 재배 식물</a>
-                <a href="#">자취방 필수</a>
-                <a href="#">종류별 추천</a>
+                <a th:href="@{/product/list2(slug=succulents)}">다육식물</a>
+                <a th:href="@{/product/list2(slug=fresh-flowers)}">생화</a>
+                <a th:href="@{/product/list2(slug=seeds-bulbs)}">씨앗·구근</a>
             </div>
         </div>
         <div class="dropdown">
-            <a href="#">공간별 ▼ </a>
+            <a th:href="@{/product/list2(slug=bouquets-flower-boxes)}">꽃다발.플라워박스 ▼ </a>
             <div class="dropdown-content">
-                <a href="#">내 방</a>
-                <a href="#">테이블 위</a>
-                <a href="#">거시 & 베란다</a>
-                <a href="#">욕실 & 습한 곳</a>
+                <a th:href="@{/product/list2(slug=bouquet)}">꽃다발</a>
+                <a th:href="@{/product/list2(slug=flower-basket)}">꽃바구니</a>
+                <a th:href="@{/product/list2(slug=flower-box)}">플라워박스</a>
             </div>
         </div>
         <div class="dropdown">
-            <a href="#">프랜테리어 ▼</a>
+            <a th:href="@{/product/list2(slug=gardening-supplies)}">가드닝 용품 ▼</a>
             <div class="dropdown-content">
-                <a href="#">유리 화병</a>
-                <a href="#">테라리움</a>
-                <a href="#">행잉 플랜트</a>
-                <a href="#">감성 토분</a>
+                <a th:href="@{/product/list2(slug=vases-pots)}">화병·화분</a>
+                <a th:href="@{/product/list2(slug=vases-pots)}">원예도구</a>
+                <a th:href="@{/product/list2(slug=soil-fertilizer-gravel)}">흙·비료·자갈</a>
+                <a th:href="@{/product/list2(slug=plant-growth)}">식물생장</a>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>마이페이지 | Green Garden</title>
     <!-- 공통 CSS -->
-    <link rel="stylesheet" th:href="@{/css/common/header_min.css}">
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <!-- my 전용 CSS -->
@@ -13,11 +13,11 @@
 <body>
 
 <!-- 공통 헤더 -->
-<div th:replace="~{/common/header :: header}"></div>
+<div th:replace="~{/common/header_index :: header}"></div>
 
 <main class="mypage-container">
     <!-- 공통 어사이드 -->
-    <div th:replace="~{/common/aside_left :: aside}"></div>
+    <div th:replace="~{/common/aside :: aside}"></div>
 
     <!-- 본문 -->
     <section class="content">
