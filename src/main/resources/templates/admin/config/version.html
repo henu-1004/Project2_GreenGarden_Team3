@@ -1,92 +1,120 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>버전관리</title>
-    <link rel="stylesheet" type="text/css" href="css/version.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME > 관리자 환경설정 > 버전관리</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/config/version.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
 <!--
-    날짜 : 2025/09/30
+    날짜 : 2025/10/04
     이름 : 조지영
-    내용 : 관리자 상점 목록 작성
+    내용 : HOME > 관리자 환경설정 > 버전관리
 -->
 <body>
-<main>
-    <div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>버전관리</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">환경설정</a></li>
+                        <li><a href="#">버전관리</a></li>
+                    </ul>
+                </div>
 
-        <!-- 타이틀 & 경로 -->
-        <div class="page-title">
-            <h2>버전관리</h2>
-            <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>버전관리</strong></div>
+                <!-- (1) 버전정보 -->
+                <div class="info-title">
+                    <h2>버전 목록</h2>
+                </div>
+                <div class="info-box">
+                    <strong>사이트 버전 목록입니다.</strong>
+                </div>
+
+                <div class="info-title">
+                    <h2>버전정보</h2>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>번호</th>
+                        <th>버전</th>
+                        <th>작성자</th>
+                        <th>등록일시</th>
+                        <th>변경내역</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>1</td>
+                        <td>0.0.1-SNAPSHOT</td>
+                        <td>yingbbang</td>
+                        <td>2024.10.13 17:12:00</td>
+                        <td><a href="#">[확인]</a></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>2</td>
+                        <td>0.0.1-SNAPSHOT</td>
+                        <td>yingbbang</td>
+                        <td>2024.10.13 17:12:00</td>
+                        <td><a href="#">[확인]</a></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>3</td>
+                        <td>0.0.1-SNAPSHOT</td>
+                        <td>yingbbang</td>
+                        <td>2024.10.13 17:12:00</td>
+                        <td><a href="#">[확인]</a></td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>4</td>
+                        <td>0.0.1-SNAPSHOT</td>
+                        <td>yingbbang</td>
+                        <td>2024.10.13 17:12:00</td>
+                        <td><a href="#">[확인]</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 하단 버튼 -->
+                <div class="btn-wrap">
+                    <button class="btn gray"><a href="#">선택삭제</a></button>
+                    <button class="btn"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;등록&nbsp;&nbsp;&nbsp;&nbsp;</a></button>
+                </div>
+                <!-- 페이징 -->
+                <div class="pagination">
+                    <a href="#">&laquo; 이전</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">다음 &raquo;</a>
+                </div>
+                <!-- 페이징 -->
         </div>
 
-        <!-- (1) 버전정보 -->
-        <div class="info-title">
-            <h2>버전 목록</h2>
-        </div>
-        <div class="info-box">
-            <strong>사이트 버전 목록입니다.</strong>
-        </div>
+    </main>
 
-        <div class="info-title">
-            <h2>버전정보</h2>
-        </div>
-        <table>
-            <thead>
-            <tr>
-                <th><input type="checkbox"></th>
-                <th>번호</th>
-                <th>버전</th>
-                <th>작성자</th>
-                <th>등록일시</th>
-                <th>변경내역</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>1</td>
-                <td>0.0.1-SNAPSHOT</td>
-                <td>yingbbang</td>
-                <td>2024.10.13 17:12:00</td>
-                <td><a href="#">[확인]</a></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>2</td>
-                <td>0.0.1-SNAPSHOT</td>
-                <td>yingbbang</td>
-                <td>2024.10.13 17:12:00</td>
-                <td><a href="#">[확인]</a></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>3</td>
-                <td>0.0.1-SNAPSHOT</td>
-                <td>yingbbang</td>
-                <td>2024.10.13 17:12:00</td>
-                <td><a href="#">[확인]</a></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"></td>
-                <td>4</td>
-                <td>0.0.1-SNAPSHOT</td>
-                <td>yingbbang</td>
-                <td>2024.10.13 17:12:00</td>
-                <td><a href="#">[확인]</a></td>
-            </tr>
-            </tbody>
-        </table>
+</section>
 
-        <!-- 하단 버튼 -->
-        <div class="btn-wrap">
-            <button class="btn gray"><a href="#">선택삭제</a></button>
-            <button class="btn"><a href="#">&nbsp;&nbsp;&nbsp;&nbsp;등록&nbsp;&nbsp;&nbsp;&nbsp;</a></button>
-        </div>
 
-    </div>
-</main>
+
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
+<script th:src="@{/js/admin/aside.js}"></script>
 </html>
+

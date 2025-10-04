@@ -1,260 +1,238 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>회원목록</title>
-    <link rel="stylesheet" type="text/css" href="css/list.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME > 관리자 환경설정 > 기본설정</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/member/list.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
 <!--
-    날짜 : 2025/09/30
+    날짜 : 2025/10/04
     이름 : 조지영
-    내용 : 관리자 상점 목록 작성
+    내용 : HOME > 회원관리 > 회원목록
 -->
 <body>
-
-<!-- 페이지 타이틀 -->
-  <div class="page-title">
-    <h2>회원목록</h2>
-    <div class="breadcrumb">HOME &gt; 회원관리 &gt; <strong>회원목록</strong></div>
-  </div>
-
-
-<!-- 검색창 + 운영 상태 영역 -->
-<div class="search-area">
-  <div class="search-box">
-    <select id="searchType">
-      <option value="userid">아이디</option>
-      <option value="name">이름</option>
-      <option value="email">이메일</option>
-      <option value="phone">휴대폰</option>
-    </select>
-
-    <input type="text" id="keyword" placeholder="검색어 입력">
-    <button class="btn">검색</button>
-  </div>
- 
- 
-</div>
- 
-
-  <!-- 메인 상단배너 테이블 -->
-  <div class="info-title">
-    <h2>회원목록</h2>
-    </div>
-  <table>
-    <thead>
-      <tr>
-        <th><input type="checkbox"></th>
-        <th>번호</th>
-        <th>아이디</th>
-        <th>이름</th>
-        <th>성별</th>
-        <th>등급</th>
-        <th>포인트</th>
-        <th>이메일</th>
-        <th>휴대폰</th>
-        <th>가입일</th>
-        <th>상태</th>
-        <th>관리</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!--- (1)  -->
-      <tr>
-        <td><input type="checkbox"></td>
-        <td>5</td>
-        <td>xxx</td>
-        <td>정우성</td>
-        <td>M</td>
-        <td>
-      <select id="searchType">
-      <option value="vvip">vvip</option>
-      <option value="vip">vip</option>
-      <option value="gold">gold</option>
-      <option value="silver">silver</option>
-      <option value="family">family</option>
-      </select></td>
-        <td>15,000</td>
-        <td>xxxx@naver.com</td>
-        <td>010-0000-0000</td>
-        <td>0000-00-00 00:00:00</td>
-        <td><span class="green">정상</span></td>
-        <td>[수정] <br> [중지]</td>
-      </tr>
-      <!--- (1) 배너끝 -->
-
-      <!--- (2)  -->
-      <tr>
-        <td><input type="checkbox"></td>
-        <td>5</td>
-        <td>xxx</td>
-        <td>정우성</td>
-        <td>M</td>
-        <td>
-
-            <!-- 테이블 내부 -->
-            <a href="#" class="openRegister" th:attr="data-memId=${member.memId}, data-url=@{/admin/member/modify}">관리</a>
-            <a href="#" class="changeStatus">중지</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-    <button type="submit" id="bulkDeleteBtn">선택삭제</button>
-</form>
-<!-- 페이징 (그대로 사용 가능) -->
-<div class="pagination"
-     th:with="
-        page=${memberGeneralList},
-        now=${page.number},
-        total=${page.totalPages},
-        size=${page.size},
-        block=${5},
-        start=${(now / block) * block},
-        end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
-        prev=${ (now > 0) ? (now - 1) : 0 },
-        next=${ ((now + 1) < total) ? (now + 1) : (total - 1) },
-        st=${param.searchType != null ? param.searchType[0] : ''},
-        kw=${param.keyword    != null ? param.keyword[0]    : ''}
-     ">
-    <div th:if="${total > 0}">
-        <a th:href="@{|?page=0&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.first} ? ' disabled'">« 처음</a>
-
-        <a th:href="@{|?page=${prev}&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
-
-        <th:block th:each="i : ${#numbers.sequence(start, end)}">
-            <a th:href="@{|?page=${i}&size=${size}&searchType=${st}&keyword=${kw}|}"
-               th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
-        </th:block>
-
-        <a th:href="@{|?page=${next}&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.last} ? ' disabled'">다음 ›</a>
-
-        <a th:href="@{|?page=${total - 1}&size=${size}&searchType=${st}&keyword=${kw}|}"
-           th:classappend="${page.last} ? ' disabled'">마지막 »</a>
-    </div>
-</div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const checkAll = document.getElementById("checkAll");
-        const checks   = document.querySelectorAll(".rowCheck");
-        const form     = document.getElementById("bulkForm");
-        const delBtn   = document.getElementById("bulkDeleteBtn");
-
-        // 전체선택/해제
-        checkAll.addEventListener("change", () => {
-            checks.forEach(ch => ch.checked = checkAll.checked);
-        });
-
-        // 개별 체크 변화에 따라 헤더 체크박스 상태 업데이트
-        checks.forEach(ch => ch.addEventListener("change", () => {
-            const all = checks.length;
-            const on  = [...checks].filter(c => c.checked).length;
-            checkAll.checked = (all === on);
-            checkAll.indeterminate = (on > 0 && on < all);
-        }));
-
-        // 삭제 전 확인 + 아무것도 선택 안 했을 때 방지
-        delBtn.addEventListener("click", (e) => {
-            const hasSelected = [...checks].some(c => c.checked);
-            if (!hasSelected) {
-                e.preventDefault();
-                alert("삭제할 회원을 선택하세요.");
-                return;
-            }
-            if (!confirm("선택한 회원을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
-                e.preventDefault();
-            }
-        });
-    });
-</script>
+<div th:replace="~{/admin/common/header :: header}"></div>
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>회원목록</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">회원관리</a></li>
+                        <li><a href="#">회원목록</a></li>
+                    </ul>
+                </div>
 
 
-<!-- 모달 -->
-<div id="memberModal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <iframe id="modalFrame" style="width:100%; height:500px; border:none;"></iframe>
-    </div>
-</div>
+                <!-- 검색창 + 운영 상태 영역 -->
+                <div class="search-area">
+                    <div class="search-box">
+                        <select id="searchType">
+                            <option value="userid">아이디</option>
+                            <option value="name">이름</option>
+                            <option value="email">이메일</option>
+                            <option value="phone">휴대폰</option>
+                        </select>
 
-<style>
-    .modal {
-        position: fixed;
-        z-index: 999;
-        left: 0; top: 0;
-        width: 100%; height: 100%;
-        background: rgba(0,0,0,0.6);
-    }
-    .modal-content {
-        background: #fff;
-        margin: 5% auto;
-        padding: 20px;
-        width: 80%;
-        border-radius: 8px;
-        position: relative;
-    }
-    .close {
-        position: absolute;
-        right: 15px; top: 10px;
-        font-size: 24px;
-        cursor: pointer;
-    }
-</style>
+                        <input type="text" id="keyword" placeholder="검색어 입력">
+                        <button class="btn">검색</button>
+                    </div>
+                </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const modal = document.getElementById("memberModal");
-        const modalFrame = document.getElementById("modalFrame");
-        const closeBtn = modal.querySelector(".close");
 
-        // 열기
-        document.querySelectorAll(".openRegister").forEach(link => {
-            link.addEventListener("click", function(e) {
-                e.preventDefault();
-                const memId = this.getAttribute("data-memId");
-                const base   = this.getAttribute("data-url");
-                if (!memId || !base) return;
+                <!-- 메인 상단배너 테이블 -->
+                <div class="info-title">
+                    <h2>회원목록</h2>
+                </div><table>
+                <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>번호</th>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>성별</th>
+                    <th>등급</th>
+                    <th>포인트</th>
+                    <th>이메일</th>
+                    <th>휴대폰</th>
+                    <th>가입일</th>
+                    <th>상태</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="red">중지</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
 
-                modalFrame.src = `${base}?memId=${encodeURIComponent(memId)}`;
-                modal.style.display = "block";
-                document.body.style.overflow = "hidden";
-            });
-        });
+                </tbody>
+            </table>
 
-        // 닫기 함수
-        function closeModal() {
-            modal.style.display = "none";
-            modalFrame.src = ""; // 리소스 해제
-            document.body.style.overflow = ""; // 스크롤 복구
-        }
+                <!-- 하단 버튼 -->
+                <div class="btn-wrap">
+                    <button class="btn">선택수정</button>
+                </div>
+                <!-- 페이징 -->
+                <div class="pagination">
+                    <a href="#">&laquo; 이전</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">다음 &raquo;</a>
+                </div>
+                <!-- 페이징 -->
+            </section>
+        </div>
+    </main>
+</section>
 
-        // 닫기 버튼 click/Enter/Space
-        closeBtn.addEventListener("click", closeModal);
-        closeBtn.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") closeModal();
-        });
 
-        // 바깥(오버레이) 클릭 시 닫기
-        modal.addEventListener("click", (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // ESC 키 닫기
-        window.addEventListener("keydown", (e) => {
-            if (e.key === "Escape" && modal.style.display === "block") closeModal();
-        });
-    });
-</script>
-
-  <!-- 하단 버튼 -->
-  <div class="btn-wrap">
-    <button class="btn gray"><a href="#">선택수정</a></button>
-  </div>
-   <!-- 페이지 -->
-  <div class="page">이전 <a href="#">1</a> 2 3 4 5 다음 </div> 
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
+<script th:src="@{/js/admin/aside.js}"></script>
 </html>

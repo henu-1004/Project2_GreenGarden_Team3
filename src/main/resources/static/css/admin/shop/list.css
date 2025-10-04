@@ -1,3 +1,17 @@
+@charset "UTF-8";
+/*
+    날짜 : 2025/10/04
+    이름 : 조지영
+    내용 :  HOME > 관리자 상점관리 > 매출현황
+*/
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    min-width: 1200px;
+}
 a {
     text-decoration: none;
     color: inherit;
@@ -250,7 +264,29 @@ td img {
 .red { background: red; }
 .blue { background: blue; }
 
-/*하단 페이지네이션 */
-.page {
-    text-align: center;
+
+/* 페이지 네이션 ㅡㅡㅡㅡㅡ */
+.pagination {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 30px;
+    gap: 5px; /* 페이지 번호 사이 간격 */
 }
+
+.pagination a {
+    border: 1px solid #ccc; /* 테두리 */
+    padding: 8px 12px; /* 내부 여백 */
+    border-radius: 4px; /* 둥근 모서리 */
+    transition: background-color 0.2s; /* 부드러운 색 변화 */
+    color: #333;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: white;

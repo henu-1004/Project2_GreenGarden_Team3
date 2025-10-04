@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>admin shop list</title>
+    <title>HOME > 관리자 상점관리 > 상점목록</title>
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/admin/shop/list.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
+<!--
+    날짜 : 2025/10/04
+    이름 : 조지영
+    내용 : HOME > 관리자 상점관리 > 상점목록
+-->
 <body>
 <div th:replace="~{/admin/common/header :: header}"></div>
 <section class="content-wrap">
@@ -144,6 +149,17 @@
                 <button class="btn gray"><a href="#">선택삭제</a></button>
                 <button class="btn"><a href="#">상점등록</a> </button>
             </div>
+            <!-- 페이징 -->
+            <div class="pagination">
+                <a href="#">&laquo; 이전</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">다음 &raquo;</a>
+            </div>
+            <!-- 페이징 -->
         </div>
     </section>
 </section>
