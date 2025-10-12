@@ -22,6 +22,11 @@ import java.util.List;
 @Repository
 public interface MemberGeneralRepository extends JpaRepository<MemberGeneral, String> {
 
+    // 이메일 추가
+    public int countByEmail(String email);
+    // 휴대폰 추가
+    public int countByPhone(String phone);
+
     @Query("""
         select new kr.co.greengarden.dto.admin.MemberGerneralModifyDTO(
           m.memId, g.name, g.gender, gr.grade, g.status,

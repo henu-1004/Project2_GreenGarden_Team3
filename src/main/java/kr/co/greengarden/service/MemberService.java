@@ -2,6 +2,7 @@ package kr.co.greengarden.service;
 
 import kr.co.greengarden.dto.MemberDTO;
 import kr.co.greengarden.entity.Member;
+import kr.co.greengarden.repository.MemberGeneralRepository;
 import kr.co.greengarden.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,8 @@ public class MemberService {
     
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+    private final MemberGeneralRepository memberGeneralRepository;
 
     public List<Member> getUsers(){
         return memberRepository.findAll();
@@ -38,5 +41,27 @@ public class MemberService {
     public void delete(String memId){
         memberRepository.deleteById(memId);
     }
-    
+
+
+
+    public int countMember(String type, String value){
+
+        int count = 0;
+
+        if(type.equals("memId")){
+            count = memberRepository.countByMemId(value);
+        }else if(type.equals("email")){
+            count = memberGeneralRepository.countByEmail(value);
+
+            if(count == 0){
+                // 인증코드 이메일 전송
+                emailService.sendCode(value);
+            }
+
+        }else if(type.equals("phone")){
+            count = memberGeneralRepository.countByPhone(value);
+        }
+        return count;
+    }
+
 }

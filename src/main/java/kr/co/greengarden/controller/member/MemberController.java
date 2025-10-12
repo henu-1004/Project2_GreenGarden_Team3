@@ -1,27 +1,25 @@
-package kr.co.greengarden.controller.mebmer;
+package kr.co.greengarden.controller.member;
 
 import kr.co.greengarden.dto.MemberDTO;
 import kr.co.greengarden.dto.MemberGeneralDTO;
 import kr.co.greengarden.dto.MemberSellerDTO;
-import kr.co.greengarden.entity.Member;
 import kr.co.greengarden.entity.Terms;
-import kr.co.greengarden.service.MemberGeneralService;
-import kr.co.greengarden.service.MemberSellerService;
-import kr.co.greengarden.service.MemberService;
-import kr.co.greengarden.service.TermsService;
+import kr.co.greengarden.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /*
  * 날짜 : 2025/10/02
  * 이름 : 이종봉
  * 내용 : 약관 기능구현.
  */
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class MemberController {
@@ -30,6 +28,7 @@ public class MemberController {
     private final MemberGeneralService memberGeneralService;
     private final MemberSellerService memberSellerService;
     private final TermsService termsService;
+    private final EmailService emailService;
 
     @GetMapping("/member/login")
     public String login() {
@@ -87,4 +86,23 @@ public class MemberController {
 
         return "redirect:/member/login";
     }
+
+    // API 요청 메서드 - 추가
+    @ResponseBody
+    @GetMapping("/member/{type}/{value}")
+    public ResponseEntity<Map<String, Integer>> getMemberCount(@PathVariable("type") String type,
+                                                               @PathVariable("value") String value) {
+
+        log.info("type = {}, value = {}", type, value);
+
+        int count = memberService.countMember(type, value);
+
+        // Json 생성
+        Map<String, Integer> map = Map.of("count", count);
+
+        return ResponseEntity.ok(map);
+
+    }
+
+
 }
