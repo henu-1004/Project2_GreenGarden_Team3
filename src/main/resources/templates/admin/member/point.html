@@ -2,133 +2,158 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="css/point.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME > 회원관리 > 포인트 관리</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/member/point.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
 <!--
-    날짜 : 2025/09/30
+    날짜 : 2025/10/04
     이름 : 조지영
-    내용 : 포인트
+    내용 : HOME > 회원관리 > 포인트 관리
 -->
 <body>
+<div th:replace="~{/admin/common/header :: header}"></div>
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>상점목록</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">회원관리</a></li>
+                        <li><a href="#">포인트관리</a></li>
+                    </ul>
+                </div>
 
-<!-- 페이지 타이틀 -->
-<div class="page-title">
-    <h2>포인트관리</h2>
-    <div class="breadcrumb">HOME &gt; 회원관리 &gt; <strong>포인트관리</strong></div>
-</div>
+                <!-- 검색창 + 운영 상태 영역 -->
+                <div class="search-area">
+                    <div class="search-box">
+                        <select id="searchType">
+                            <option value="userid">아이디</option>
+                            <option value="name">이름</option>
+                            <option value="email">이메일</option>
+                            <option value="phone">휴대폰</option>
+                        </select>
 
-
-<!-- 검색창 + 운영 상태 영역 -->
-<div class="search-area">
-    <div class="search-box">
-        <select id="searchType">
-            <option value="userid">아이디</option>
-            <option value="name">이름</option>
-            <option value="email">이메일</option>
-            <option value="phone">휴대폰</option>
-        </select>
-
-        <input type="text" id="keyword" placeholder="검색어 입력">
-        <button class="btn">검색</button>
-    </div>
-
-
-</div>
-
-
-<!-- 메인 상단배너 테이블 -->
-<div class="info-title">
-    <h2>회원목록</h2>
-</div>
-<table>
-    <thead>
-    <tr>
-        <th><input type="checkbox"></th>
-        <th>번호</th>
-        <th>아이디</th>
-        <th>이름</th>
-        <th>지급 포인트</th>
-        <th>잔여 포인트</th>
-        <th>지급 내용</th>
-        <th>지급 날짜</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!--- (1)  -->
-    <tr>
-        <td><input type="checkbox"></td>
-        <td>5</td>
-        <td>abc1234</td>
-        <td>정우성</td>
-        <td>1,000</td>
-        <td>15,000</td>
-        <td>구매확정 포인트 지급</td>
-        <td>0000-00-00 00:00:00</td>
-    </tr>
-    <!--- (1) 배너끝 -->
-
-    <!--- (2)  -->
-    <tr>
-        <td><input type="checkbox"></td>
-        <td>4</td>
-        <td>abc1234</td>
-        <td>정우성</td>
-        <td>1,000</td>
-        <td>14,000</td>
-        <td>이벤트 참여</td>
-        <td>0000-00-00 00:00:00</td>
-    </tr>
-    <!--- (2) 배너끝 -->
-
-    <!--- (3)  -->
-    <tr>
-        <td><input type="checkbox"></td>
-        <td>3</td>
-        <td>kang771</td>
-        <td>강동원</td>
-        <td>-17,000</td>
-        <td>100</td>
-        <td>주문 결제 사용</td>
-        <td>0000-00-00 00:00:00</td>
-    </tr>
-    <!--- (3) 배너끝 -->
-
-    <!--- (4)  -->
-    <tr>
-        <td><input type="checkbox"></td>
-        <td>2</td>
-        <td>eqpac112</td>
-        <td>한예슬</td>
-        <td>1,000</td>
-        <td>3,500</td>
-        <td>상품리뷰 작성</td>
-        <td>0000-00-00 00:00:00</td>
-    </tr>
-    <!--- (4) 배너끝 -->
-
-    <!--- (5)  -->
-    <tr>
-        <td><input type="checkbox"></td>
-        <td>1</td>
-        <td>qeimn3</td>
-        <td>이정재</td>
-        <td>1,000</td>
-        <td>2,700</td>
-        <td>회원가입 축하</td>
-        <td>0000-00-00 00:00:00</td>
-    </tr>
-    <!--- (5) 배너끝 -->
+                        <input type="text" id="keyword" placeholder="검색어 입력">
+                        <button class="btn">검색</button>
+                    </div>
+                </div>
 
 
-    </tbody>
-</table>
+                <!-- 메인 상단배너 테이블 -->
+                <div class="info-title">
+                    <h2>회원목록</h2>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox"></th>
+                        <th>번호</th>
+                        <th>아이디</th>
+                        <th>이름</th>
+                        <th>지급 포인트</th>
+                        <th>잔여 포인트</th>
+                        <th>지급 내용</th>
+                        <th>지급 날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--- (1)  -->
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>5</td>
+                        <td>abc1234</td>
+                        <td>정우성</td>
+                        <td>1,000</td>
+                        <td>15,000</td>
+                        <td>구매확정 포인트 지급</td>
+                        <td>0000-00-00 00:00:00</td>
+                    </tr>
+                    <!--- (1) 배너끝 -->
 
-<!-- 하단 버튼 -->
-<div class="btn-wrap">
-    <button class="btn gray"><a href="#">선택수정</a></button>
-</div>
-<!-- 페이지 -->
-<div class="page">이전 <a href="#">1</a> 2 3 4 5 다음 </div>
+                    <!--- (2)  -->
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>4</td>
+                        <td>abc1234</td>
+                        <td>정우성</td>
+                        <td>1,000</td>
+                        <td>14,000</td>
+                        <td>이벤트 참여</td>
+                        <td>0000-00-00 00:00:00</td>
+                    </tr>
+                    <!--- (2) 배너끝 -->
+
+                    <!--- (3)  -->
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>3</td>
+                        <td>kang771</td>
+                        <td>강동원</td>
+                        <td>-17,000</td>
+                        <td>100</td>
+                        <td>주문 결제 사용</td>
+                        <td>0000-00-00 00:00:00</td>
+                    </tr>
+                    <!--- (3) 배너끝 -->
+
+                    <!--- (4)  -->
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>2</td>
+                        <td>eqpac112</td>
+                        <td>한예슬</td>
+                        <td>1,000</td>
+                        <td>3,500</td>
+                        <td>상품리뷰 작성</td>
+                        <td>0000-00-00 00:00:00</td>
+                    </tr>
+                    <!--- (4) 배너끝 -->
+
+                    <!--- (5)  -->
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>1</td>
+                        <td>qeimn3</td>
+                        <td>이정재</td>
+                        <td>1,000</td>
+                        <td>2,700</td>
+                        <td>회원가입 축하</td>
+                        <td>0000-00-00 00:00:00</td>
+                    </tr>
+                    <!--- (5) 배너끝 -->
+                    </tbody>
+                </table>
+
+                <!-- 하단 버튼 -->
+                <div class="btn-wrap">
+                    <button class="btn">선택수정</button>
+                </div>
+                <!-- 페이징 -->
+                <div class="pagination">
+                    <a href="#">&laquo; 이전</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">다음 &raquo;</a>
+                </div>
+                <!-- 페이징 -->
+            </section>
+        </div>
+    </main>
+</section>
+
+
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
+<script th:src="@{/js/admin/aside.js}"></script>
 </html>

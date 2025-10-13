@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<<<<<<< HEAD
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+=======
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>버전관리</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          color: #333;
+        }
+
+        /* 안내 박스 */
+        .info-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 12px;
+          color: #333;
+        }
+
+        .info-box {
+          background: #f3f7f6;
+          padding: 15px;
+          border: 0 solid #eee;
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+
+        /* 페이지 타이틀 */
+        .page-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 2px solid #333;
+          padding-bottom: 5px;
+          margin-bottom: 20px;
+        }
+        .page-title h2 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: bold;
+        }
+        .breadcrumb {
+          font-size: 14px;
+          color: #555;
+        }
+
+        /* 테이블 */
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          margin-bottom: 20px;
+          font-size: 14px;
+        }
+        th, td {
+          padding: 12px;
+          text-align: center;
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+        }
+        th {
+          background: #f3f7f6;
+          font-weight: bold;
+        }
+
+        td:nth-child(2) {
+          text-align: left;
+        }
+        td a {
+          color: #333;
+          text-decoration: none;
+        }
+
+        /* 버튼 */
+        .btn {
+          display: inline-block;
+          background: #175a48;
+          color: #fff;
+          padding: 8px 15px;
+          font-size: 14px;
+          text-decoration: none;
+          border-radius: 0px;
+        }
+        .btn.gray {
+          background: #ccc;
+          color: #333;
+        }
+
+        .btn-wrap {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        /* modal */
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: rgba(0,0,0,0.5);
+          z-index: 1000;
+
+        /* 가운데 정렬 추가 */
+          justify-content: center; /* 가로 중앙 */
+          align-items: center;     /* 세로 중앙 */
+
+        }
+        .modal-content {
+          background: #fff;
+          margin: 0% auto;
+          border-radius: 0px;
+          width: 40%;
+          max-width: 612px;
+          min-width: 484px;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+          overflow: hidden;
+        }
+        .modal-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: #175a48;
+          color: #fff;
+          font-size: 14px;
+          padding: 12px 16px;
+        }
+        .modal-title {
+          font-weight: bold;
+        }
+        .modal-close {
+          background: none;
+          border: none;
+          color: #fff;
+          font-size: 16px;
+          cursor: pointer;
+        }
+        .modal-close:hover {
+          color: #fff;
+        }
+
+        .version-box {
+          padding: 16px;
+        }
+        .version-box table {
+          width: 100%;
+          border-collapse: collapse;
+        }
+        .version-box table th {
+          text-align: center;
+          vertical-align: middle;
+        }
+        .version-box th, .version-box td {
+          border: 1px solid #ccc;
+          padding: 8px;
+          vertical-align: top;
+        }
+        .version-box th {
+          width: 120px;
+          text-align: left;
+          background: #f3f7f6;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 타이틀 & 경로 -->
+<div class="page-title">
+    <h2>버전관리</h2>
+    <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>버전관리</strong></div>
+</div>
+
+<!-- 버전 목록 -->
+<div class="info-title">
+    <h2>버전 목록</h2>
+</div>
+<div class="info-box">
+    <strong>사이트 버전 목록입니다.</strong>
+</div>
+
+<!-- 버전정보 -->
+<div class="info-title">
+    <h2>버전정보</h2>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th><input type="checkbox"></th>
+        <th>번호</th>
+        <th>버전</th>
+        <th>작성자</th>
+        <th>등록일시</th>
+        <th>변경내역</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>1</td>
+        <td>0.0.1-SNAPSHOT</td>
+        <td>yingbbang</td>
+        <td>2024.10.13 17:12:00</td>
+        <td><a href="#">[확인]</a></td>
+    </tr>
+    <tr>
+        <td><input type="checkbox"></td>
+        <td>2</td>
+        <td>0.0.1-SNAPSHOT</td>
+        <td>yingbbang</td>
+        <td>2024.10.13 17:12:00</td>
+        <td><a href="#">[확인]</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 하단 버튼 -->
+<div class="btn-wrap">
+    <a href="#" class="btn gray">선택삭제</a>
+    <a href="#" id="openModal" class="btn">등록</a>
+</div>
+
+<!-- 모달 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <!-- 모달 헤더 -->
+        <div class="modal-header">
+            <span class="modal-title">버전확인</span>
+            <button id="closeModal" class="modal-close">X</button>
+        </div>
+        <!-- 모달 본문 -->
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th><label><strong>버전</strong></label></th>
+                    <td>0.0.1-SNAPSHOT</td>
+                </tr>
+                <tr>
+                    <th><label><strong>변경내역</strong></label></th>
+                    <td>
+                        <div style="white-space:pre-line; line-height:1.6; text-align:left;">
+                            - 프로젝트 생성 및 전체 구조 설계
+                            - 회원가입 아이디 중복체크 완료
+                            - 관리자 상품 등록 완료
+                            - 쇼핑몰 메인 및 개별 페이지 링크 작업
+                            - 개발을 위한 제반 사항 처리
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <div style="text-align:center; margin-top:10px;">
+                <a href="#" id="closeModalBtn" class="btn">&nbsp;&nbsp;&nbsp;&nbsp;닫기&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const modal = document.getElementById("myModal");
+    const openBtn = document.getElementById("openModal");
+    const closeBtn = document.getElementById("closeModal");
+
+    // 새로 추가된 닫기 버튼
+    const closeModalBtn = document.getElementById("closeModalBtn");
+
+    openBtn.onclick = (e) => {
+      e.preventDefault();
+      modal.style.display = "flex";
+    };
+    closeBtn.onclick = () => modal.style.display = "none";
+
+    // 하단 닫기 버튼도 동일하게 모달 닫기
+    closeModalBtn.onclick = (e) => {
+      e.preventDefault();
+      modal.style.display = "none";
+    };
+
+    window.onclick = (e) => {
+      if (e.target == modal) modal.style.display = "none";
+    };
+</script>
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
+</body>
+</html>

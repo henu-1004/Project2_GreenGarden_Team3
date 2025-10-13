@@ -48,7 +48,7 @@ public class AdminMemberController {
         System.out.println(memberGeneralList.toString());
         model.addAttribute("memberGeneralList", memberGeneralList);
 
-        return "/admin/member/list";
+        return "admin/member/list";
     }
 
     @GetMapping("/admin/member/modify")
@@ -56,6 +56,11 @@ public class AdminMemberController {
         MemberGerneralModifyDTO memberGeneral = memberGeneralService.findGeneralById(memId);
         model.addAttribute("memberGeneral", memberGeneral);
         return "admin/member/modify";
+    }
+
+    @GetMapping("/admin/member/point")
+    public String point() {
+        return "admin/member/point"; // templates/admin/member/point.html
     }
 
     @PostMapping("/admin/member/modify")
@@ -87,7 +92,7 @@ public class AdminMemberController {
 
         memberGeneralService.modifyGeneral(member, general, grade);
 
-        return "redirect:/admin/member/list";
+        return "redirect:admin/member/list";
     }
 
     @PostMapping("/admin/member/deleteSelected")
@@ -95,11 +100,11 @@ public class AdminMemberController {
                                  RedirectAttributes ra) {
         if (memIds == null || memIds.isEmpty()) {
             ra.addFlashAttribute("msg", "선택된 항목이 없습니다.");
-            return "redirect:/admin/member/list";
+            return "redirect:admin/member/list";
         }
         memberGeneralService.deleteMembers(memIds);
         ra.addFlashAttribute("msg", memIds.size() + "건 삭제되었습니다.");
-        return "redirect:/admin/member/list";
+        return "redirect:admin/member/list";
     }
 
 }
