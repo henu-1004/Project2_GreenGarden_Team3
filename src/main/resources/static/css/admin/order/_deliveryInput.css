@@ -1,0 +1,65 @@
+/*
+    날짜 : 2025/09/28 & 2025/10/07
+    이름 : 이수연
+    내용 : 주문현황 - 배송하기 - 배송입력 모달 & html,css 완료
+*/
+/* ㅡㅡㅡ 배달 등록 화면에 해당되는 css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.modal-delivery-info {
+    width: 100%;
+    padding: 0 15px;
+    border-collapse: collapse;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-delivery-info td {
+    padding: 10px;
+    text-align: left;
+}
+
+.modal-delivery-info th {
+    background-color: #f3f7f6;
+    padding: 10px;
+    text-align: center;
+}
+
+.modal-delivery-info select,
+.modal-delivery-info input {
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.modal-delivery-info input {
+    width: 500px;
+}
+
+
+/* ㅡㅡㅡ 등록하기 버튼 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+.cart-action {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* 버튼을 중앙에 배치 */
+    padding: 20px 0; /* 상하 여백 추가 */
+    /* ❌ 중요: 배경색과 테두리를 여기서 제거 */
+    background-color: transparent;
+    border: none;
+}
+
+#checkout-btn {
+    background-color: #175a48; /* 컨테이너에서 가져온 초록색 */
+    color: white; /* 텍스트 흰색 */
+    border: none; /* 기본 테두리 제거 */
+    outline: none; /* 클릭 시 아웃라인 제거 */
+    cursor: pointer;
+
+    /* 둥근 모서리 */
+    border-radius: 8px;
+
+    /* 버튼 크기 및 패딩 */
+    padding: 10px 40px;
+    font-size: 16px;
+    font-weight: bold;
+}

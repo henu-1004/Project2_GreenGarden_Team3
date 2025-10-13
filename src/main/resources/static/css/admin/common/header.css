@@ -7,19 +7,26 @@ header, body {
     background-color: #f3f6f7;
 }
 
-#header-wrap {
-    margin: 0 auto;
-    max-width: 1200px;
+.content-wrap { /* 공통 적용 */
+    margin-bottom: 30px;
 }
-#header-top, #header-middle {
-    padding-bottom: 40px;
+
+#header-middle {
+    margin: 30px auto;
 }
 
 #header-top {
+    background-color: #C7D9D5;
+}
+
+.header-util {
+    margin: 0 auto;
+    padding: 10px 0;
+    max-width: 1200px;
     text-align: right;
 }
 
-#header-top a {
+#header-top .header-util a {
     padding-left: 10px;
     text-decoration: none;
     color: #175a48; /* 컬러 수정 */
@@ -29,10 +36,11 @@ header, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1200px;
 }
 
 /* 로고 */
 #header-middle a img {
-    width: 200px;
+    width: 250px;
     height: auto;
 }

@@ -5,11 +5,12 @@
     <title>약관동의</title>
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/member/signup.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
 
 
-    <div th:replace="~{/common/header_index :: header}"></div>
+    <div th:replace="~{/common/headerNoSearch :: headerNoSearch}"></div>
 
     <main class="signup-page" th:attr="data-type=${type}">
         <section class="signup-wrap">

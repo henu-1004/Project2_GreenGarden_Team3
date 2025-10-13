@@ -1,14 +1,13 @@
 package kr.co.greengarden.controller.product;
 
 /*
-    날짜 : 2025/09/26
-    이름 : 이수연
-    내용 : 상품 컨트롤러
+    날짜 : 2025/09/26 & 2025/10/2
+    이름 : 이수연 & 한탁원
+    내용 : 상품 컨트롤러 & 기능
 */
 import kr.co.greengarden.dto.CartDTO;
 import kr.co.greengarden.dto.CartListDTO;
 import kr.co.greengarden.dto.ProductListDTO;
-import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.Product;
 import kr.co.greengarden.security.MemberDetails;
 import kr.co.greengarden.service.CartService;
@@ -30,7 +29,7 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class ProductController {
+public class    ProductController {
 
     private final ProductService productService;
     private final CartService cartService;
@@ -60,7 +59,7 @@ public class ProductController {
         model.addAttribute("direction", direction);
         model.addAttribute("slug", slug);
 
-        return "product/list2";
+        return "list";
     }
 
     @GetMapping("/product/view")
@@ -75,7 +74,7 @@ public class ProductController {
         return "product/view2";
     }
 
-    @GetMapping("/product/cart")
+    @GetMapping("/product/cart2")
     public String cartPage(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
         List<CartListDTO> cartList = cartService.getCartList(memberDetails.getUsername());
         for (CartListDTO c : cartList) {

@@ -1,21 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>마이페이지 | Green Garden</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <title>마이페이지 | Green Garden</title>
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- 헤더 -->
-  <header class="header">
-    <div class="top-menu">
-      <a href="#">로그인</a> | 
-      <a href="#">회원가입</a> | 
-      <a href="#">마이페이지</a> | 
-      <a href="#">장바구니</a>
-    </div>
-    <h1 class="logo"><a href="index.html">Green Garden</a></h1>
-  </header>
+<!-- 공통 헤더 -->
+<div th:replace="~{/common/headerNoSearch :: headerNoSearch}"></div>
 
   <!-- 메인 레이아웃 -->
   <main class="mypage-container">
@@ -88,9 +83,7 @@
     </section>
   </main>
 
-  <!-- 푸터 -->
-  <footer class="footer">
-    <p>© Green Garden. All rights reserved.</p>
-  </footer>
+<!-- 공통 푸터 -->
+<div th:replace="~{/common/footer :: footer}"></div>
 </body>
 </html>

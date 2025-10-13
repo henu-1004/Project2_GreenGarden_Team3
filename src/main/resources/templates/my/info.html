@@ -1,16 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>마이페이지 | Green Garden</title>
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
+
+    <!-- 공통 헤더 -->
+    <div th:replace="~{/common/headerNoSearch :: headerNoSearch}"></div>
+
 	<main>
 		<div id="main">
 
 		</div>
 	</main>
+
+
+    <!-- 공통 푸터 -->
+    <div th:replace="~{/common/footer :: footer}"></div>
 </body>
 </html>

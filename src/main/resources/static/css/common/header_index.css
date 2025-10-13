@@ -5,12 +5,12 @@
  * 내용 : header - css 초안 작성 & 수정
  */
 header, body {
-    background-color: #f3f6f7;
+    background-color: #f3f7f6;
 }
 
 #header-top {
     padding: 10px;
-    background-color: #f0f0f0;
+    background-color: #C7D9D5;
 }
 
 .header-util {
@@ -22,7 +22,7 @@ header, body {
 #header-top a {
     padding-left: 10px;
     text-decoration: none;
-    color: #175a48; /* 컬러 수정 */
+    color: #175a48;
 }
 
 #header-middle {
@@ -43,7 +43,7 @@ header, body {
 
 /* header - 바닥(검색창 영역) */
 #header-bottom {
-    background-color: #f0f0f0;
+    background-color: #C7D9D5;
     display: flex;
     justify-content: center;
     align-items: center;

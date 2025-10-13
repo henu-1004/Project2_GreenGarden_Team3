@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>별점 Hover 테스트</title>
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -41,14 +44,22 @@
 </head>
 <body>
 
-<h2>별점 Hover 테스트</h2>
-<div id="starRating">
-    <span data-value="1">★</span>
-    <span data-value="2">★</span>
-    <span data-value="3">★</span>
-    <span data-value="4">★</span>
-    <span data-value="5">★</span>
-</div>
+<!-- 공통 헤더 -->
+<div th:replace="~{/common/headerNoSearch :: headerNoSearch}"></div>
+
+<!-- 메인 바디 부분 -->
+<main>
+    <h2>별점 Hover 테스트</h2>
+    <div id="starRating">
+        <span data-value="1">★</span>
+        <span data-value="2">★</span>
+        <span data-value="3">★</span>
+        <span data-value="4">★</span>
+        <span data-value="5">★</span>
+    </div>
+
+</main>
+
 
 <script>
     const stars = document.querySelectorAll('#starRating span');
@@ -82,5 +93,7 @@
     });
 </script>
 
+<!-- 공통 푸터 -->
+<div th:replace="~{/common/footer :: footer}"></div>
 </body>
 </html>

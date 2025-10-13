@@ -1,0 +1,24 @@
+<!--
+    날짜 : 2025/10/04
+    이름 : 이수연
+    내용 : 회사소개용(간단버전 화면설계서.ver) 푸터 파일 생성
+-->
+<footer th:fragment="footerCompany">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+    <div class="footer-container">
+        <div class="footer-info">
+            <!-- 로고 -->
+            <div class="footer-logo">
+                <img th:src="@{/images/LogoMark.png}" alt="logo mark">
+            </div>
+            <!-- 고객센터 및 약관 -->
+            <div class="company-nav">
+                <a href="#">HOME</a>
+                <a href="#">기업문화</a>
+                <a href="#">소식과 이야기</a>
+                <a href="#">채용</a>
+            </div>
+        </div>
+        <p class="copyright">COPYRIGHT © GREENGARDEN TEAM3 ALL RIGHTS RESERVED.</p> <!-- 사진을 제외한 텍스트, 디자인, 코드 등 그린가든3조가 직접 제작한 창작물에 대한 법적 소유권을 가지고 있음을 명시 -->
+    </div>
+</footer>

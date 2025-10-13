@@ -1,28 +1,101 @@
 <!--
-    날짜 : 2025/09/28
+    날짜 : 2025/09/28 & 2025/10/07
     이름 : 이수연
-    내용 : 주문현황 - 주문상세 모달
+    내용 : 주문현황 - 주문상세 모달 & 화면(html,css)완료
 -->
 <div class="madal-detail" th:fragment="modal-order-detail">
+    <link rel="stylesheet" th:href="@{/css/admin/order/_orderDetail.css}">
     <div class="modal-content">
+        <button class="close-button">&times;</button>
         <div class="modal-header">
             <div class="modal-title">
-                <h3>결제입력</h3>
+                <h2>주문상세</h2>
                 <p class="order-number">'주문번호'</p>
-            </div>
-            <div class="close-btn-wrap">
-                <button class="close-btn">x</button>
             </div>
         </div>
         <div class="modal-body">
+            <!-- 상품정보 -->
+            <h2>주문상품</h2>
+            <section class="order-list-section">
+                <table class="cart-table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>상품번호</th>
+                        <th>상품명</th>
+                        <th>판매자</th>
+                        <th>가격</th>
+                        <th>할인</th>
+                        <th>수량</th>
+                        <th>배송비</th>
+                        <th>결제금액</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cart-items">
+                    <tr>
+                        <td class="col-item-info">
+                            <div class="product-image">
+                                <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
+                            </div>
+                        </td>
+                        <td><a href="#">120120021</a></td>
+                        <td>OOO</td>
+                        <td>(주)상호명</td>
+                        <td>29,500원</td>
+                        <td>-1,200원</td>
+                        <td>3</td>
+                        <td>0</td>
+                        <td>68,400원</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <!-- 총 합계 -->
+                <div class="order-contain order-chek">
+                    <div class="payment-summary">
+                        <h2>최종결제정보</h2>
+                        <div class="summary-details">
+                            <div class="item">
+                                <span>상품수</span>
+                                <span id="product-count">1</span>
+                            </div>
+                            <div class="item">
+                                <span>상품금액</span>
+                                <span id="product-price">27,000</span>
+                            </div>
+                            <div class="item">
+                                <span>할인금액</span>
+                                <span id="discount-price">-1,350</span>
+                            </div>
+                            <div class="item">
+                                <span>배송비</span>
+                                <span id="shipping-fee">0</span>
+                            </div>
+                            <div class="item">
+                                <span>할인</span>
+                                <span id="coupon-discount">-1,000</span>
+                            </div>
+                            <hr>
+                            <div class="total-price">
+                                <span>전체주문금액</span>
+                                <span id="total-order-price">24,650</span>
+                            </div>
+                            <div class="item">
+                                <span>적립 포인트</span>
+                                <span id="earned-points">270</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 결제정보 -->
+            <h2>결제정보</h2>
             <section>
-                <h2>결제정보</h2>
-                <table class="del_info-table">
+                <table class="del-info-table">
                     <tr>
                         <th>주문날짜</th>
                         <td>2025.09.30.  18:31:52</td>
                     </tr>
-                    <tr class="order_num">
+                    <tr class="order-num">
                         <th>주문번호</th>
                         <td>2025092116848666</td>
                     </tr>
@@ -40,8 +113,9 @@
                     </tr>
                 </table>
             </section>
+            <!-- 배송정보 -->
+            <h2>배송정보</h2>
             <section>
-                <h2>배송정보</h2>
                 <table class="order-info-table">
                     <tr>
                         <th>수취인</th>
@@ -56,65 +130,6 @@
                         <td>서울특별시 강남구 ...</td>
                     </tr>
                 </table>
-            </section>
-            <section class="order_list_section">
-                <h2>주문상품</h2>
-                <table class="cart_table">
-                    <thead>
-                    <tr>
-                        <th></th>
-                        <th>상품번호</th>
-                        <th>상품명</th>
-                        <th>판매자</th>
-                        <th>가격</th>
-                        <th>할인</th>
-                        <th>수량</th>
-                        <th>배송비</th>
-                        <th>결제금액</th>
-                    </tr>
-                    </thead>
-                    <tbody id="cart_items">
-                    <tr>
-                        <td class="col_item_info">
-                            <div class="product_image">
-                                <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
-                            </div>
-                        </td>
-                        <td><a href="#">120120021</a></td>
-                        <td>OOO</td>
-                        <td>(주)상호명</td>
-                        <td>29,500원</td>
-                        <td>-1,200원</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>68,400원</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div class="cart-summary">
-                    <h3>전체 합계</h3>
-                    <table border="1" class="order-summary">
-                        <tr>
-                            <th>총 상품금액</th>
-                            <td>107,000원</td>
-                        </tr>
-                        <tr>
-                            <th>총 할인금액</th>
-                            <td>-7,100원</td>
-                        </tr>
-                        <tr>
-                            <th>배송비</th>
-                            <td>3,000원</td>
-                        </tr>
-                        <tr>
-                            <th>총 결제금액</th>
-                            <td>102,900</td>
-                        </tr>
-                    </table>
-                    <div class="cart-action">
-                        <button type="button" id="checkout-btn">주문하기</button>
-                    </div>
-                </div>
             </section>
         </div>
     </div>

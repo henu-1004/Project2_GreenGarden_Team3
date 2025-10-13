@@ -3,7 +3,7 @@
     이름 : 이수연
     내용 : 주문현황 - 주문상세 모달 css
 */
-/* 모달 배경과 위치 설정 */
+/* ㅡㅡㅡ 모달 배경과 위치 설정 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .madal-detail {
     position: fixed;
     top: 0;
@@ -11,42 +11,49 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: none; /* <-- 이 속성 flex, none */
+    display: flex; /* <-- 이 속성 flex, none */
     justify-content: center;
+    padding: 20px;
     align-items: center;
     z-index: 1000;
 }
-/* 모달 내용 박스 */
+/* ㅡㅡㅡ 모달 내용 박스 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .modal-content {
-    /* 이 부분의 position, top, left, transform 속성 삭제 */
+    /* 모달 창의 크기 및 중앙 배치 */
     background-color: white;
-    width: 80%;
-    max-width: 800px;
+    width: 100%;
+    max-width: 1000px;
+
+    display: flex; /* Flexbox 컨테이너로 만듦 */
+    flex-direction: column; /* 자식 요소들을 세로로 쌓음 */
+
+    max-height: 90vh; /* 화면 높이의 90%를 넘지 않도록 설정 */
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    padding: 20px;
+
+    position: relative; /*이 요소를 기준으로 자식 요소(닫힘버튼)의 위치를 잡도록 설정 */
 }
 
-/* 닫기 버튼 */
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 30px; /* 정사각형 너비 */
-    height: 30px; /* 정사각형 높이 */
-    text-align: center; /* 글자를 수평 중앙에 */
-    font-size: 20px;
+/* 닫힘 버튼 */
+.close-button {
+    position: absolute; /* 부모 요소(modal-content)를 기준으로 위치를 잡음 */
+    top: 25px;
+    right: 35px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #ccc;
+    border: none;
+    background: none;
     cursor: pointer;
-    background-color: #eee; /* 배경색 추가 (선택사항) */
 }
 
-/* 헤더 부분 */
+/* ㅡㅡㅡ 헤더 부분 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .modal-header {
-    width: 100%;
+    width: 96%;
     background-color: #175a48;
     color: white;
-    display: flex;
-    justify-content: space-between;
+    padding: 15px 20px;
+    flex-shrink: 0; /* 공간이 부족해도 줄어들지 않도록 함 */
 }
 
 .modal-title {
@@ -58,16 +65,23 @@
 
 .order-number {
     color: #999999;
-    font-size: 10px;
-    margin-left: 10px;
+    font-size: 12px;
+    margin-left: 20px;
 }
 
-/* body 시작 -------- */
+/* ㅡㅡㅡ body 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .modal-body {
-    margin-top: 20px;
+    /* 3. 스크롤 영역: 남은 공간을 채우고 스크롤 가능하게 함 */
+    padding: 10px;
+    overflow-y: auto; /* 내용이 넘칠 경우에만 스크롤바 생성 */
+    flex-grow: 1; /* 남은 세로 공간을 모두 채우도록 함 */
 }
 
-/* 주문상품 리스트 */
+.modal-body section {
+    border-top: 8px solid #175a48;
+}
+
+/* ㅡㅡㅡ 주문상품 상세뵈 화면에 해당되는 css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .cart_table {
     width: 95%;
     border-collapse: collapse;

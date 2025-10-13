@@ -13,7 +13,7 @@
 }
 
 #slide {
-    width : 1200px;
+    min-width : 1200px;
     margin: auto;
     border: 1px solid #66968c;
     height: 300px;

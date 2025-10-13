@@ -1,0 +1,109 @@
+/*
+    날짜 : 2025/09/28 & 2025/10/07
+    이름 : 이수연
+    내용 : 주문현황 - 주문상세 모달 & 화면(html,css) 완료
+*/
+/* ㅡㅡㅡ 테이블 스타일 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.cart-table,
+.del-info-table ,
+.order-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid #C7D9D5;
+    border-bottom: 3px solid #C7D9D5;
+}
+
+.cart-table th,
+.del-info-table th,
+.order-info-table th {
+    background-color: #C7D9D5;
+    width: 100px;
+    padding: 8px;
+}
+
+.cart-table td {
+    text-align: center;
+    padding: 8px;
+}
+
+.del-info-table td,
+.order-info-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.cart-summary {
+    align-items: flex-end;
+}
+
+/* 주문상품 상품 이미지 */
+.col-item-info {
+    display: flex;
+    justify-content: center;
+}
+
+.cart-table img {
+    width: 80px;
+}
+
+
+/* ㅡㅡㅡ 최종 결제 정보 전체 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.order-chek {
+    display: flex;
+    align-items: stretch; /* 두 영역의 높이를 동일하게 */
+    text-align: center;
+    justify-content: right;
+    padding:  10px 30px 0 0;
+
+}
+
+/* 최종결제정보 스타일 */
+.payment-summary {
+    width: 300px;
+    border: 3px solid #C7D9D5;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* 제목 스타일 */
+.payment-summary h2 {
+    font-size: 1.2em; /* 상대적인 크기 */
+    font-weight: bold;
+    margin: 0;
+    padding-bottom: 15px; /* 선과의 간격 */
+    border-bottom: 1.5px solid #66968c; /* 아래쪽 구분선 */
+}
+
+/* 내용 부분 컨테이너 */
+.summary-details {
+    padding-top: 15px; /* 제목과의 간격 */
+}
+
+/* 개별 항목 스타일 */
+.summary-details .item {
+    display: flex; /* 가로 정렬 */
+    justify-content: space-between; /* 양쪽 끝 정렬 */
+    margin-bottom: 10px; /* 항목별 간격 */
+}
+
+/* 전체주문금액 스타일 */
+.summary-details .total-price {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px; /* 선과의 간격 */
+    font-weight: bold;
+    color: #ff0000; /* 빨간색 */
+}
+
+/* 항목별 값(오른쪽)의 글자 굵기 */
+.summary-details .item span:last-child {
+    font-weight: normal; /* 원래대로 돌려놓기 */
+}
+
+/* 수평선 스타일 */
+hr {
+    border: 0; /* 기본 선 스타일 제거 */
+    height: 1px; /* 선의 높이 */
+    background-color: #66968c; /* 선 색상 */
+    margin: 15px 0; /* 위아래 간격 */
+}

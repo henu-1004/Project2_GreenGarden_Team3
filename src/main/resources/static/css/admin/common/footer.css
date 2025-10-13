@@ -1,38 +1,106 @@
 @charset "UTF-8";
 /*
- * 날짜 : 2025/09/28
+ * 날짜 : 2025/09/25
  * 이름 : 이수연
- * 내용 : 관리자 footer css
+ * 내용 : footer - css 제안
  */
-footer {
-    background: #f3f7f6;
-    padding: 50px 0;
-    text-align: center;
-}
 .footer-container {
     margin: 0 auto;
     max-width: 1200px;
-    text-align: center;
-    padding-bottom: 20px;
+    padding: 50px 0;
 }
-.footer-logo {
-    font-size: 2em;
-    font-weight: bold;
-    color: #558B2F; /* Green Garden color */
-    margin-bottom: 10px;
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ위치 잡기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* 1. footer-container 레이아웃 설정 (Flexbox 사용) */
+.footer-info {
+    display: flex; /* 자식 요소들을 가로로 배치 */
+    justify-content: center;
 }
 
-.footer-info {
-    font-size: 0.9em;
-    color: #666;
+/* 2. 공통 스타일 */
+.company-info, .cs-info {
+    padding: 0 20px;
+    /* 내용이 로고 높이를 넘어가지 않도록 하는 디자인 가이드라인을 위해 최대 높이 설정 (선택적) */
+    max-height: 90px; /* 로고 높이에 맞춰 강제 높이 제한 */
+    min-width: 500px; /* 좌우 공간을 균등하게 주기 위해.*/
+}
+
+/* 2-1. 왼쪽 글 공간 (company-info) 오른쪽 정렬 */
+.company-info {
+    text-align: right;
+}
+
+/* 2-2. 오른쪽 글 공간 (cs-info) 왼쪽 정렬 */
+.cs-info {
+    text-align: left;
+}
+
+/* 3. 로고 영역 설정 */
+.footer-logo {
+    flex-shrink: 0; /* 크기 유지 */
+    width: 100px; /* 로고의 고정 너비 (정사각형 기준) */
+    height: 100px; /* 로고의 고정 높이 (정사각형 기준) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 20px;
+}
+
+.footer-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.company-info-title {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 디테일 잡기 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* 4. a 태그 스타일 초기화 */
+.footer-container a {
+    color: inherit; /* 기본 파란색 제거 */
+    text-decoration: none; /* 밑줄 제거 */
+    cursor: pointer; /* 마우스 오버 시 손가락 포인터 (클릭 가능 요소이므로 기본값 유지) */
+    font-size: 12px;
+}
+
+.footer-container p {
+    font-size: 14px;
     line-height: 1.5;
-    margin-bottom: 10px;
 }
-.footer-info p {
-    margin: 0;
+
+.footer-container h6 {
+    font-size: 18px;
+    font-weight: bold;
 }
+
+.company-name { /* 회사소개 - 회사 이름 꾸미기 */
+    font-weight: bold;
+    color: #66968c; /* Green Garden */
+    margin-right: 5px;
+}
+
+/* 5. 약관 정보 (terms-info)는 글 공간 내부의 묶음이므로 내부 정렬을 따라감 */
+.terms-info a {
+    margin-right: 10px;
+    font-size: 12px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.footer-container a:hover {
+    opacity: 1;
+    color: #175a48;
+}
+
+/* copyright 위치 및 스타일 */
 .copyright {
-    font-size: 0.8em;
+    text-align: center;
+
+    font-size: 14px;
     color: #999;
-    margin-top: 10px;
+    margin-top: 20px;
 }

@@ -2,8 +2,11 @@
 	날짜 : 2025/09/28 & ... & 2025/10/02
     이름 : 이수연
     내용 : header 수정 & index와 로고 차이로 인해 파일하나 더 생성.
+
+    사용방법 : 검색바가 필요없는 페이지는 해당 파일을 삽입 & css : common/headerWithSearch.css 사용(class명이 달라서 괜찮음)
 -->
-<header th:fragment="header">
+<header th:fragment="headerNoSearch">
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}" href="/css/product/list.css">
     <div id="header-wrap">
         <div id="header-top">
             <div class="header-util">
@@ -23,6 +26,5 @@
                 <img th:src="@{/images/LogoWidth.png}" alt="indexLogo" />
             </a>
         </div>
-
     </div>
 </header>

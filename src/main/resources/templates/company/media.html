@@ -1,12 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
+<div th:replace="~{/common/headerWithSearch :: headerWithSearch}"></div>
+<main>
 
+</main>
+<div th:replace="~{/common/footerCompany :: footerCompany}"></div>
 </body>
 </html>
