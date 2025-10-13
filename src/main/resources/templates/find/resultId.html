@@ -21,24 +21,28 @@
     <h2 class="find-title">아이디 찾기 결과</h2>
 
     <section class="section">
-        <div class="kv-grid">
+        <div th:if="${info != null}" class="kv-grid">
             <div class="label">이름</div>
-            <div class="value" text="name">홍길동</div>
+            <div class="value" th:text="${info.name}"></div>
 
             <div class="row-divider"></div>
 
             <div class="label">아이디</div>
-            <div class="value" text="userId">honggildong</div>
+            <div class="value" th:text="${info.memId}"></div>
 
             <div class="row-divider"></div>
 
             <div class="label">이메일</div>
-            <div class="value" text="email">honggildong@gmail.com</div>
+            <div class="value" th:text="${info.email}"></div>
 
             <div class="row-divider"></div>
 
             <div class="label">가입일</div>
-            <div class="value" text="regdate">2022-11-16 10:20:22</div>
+            <div class="value" th:text="${#temporals.format(info.joinDate, 'yyyy-MM-dd HH:mm:ss')}"></div>
+        </div>
+
+        <div th:if="${info == null}" class="error-box">
+            <p>일치하는 회원 정보를 찾을 수 없습니다.</p>
         </div>
     </section>
 

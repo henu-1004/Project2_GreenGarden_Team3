@@ -1,5 +1,6 @@
 package kr.co.greengarden.repository;
 
+import kr.co.greengarden.dto.FindResultDTO;
 import kr.co.greengarden.dto.MemberGeneralDTO;
 import kr.co.greengarden.dto.admin.MemberGeneralListDTO;
 import kr.co.greengarden.dto.admin.MemberGerneralModifyDTO;
@@ -13,6 +14,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
  * 날짜 : 2025/09/24
@@ -21,6 +23,11 @@ import java.util.List;
  */
 @Repository
 public interface MemberGeneralRepository extends JpaRepository<MemberGeneral, String> {
+
+    // 이메일 추가
+    public int countByEmail(String email);
+    // 휴대폰 추가
+    public int countByPhone(String phone);
 
     @Query("""
         select new kr.co.greengarden.dto.admin.MemberGerneralModifyDTO(
@@ -99,5 +106,22 @@ public interface MemberGeneralRepository extends JpaRepository<MemberGeneral, St
     @Modifying
     @Query("delete from MemberGeneral g where g.memId in :ids")
     void deleteByMemIdIn(@Param("ids") List<String> ids);
+
+    // 아이디 찾기
+    @Query("""
+        SELECT new kr.co.greengarden.dto.FindResultDTO(
+            g.name,
+            g.email,
+            m.memId,
+            m.joinDate
+        )
+            From MemberGeneral g
+            JOIN g.member m
+            WHERE g.name = :name AND g.email = :email
+    """)
+    Optional<FindResultDTO> findMemberInfoByNameAndEmail(@Param("name") String name,
+                                                         @Param("email") String email);
+
+
 
 }

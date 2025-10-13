@@ -3,12 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>admin shop list</title>
+    <title>HOME > 관리자 상점관리 > 상점목록</title>
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/admin/shop/list.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
+<!--
+    날짜 : 2025/10/04
+    이름 : 조지영
+    내용 : HOME > 관리자 상점관리 > 상점목록
+-->
 <body>
 <div th:replace="~{/admin/common/header :: header}"></div>
 <section class="content-wrap">
@@ -49,7 +54,6 @@
         <div class="ji-young-main-area">
             <!-- 메인 상단배너 테이블 -->
             <div class="info-title">
-                <h2>버전정보</h2>
             </div>
             <table>
                 <thead>
@@ -141,14 +145,162 @@
             </table>
             <!-- 하단 버튼 -->
             <div class="btn-wrap">
-                <button class="btn gray"><a href="#">선택삭제</a></button>
-                <button class="btn"><a href="#">상점등록</a> </button>
+                <button type="button" class="btn gray">선택삭제</button>
+                <button type="button" class="btn open-modal">상점등록</button>
             </div>
+        </div>
+
+
+        <!-- 페이징 -->
+        <div class="pagination">
+            <a href="#">&laquo; 이전</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">다음 &raquo;</a>
+        </div>
+        <!-- 페이징 -->
         </div>
     </section>
 </section>
+
+</main>
+</section>
+<!-- 모달 -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="modal-title">상점등록</span>
+            <button id="closeModal" class="modal-close">X</button>
+        </div>
+
+        <!-- 모달 본문 -->
+        <div class="version-box">
+            <table>
+                <tr>
+                    <th>아이디</th>
+                    <td><input type="text" name="id" placeholder="아이디 입력"> 영문, 숫자 4~12자 설정</td>
+                </tr>
+                <tr>
+                    <th>비밀번호</th>
+                    <td><input type="password" name="pwd" placeholder="비밀번호 입력"> 영문, 숫자, 특수문자 8~12자 설정</td>
+                </tr>
+                <tr>
+                    <th>비밀번호 확인</th>
+                    <td><input type="password" name="pwd_check" placeholder="비밀번호 재입력"></td>
+                </tr>
+                <tr>
+                    <th>상호명</th>
+                    <td><input type="text" name="name" placeholder="예) (주)GreenGarden"></td>
+                </tr>
+                <tr>
+                    <th>대표</th>
+                    <td><input type="text" name="ceo" placeholder="대표자명 입력"></td>
+                </tr>
+                <tr>
+                    <th>사업자등록번호</th>
+                    <td><input type="text" name="biznum" placeholder="예) 123-45-67890"> - 포함 12자리 입력</td>
+                </tr>
+                <tr>
+                    <th>통신판매업번호</th>
+                    <td><input type="text" name="sale_num" placeholder="예) 2025-부산남구-1234"> - 포함 12자리 입력</td>
+                </tr>
+                <tr>
+                    <th>전화번호</th>
+                    <td><input type="text" name="phone" placeholder="예) 051-123-4567"></td>
+                </tr>
+                <tr>
+                    <th>팩스</th>
+                    <td><input type="text" name="fax" placeholder="팩스번호 입력"></td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td>
+                        <input type="text" id="zip_code" name="zip_code" placeholder="우편번호" onclick="postcode()"
+                               readonly><br>
+                        <input type="text" id="address_basic" name="address_basic" placeholder="기본주소" readonly><br>
+                        <input type="text" id="address_detail" name="address_detail" placeholder="상세주소">
+                    </td>
+                </tr>
+            </table>
+
+
+            <div class="btn-wrap">
+                <button type="submit" class="btn">등록하기</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- 모달 본문 끝 -->
+
+
 <div th:replace="~{/admin/common/footer :: footer}"></div>
 
 </body>
 <script th:src="@{/js/admin/aside.js}"></script>
+
+<!-- 모달 스크립트 시작-->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const modal = document.getElementById("myModal");
+        const openBtn = document.querySelector(".open-modal"); // "상점등록" 버튼
+        const closeBtn = document.getElementById("closeModal");
+        const closeFooterBtn = document.getElementById("closeModalBtn");
+
+        openBtn.addEventListener("click", e => {
+            e.preventDefault();
+            modal.style.display = "flex"; // ✅ 반드시 flex
+        });
+
+        closeBtn.addEventListener("click", () => modal.style.display = "none");
+        closeFooterBtn.addEventListener("click", e => {
+            e.preventDefault();
+            modal.style.display = "none";
+        });
+
+        window.addEventListener("click", e => {
+            if (e.target === modal) modal.style.display = "none";
+        });
+    });
+
+</script>
+<!-- 모달 스크립트 끝 -->
+
+<!-- 다음 우편번호 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function postcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                var addr = '';
+                var extraAddr = '';
+
+                if (data.userSelectedType === 'R') {
+                    addr = data.roadAddress;
+                } else {
+                    addr = data.jibunAddress;
+                }
+
+                if (data.userSelectedType === 'R') {
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    if (extraAddr !== '') {
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                }
+
+                document.getElementById('zip_code').value = data.zonecode;
+                document.getElementById("address_basic").value = addr + extraAddr;
+                document.getElementById("address_detail").focus();
+            }
+        }).open();
+    }
+</script>
 </html>

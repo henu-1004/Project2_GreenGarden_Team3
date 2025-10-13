@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, String> {
 
+    public int countByMemId(String memId);
+
 }

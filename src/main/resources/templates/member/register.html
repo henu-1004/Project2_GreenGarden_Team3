@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>일반 회원가입</title>
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <link rel="stylesheet" th:href="@{/css/member/register.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
@@ -29,8 +30,10 @@
 
 
                 <label for="password">비밀번호</label>
+                <div class="input-with-hint">
                 <input id="password" type="password" name="password" placeholder="비밀번호 입력">
                 <span class="muted">영문, 숫자, 특수문자 8~12자</span>
+                </div>
                 <span class="passResult"></span>
 
                 <label for="password2">비밀번호 확인</label>
@@ -47,7 +50,7 @@
 
                 <label for="birth">생년월일</label>
                 <input id="birth" type="date" name="birth">
-                <span></span>
+                <span class="birthResult"></span>
 
                 <label>성별</label>
                 <div class="gender">
@@ -58,12 +61,20 @@
                         <input type="radio" name="gender" value="F">여
                     </label>
                 </div>
-                <span></span>
+                <span class="genderResult"></span>
 
                 <label for="email">이메일</label>
                 <input id="email" type="text" name="email" placeholder="이메일 입력">
                 <button type="button" class="subbtn" id="emailBtn">이메일 인증</button>
                 <span class="emailResult"></span>
+
+
+                <label for="auth" class="auth-label" style="display: none;">인증코드</label>
+                <input id="auth" type="text" name="auth" placeholder="인증코드 입력" style="display: none;">
+                <button type="button" class="subbtn" id="btnEmailCode" style="display: none;">코드 확인</button>
+                <span class="authResult" style="display: none;"></span>
+
+
 
                 <label for="phone">휴대폰</label>
                 <input id="phone" type="text" name="phone" placeholder="휴대폰 입력">
@@ -90,6 +101,8 @@
 </main>
 
 <div th:replace="~{/common/footer :: footer}"></div>
+
+<script th:src="@{/js/validation.js}"></script>
 </body>
 
 <script>

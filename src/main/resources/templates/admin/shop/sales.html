@@ -1,130 +1,148 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>admin shop list</title>
+    <title>HOME > 관리자 상점관리 > 매출현황</title>
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/admin/shop/sales.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
+<!--
+    날짜 : 2025/10/04
+    이름 : 조지영
+    내용 : HOME > 관리자 상점관리 > 매출현황
+-->
 <body>
 <div th:replace="~{/admin/common/header :: header}"></div>
 <section class="content-wrap">
     <div th:replace="~{/admin/common/aside :: aside}"></div>
-    <section id="main-section">
-        <div class="top_nav">
-            <!-- 페이지 타이틀 -->
-            <h5>매출현황</h5>
-            <ul class="page_nation">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">상점관리</a></li>
-                <li><a href="#">매출현황</a></li>
-            </ul>
-        </div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>매출현황</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">상점관리</a></li>
+                        <li><a href="#">매출현황</a></li>
+                    </ul>
+                </div>
 
-        <!-- 검색창  -->
-        <div class="search-box">
-            <select id="searchCondition" name="searchCondition">
-                <option value="daily">일별</option>
-                <option value="weekly">주간</option>
-                <option value="monthly">한달</option>
-            </select>
-        </div>
+                <!-- 검색창  -->
+                <div class="search-box">
+                    <select id="searchCondition" name="searchCondition">
+                        <option value="daily">일별</option>
+                        <option value="weekly">주간</option>
+                        <option value="monthly">한달</option>
+                    </select>
+                </div>
 
-        <div>
-            <!-- 매출 테이블 -->
-            <table class="sales-table">
-                <thead>
-                <tr>
-                    <th><input type="checkbox"></th>
-                    <th>번호</th>
-                    <th>상호명</th>
-                    <th>사업자등록번호</th>
-                    <th>주문건수</th>
-                    <th>결제완료</th>
-                    <th>배송중</th>
-                    <th>배송완료</th>
-                    <th>구매확정</th>
-                    <th>주문합계</th>
-                    <th>매출합계</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>5</td>
-                    <td>(주)다나와</td>
-                    <td>112-12-12345</td>
-                    <td>103</td>
-                    <td>90</td>
-                    <td>56</td>
-                    <td>52</td>
-                    <td>50</td>
-                    <td>12,870,600</td>
-                    <td>10,870,600</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>4</td>
-                    <td>(주)멋남</td>
-                    <td>112-12-12344</td>
-                    <td>26</td>
-                    <td>24</td>
-                    <td>12</td>
-                    <td>6</td>
-                    <td>6</td>
-                    <td>5,683,200</td>
-                    <td>5,230,000</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>3</td>
-                    <td>(주)컴퓨존</td>
-                    <td>112-12-12343</td>
-                    <td>36</td>
-                    <td>27</td>
-                    <td>20</td>
-                    <td>16</td>
-                    <td>14</td>
-                    <td>18,720,000</td>
-                    <td>16,720,000</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>2</td>
-                    <td>누리푸드</td>
-                    <td>112-12-12342</td>
-                    <td>56</td>
-                    <td>52</td>
-                    <td>37</td>
-                    <td>30</td>
-                    <td>28</td>
-                    <td>7,581,400</td>
-                    <td>7,080,800</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>1</td>
-                    <td>굿바디스포츠</td>
-                    <td>112-12-12341</td>
-                    <td>79</td>
-                    <td>70</td>
-                    <td>58</td>
-                    <td>43</td>
-                    <td>40</td>
-                    <td>4,820,700</td>
-                    <td>4,620,700</td>
-                </tr>
-                </tbody>
-            </table>
-            <!-- 하단 버튼 -->
+                <div>
+                    <!-- 매출 테이블 -->
+                    <table class="sales-table">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox"></th>
+                            <th>번호</th>
+                            <th>상호명</th>
+                            <th>사업자등록번호</th>
+                            <th>주문건수</th>
+                            <th>결제완료</th>
+                            <th>배송중</th>
+                            <th>배송완료</th>
+                            <th>구매확정</th>
+                            <th>주문합계</th>
+                            <th>매출합계</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>5</td>
+                            <td>(주)다나와</td>
+                            <td>112-12-12345</td>
+                            <td>103</td>
+                            <td>90</td>
+                            <td>56</td>
+                            <td>52</td>
+                            <td>50</td>
+                            <td>12,870,600</td>
+                            <td>10,870,600</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>4</td>
+                            <td>(주)멋남</td>
+                            <td>112-12-12344</td>
+                            <td>26</td>
+                            <td>24</td>
+                            <td>12</td>
+                            <td>6</td>
+                            <td>6</td>
+                            <td>5,683,200</td>
+                            <td>5,230,000</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>3</td>
+                            <td>(주)컴퓨존</td>
+                            <td>112-12-12343</td>
+                            <td>36</td>
+                            <td>27</td>
+                            <td>20</td>
+                            <td>16</td>
+                            <td>14</td>
+                            <td>18,720,000</td>
+                            <td>16,720,000</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>2</td>
+                            <td>누리푸드</td>
+                            <td>112-12-12342</td>
+                            <td>56</td>
+                            <td>52</td>
+                            <td>37</td>
+                            <td>30</td>
+                            <td>28</td>
+                            <td>7,581,400</td>
+                            <td>7,080,800</td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>1</td>
+                            <td>굿바디스포츠</td>
+                            <td>112-12-12341</td>
+                            <td>79</td>
+                            <td>70</td>
+                            <td>58</td>
+                            <td>43</td>
+                            <td>40</td>
+                            <td>4,820,700</td>
+                            <td>4,620,700</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- 페이징 -->
+                <div class="pagination">
+                    <a href="#">&laquo; 이전</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">다음 &raquo;</a>
+                </div>
+                <!-- 페이징 -->
+            </section>
         </div>
-    </section>
+    </main>
 </section>
 <div th:replace="~{/admin/common/footer :: footer}"></div>
-
 </body>
 <script th:src="@{/js/admin/aside.js}"></script>
 </html>

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CartListDTO {
+    private int cartId;
     private int quantity;
     private String name;
     private String description;
@@ -19,7 +20,8 @@ public class CartListDTO {
     private int point;
     private int deliveryFee;
 
-    public CartListDTO(int quantity, String name, String description, String img1, int price, int discountRate, int point, int deliveryFee) {
+    public CartListDTO(int carId, int quantity, String name, String description, String img1, int price, int discountRate, int point, int deliveryFee) {
+        this.cartId = carId;
         this.quantity = quantity;
         this.name = name;
         this.description = description;

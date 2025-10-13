@@ -27,19 +27,25 @@
 .section + .section{ margin-top:20px; }
 
 /* 섹션 안에서도 기존 그리드 그대로 사용 */
-.section .form-grid{
+/*.section .form-grid{
     display:grid;
     grid-template-columns:150px 230px 140px;
     gap:12px 18px;
     align-items:center;
-}
+}*/
 
 .form-grid{
     display:grid;
-    grid-template-columns:150px 1fr 140px; /* 라벨 / 입력 / 보조칸 */
-    gap:12px 18px;
-    align-items:center;
+    grid-template-columns:150px 230px 140px; /* 라벨 / 입력 / 보조칸 */
+    gap:8px 20px;
+    align-items: center;
 }
+.form-grid span {
+    grid-column: 2 / span 2; /* 인풋~버튼 폭 전체 차지 */
+}
+
+
+
 .form-grid .full{grid-column:2 / span 2;}
 .form-grid label{font-weight:600;color:#333;}
 .form-grid input[type="text"],
@@ -52,6 +58,8 @@
     border-radius:8px;
     box-sizing:border-box;
     background: #fff;
+    line-height: 1;
+    vertical-align: middle;
 }
 .form-grid input:focus{
     outline: none;
@@ -65,11 +73,16 @@ button.subbtn[onclick*="postcode"]{ grid-column: 3; } /* 3열 같은 행 */
 #address_detail{ grid-column: 2 / span 2; margin-top: 6px; }
 
 .subbtn{
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
     border:1px solid #2d6f54;
     border-radius:8px;
-    padding:10px;
+    padding:0 12px;
     cursor:pointer;
-    background:#eaf3ef
+    background:#eaf3ef;
+    height: 38px;
+    box-sizing: border-box;
 }
 .actions{
     margin-top:20px;
@@ -104,4 +117,34 @@ button.subbtn[onclick*="postcode"]{ grid-column: 3; } /* 3열 같은 행 */
     justify-self: start;
     white-space: nowrap;
     color: var(--muted);
+}
+.input-with-hint {
+    display: grid;
+    grid-template-columns: 1fr auto; /* 왼쪽은 꽉 채우고, 오른쪽은 자동 폭 */
+    align-items: center;
+    gap: 16px;
+}
+
+.input-with-hint input {
+    width: 100%;
+    min-width: 230px; /* 입력칸 줄어들지 않게 */
+    box-sizing: border-box;
+}
+
+.muted-inline {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.gender {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.gender label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }

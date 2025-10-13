@@ -1,140 +1,188 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>기본설정 - 버전 정보</title>
-    <link rel="stylesheet" type="text/css" href="css/basic.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME > 관리자 환경설정 > 기본설정</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/config/basic.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
 <!--
-    날짜 : 2025/09/30
+    날짜 : 2025/10/04
     이름 : 조지영
-    내용 : 관리자 상점 목록 작성
+    내용 : HOME > 관리자 환경설정 > 기본설정
 -->
 <body>
-<main>
-    <div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>상점목록</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">환경설정</a></li>
+                        <li><a href="#">기본설정</a></li>
+                    </ul>
+                </div>
 
-        <!-- (1) 버전정보 -->
-        <div class="page-title">
-            <h2>기본설정</h2>
-            <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>기본설정</strong></div>
-        </div>
+                <!-- 버전정보 -->
+                <div class="info-title">
+                    <h2>버전정보</h2></div>
+                <div class="info-box">
+                    <strong>현재 사이트 버전입니다.</strong>
+                </div>
 
-        <div class="info-title"><h2>버전정보</h2></div>
-        <div class="info-box">
-            <strong>현재 사이트 버전입니다.</strong>
-        </div>
-        <div class="version-box">
-            <table>
-                <tr>
-                    <th><strong>사이트 버전</strong></th>
-                    <td><strong>1.0.1-RELEASE</strong></td>
-                </tr>
-            </table>
-        </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><strong>사이트 버전</strong></th>
+                            <td><strong>1.0.1-RELEASE</strong></td>
+                        </tr>
+                    </table>
+                </div>
 
-        <!-- (2) 사이트 -->
-        <div class="info-title"><h2>사이트</h2></div>
-        <div class="info-box">
-            <strong>브라우저 탭, 헤더 및 푸터 노출 정보 입니다.</strong>
-        </div>
-        <div class="version-box">
-            <table>
-                <tr>
-                    <th><label><strong>제목</strong></label></th>
-                    <td><input type="text" value="그린가든"></td>
-                </tr>
-                <tr>
-                    <th><label><strong>제목</strong></label></th>
-                    <td><input type="text" value="마음을 심고 가꾸는 공간"></td>
-                </tr>
-            </table>
-            <div class="btn-wrap">
-                <button class="btn">수정하기</button>
-            </div>
-        </div>
+                <!-- (2) 사이트 -->
+                <div class="info-title"><h2>사이트</h2></div>
+                <div class="info-box">
+                    <strong>브라우저 탭, 헤더 및 푸터 노출 정보 입니다.</strong>
+                </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><label><strong>제목</strong></label></th>
+                            <td><input type="text" value="그린가든"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>제목</strong></label></th>
+                            <td><input type="text" value="마음을 심고 가꾸는 공간"></td>
+                        </tr>
+                    </table>
+                    <div class="btn-wrap">
+                        <button class="btn">수정하기</button>
+                    </div>
+                </div>
 
-        <!-- (3) 로고 -->
-        <div class="info-title"><h2>로고</h2></div>
-        <div class="info-box">
-            <strong>브라우저 탭, 헤더 및 푸터 노출 정보 입니다.</strong>
-        </div>
-        <div class="version-box">
-            <table>
-                <tr>
-                    <th><strong>헤더 로고</strong></th>
-                    <td><input type="file"> <span class="desc">크기 370 x 76 권장</span></td>
-                </tr>
-                <tr>
-                    <th><strong>푸터 로고</strong></th>
-                    <td><input type="file"> <span class="desc">크기 155 x 36 권장</span></td>
-                </tr>
-                <tr>
-                    <th><strong>파비콘</strong></th>
-                    <td><input type="file"> <span class="desc">크기 32 x 32 권장</span></td>
-                </tr>
-            </table>
-            <div class="btn-wrap">
-                <button class="btn">수정하기</button>
-            </div>
-        </div>
+                <!-- (3) 로고 -->
+                <div class="info-title"><h2>로고</h2></div>
+                <div class="info-box">
+                    <strong>브라우저 탭, 헤더 및 푸터 노출 정보 입니다.</strong>
+                </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><strong>헤더 로고</strong></th>
+                            <td><input type="file"> <span class="desc">크기 370 x 76 권장</span></td>
+                        </tr>
+                        <tr>
+                            <th><strong>푸터 로고</strong></th>
+                            <td><input type="file"> <span class="desc">크기 155 x 36 권장</span></td>
+                        </tr>
+                        <tr>
+                            <th><strong>파비콘</strong></th>
+                            <td><input type="file"> <span class="desc">크기 32 x 32 권장</span></td>
+                        </tr>
+                    </table>
+                    <div class="btn-wrap">
+                        <button class="btn">수정하기</button>
+                    </div>
+                </div>
 
-        <!-- (4) 기업정보 -->
-        <div class="info-title"><h2>기업 정보</h2></div>
-        <div class="info-box">
-            <strong>푸터에 노출되는 기업 정보입니다.</strong>
-        </div>
-        <div class="version-box">
-            <table>
-                <tr><th><label><strong>제목</strong></label></th><td><input type="text" value="그린가든"></td></tr>
-                <tr><th><label><strong>부제</strong></label></th><td><input type="text" value="마음을 심고 가꾸는 공간"></td></tr>
-                <tr><th><label><strong>사업자등록번호</strong></label></th><td><input type="text" value="123-12-12345"></td></tr>
-                <tr><th><label><strong>통신판매업신고</strong></label></th><td><input type="text" value="2024-부산남구-1234"></td></tr>
-                <tr><th><label><strong>기본주소</strong></label></th><td><input type="text" value="부산광역시 남구"></td></tr>
-                <tr><th><label><strong>상세주소</strong></label></th><td><input type="text" value="문현금융로 30"></td></tr>
-            </table>
-            <div class="btn-wrap">
-                <button class="btn">수정하기</button>
-            </div>
-        </div>
+                <!-- (4) 기업정보 -->
+                <div class="info-title"><h2>기업 정보</h2></div>
+                <div class="info-box">
+                    <strong>푸터에 노출되는 기업 정보입니다.</strong>
+                </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><label><strong>제목</strong></label></th>
+                            <td><input type="text" value="그린가든"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>부제</strong></label></th>
+                            <td><input type="text" value="마음을 심고 가꾸는 공간"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>사업자등록번호</strong></label></th>
+                            <td><input type="text" value="123-12-12345"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>통신판매업신고</strong></label></th>
+                            <td><input type="text" value="2024-부산남구-1234"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>기본주소</strong></label></th>
+                            <td><input type="text" value="부산광역시 남구"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>상세주소</strong></label></th>
+                            <td><input type="text" value="문현금융로 30"></td>
+                        </tr>
+                    </table>
+                    <div class="btn-wrap">
+                        <button class="btn">수정하기</button>
+                    </div>
+                </div>
 
-        <!-- (5) 고객센터 -->
-        <div class="info-title"><h2>고객센터</h2></div>
-        <div class="info-box">
-            <strong>푸터에 노출되는 기업 정보입니다.</strong>
-        </div>
-        <div class="version-box">
-            <table>
-                <tr><th><label><strong>제목</strong></label></th><td><input type="text" value="02-1234-5678"></td></tr>
-                <tr><th><label><strong>업무시간</strong></label></th><td><input type="text" value="평일 09:00 ~ 18:00"></td></tr>
-                <tr><th><label><strong>이메일</strong></label></th><td><input type="text" value="admin@greenGarden.com"></td></tr>
-                <tr><th><label><strong>전자금융거래 분쟁담당</strong></label></th><td><input type="text" value="1234-1234"></td></tr>
-            </table>
-            <div class="btn-wrap">
-                <button class="btn">수정하기</button>
-            </div>
-        </div>
+                <!-- (5) 고객센터 -->
+                <div class="info-title"><h2>고객센터</h2></div>
+                <div class="info-box">
+                    <strong>푸터에 노출되는 기업 정보입니다.</strong>
+                </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><label><strong>제목</strong></label></th>
+                            <td><input type="text" value="02-1234-5678"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>업무시간</strong></label></th>
+                            <td><input type="text" value="평일 09:00 ~ 18:00"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>이메일</strong></label></th>
+                            <td><input type="text" value="admin@greenGarden.com"></td>
+                        </tr>
+                        <tr>
+                            <th><label><strong>전자금융거래 분쟁담당</strong></label></th>
+                            <td><input type="text" value="1234-1234"></td>
+                        </tr>
+                    </table>
+                    <div class="btn-wrap">
+                        <button class="btn">수정하기</button>
+                    </div>
+                </div>
 
-        <!-- (6) 카피라이트 -->
-        <div class="info-title"><h2>카피라이트</h2></div>
-        <div class="info-box">
-            <strong>푸터에 노출되는 기업 정보입니다.</strong>
+                <!-- (6) 카피라이트 -->
+                <div class="info-title"><h2>카피라이트</h2></div>
+                <div class="info-box">
+                    <strong>푸터에 노출되는 기업 정보입니다.</strong>
+                </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><label><strong>카피라이트</strong></label></th>
+                            <td><input type="text" value="Copyright greenGarden. All rights reserved."
+                                       style="width:300px;">
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- 하단 버튼 -->
+                    <div class="btn-wrap">
+                        <button class="btn">수정하기</button>
+                    </div>
+                </div>
+            </section>
         </div>
-        <div class="version-box">
-            <table>
-                <tr>
-                    <th><label><strong>카피라이트</strong></label></th>
-                    <td><input type="text" value="Copyright greenGarden. All rights reserved." style="width:300px;"></td>
-                </tr>
-            </table>
-            <div class="btn-wrap">
-                <button class="btn">수정하기</button>
-            </div>
-        </div>
-
-    </div>
-</main>
+    </main>
+</section>
+    <div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
+<script th:src="@{/js/admin/aside.js}"></script>
 </html>

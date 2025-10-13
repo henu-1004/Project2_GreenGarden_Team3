@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>로그인</title>
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <link rel="stylesheet" th:href="@{/css/member/login.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
@@ -32,6 +33,9 @@
                     <label for="userpw">비밀번호</label>
                     <input type="password" name="password" id="userpw" placeholder="비밀번호 입력">
 
+                    <!-- 자동로그인 hidden (기능)-->
+                    <input type="hidden" name="remember-me" value="false">
+
                     <button type="submit" class="btn-login">로그인</button>
                 </form>
 
@@ -47,7 +51,7 @@
 
             <!-- 옵션 -->
             <div class="login-options">
-                <label><input type="checkbox"> 자동 로그인</label> |
+                <label><input type="checkbox" id="rememberCheck"> 자동 로그인</label> |
                 <a th:href="@{/find/userId}">아이디찾기</a> |
                 <a th:href="@{/find/password}">비밀번호 찾기</a> |
                 <a th:href="@{/member/join}">회원가입</a>
@@ -71,7 +75,21 @@
         </section>
     </main>
 
-    <div th:replace="~{/common/footer :: footer}"></div>
+<div th:replace="~{/common/footer :: footer}"></div>
+
+    <!-- 자동 로그인 -->
+    <script>
+        const rememberCheck = document.getElementById('rememberCheck');
+        const hiddenInput = document.getElementsByName('remember-me')[0];
+
+        rememberCheck.addEventListener('change', function (e){
+            if(e.target.checked){
+                hiddenInput.value = 'true';
+            }else{
+                hiddenInput.value = 'false';
+            }
+        });
+    </script>
 
 </body>
 </html>

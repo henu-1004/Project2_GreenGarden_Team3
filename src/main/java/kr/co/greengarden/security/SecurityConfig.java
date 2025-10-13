@@ -29,7 +29,16 @@ public class SecurityConfig {
         http.logout(logout -> logout
                 .logoutUrl("/member/logout")
                 .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID",  "remember-me")
                 .logoutSuccessUrl("/member/login?logout=true"));
+
+        // 자동 로그인 설정
+        http.rememberMe(remember -> remember
+                .key("greengarden-remember-key")
+                .rememberMeParameter("remember-me")
+                .tokenValiditySeconds(60 * 60 * 24 * 7)
+                .alwaysRemember(false)
+        );
 
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize

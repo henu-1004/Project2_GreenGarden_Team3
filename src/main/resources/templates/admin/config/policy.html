@@ -1,124 +1,136 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>약관관리</title>
-    <link rel="stylesheet" type="text/css" href="css/policy.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME > 관리자 환경설정 > 약관관리</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/config/policy.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
 <!--
-    날짜 : 2025/09/30
+    날짜 : 2025/10/04
     이름 : 조지영
-    내용 : 관리자 상점 목록 작성
+    내용 : HOME > 관리자 환경설정 > 약관관리
 -->
 <body>
-<main>
-    <div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>약관관리</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">환경설정</a></li>
+                        <li><a href="#">약관관리</a></li>
+                    </ul>
+                </div>
 
-        <!-- 타이틀 & 경로 -->
-        <div class="page-title">
-            <h2>약관관리</h2>
-            <div class="breadcrumb">HOME &gt; 환경설정 &gt; <strong>약관관리</strong></div>
-        </div>
+                <!-- (1) 구매회원 약관 -->
+                <div class="info-title">
+                    <h2>구매회원 약관</h2>
+                </div>
+                <div class="info-box">
+                    <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
+                </div>
 
-        <!-- (1) 구매회원 약관 -->
-        <div class="info-title">
-            <h2>구매회원 약관</h2>
-        </div>
-        <div class="info-box">
-            <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
-        </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><strong>사이트 버전</strong></th>
+                            <td>
+                                <div class="terms-box">
+                                    <h3>제 1 조 (목적)</h3>
+                                    <p>
+                                        이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
+                                        (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
+                                        케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
+                                        전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
+                                        권리, 의무를 규정함을 목적으로 합니다.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-        <div class="version-box">
-            <table>
-                <tr>
-                    <th><strong>사이트 버전</strong></th>
-                    <td>
-                        <div class="terms-box">
-                            <h3>제 1 조 (목적)</h3>
-                            <p>
-                                이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
-                                (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
-                                케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
-                                전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
-                                권리, 의무를 규정함을 목적으로 합니다.
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                <div class="btn-wrap">
+                    <button class="btn">수정하기</button>
+                </div>
 
-        <div class="btn-wrap">
-            <button class="btn">수정하기</button>
-        </div>
+                <!-- (2) 위치정보 이용약관 -->
+                <div class="info-title">
+                    <h2>위치정보 이용약관</h2>
+                </div>
+                <div class="info-box">
+                    <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
+                </div>
 
-        <!-- (2) 위치정보 이용약관 -->
-        <div class="info-title">
-            <h2>위치정보 이용약관</h2>
-        </div>
-        <div class="info-box">
-            <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
-        </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><strong>사이트 버전</strong></th>
+                            <td>
+                                <div class="terms-box">
+                                    <h3>제 1 조 (목적)</h3>
+                                    <p>
+                                        이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
+                                        (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
+                                        케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
+                                        전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
+                                        권리, 의무를 규정함을 목적으로 합니다.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-        <div class="version-box">
-            <table>
-                <tr>
-                    <th><strong>사이트 버전</strong></th>
-                    <td>
-                        <div class="terms-box">
-                            <h3>제 1 조 (목적)</h3>
-                            <p>
-                                이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
-                                (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
-                                케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
-                                전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
-                                권리, 의무를 규정함을 목적으로 합니다.
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                <div class="btn-wrap">
+                    <button class="btn">수정하기</button>
+                </div>
 
-        <div class="btn-wrap">
-            <button class="btn">수정하기</button>
-        </div>
+                <!-- (3) 개인정보처리방침 -->
+                <div class="info-title">
+                    <h2>개인정보처리방침</h2>
+                </div>
+                <div class="info-box">
+                    <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
+                </div>
 
-        <!-- (3) 개인정보처리방침 -->
-        <div class="info-title">
-            <h2>개인정보처리방침</h2>
-        </div>
-        <div class="info-box">
-            <strong>회원가입 및 정책 페이지 노출약관 입니다.</strong>
-        </div>
+                <div class="version-box">
+                    <table>
+                        <tr>
+                            <th><strong>사이트 버전</strong></th>
+                            <td>
+                                <div class="terms-box">
+                                    <h3>제 1 조 (목적)</h3>
+                                    <p>
+                                        이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
+                                        (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
+                                        케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
+                                        전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
+                                        권리, 의무를 규정함을 목적으로 합니다.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
-        <div class="version-box">
-            <table>
-                <tr>
-                    <th><strong>사이트 버전</strong></th>
-                    <td>
-                        <div class="terms-box">
-                            <h3>제 1 조 (목적)</h3>
-                            <p>
-                                이 약관은 주식회사 케이마켓(이하 "회사"라 함)이 운영하는 케이마켓 인터넷 오픈마켓 사이트
-                                (www.kmarket.co.kr, 이하 "케이마켓") 및 스마트폰 등 이동통신기기를 통해 제공되는
-                                케이마켓 모바일 애플리케이션(이하 "모바일케이마켓")을 통하여 제공되는
-                                전자상거래 관련 서비스 및 기타 서비스(이하 "서비스"라 함)를 이용하는 자와의
-                                권리, 의무를 규정함을 목적으로 합니다.
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                <div class="btn-wrap">
+                    <button class="btn">수정하기</button>
+                </div>
 
-        <div class="btn-wrap">
-            <button class="btn">수정하기</button>
         </div>
-
-    </div>
-</main>
+    </main>
+</section>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
+<script th:src="@{/js/admin/aside.js}"></script>
 </html>

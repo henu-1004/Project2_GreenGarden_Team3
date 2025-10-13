@@ -17,11 +17,18 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
-    @Query("SELECT new kr.co.greengarden.dto.CartListDTO(c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee) " +
+    @Query("SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee) " +
             "FROM Cart c " +
             "JOIN c.product p " +
             "WHERE c.member.memId = :memId")
     List<CartListDTO> findCartListByMemId(String memId);
 
+    @Query("SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee) " +
+            "FROM Cart c " +
+            "JOIN c.product p " +
+            "WHERE c.cartId = :cartId")
+    List<CartListDTO> findCartListByCartId(Integer cartId);
+
     public List<Cart> findAllByMember_MemId(String memId);
+
 }

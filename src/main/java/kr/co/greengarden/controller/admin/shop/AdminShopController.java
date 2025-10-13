@@ -31,8 +31,15 @@ public class AdminShopController {
 
     @GetMapping("/admin/shop/register")
     public String shopRegister() {
-        return "/admin/shop/register";
+        return "admin/shop/register";
     }
+
+    @GetMapping("/admin/shop/sales")
+    public String shopSales() {
+        return "admin/shop/sales";
+    }
+
+
 
     // 선택 삭제
     @PostMapping("/admin/shop/deleteSelected")
