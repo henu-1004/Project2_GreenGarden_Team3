@@ -29,7 +29,7 @@
                 </ul>
             </div>
             <section>
-                <form action="#">
+                <form th:action="@{/product/order}" method="POST">
                     <table class="cart_table">
                         <thead>
                             <tr>
@@ -72,8 +72,8 @@
                                 </td>
                                 <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
                                 <td class="col_del_info">
-                                    <input type="button" value="바로주문">
-                                    <input type="button" value="삭제">
+                                    <a th:href="@{/product/order(cartId=${cart.cartId})}" > 바로 주문 </a> <br>
+                                    <a th:href="@{#}"> 삭제 </a>
                                 </td>
                             </tr>
 

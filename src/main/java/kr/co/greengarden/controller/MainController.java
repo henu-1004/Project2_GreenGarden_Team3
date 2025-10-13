@@ -19,6 +19,7 @@ public class MainController {
     @GetMapping(value = {"/", "/index"})
     public String index(Authentication authentication, Model model) {
 
+
         if(authentication != null) {
 
             MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();

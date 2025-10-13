@@ -9,6 +9,7 @@ import kr.co.greengarden.dto.CartDTO;
 import kr.co.greengarden.dto.CartListDTO;
 import kr.co.greengarden.dto.ProductListDTO;
 import kr.co.greengarden.dto.admin.AdminProductListDTO;
+import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.Product;
 import kr.co.greengarden.security.MemberDetails;
 import kr.co.greengarden.service.CartService;
@@ -89,8 +90,22 @@ public class ProductController {
     }
 
     @GetMapping("/product/order")
+    public String orderPage(@RequestParam String cartId, Model model) {
+        List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
+        for (CartListDTO c : cartList) {
+            int original = (int) Math.ceil(c.getPrice() / (1 - (c.getDiscountRate() / 100.0)));
+            c.setOriginalPrice(original);
+        }
+
+        model.addAttribute("cartList", cartList);
+
+        return "product/order2";
+    }
+
+    @PostMapping("/product/order")
     public String orderPage() {
-        return "product/order";
+
+        return "product/order2";
     }
 
     @PostMapping("/product/action")

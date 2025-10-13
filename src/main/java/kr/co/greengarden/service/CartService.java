@@ -38,6 +38,10 @@ public class CartService {
         cartRepository.save(cart);
     }
 
+    public List<CartListDTO> getCartList(int cartId){
+        return cartRepository.findCartListByCartId(cartId);
+    }
+
     public List<CartListDTO> getCartList(String memId){
         return cartRepository.findCartListByMemId(memId);
     }
