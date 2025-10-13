@@ -4,6 +4,14 @@
     이름 : 조지영
     내용 : HOME > 관리자 환경설정 > 이용약관 CSS
 */
+<<<<<<< HEAD
+=======
+/* 최상단에 추가 */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+/* ===================== 기본 설정 ===================== */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 a {
     text-decoration: none;
     color: inherit;
@@ -13,26 +21,38 @@ body {
     min-width: 1200px;
 }
 
+<<<<<<< HEAD
 
 /* 메인 콘텐츠 영역 */
 /* 3. aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content_wrap 컨테이너를 header-wrap과 동일하게 설정 */
+=======
+/* ===================== 메인 콘텐츠 ===================== */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
     display: flex;
     gap: 20px;
+<<<<<<< HEAD
     /* 상단 정렬 */
     align-items: flex-start;
     padding-top: 20px;
 }
 
 /* 메인 섹션 */
+=======
+    align-items: flex-start; /* 상단 정렬 */
+    padding-top: 20px;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 #main-section {
     width: 930px;
     flex-shrink: 0;
     padding: 20px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
+<<<<<<< HEAD
     background: white;
     /* aside와 상단선을 맞춤 */
     box-sizing: border-box;
@@ -42,6 +62,13 @@ body {
 
 
 /* 탑 페이지 네이션 */
+=======
+    background: #fff;
+    box-sizing: border-box; /* aside와 상단선 맞춤 */
+}
+
+/* ===================== 상단 네비게이션 ===================== */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .top_nav {
     display: flex;
     justify-content: space-between;
@@ -60,8 +87,13 @@ body {
     display: flex;
     gap: 10px;
     list-style: none;
+<<<<<<< HEAD
     padding: 0;
     margin: 0;
+=======
+    margin: 0;
+    padding: 0;
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
     font-size: 0.9em;
 }
 
@@ -71,11 +103,15 @@ body {
     color: #999;
 }
 
+<<<<<<< HEAD
 
 
 
 
 /* 안내 박스 */
+=======
+/* ===================== 안내 박스 ===================== */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .info-title {
     display: flex;
     justify-content: space-between;
@@ -83,6 +119,10 @@ body {
     font-size: 12px;
     color: #333;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .info-box {
     background: #f3f7f6;
     padding: 15px;
@@ -91,7 +131,11 @@ body {
     font-size: 14px;
 }
 
+<<<<<<< HEAD
 /* 페이지 타이틀 */
+=======
+/* ===================== 페이지 타이틀 ===================== */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .page-title {
     display: flex;
     justify-content: space-between;
@@ -100,21 +144,34 @@ body {
     padding-bottom: 5px;
     margin-bottom: 20px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .page-title h2 {
     margin: 0;
     font-size: 18px;
     font-weight: bold;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .breadcrumb {
     font-size: 14px;
     color: #555;
 }
 
+<<<<<<< HEAD
 /* 탭 메뉴 */
+=======
+/* ===================== 탭 메뉴 ===================== */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .tab-menu {
     display: flex;
     margin-bottom: 20px;
 }
+<<<<<<< HEAD
 .tab-menu button {
     flex: 1;
     border: 1px solid #ccc;
@@ -123,6 +180,18 @@ body {
     padding: 8px 20px;
     cursor: pointer;
 }
+=======
+
+.tab-menu button {
+    flex: 1;
+    padding: 8px 20px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #000;
+    background: #f7f7f7;
+    cursor: pointer;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .tab-menu button.active {
     background: #fff;
     border-top: 3px solid #000;
@@ -132,6 +201,7 @@ body {
     font-weight: bold;
 }
 
+<<<<<<< HEAD
 /* 테이블 */
 table {
     border-collapse: collapse;
@@ -139,20 +209,42 @@ table {
     margin-bottom: 20px;
     font-size: 14px;
 }
+=======
+/* ===================== 테이블 ===================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 th, td {
     padding: 12px;
     text-align: center;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 th {
     background: #f3f7f6;
     font-weight: bold;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 td a {
     color: #333;
     text-decoration: none;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .banner {
     text-align: left;
 }
@@ -160,7 +252,10 @@ td a {
 /* 이미지 placeholder */
 .img-box {
     width: 80px;
+<<<<<<< HEAD
     height: 50px;
+=======
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
     background: #ddd;
     display: flex;
     align-items: center;
@@ -171,6 +266,7 @@ td a {
 
 .arrow {
     width: 10px;
+<<<<<<< HEAD
 }
 
 
@@ -179,11 +275,23 @@ td a {
     background: #175a48;
     color: #fff;
     padding: 8px 15px;
+=======
+    padding: 0 10px;
+    transition: transform 0.3s;
+}
+
+/* ===================== 버튼 ===================== */
+.btn {
+    background: #175a48;
+    color: #fff;
+    padding: 3px;
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
     border: none;
     cursor: pointer;
     font-size: 16px;
     transition: background 0.2s;
 }
+<<<<<<< HEAD
 .btn:hover {
     background: #0f3e32;
 }
@@ -194,18 +302,60 @@ td a {
 .btn.gray:hover {
     background: #ccc;
 }
+=======
+
+.btn:hover {
+    background: #0f3e32;
+}
+
+/* 회색 버튼 */
+.btn.gray {
+    background: #fff;
+    color: gray;
+}
+
+.btn.gray span {
+    border: 2px solid gray;
+    padding: 0;
+}
+
+.btn.gray a {
+    color: gray;
+    text-decoration: none;
+}
+
+.btn.gray a:hover {
+    color: gray;
+    font-weight: bold;
+}
+
+/* 빨간 버튼 */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .btn.red {
     background: #fff;
     color: red;
 }
+<<<<<<< HEAD
 .btn.red span {
     border: 1px solid red;
     padding: 2px 4px;
 }
+=======
+
+.btn.red span {
+    border: 1px solid red;
+    padding: 0;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .btn.red a {
     color: red;
     text-decoration: none;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .btn.red a:hover {
     color: red;
     font-weight: bold;
@@ -213,6 +363,7 @@ td a {
 
 /* 버튼 그룹 */
 .btn-wrap {
+<<<<<<< HEAD
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -223,21 +374,47 @@ td a {
 }
 
 /* 컨테이너 */
+=======
+    margin-bottom: 50px;
+}
+
+.btn-wrap .btn {
+    float: right;
+    padding: 8px 15px;
+    margin-bottom: 50px;
+    background: #175a48;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* ===================== 사이드바 ===================== */
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .container {
     display: flex;
 }
 
+<<<<<<< HEAD
 /* 사이드바 */
 .sidebar {
     width: 324px;
     background: #fff;
     border-right: 1px solid #ddd;
 }
+=======
+.sidebar {
+    width: 324px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .sidebar ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
+<<<<<<< HEAD
 .menu {
     border-bottom: 2px solid #eee;
 }
@@ -246,17 +423,47 @@ td a {
     color: #000;
     display: block;
 }
+=======
+
+.menu {
+    border-bottom: 2px solid #eee;
+}
+
+
+.menu li{
+    cursor: grab;
+}
+
+.menu li.dragging {
+  opacity: 0.5;
+  background: #f0f0f0;
+}
+
+.menu a {
+    color: #000;
+    display: block;
+    text-decoration: none;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .menu a:hover {
     color: #175a48;
     font-weight: bold;
 }
+<<<<<<< HEAD
 .menu-title {
     display: flex;
     justify-content: flex-start;
+=======
+
+.menu-title {
+    display: flex;
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
     align-items: center;
     padding: 12px 30px;
     font-weight: bold;
     cursor: pointer;
+<<<<<<< HEAD
 }
 .menu-title .arrow {
     transition: transform 0.3s;
@@ -267,10 +474,24 @@ td a {
 .menu.open .submenu {
     display: block;
 }
+=======
+    margin: 4px 0;
+}
+
+.menu.open .arrow {
+    transform: rotate(180deg);
+}
+
+.menu.open .submenu {
+    display: block;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .submenu {
     display: none;
     color: #aaa;
 }
+<<<<<<< HEAD
 .submenu-item {
     display: flex;
     align-items: center;
@@ -282,19 +503,56 @@ td a {
     display: block;
     padding: 5px 0;
 }
+=======
+
+
+.submenu-item {
+    width: 100%;
+    padding: 14px 0;
+    border: 1px solid #ccc;
+}
+
+
+
+.submenu li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0;
+    font-weight: normal;
+    color: #aaa;
+    cursor: grab;
+
+}
+
+.submenu li.dragging {
+  opacity: 0.5;
+  background: #f0f0f0;
+}
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .submenu li a {
     padding: 8px 15px 8px 50px;
     font-size: 16px;
     color: #aaa;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .submenu li.active {
     color: #175a48;
     font-weight: bold;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 .submenu li.disabled {
     color: #aaa;
 }
 
+<<<<<<< HEAD
 
 
 /* 페이지 네이션 ㅡㅡㅡㅡㅡ */
@@ -313,6 +571,24 @@ td a {
     transition: background-color 0.2s; /* 부드러운 색 변화 */
     color: #333;
     text-decoration: none; /* 밑줄 제거 */
+=======
+/* ===================== 페이지 네이션 ===================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 5px;
+}
+
+.pagination a {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
 }
 
 .pagination a:hover {
@@ -321,4 +597,9 @@ td a {
 
 .pagination a.active {
     background-color: #333;
+<<<<<<< HEAD
     color: white;
+=======
+    color: #fff;
+}
+>>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
