@@ -10,6 +10,7 @@ public class AdminNoticeController {
 
     @GetMapping("/admin/cs/notice/list")
     public String adminCsList() {
+
         return "admin/cs/notice/list";
     }
 
