@@ -30,7 +30,7 @@ public class NoticeDTO {
     private String content; // 내용
 
     @Builder.Default
-    private int views =0; // 조회수 (기본값 0)
+    private int views = 0; // 조회수 (기본값 0)
 
 
     private LocalDateTime createdAt; // 작성일

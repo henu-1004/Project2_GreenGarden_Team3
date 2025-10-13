@@ -2,8 +2,11 @@ package kr.co.greengarden.service;
 
 import kr.co.greengarden.dto.MemberDTO;
 import kr.co.greengarden.dto.NoticeDTO;
+import kr.co.greengarden.dto.PageRequestDTO;
+import kr.co.greengarden.dto.PageResponseDTO;
 import kr.co.greengarden.entity.Member;
 import kr.co.greengarden.entity.Notice;
+import kr.co.greengarden.mapper.NoticeMapper;
 import kr.co.greengarden.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +28,20 @@ public class NoticeService {
 
     private final NoticeRepository noticeRepository;
     private final ModelMapper modelMapper;
+    private final NoticeMapper noticeMapper;
 
-    public List<Notice> getNoticesAll(){
-        return noticeRepository.findAll();
+    // 공지사항 목록 조회(페이징)
+    public PageResponseDTO<NoticeDTO> getNoticesList(PageRequestDTO pageRequestDTO) {
+        log.info("pg : {} , type : {} ",pageRequestDTO.getPg(), pageRequestDTO.getType());
+
+        // 1. 목록 데이터 조회
+
+        List<NoticeDTO> dtoList = noticeMapper.selectNoticeList(pageRequestDTO);
+
+        // 2. 전체 개수 조회
+        int total = 0;
+
+        return null;
     }
 
     public Optional<Notice> getNoticeId(Integer noticeId){
