@@ -1,9 +1,6 @@
 package kr.co.greengarden.service;
 
-import kr.co.greengarden.dto.GradeDTO;
-import kr.co.greengarden.dto.MemberDTO;
-import kr.co.greengarden.dto.MemberGeneralDTO;
-import kr.co.greengarden.dto.PointDTO;
+import kr.co.greengarden.dto.*;
 import kr.co.greengarden.dto.admin.MemberGeneralListDTO;
 import kr.co.greengarden.dto.admin.MemberGerneralModifyDTO;
 import kr.co.greengarden.entity.Grade;
@@ -21,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,6 +96,11 @@ public class MemberGeneralService {
         memberGeneralRepository.deleteByMemIdIn(memIds);
         // 부모
         memberRepository.deleteAllByIdInBatch(memIds);
+    }
+
+    // 아이디 찾기
+    public Optional<FindResultDTO> findMemberInfoByNameAndEmail(String name, String email){
+        return memberGeneralRepository.findMemberInfoByNameAndEmail(name, email);
     }
 
 

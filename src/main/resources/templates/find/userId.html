@@ -25,7 +25,7 @@
             <button type="button" class="find-tab">휴대폰 인증</button>
         </div>
 
-        <form th:action="@{/find/userId}" method="post" class="email-fields">
+        <form th:action="@{/find/userId/result}" method="post" class="email-fields">
             <div class="form-grid">
                 <div class="row-divider"></div>
 
@@ -36,7 +36,7 @@
                 <div class="row-divider"></div>
 
                 <label for="fi-email">이메일</label>
-                <input id="fi-email" type="text" name="eamil" placeholder="이메일 입력">
+                <input id="fi-email" type="text" name="email" placeholder="이메일 입력">
                 <button type="button" class="subbtn">인증번호 받기</button>
 
                 <span></span>
@@ -76,9 +76,93 @@
     </div>
 </main>
 
-
-
-
 <div th:replace="~{/common/footer :: footer}"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+
+        const emailBtns = document.getElementsByClassName('subbtn');
+        const btnSend = emailBtns[0];
+        const btnCheck = emailBtns[1];
+        const btnNext = document.getElementsByClassName('btn-primary')[0];
+
+        const inputName = document.getElementById('fi-name');
+        const inputEmail = document.getElementById('fi-email');
+        const inputCode = document.getElementById('fi-code');
+
+        let verified = false;
+
+        // 인증번호
+        btnSend.addEventListener('click', async function(){
+            const email = inputEmail.value.trim();
+            if(email === ""){
+                alert('이메일을 입력하세요.');
+                return;
+            }
+
+            await fetch('/find/userId/sendCode', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'email=' + encodeURIComponent(email)
+            });
+
+            alert('인증번호가 전송되었습니다.');
+        });
+
+        // 인증번호 확인
+        btnCheck.addEventListener('click', async function(){
+            const email = inputEmail.value.trim();
+            const code = inputCode.value.trim();
+
+            if(code === ""){
+                alert('인증번호를 입력하세요.');
+                return;
+            }
+
+            const res = await fetch('/find/userId/verifyCode', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: 'email=' + encodeURIComponent(email) + '&code=' + encodeURIComponent(code)
+            });
+
+            const ok = await res.json();
+            if(ok){
+                alert('인증 성공!');
+                verified = true;
+                btnNext.disabled = false;
+                btnNext.classList.add('active');
+            }else{
+                alert('인증번호가 올바르지 않습니다.');
+            }
+        });
+
+        // 다음 버튼
+        btnNext.addEventListener('click', function (){
+            if(!verified){
+                alert('인증을 먼저 완료해주세요.');
+                return;
+            }
+
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '/find/userId/result';
+
+            const nameField = document.createElement('input');
+            nameField.name = 'name';
+            nameField.value = inputName.value;
+
+            const emailField = document.createElement('input');
+            emailField.name = 'email';
+            emailField.value = inputEmail.value;
+
+            form.appendChild(nameField);
+            form.appendChild(emailField);
+            document.body.appendChild(form);
+            form.submit();
+        });
+
+    });
+</script>
+
 </body>
 </html>
