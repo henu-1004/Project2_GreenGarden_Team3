@@ -1,0 +1,205 @@
+@charset "UTF-8";
+/*
+    날짜 : 2025/09/26
+    이름 : 이수연
+    내용 : 장바구니 페이지 CSS
+*/
+
+/* common.css로 분리될 스타일 */
+body, button {
+    font-family: 'Roboto', sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    min-width: 1200px;
+    margin: 0;
+    padding: 0;
+}
+
+/* 전체 레이아웃 */
+.content-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+/* 메인 시작 - 상품보기 영역 */
+#main-section {
+    flex-grow: 1;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-sizing: border-box;
+}
+
+/* 탑 페이지 네이션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+.top_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.top_nav h5 {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.top_nav .page_nation {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.top_nav .page_nation li:not(:last-child)::after {
+    content: " > ";
+    margin-left: 5px;
+    color: #999;
+}
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 여기까지가 기본 공통 영역ㅡ*/
+/* ㅡ여기부터 cart css 영역ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ ㅡ*/
+.cart_table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.cart_table th {
+    padding: 10px;
+    border-top: 3px solid #66968c;
+    border-bottom: 3px solid #66968c;
+}
+
+.cart_table td {
+    padding: 10px;
+    border-bottom: 1px solid #66968c;
+}
+
+.cart_table tbody {
+    align-items: center;
+
+}
+
+/* cart list 영역 ㅡㅡ */
+
+.product_image {
+    flex-basis: 80px;
+    flex-shrink: 0;
+    margin-left: 10px;
+}
+
+.col_item_info {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: left;
+    gap: 20px;
+
+}
+
+.product_image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid black;
+    border-radius: 8px;
+}
+
+.product_info h6 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.product_info p {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.price {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+}
+
+.price_after {
+    display: flex;
+    align-items: center;
+}
+
+.original_price {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.9em;
+    margin-right: 5px;
+}
+
+.discount_rate {
+    color: red;
+    font-weight: bold;
+}
+
+.shopping_fee {
+    font-size: 0.9em;
+}
+
+.col_del_info input {
+    display: block;
+    margin-bottom: 8px;
+    width: 80px;
+    height: 25px;
+    justify-content: center;
+}
+
+/* 총 합계 */
+.cart-summary {
+    width: 50%;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.order-summary {
+    margin: 0 auto;
+}
+
+
+/* 페이지 네이션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ  */
+.pagination {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 30px;
+    gap: 5px; /* 페이지 번호 사이 간격 */
+}
+
+.pagination a {
+    border: 1px solid #ccc; /* 테두리 */
+    padding: 8px 12px; /* 내부 여백 */
+    border-radius: 4px; /* 둥근 모서리 */
+    transition: background-color 0.2s; /* 부드러운 색 변화 */
+    color: #333;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: white;
+    border-color: #333;
+    font-weight: bold;
+}

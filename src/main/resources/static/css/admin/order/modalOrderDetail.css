@@ -1,0 +1,103 @@
+/*
+    날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : 주문현황 - 주문상세 모달 css
+*/
+/* 모달 배경과 위치 설정 */
+.madal-detail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex; /* <-- 이 속성 flex, none */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+/* 모달 내용 박스 */
+.modal-content {
+    /* 이 부분의 position, top, left, transform 속성 삭제 */
+    background-color: white;
+    width: 100%;
+    max-width: 1000px;
+
+    display: flex; /* Flexbox 컨테이너로 만듦 */
+    flex-direction: column; /* 자식 요소들을 세로로 쌓음 */
+
+    max-height: 90vh; /* 화면 높이의 90%를 넘지 않도록 설정 */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* 닫기 버튼 */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px; /* 정사각형 너비 */
+    height: 30px; /* 정사각형 높이 */
+    text-align: center; /* 글자를 수평 중앙에 */
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #eee; /* 배경색 추가 (선택사항) */
+}
+
+/* 헤더 부분 */
+.modal-header {
+    width: 95%;
+    background-color: #175a48;
+    color: white;
+    padding: 15px 20px;
+    flex-shrink: 0; /* 공간이 부족해도 줄어들지 않도록 함 */
+}
+
+.modal-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-left: 15px;
+}
+
+.order-number {
+    color: #999999;
+    font-size: 10px;
+    margin-left: 10px;
+}
+
+/* body 시작 -------- */
+.modal-body {
+    margin-top: 20px;
+
+    /* 3. 스크롤 영역: 남은 공간을 채우고 스크롤 가능하게 함 */
+    padding: 20px;
+    overflow-y: auto; /* 내용이 넘칠 경우에만 스크롤바 생성 */
+    flex-grow: 1; /* 남은 세로 공간을 모두 채우도록 함 */
+}
+
+/* 테이블 스타일 */
+.del_info-table ,
+.order-info-table {
+    width: 100%;
+    margin: 0 15px;
+    border-collapse: collapse;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.del_info-table th,
+.del_info-table td,
+.order-info-table th,
+.order-info-table td {
+    padding: 8px;
+    text-align: left;
+}
+
+.cart-summary {
+    align-items: flex-end;
+}
+
+
+
+

@@ -1,0 +1,63 @@
+@charset "UTF-8";
+/*
+    날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : 관리자 사이드 메뉴 css
+*/
+#aside {
+    width: 150px;
+    flex-shrink: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 8px;
+    background-color: white;
+    border: 1px solid #e0e0e0;
+}
+
+#aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+/* 1차 메뉴 a 태그 */
+#aside > ul > li > a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 10px 8px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #175a48;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#aside > ul > li > a:hover {
+    color: #A8C6C4;
+    font-weight: bolder;
+}
+
+/* 2차 메뉴 (숨김) */
+#aside > ul .submenu  {
+    display: none;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 2차 메뉴 항목 */
+#aside > ul > li > ul > li > a {
+    padding: 8px 10px 8px 40px;
+    font-size: 16px;
+    color: #aaa;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#aside > ul > li > ul > li > a:hover {
+    color: #175a48;
+}

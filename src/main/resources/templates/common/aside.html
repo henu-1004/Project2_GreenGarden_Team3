@@ -1,0 +1,106 @@
+<!--
+	날짜 : 2025/09/26
+    이름 : 이수연
+    내용 : 상품 필터 섹션(디자인 제안) & 폴더 위치 이동
+-->
+<!-- 필터 섹션을 감싸는 div 추가 및 스타일 적용 -->
+<aside id="aside" th:fragment="aside">
+    <div class="filter-div">
+        <h3 class="filter-title" >Filter Options</h3>
+        <!-- By Categories -->
+        <div class="filter-section">
+            <h4>By Categories</h4>
+            <ul class="filter-list">
+                <li>
+                    <label><input type="checkbox"> Skin Care</label>
+                </li>
+                <li>
+                    <label><input type="checkbox"> Makeup</label>
+                </li>
+                <li>
+                    <label><input type="checkbox"> Hair Care</label>
+                </li>
+                <li>
+                    <label><input type="checkbox"> Fragrances</label>
+                </li>
+                <li>
+                    <label><input type="checkbox"> Nail Care</label>
+                </li>
+                <li>
+                    <label><input type="checkbox"> Body Care</label>
+                </li>
+
+
+            <div id="view-dropNav">
+                <div class="dropdown">
+                    <a th:href="@{/product/list2(slug=plants)}">식물</a>
+                    <div class="dropdown-content">
+                        <a th:href="@{/product/list2(slug=hydroponic-plants)}">수경 재배 식물</a>
+                        <a th:href="@{/product/list2(slug=succulents)}">다육식물</a>
+                        <a th:href="@{/product/list2(slug=fresh-flowers)}">생화</a>
+                        <a th:href="@{/product/list2(slug=seeds-bulbs)}">씨앗·구근</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a th:href="@{/product/list2(slug=bouquets-flower-boxes)}">꽃다발.플라워박스 ▼ </a>
+                    <div class="dropdown-content">
+                        <a th:href="@{/product/list2(slug=bouquet)}">꽃다발</a>
+                        <a th:href="@{/product/list2(slug=flower-basket)}">꽃바구니</a>
+                        <a th:href="@{/product/list2(slug=flower-box)}">플라워박스</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <a th:href="@{/product/list2(slug=gardening-supplies)}">가드닝 용품 ▼</a>
+                    <div class="dropdown-content">
+                        <a th:href="@{/product/list2(slug=vases-pots)}">화병·화분</a>
+                        <a th:href="@{/product/list2(slug=vases-pots)}">원예도구</a>
+                        <a th:href="@{/product/list2(slug=soil-fertilizer-gravel)}">흙·비료·자갈</a>
+                        <a th:href="@{/product/list2(slug=plant-growth)}">식물생장</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+
+
+    <!-- 베스트 상품 섹션 -------------------------- -->
+    <div id="aside-bottom">
+    <h3>베스트 상품</h3>
+    <table>
+        <tbody>
+        <tr>
+            <td colspan="2">
+                <img id="first" src="https://placehold.co/300x150/e0e0e0/000000?text=Product+1" alt="" onerror="this.src='https://placehold.co/300x150/e0e0e0/000000?text=Product+1';" >
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <p>상품명</p>
+                <p>30000원</p>
+                <p>10%</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 80px;">
+                <img id="second" src="https://placehold.co/80x80/e0e0e0/000000?text=Product+2" alt="" onerror="this.src='https://placehold.co/80x80/e0e0e0/000000?text=Product+2';" >
+            </td>
+            <td>
+                <p>상품명</p>
+                <p>30000원</p>
+                <p>10%</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 80px;">
+                <img id="third" src="https://placehold.co/80x80/e0e0e0/000000?text=Product+3" alt="" onerror="this.src='https://placehold.co/80x80/e0e0e0/000000?text=Product+3';" >
+            </td>
+            <td>
+                <p>상품명</p>
+                <p>30000원</p>
+                <p>10%</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</aside>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 상품등록</title>
+</head>
+<!--
+    날짜 : 2025/09/24
+    이름 : 한탁원
+    내용 : 관리자 상품 등록 작성
+-->
+<body>
+<h1>상품등록</h1>
+<hr>
+
+<form method="post" th:action="@{/admin/product/register}" enctype="multipart/form-data">
+
+    <h3>상품분류</h3>
+    <table>
+        <tr>
+            <td>1차 분류</td>
+            <td>
+                <select name="classification1" id="classification1" required>
+                    <option value="" disabled selected>대분류 선택</option>
+                    <option th:each="slug : ${parentSlugList}"
+                            th:value="${slug.cateId}"
+                            th:text="${slug.name}">
+                    </option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>2차 분류</td>
+            <td>
+                <select name="slug" id="classification2" required>
+                    <option value="" disabled selected>소분류 선택</option>
+                </select>
+            </td>
+        </tr>
+
+        <input type="hidden" name="categorySlug" id="categorySlug">
+    </table>
+
+    <h3>기본정보</h3>
+    <table>
+        <tr>
+            <td>상품명</td>
+            <td><input type="text" name="name" required></td>
+        </tr>
+        <tr>
+            <td>기본설명</td>
+            <td><input type="text" name="description"></td>
+        </tr>
+
+        <tr>
+            <td>제조사</td>
+            <td><input type="text" name="manufacturer"></td>
+        </tr>
+
+        <tr>
+            <td>상품금액</td>
+            <td><input type="number" name="price" min="0" step="1" required> 원</td>
+        </tr>
+        <tr>
+            <td>할인율</td>
+            <td><input type="number" name="discountRate" min="0" max="100" step="1"> %</td>
+        </tr>
+        <tr>
+            <td>포인트</td>
+            <td><input type="number" name="point" min="0" step="1"> 원</td>
+        </tr>
+        <tr>
+            <td>재고수량</td>
+            <td><input type="number" name="stock" min="0" step="1" required> 개</td>
+        </tr>
+        <tr>
+            <td>배송비</td>
+            <td><input type="number" name="deliveryFee" min="0" step="1"> 원</td>
+        </tr>
+
+        <tr>
+            <td rowspan="3">상품이미지</td>
+            <td><input type="file" name="imgFile1" accept="image/*"></td>
+            <td>크기 190x190, 목록용 썸네일 1</td>
+        </tr>
+        <tr>
+            <td><input type="file" name="imgFile2" accept="image/*"></td>
+            <td>크기 230x230, 목록용 썸네일 2</td>
+        </tr>
+        <tr>
+            <td><input type="file" name="imgFile3" accept="image/*"></td>
+            <td>크기 456x456, 목록용 썸네일 3</td>
+        </tr>
+        <tr>
+            <td>상품 상세이미지</td>
+            <td><input type="file" name="imgFileDetail" accept="image/*"></td>
+            <td>가로 940px 권장, 최대 1MB</td>
+        </tr>
+    </table>
+
+    <button type="submit">등록</button>
+</form>
+
+<script th:inline="javascript">
+    const c1 = document.getElementById('classification1');
+    const c2 = document.getElementById('classification2');
+
+    // 컨텍스트패스 안전하게
+    const base = /*[[@{/admin/product/register/category/}]]*/ '/admin/product/register/category/';
+
+    c1.addEventListener('change', async () => {
+        const parentId = c1.value;    // 숫자 ID
+        if (!parentId) return;
+
+        c2.innerHTML = '<option value="" disabled selected>불러오는 중...</option>';
+
+        try {
+            const res = await fetch(base + parentId);
+            if (!res.ok) throw new Error();
+
+            const items = await res.json(); // [{id, slug, name}]
+            c2.innerHTML = '<option value="" disabled selected>소분류 선택</option>';
+            items.forEach(it => {
+                const opt = document.createElement('option');
+                opt.value = it.slug;        // 여기: slug 저장
+                opt.textContent = it.name;
+                c2.appendChild(opt);
+            });
+        } catch (e) {
+            c2.innerHTML = '<option value="">불러오기 실패</option>';
+        }
+    });
+</script>
+
+</body>
+</html>

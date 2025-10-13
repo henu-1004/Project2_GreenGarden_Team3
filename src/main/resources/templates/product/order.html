@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>product order</title>
+    <!--
+        날짜 : 2025/09/26
+        이름 : 이수연
+        내용 : 상품 주문 페이지
+    -->
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/index_nav.css}">
+    <link rel="stylesheet" th:href="@{/css/product/order.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+</head>
+<body>
+<div th:replace="~{/common/header_index :: header}"></div>
+<main>
+    <div class="content-wrap">
+        <div th:replace="~{common/index_nav :: aside_view}"></div>
+        <section id="main-section">
+            <div class="top_nav">
+                <h1>주문하기</h1>
+                <ul class="page_nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">장바구니</a></li>
+                    <li><a href="#">주문하기</a></li>
+                </ul>
+            </div>
+            <div id="order-contain">
+                <h2>주문자 정보</h2>
+                <div class="form-group">
+                    <label>이름</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>이메일</label>
+                    <input type="email">
+                </div>
+                <div class="form-group">
+                    <label>연락처</label>
+                    <input type="text">
+                </div>
+
+                <h2>배송 정보</h2>
+                <div class="form-group">
+                    <label>이름</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>연락처</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>주소</label>
+                    <input type="text">
+                </div>
+                <div class="form-group">
+                    <label>배송 메모</label>
+                    <textarea></textarea>
+                </div>
+
+                <h2>주문 상품</h2>
+                <table class="cart_table">
+                    <thead>
+                    <tr>
+                        <th class="col-item">상품명</th>
+                        <th class="col-count">수량</th>
+                        <th class="col-dis">할인</th>
+                        <th class="col-point">포인트</th>
+                        <th class="col-sum">총합</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cart_items">
+                    <tr>
+                        <td class="col_item_info">
+                            <div class="product_image">
+                                <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
+                            </div>
+                            <div class="product_info">
+                                <h6>상품명</h6>
+                                <p>간단한 상품 설명</p>
+                            </div>
+                        </td>
+                        <td>1개</td>
+                        <td>
+                            <div class="price_after">
+                                <p class="original_price">30,000원</p>
+                                <p class="discount_rate">10% ↓</p>
+                            </div>
+                        </td>
+                        <td>포인트</td>
+                        <td>29,500원</td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+
+                <h2>결제 정보</h2>
+                <div class="form-group">
+                    <label>결제 방법</label>
+                    <select>
+                        <option>카드 결제</option>
+                        <option>계좌 이체</option>
+                        <option>휴대폰 결제</option>
+                    </select>
+                </div>
+
+                <h2>주문 동의</h2>
+                <div class="form-group">
+                    <input type="checkbox"> 구매조건 확인 및 결제진행 동의
+                </div>
+
+                <div class="total-price">
+                    총 결제 금액: <strong>62,900원</strong>
+                </div>
+
+                <div class="btn-wrap">
+                    <button class="btn btn-primary">주문하기</button>
+                    <button class="btn btn-secondary">주문취소</button>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+<div th:replace="~{/common/footer :: footer}"></div>
+</body>
+</html>

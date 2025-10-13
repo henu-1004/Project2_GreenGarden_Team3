@@ -1,0 +1,33 @@
+<aside th:fragment="aside" class="sidebar">
+    <h3>마이페이지</h3>
+    <ul>
+        <li>
+            <a th:href="@{/my/home}"
+               th:classappend="${currentUri == '/greengarden/my/home'} ? 'active'">홈</a>
+        </li>
+        <li>
+            <a th:href="@{/my/order}"
+               th:classappend="${currentUri == '/greengarden/my/order'} ? 'active'">주문내역</a>
+        </li>
+        <li>
+            <a th:href="@{/my/point}"
+               th:classappend="${currentUri == '/greengarden/my/point'} ? 'active'">포인트</a>
+        </li>
+        <li>
+            <a th:href="@{/my/coupon}"
+               th:classappend="${currentUri == '/greengarden/my/coupon'} ? 'active'">쿠폰</a>
+        </li>
+        <li>
+            <a th:href="@{/my/review}"
+               th:classappend="${currentUri == '/greengarden/my/review'} ? 'active'">리뷰</a>
+        </li>
+        <li>
+            <a th:href="@{/my/qna}"
+               th:classappend="${currentUri == '/greengarden/my/qna'} ? 'active'">문의하기</a>
+        </li>
+        <li>
+            <a th:href="@{/my/info}"
+               th:classappend="${currentUri == '/greengarden/my/info'} ? 'active'">내 정보</a>
+        </li>
+    </ul>
+</aside>

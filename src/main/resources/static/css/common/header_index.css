@@ -1,0 +1,84 @@
+@charset "UTF-8";
+/*
+ * 날짜 : 2025/09/15 & 2025/09/25
+ * 이름 : 한탁원 & 이수연
+ * 내용 : header - css 초안 작성 & 수정
+ */
+header, body {
+    background-color: #f3f6f7;
+}
+
+#header-top {
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.header-util {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: right;
+}
+
+#header-top a {
+    padding-left: 10px;
+    text-decoration: none;
+    color: #175a48; /* 컬러 수정 */
+}
+
+#header-middle {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px;
+}
+
+/* 로고 logo */
+#header-middle a img {
+    width: 350px;
+    height: auto;
+}
+
+/* header - 바닥(검색창 영역) */
+#header-bottom {
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+
+}
+
+.search-form {
+    position: relative;
+    max-width: 1000px;
+    width: 100%;
+    margin: 15px;
+}
+
+.search-form input {
+    width: 80%;
+    height: 130%;
+    padding: 10px 40px 10px 15px;
+    border: 3px solid #66968c;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.search-form button {
+    position: absolute;
+    top: 50%;
+    transform: translateX(-45px) translateY(-45%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.search-form button img {
+    width: 25px;
+    height: 25px;
+}

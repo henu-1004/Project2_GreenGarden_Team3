@@ -1,0 +1,79 @@
+@charset "UTF-8";
+/*
+    날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : 관리자 사이드 메뉴 css
+*/
+#aside {
+    width:150px;
+    flex-shrink: 0;
+    padding: 0;
+    box-sizing: border-box;
+    position: relative;
+}
+
+#aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border-radius: 8px;
+    border-left: 1px solid #ddd; /* 왼쪽 테두리 추가 */
+    border-right: 1px solid #ddd; /* 오른쪽 테두리 추가 */
+}
+
+/* 1차 메뉴 항목 */
+#aside > ul > li {
+    position: relative;
+    border-bottom: 1px solid #ddd; /* 아래쪽 구분선 추가 */
+}
+
+#aside > ul > li:first-child {
+    border-top: 1px solid #ddd; /* 첫 번째 항목 위쪽 선 추가 */
+}
+
+#aside > ul > li > a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 16px;
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#aside > ul > li > a:hover {
+    color: #175a48;
+}
+
+/* 2차 메뉴 (숨김) */
+#aside > ul > li > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none;
+}
+
+/* 2차 메뉴 항목 */
+#aside > ul > li > ul > li > a {
+    display: block;
+    padding: 10px 20px 10px 40px;
+    font-size: 14px;
+    color: #666; /* 2차 메뉴 글자색을 약간 흐리게 */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+#aside > ul > li > ul > li > a:hover {
+    color: #175a48;
+}
+
+/* 활성화된 1차 메뉴 스타일 */
+#aside > ul > li.active > a {
+    font-weight: bold; /* 활성화된 메뉴 글자 굵게 */
+    color: #175a48;
+    background-color: #f5f5f5; /* 활성화된 메뉴 배경색 */
+}
+
+#aside > ul > li.active > ul {
+    display: block; /* 활성화된 메뉴의 2차 메뉴 보이기 */
+}

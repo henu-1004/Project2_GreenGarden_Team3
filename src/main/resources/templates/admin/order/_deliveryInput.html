@@ -1,0 +1,94 @@
+<!--
+    날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : 주문현황 - 배송입력 모달
+-->
+<div class="madal-delivery" th:fragment="modal-delivery-input">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-title">
+                <h3>배송입력</h3>
+                <p class="order-number">'주문번호'</p>
+            </div>
+            <div class="close-btn-wrap">
+                <button class="close-btn">x</button>
+            </div>
+        </div>
+        <div class="modal-body">
+            <table class="modal-delivery-info">
+                <tr>
+                    <th>주문번호</th>
+                    <td>10121211341</td>
+                </tr>
+                <tr>
+                    <th>수령인</th>
+                    <td>김유신</td>
+                </tr>
+                <tr>
+                    <th>우편번호</th>
+                    <td>12345</td>
+                </tr>
+                <tr>
+                    <th>기본주소</th>
+                    <td>부산광역시 부산진구 부전동 123</td>
+                </tr>
+                <tr>
+                    <th>상세주소</th>
+                    <td>범향빌딩 4층 415호</td>
+                </tr>
+                <tr>
+                    <th>택배사</th>
+                    <td>
+                        <select>
+                            <option>택배사선택</option>
+                            <option>롯데택배</option>
+                            <option>한진택배</option>
+                            <option>CJ대한택배</option>
+                            <option>우체국</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>운송장번호</th>
+                    <td>
+                        <input type="text" placeholder="발급 받은 택배사 송장번호 입력">
+                    </td>
+                </tr>
+                <tr>
+                    <th>기타</th>
+                    <td><input type="text" placeholder="기타정보입력"></td>
+                </tr>
+            </table>
+            <div class="btn-wrap">
+                <button class="btn">등록하기</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // 버튼과 모달 요소 선택
+        const openModalBtn = document.querySelector('.open-modal-btn');
+        const modal = document.getElementById('orderDetailModal');
+        const closeBtn = document.querySelector('.close-btn');
+
+        // '주문상세' 버튼 클릭 시 모달 열기
+        openModalBtn.addEventListener('click', function() {
+            modal.style.display = 'flex';
+        });
+
+        // 'X' 버튼 클릭 시 모달 닫기
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // 모달 외부 클릭 시 모달 닫기
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+</script>

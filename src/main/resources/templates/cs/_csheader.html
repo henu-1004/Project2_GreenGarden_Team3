@@ -1,0 +1,33 @@
+<!--
+	날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : manager header & css
+-->
+<!DOCTYPE html>
+<html xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>::고객센터::</title>
+    <link rel="stylesheet" th:href="@{/css/cs/header.css}"/>
+</head>
+<header th:fragment="header">
+    <div id="header-wrap">
+        <div id="header-top">
+            <th:block th:unless="${member}">
+                <a th:href="@{/member/login}">로그인</a>
+                <a th:href="@{/member/join}">회원가입</a>
+            </th:block>
+            <th:block th:if="${member}">
+                <a th:href="@{/member/logout}">로그아웃</a>
+            </th:block>
+            <a th:href="@{#}">마이페이지</a>
+            <a th:href="@{#}">장바구니</a>
+        </div>
+        <div id="header-middle">
+            <a th:href="@{/}" class="logo">
+                <img th:src="@{/images/logo.png}" alt="로고1" />
+            </a>
+        </div>
+    </div>
+</header>

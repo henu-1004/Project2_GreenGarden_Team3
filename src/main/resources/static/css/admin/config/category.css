@@ -1,0 +1,380 @@
+@charset "UTF-8";
+/*
+    날짜 : 2025/09/28
+    이름 : 조지영
+    내용 : HOME > 관리자 환경설정 > 이용약관 CSS
+*/
+/* 최상단에 추가 */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+/* ===================== 기본 설정 ===================== */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    min-width: 1200px;
+}
+
+/* ===================== 메인 콘텐츠 ===================== */
+.content-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start; /* 상단 정렬 */
+    padding-top: 20px;
+}
+
+#main-section {
+    width: 930px;
+    flex-shrink: 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: #fff;
+    box-sizing: border-box; /* aside와 상단선 맞춤 */
+}
+
+/* ===================== 상단 네비게이션 ===================== */
+.top_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.top_nav h5 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.top_nav .page_nation {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9em;
+}
+
+.top_nav .page_nation li:not(:last-child)::after {
+    content: " > ";
+    margin-left: 5px;
+    color: #999;
+}
+
+/* ===================== 안내 박스 ===================== */
+.info-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #333;
+}
+
+.info-box {
+    background: #f3f7f6;
+    padding: 15px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* ===================== 페이지 타이틀 ===================== */
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.page-title h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.breadcrumb {
+    font-size: 14px;
+    color: #555;
+}
+
+/* ===================== 탭 메뉴 ===================== */
+.tab-menu {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab-menu button {
+    flex: 1;
+    padding: 8px 20px;
+    border: 1px solid #ccc;
+    border-bottom: 1px solid #000;
+    background: #f7f7f7;
+    cursor: pointer;
+}
+
+.tab-menu button.active {
+    background: #fff;
+    border-top: 3px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-bottom: 2px solid #fff;
+    font-weight: bold;
+}
+
+/* ===================== 테이블 ===================== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background: #f3f7f6;
+    font-weight: bold;
+}
+
+td a {
+    color: #333;
+    text-decoration: none;
+}
+
+.banner {
+    text-align: left;
+}
+
+/* 이미지 placeholder */
+.img-box {
+    width: 80px;
+    background: #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+}
+
+.arrow {
+    width: 10px;
+    padding: 0 10px;
+    transition: transform 0.3s;
+}
+
+/* ===================== 버튼 ===================== */
+.btn {
+    background: #175a48;
+    color: #fff;
+    padding: 3px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #0f3e32;
+}
+
+/* 회색 버튼 */
+.btn.gray {
+    background: #fff;
+    color: gray;
+}
+
+.btn.gray span {
+    border: 2px solid gray;
+    padding: 0;
+}
+
+.btn.gray a {
+    color: gray;
+    text-decoration: none;
+}
+
+.btn.gray a:hover {
+    color: gray;
+    font-weight: bold;
+}
+
+/* 빨간 버튼 */
+.btn.red {
+    background: #fff;
+    color: red;
+}
+
+.btn.red span {
+    border: 1px solid red;
+    padding: 0;
+}
+
+.btn.red a {
+    color: red;
+    text-decoration: none;
+}
+
+.btn.red a:hover {
+    color: red;
+    font-weight: bold;
+}
+
+/* 버튼 그룹 */
+.btn-wrap {
+    margin-bottom: 50px;
+}
+
+.btn-wrap .btn {
+    float: right;
+    padding: 8px 15px;
+    margin-bottom: 50px;
+    background: #175a48;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+/* ===================== 사이드바 ===================== */
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 324px;
+    background: #fff;
+    border: 1px solid #ddd;
+}
+
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu {
+    border-bottom: 2px solid #eee;
+}
+
+
+.menu li{
+    cursor: grab;
+}
+
+.menu li.dragging {
+  opacity: 0.5;
+  background: #f0f0f0;
+}
+
+.menu a {
+    color: #000;
+    display: block;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    color: #175a48;
+    font-weight: bold;
+}
+
+.menu-title {
+    display: flex;
+    align-items: center;
+    padding: 12px 30px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 4px 0;
+}
+
+.menu.open .arrow {
+    transform: rotate(180deg);
+}
+
+.menu.open .submenu {
+    display: block;
+}
+
+.submenu {
+    display: none;
+    color: #aaa;
+}
+
+
+.submenu-item {
+    width: 100%;
+    padding: 14px 0;
+    border: 1px solid #ccc;
+}
+
+
+
+.submenu li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0;
+    font-weight: normal;
+    color: #aaa;
+    cursor: grab;
+
+}
+
+.submenu li.dragging {
+  opacity: 0.5;
+  background: #f0f0f0;
+}
+
+.submenu li a {
+    padding: 8px 15px 8px 50px;
+    font-size: 16px;
+    color: #aaa;
+}
+
+.submenu li.active {
+    color: #175a48;
+    font-weight: bold;
+}
+
+.submenu li.disabled {
+    color: #aaa;
+}
+
+/* ===================== 페이지 네이션 ===================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+    gap: 5px;
+}
+
+.pagination a {
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: #fff;
+}

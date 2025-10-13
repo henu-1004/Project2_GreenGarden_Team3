@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME > 관리자 환경설정 > 기본설정</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/member/list.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
+</head>
+<!--
+    날짜 : 2025/10/04
+    이름 : 조지영
+    내용 : HOME > 회원관리 > 회원목록
+-->
+<body>
+<!-- 헤더 -->
+<div th:replace="~{/admin/common/header :: header}"></div>
+['/
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>회원목록</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">회원관리</a></li>
+                        <li><a href="#">회원목록</a></li>
+                    </ul>
+                </div>
+
+
+                <!-- 검색창 + 운영 상태 영역 -->
+                <div class="search-area">
+                    <div class="search-box">
+                        <select id="searchType">
+                            <option value="userid">아이디</option>
+                            <option value="name">이름</option>
+                            <option value="email">이메일</option>
+                            <option value="phone">휴대폰</option>
+                        </select>
+
+                        <input type="text" id="keyword" placeholder="검색어 입력">
+                        <button class="btn">검색</button>
+                    </div>
+                </div>
+
+
+                <!-- 메인 상단배너 테이블 -->
+                <div class="info-title">
+                    <h2>회원목록</h2>
+                </div><table>
+                <thead>
+                <tr>
+                    <th><input type="checkbox"></th>
+                    <th>번호</th>
+                    <th>아이디</th>
+                    <th>이름</th>
+                    <th>성별</th>
+                    <th>등급</th>
+                    <th>포인트</th>
+                    <th>이메일</th>
+                    <th>휴대폰</th>
+                    <th>가입일</th>
+                    <th>상태</th>
+                    <th>관리</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="red">중지</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+                <!--- (1) 배너시작 -->
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>5</td>
+                    <td>xxx</td>
+                    <td>정우성</td>
+                    <td>M</td>
+                    <td>
+                        <select id="searchType">
+                            <option value="vvip">vvip</option>
+                            <option value="vip">vip</option>
+                            <option value="gold">gold</option>
+                            <option value="silver">silver</option>
+                            <option value="family">family</option>
+                        </select></td>
+                    <td>15,000</td>
+                    <td>xxxx@naver.com</td>
+                    <td>010-0000-0000</td>
+                    <td>0000-00-00 00:00:00</td>
+                    <td><span class="green">정상</span></td>
+                    <td>[수정] <br> [중지]</td>
+                </tr>
+                <!--- (1) 배너끝 -->
+
+                </tbody>
+            </table>
+
+                <!-- 하단 버튼 -->
+                <div class="btn-wrap">
+                    <button class="btn">선택수정</button>
+                </div>
+                <!-- 페이징 -->
+                <div class="pagination">
+                    <a href="#">&laquo; 이전</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">4</a>
+                    <a href="#">5</a>
+                    <a href="#">다음 &raquo;</a>
+                </div>
+                <!-- 페이징 -->
+            </section>
+        </div>
+    </main>
+</section>
+
+
+<div th:replace="~{/admin/common/footer :: footer}"></div>
+</body>
+<script th:src="@{/js/admin/aside.js}"></script>
+</html>

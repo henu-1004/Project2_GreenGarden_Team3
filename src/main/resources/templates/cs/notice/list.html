@@ -1,0 +1,91 @@
+
+<!--
+  날짜 : 2025/09/29
+  이름 : 박효빈
+  내용 : 박효빈 고객센터 페이지 제작
+-->
+<div th:replace="~{cs/_csheader.html}"></div>
+    <div class="main-container">
+        <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+        <aside class="sidebar">
+            <div class="cs-breadcrumb">
+                <a href="#">홈</a>
+                <span>></span>
+                <a href="#" class="active-breadcrumb">전체</a>
+            </div>
+            <ul>
+                <li class="menu">
+                    <div class="menu-title">
+                        <a href="#">공지사항</a>
+                    </div>
+                    <ul class="submenu open">
+                        <li class="active"><a href="#">전체</a></li>
+                        <li><a href="#">고객서비스</a></li>
+                        <li><a href="#">안전거래</a></li>
+                        <li><a href="#">위해상품</a></li>
+                        <li><a href="#">버전관리</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <section id="main-section">
+            <h1 class="cs-main-title">전체</h1>
+
+            <div class="cs-section">
+                <div class="cs-content">
+                    <ul class="cs-notice-list">
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 해외결제차 징 문자주의</span>
+                            <span class="cs-notice-date">22.10.31</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 개인정보 처리방침 변경 안내</span>
+                            <span class="cs-notice-date">22.09.15</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                            <span class="cs-notice-date">22.08.10</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                            <span class="cs-notice-date">22.08.10</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
+                            <span class="cs-notice-date">22.08.10</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 로젠택배 배송지연 안내</span>
+                            <span class="cs-notice-date">22.07.25</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 반품/교환 배송비 변경 안내</span>
+                            <span class="cs-notice-date">22.07.20</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[안내] 개인정보 보호정책 업데이트</span>
+                            <span class="cs-notice-date">22.07.15</span>
+                        </li>
+                        <li class="cs-notice-item">
+                            <span class="cs-notice-title">[공지] 서버 안정화 작업 안내</span>
+                            <span class="cs-notice-date">22.07.01</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="cs-pagination">
+                <a href="#" class="prev">&lt; 이전</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#" class="next">다음 &gt;</a>
+            </div>
+        </section>
+    </div>
+
+<div th:replace="~{cs/_csfooter.html}"></div>
+</body>
+</html>

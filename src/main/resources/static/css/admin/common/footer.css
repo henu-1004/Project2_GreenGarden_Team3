@@ -1,0 +1,38 @@
+@charset "UTF-8";
+/*
+ * 날짜 : 2025/09/28
+ * 이름 : 이수연
+ * 내용 : 관리자 footer css
+ */
+footer {
+    background: #f3f7f6;
+    padding: 50px 0;
+    text-align: center;
+}
+.footer-container {
+    margin: 0 auto;
+    max-width: 1200px;
+    text-align: center;
+    padding-bottom: 20px;
+}
+.footer-logo {
+    font-size: 2em;
+    font-weight: bold;
+    color: #558B2F; /* Green Garden color */
+    margin-bottom: 10px;
+}
+
+.footer-info {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.footer-info p {
+    margin: 0;
+}
+.copyright {
+    font-size: 0.8em;
+    color: #999;
+    margin-top: 10px;
+}

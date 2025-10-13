@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원수정</title>
+    <link rel="stylesheet" type="text/css" href="../../../static/css/admin/member/modify.css">
+</head>
+<!--
+    날짜 : 2025/09/30
+    이름 : 조지영
+    내용 : 관리자 회원 수정 작성 (모달+테이블 통합)
+-->
+<body>
+
+<!-- (1) 타이틀 -->
+<div class="modal-header">
+    <span class="modal-title">회원수정</span>
+    <button class="modal-close">X</button>
+</div>
+
+<!-- (2) 본문 -->
+<form th:action="@{/admin/member/modify}" method="post" target="_parent">
+
+    <table border="1">
+        <tr>
+            <td>아이디 :</td>
+            <td><input type="text" name="memId" th:value="${memberGeneral.memId}" readonly></td>
+        </tr>
+        <tr>
+            <td>이름</td>
+            <td><input type="text" name="name" th:value="${memberGeneral.name}"></td>
+        </tr>
+        <tr>
+            <td>성별</td>
+            <td>
+                <label>
+                    <input type="radio" name="gender" value="M"
+                           th:checked="${memberGeneral.gender} == 'M'"> 남자
+                </label>
+                <label style="margin-left:10px;">
+                    <input type="radio" name="gender" value="F"
+                           th:checked="${memberGeneral.gender} == 'F'"> 여자
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <td>등급</td>
+            <td><input type="text" name="grade" th:value="${memberGeneral.grade}" readonly></td>
+        </tr>
+        <tr>
+            <td>상태</td>
+            <td><input type="text" name="status" th:value="${memberGeneral.status}"></td>
+        </tr>
+        <tr>
+            <td>이메일</td>
+            <td><input type="text" name="email" th:value="${memberGeneral.email}"></td>
+        </tr>
+        <tr>
+            <td>전화번호</td>
+            <td><input type="text" name="phone" th:value="${memberGeneral.phone}"></td>
+        </tr>
+
+        <!-- rowspan 값 필수! -->
+        <tr>
+            <td rowspan="3">주소</td>
+            <td>
+                <input type="text" id="zip_code" name="zipCode"
+                       placeholder="우편번호" onclick="postcode()" th:value="${memberGeneral.zipCode}" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="address_basic" name="addressBasic"
+                       placeholder="기본주소" th:value="${memberGeneral.addressBasic}" readonly>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" id="address_detail" name="addressDetail"
+                       placeholder="상세주소" th:value="${memberGeneral.addressDetail}">
+            </td>
+        </tr>
+
+        <tr>
+            <td>가입일</td>
+            <td th:text="${memberGeneral.createdAt}">가입일</td>
+        </tr>
+        <tr>
+            <td>최근 로그인 날짜</td>
+            <td th:text="${memberGeneral.lastLogin}">마지막 로그인</td>
+        </tr>
+        <tr>
+            <td>기타</td>
+            <td><input type="text" name="note" th:value="${memberGeneral.note}"></td>
+        </tr>
+    </table>
+
+    <input type="submit" value="수정하기">
+</form>
+
+</body>
+</html>

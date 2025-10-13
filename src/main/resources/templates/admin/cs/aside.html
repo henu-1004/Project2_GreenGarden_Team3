@@ -1,0 +1,96 @@
+<!--
+	날짜 : 2025/09/28
+    이름 : 이수연
+    내용 : 관리자 사이드 메뉴
+-->
+<aside id="aside" th:fragment="aside">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('#aside > ul > li > a').forEach(menu => {
+                menu.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const parentLi = this.parentElement;
+
+                    document.querySelectorAll('#aside > ul > li').forEach(li => {
+                        if(li !== parentLi) li.classList.remove('open');
+                    });
+
+                    parentLi.classList.toggle('open');
+                });
+            });
+        });
+    </script>
+    <ul>
+        <li>
+            <a href=#>환경설정</a>
+            <ul class="submenu">
+                <li><a href="#">기본설정</a></li>
+                <li><a href="#">베너관리</a></li>
+                <li><a href="#">약관관리</a></li>
+                <li><a href="#">카테고리</a></li>
+                <li><a href="#">버전관리</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>상점관리</a>
+            <ul class="submenu">
+                <li><a href="#">상품목록</a></li>
+                <li><a href="#">매출현황</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>회원관리</a>
+            <ul class="submenu">
+                <li><a href="#">회원목록</a></li>
+                <li><a href="#">포인트관리</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>상품관리</a>
+            <ul class="submenu">
+                <li><a href="#">상품목록</a></li>
+                <li><a href="#">상품등록</a></li>
+            </ul>
+        </li>
+        <li class="active">
+            <a href=#>주문관리</a>
+            <ul class="submenu">
+                <li><a href="#">주문현황</a></li>
+                <li><a href="#">배송현황</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">쿠폰관리</a>
+            <ul class="submenu">
+                <li><a href="#">쿠폰목록</a></li>
+                <li><a href="#">쿠폰발급현황</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href=#>고객센터</a>
+            <ul class="submenu">
+                <li><a href="#">공지사항</a></li>
+                <li><a href="#">자주 묻는 질문</a></li>
+                <li><a href="#">문의하기</a></li>
+                <li><a href="#">채용하기</a></li>
+            </ul>
+        </li>
+    </ul>
+</aside>
+<script>
+    document.querySelectorAll('#aside > ul > li > a').forEach(menu => {
+        menu.addEventListener('click', function(e) {
+            e.preventDefault(); // 링크 이동 방지
+            const parentLi = this.parentElement;
+
+            // 같은 레벨 다른 메뉴 닫기
+            document.querySelectorAll('#aside > ul > li').forEach(li => {
+                if(li !== parentLi) li.classList.remove('open');
+            });
+
+            // 현재 메뉴 토글
+            parentLi.classList.toggle('open');
+        });
+    });
+</script>
+

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>메인 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/common/header_index.css}">
+    <link rel="stylesheet" th:href="@{/css/common/index_nav.css}">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+</head>
+<!--
+    날짜 : 2025/09/23
+    이름 : 한탁원
+    내용 : Index 화면 구성
+-->
+<body>
+<div th:replace="~{/common/header_index :: header}"></div>
+<main>
+    <div id="slide">
+        <div> s l i d e </div>
+    </div>
+    <div th:replace="~{/common/index_nav :: index_nav}"></div> <!-- 카테고리 네비 삽입 -->
+    <div id="Ad-banner-top">
+        상단 베너 광고
+    </div>
+    <div id="main">
+        <div class="content-wrap">
+            <section id="main-section">
+                <div class="product">
+                    <div id="best_title"><a>B E S T</a></div>
+                    <div id="best_top">
+                        <div class="best_top_product" th:each="i, iterStat : ${#numbers.sequence(1, 2)}">
+                            <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                            <p>상품명</p>
+                            <span><a>30,000원</a><a>10%</a></span><br>
+                            <span><a>27,000원</a><button>무료배송</button></span>
+                        </div>
+                    </div>
+                    <div id="best_bottom">
+                        <div class="best_bottom_product" th:each="i, iterStat : ${#numbers.sequence(1, 3)}">
+                            <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                            <p>상품명</p>
+                            <span><a>30,000원</a><a>10%</a></span><br>
+                            <span><a>27,000원</a><button>무료배송</button></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="products right" title="HIT">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
+                </div>
+
+                <div class="products left" title="NEW">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
+                </div>
+
+                <div class="products right" title="BRAND LEADER">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
+                </div>
+
+                <div class="products left" title="SALE">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
+                        <p>상품명</p>
+                        <span><a>30,000원</a><a>10%</a></span><br>
+                        <span><a>27,000원</a><button>무료배송</button></span>
+                    </div>
+                </div>
+
+                <div th:replace="~{/common/footer :: footer}"></div>
+            </section>
+        </div>
+    </div>
+</main>
+</body>
+</html>

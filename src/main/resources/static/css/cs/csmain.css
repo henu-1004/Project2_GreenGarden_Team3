@@ -1,0 +1,868 @@
+/*
+    날짜 : 2025/09/30
+    이름 : 박효빈
+    내용 : 고객센터 최종 통합 CSS (기존 색상 유지, 화면 설계서 레이아웃 반영)
+*/
+
+/* --- 1. 공통 및 기본 레이아웃 (Layout) --- */
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    background-color: #f3f6f7; /* 전체 배경은 연한 회색 */
+    color: #000;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0;
+    display: flex;
+    gap: 20px; /* 사이드바와 메인 섹션 사이 간격 */
+}
+
+/* 메인 타이틀 */
+.cs-main-title {
+    font-size: 1.8em;
+    font-weight: bold;
+    text-align: left;
+    margin: 0 0 20px 0;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+}
+
+/* 섹션 공통 (index.html 및 view.html 콘텐츠 컨테이너) */
+.cs-section {
+    /* #main-section에 배경이 생겼으므로, 내부 박스는 배경/테두리 제거 */
+    background: none;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 30px;
+    padding: 0;
+}
+
+/* --- 2. 사이드바 (Sidebar) 스타일 (view.html) --- */
+.sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    /* 화면 설계서 스타일: 흰색 배경, 둥근 모서리 */
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 0;
+}
+
+/* 브레드크럼 (사이드바 내부 - HTML 구조상 #main-section으로 이동 권장) */
+.cs-breadcrumb {
+    font-size: 0.95em;
+    color: #555;
+    margin: 0;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.cs-breadcrumb a {
+    color: #555;
+    text-decoration: none;
+}
+
+.cs-breadcrumb .active-breadcrumb {
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    font-weight: bold;
+}
+
+/* 메뉴 공통 */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 1차 메뉴 항목 */
+.sidebar ul > li {
+    position: relative;
+    border-bottom: 1px solid #eee;
+}
+.sidebar ul > li:last-child { border-bottom: none; }
+
+.sidebar .menu-title a {
+    display: block;
+    padding: 15px 20px;
+    font-size: 18px;
+    color: #000000;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    font-weight: bold;
+}
+
+.sidebar .menu-title a:hover {
+    color: #175a48;
+    background-color: #f7fcfb; /* 연한 배경 */
+}
+
+/* 활성화/열린 메뉴 (1차) */
+.sidebar .menu.open .menu-title a,
+.sidebar .menu-title a.active {
+    font-weight: bold;
+    color: #175a48;
+    background-color: #e6f2ed; /* 기존 연초록 배경 유지 */
+}
+
+/* 2차 메뉴 (submenu) */
+.sidebar .submenu {
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    display: block;
+    background-color: #f7f7f7;
+    border-top: 1px solid #eee;
+}
+
+/* 2차 메뉴 항목 */
+.sidebar .submenu li a {
+    display: block;
+    padding: 8px 20px 8px 30px;
+    font-size: 14px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+/* 활성화된 2차 메뉴 */
+.sidebar .submenu li.active a {
+    font-weight: bold;
+    color: #175a48;
+    background-color: #e6f2ed; /* 기존 연초록 배경 유지 */
+}
+
+/* --- 3. 메인 섹션 (Main Section) 스타일 (view.html) --- */
+#main-section {
+    flex-grow: 1;
+    /* 화면 설계서 스타일: 흰색 배경, 둥근 모서리 */
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px 30px;
+}
+
+/* 뷰 페이지 헤더: (1)번 영역 */
+.cs-view-header {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+.cs-view-category-title {
+    font-size: 1.1em;
+    color: #333;
+    font-weight: 500;
+}
+.cs-view-category {
+    font-weight: bold;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    margin-right: 5px;
+}
+.cs-view-desc {
+    font-size: 0.9em;
+    color: #888;
+}
+
+/* 공지사항 제목/날짜 박스 */
+.cs-notice-view-box {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.cs-view-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+
+    margin-bottom: 5px;
+}
+
+.cs-view-date {
+    font-size: 0.85em;
+    color: #888;
+}
+
+/* 뷰 페이지 내용 박스 */
+.cs-content-box {
+    padding: 20px 0;
+    line-height: 1.8;
+    font-size: 0.95em;
+    color: #444;
+    min-height: 200px;
+}
+
+/* 목록 버튼 그룹: (2)번 영역 */
+.cs-button-group {
+    text-align: center;
+    padding-top: 30px;
+}
+
+.cs-button {
+    display: inline-block;
+    padding: 10px 40px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.cs-button:hover {
+    background-color: #f0f0f0;
+}
+
+/* --- 4. Index.html 전용 (CS 메인) 스타일 (기존 코드 유지) --- */
+
+/* 섹션 헤더 공통 */
+.cs-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 8px;
+}
+
+.cs-section-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+}
+
+.cs-view-all {
+    font-size: 0.9em;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.cs-view-all:hover {
+    text-decoration: underline;
+}
+
+/* 공지사항 리스트 */
+.cs-notice-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.cs-notice-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f1f1;
+    font-size: 0.95em;
+}
+
+.cs-notice-title {
+    color: #333;
+}
+
+.cs-notice-date {
+    color: #888;
+    font-size: 0.85em;
+}
+
+/* 자주하는 질문 (FAQ) */
+.cs-category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.cs-category-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    text-align: center;
+    padding: 20px;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+}
+
+.cs-category-item:hover {
+    background: #f9fdfb;
+    border-color: #175a48;
+}
+
+.cs-category-icon {
+    width: 40px;
+    height: 40px;
+    background: #e6f2ed; /* 연초록 배경 유지 */
+    border-radius: 50%;
+    margin: 0 auto 10px;
+}
+
+.cs-category-name {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+}
+
+/* 문의하기 리스트 */
+.cs-inquiry-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.cs-inquiry-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.cs-inquiry-title {
+    font-size: 0.95em;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.cs-inquiry-meta {
+    font-size: 0.85em;
+    color: #888;
+}
+
+.cs-inquiry-write {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.cs-inquiry-write a {
+    font-size: 0.9em;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.cs-inquiry-write a:hover {
+    text-decoration: underline;
+}
+
+/* 1:1 상담 안내 */
+.cs-consult {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.cs-consult-box {
+    flex: 1;
+    min-width: 280px;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 20px;
+}
+
+.cs-consult-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+}
+
+.cs-consult-phone {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 8px 0;
+    color: #558B2F; /* 보조 포인트 컬러 유지 */
+}
+
+.cs-consult-desc {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.cs-small-title {
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #666;
+    margin-top: 10px;
+}
+.cs-pagination {
+    /* 중앙 정렬 유지 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px; /* 상단 마진 약간 축소 */
+    margin-bottom: 20px;
+    font-size: 0.9em; /* 전체 글자 크기 살짝 줄임 */
+}
+
+.cs-pagination a {
+    display: block;
+    padding: 6px 10px; /* 내부 여백(패딩) 축소 */
+    margin: 0 3px; /* 버튼 간 간격(마진) 축소 */
+    color: #555;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+/* 호버 스타일 */
+.cs-pagination a:hover {
+    color: #175a48;
+    border-color: #175a48;
+    background-color: #f7fcfb;
+}
+
+/* 활성화된 페이지 (현재 페이지) */
+.cs-pagination a.active {
+    color: #fff;
+    background-color: #175a48;
+    border-color: #175a48;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+/* '이전' 및 '다음' 버튼 */
+.cs-pagination a.prev,
+.cs-pagination a.next {
+    font-weight: 500;
+    color: #333;
+    border: none;
+    padding: 6px 12px; /* 패딩 조정 */
+}
+
+.cs-pagination a.prev:hover,
+.cs-pagination a.next:hover {
+    color: #175a48;
+    background-color: transparent;
+    text-decoration: underline;
+    border-color: transparent;
+}
+/* --- FAQ List 페이지 전용 스타일 --- */
+
+/* FAQ 콘텐츠 영역 */
+.cs-content {
+    padding: 0;
+}
+
+/* FAQ 블록 전체 */
+.faq-block {
+    margin-bottom: 35px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.faq-block:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* FAQ 카테고리 제목 */
+.faq-block h3 {
+    font-size: 1.15em;
+    font-weight: bold;
+    color: #175a48;
+    margin: 0 0 20px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #175a48;
+}
+
+/* FAQ 질문 리스트 */
+.faq-block ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+}
+
+/* FAQ 질문 항목 */
+.faq-item {
+    display: block;
+    padding: 14px 18px 14px 40px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 0.95em;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* FAQ 항목 앞 아이콘 (Q 표시) */
+.faq-item::before {
+    content: 'Q';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 22px;
+    height: 22px;
+    background-color: #175a48;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.75em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* FAQ 항목 호버 효과 */
+.faq-item:hover {
+    background-color: #f7fcfb;
+    border-color: #175a48;
+    color: #175a48;
+    transform: translateX(5px);
+}
+
+/* 더보기/접기 버튼 */
+.more-btn {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px 0;
+    color: #175a48;
+    font-size: 0.9em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.more-btn:hover {
+    color: #558B2F;
+    text-decoration: underline;
+}
+
+/* 더보기 버튼 화살표 */
+.more-btn::after {
+    content: ' ▼';
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 0.8em;
+}
+
+/* 펼쳐진 상태의 더보기 버튼 */
+.more-btn.expanded::after {
+    content: ' ▲';
+}
+
+/* --- QNA List 페이지 전용 스타일 --- */
+
+/* 문의하기 버튼 영역 */
+.qna-write-btn-area {
+    text-align: right;
+    margin-bottom: 15px;
+}
+
+.qna-write-btn {
+    display: inline-block;
+    padding: 10px 30px;
+    background-color: #175a48;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.95em;
+    transition: background-color 0.2s;
+}
+
+.qna-write-btn:hover {
+    background-color: #0d3d2e;
+}
+
+/* QNA 테이블 */
+.qna-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid #175a48;
+}
+
+.qna-table thead {
+    background-color: #f7f7f7;
+}
+
+.qna-table th {
+    padding: 12px 10px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.qna-table td {
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #555;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* 제목 열 (왼쪽 정렬) */
+.qna-table .qna-title {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.qna-table .qna-title a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.qna-table .qna-title a:hover {
+    color: #175a48;
+    text-decoration: underline;
+}
+
+/* 답변상태 배지 */
+.qna-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+/* 답변완료 */
+.qna-status.completed {
+    background-color: #e6f2ed;
+    color: #175a48;
+}
+
+/* 답변대기 */
+.qna-status.waiting {
+    background-color: #fff3e0;
+    color: #f57c00;
+}
+
+/* 테이블 호버 효과 */
+.qna-table tbody tr:hover {
+    background-color: #f9fdfb;
+}
+
+/* --- QNA View 페이지 전용 스타일 --- */
+
+/* 질문 영역 */
+.qna-question-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+/* 답변 영역 */
+.qna-answer-section {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #f7fcfb;
+    border-radius: 8px;
+    border: 1px solid #d0e8df;
+}
+
+/* 질문/답변 헤더 */
+.qna-question-header,
+.qna-answer-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+/* 질문/답변 배지 */
+.qna-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.qna-badge.question {
+    background-color: #e91e63;
+    color: #fff;
+}
+
+.qna-badge.answer {
+    background-color: #175a48;
+    color: #fff;
+}
+
+/* 카테고리 제목 */
+.qna-view-category {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
+.qna-answer-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #175a48;
+}
+
+/* 메타 정보 */
+.qna-meta-info,
+.qna-answer-meta {
+    font-size: 0.85em;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+/* 내용 박스 */
+.qna-content-box {
+    padding: 15px 0;
+    line-height: 1.8;
+    font-size: 0.95em;
+    color: #444;
+}
+
+/* --- QNA Write 페이지 전용 스타일 --- */
+
+/* 작성 폼 */
+.qna-write-form {
+    max-width: 100%;
+}
+
+/* 폼 그룹 */
+.qna-form-group {
+    display: flex;
+    margin-bottom: 25px;
+    align-items: flex-start;
+}
+
+/* 라벨 */
+.qna-form-label {
+    width: 120px;
+    padding-top: 10px;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 단계 배지 */
+.qna-step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    background-color: #175a48;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+/* 입력 영역 */
+.qna-form-input {
+    flex: 1;
+}
+
+/* 셀렉트 그룹 */
+.qna-select-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* 셀렉트 박스 */
+.qna-select {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95em;
+    background-color: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.qna-select:focus {
+    outline: none;
+    border-color: #175a48;
+}
+
+/* 텍스트 입력 */
+.qna-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95em;
+    transition: border-color 0.2s;
+}
+
+.qna-input:focus {
+    outline: none;
+    border-color: #175a48;
+}
+
+/* 텍스트 영역 */
+.qna-textarea {
+    width: 100%;
+    height: 250px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.95em;
+    resize: vertical;
+    font-family: "Noto Sans KR", sans-serif;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+}
+
+.qna-textarea:focus {
+    outline: none;
+    border-color: #175a48;
+}
+
+/* 버튼 그룹 */
+.qna-button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* 취소 버튼 */
+.qna-cancel-btn {
+    padding: 12px 50px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #333;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.qna-cancel-btn:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+
+/* 등록 버튼 */
+.qna-submit-btn {
+    padding: 12px 50px;
+    background-color: #175a48;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.qna-submit-btn:hover {
+    background-color: #2b6b34;
+}

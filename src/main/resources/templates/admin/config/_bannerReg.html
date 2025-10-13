@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>배너등록</title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          color: #333;
+        }
+
+        table {
+            border-collapse: collapse; /* 선 겹침 방지 */
+            width: 100%;
+            margin: 0 0 20px 0;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-top: 1px solid #ccc; /* 위 */
+            border-bottom: 1px solid #ccc; /* 아래 */
+            border-left: none; /* 좌측 없음  */
+            border-right: none; /* 우측 없음 */
+
+        }
+
+        /* modal */
+        .modal-header {
+            display: flex;
+            justify-content: space-between; /* 좌측: 제목, 우측: 닫기 버튼 */
+            align-items: center;
+            background-color: #175a48; /* 짙은 회색 */
+            color: #fff;               /* 글씨는 흰색 */
+            font-size: 14px;
+            padding: 8px 12px;
+          }
+
+    .modal-title {
+            font-weight: bold;
+          }
+
+    .modal-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+          }
+    .modal-close:hover {
+            color: #ff4d4d; /* hover 시 빨간색 강조 */
+          }
+
+        /* modal */
+
+        /* 상단 타이틀 */
+        .page-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 2px solid #333;
+          padding-bottom: 5px;
+          margin-bottom: 20px;
+        }
+
+        .page-title h2 {
+          margin: 0;
+          font-size: 18px;
+          font-weight: bold;
+        }
+
+        .breadcrumb {
+          font-size: 14px;
+          color: #555;
+        }
+
+        .breadcrumb strong {
+          font-weight: bold;
+        }
+
+        .btn-wrap {
+        text-align: center;   /* 버튼 가로 중앙 */
+        margin-bottom: 50px; /* div 하단 여백 */
+        }
+
+        .btn-wrap .btn {
+        margin-bottom: 50px;  /* 버튼 바로 밑 여백 */
+        margin-top: 0px;
+        background: #175a48;
+        color: #fff;
+        padding: 8px 15px ;
+        border: none;
+        cursor: pointer;
+        }
+
+        .form-row {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        }
+
+        .form-row label {
+        width: 150px;
+        font-size: 14px;
+        font-weight: bold;
+        }
+
+        .form-row input[type="text"],
+        .form-row input[type="email"] {
+        flex: 0;
+        padding: 2px;
+        border: 1px solid #ccc;
+        background: #f0f0f0;  /* 배경색 변경 */
+        color: #666;           /* 글자색 변경 */
+        box-sizing: border-box;
+        }
+
+        .form-row .desc {
+        margin-left: 10px;
+        font-size: 12px;
+        color: #666;
+        }
+
+        /* 안내 박스 */
+
+        .info-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 12px;
+          color: #333;
+        }
+
+        .info-box {
+          background: #f7f8fa;
+          padding: 15px;
+          border: 0 solid #eee;
+          margin-bottom: 10px;
+          font-size: 14px;
+        }
+
+        /* div 안 table */
+        .version-box {
+          border: 0px solid #ddd;
+          border-top: none;
+        }
+
+        .version-box table {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 14px;
+        }
+
+        .version-box th,
+        .version-box td {
+          padding: 8px;
+          text-align: left;
+        }
+
+        .version-box th {
+          background: #f7f8fa;
+          font-weight: normal;
+          width: 120px;
+        }
+
+        .version-box td strong {
+          font-weight: bold;
+        }
+
+        .version-box input[type="file"],
+        .version-box input[type="text"],
+        .version-box input[type="date"],
+        .version-box input[type="time"]    {
+        flex: 0;
+        padding: 2px;
+        border: 1px solid #ccc;
+        background: #f3f7f6;  /* 배경색 변경 */
+        color: #666;           /* 글자색 변경 */
+        box-sizing: border-box;
+        width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- (1) 타이틀 -->
+<div class="modal-header">
+    <span class="modal-title">배너등록</span>
+    <button class="modal-close">X</button>
+</div>
+
+<!-- (2) 본문 -->
+
+<!-- div 안에 table -->
+<div class="version-box">
+    <table>
+        <tr>
+            <th><label><strong>배너이름</strong></label></th>
+            <td><input type="text" value="그린가든"></td>
+        </tr>
+        <tr>
+            <th><label><strong>배너크기</strong></label></th>
+            <td><input type="text" value="마음을 심고 가꾸는 공간"></td>
+        </tr>
+        <tr>
+            <th><label><strong>배경색</strong></label></th>
+            <td><input type="text" value="#000000"></td>
+        </tr>
+        <tr>
+            <th><label><strong>배너링크</strong></label></th>
+            <td><input type="text" value="http://192.168.0.198/"></td>
+        </tr>
+        <tr>
+            <th><label><strong>배너위치</strong></label></th>
+            <td><input type="text" value="선택"></td>
+        </tr>
+        <tr>
+            <th><label><strong>노출날짜</strong></label></th>
+            <td><input type="date" id="startTime" style="width:92px"> ~  <input type="date" id="endTime" style="width:92px"></td>
+        </tr>
+        <tr>
+            <th><label><strong>노출시간</strong></label></th>
+            <td><input type="time" id="startTime" style="width:92px"> ~  <input type="time" id="endTime" style="width:92px"></td>
+        </tr>
+        <tr>
+            <th><label><strong>배너파일</strong></label></th>
+            <td><input type="file"> <span class="desc">노출 위치에 맞는 크기 권장</span></td>
+        </tr>
+
+
+    </table>
+    <div class="btn-wrap">
+        <button class="btn">등록하기</button>
+    </div>
+</div>
+<!-- (2) 버전정보 끝 -->
+
+
+</body>
+</html>
