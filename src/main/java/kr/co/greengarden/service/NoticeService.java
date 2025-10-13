@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +40,41 @@ public class NoticeService {
         List<NoticeDTO> dtoList = noticeMapper.selectNoticeList(pageRequestDTO);
 
         // 2. 전체 개수 조회
-        int total = 0;
+        int total = noticeMapper.selectNoticeCount(pageRequestDTO);
 
-        return null;
+        log.info("조회 된 공지사항 {} 개, 전체 {} 개",dtoList.size(), total);
+
+        // 3. PageResponseDTO 생성 (자동 페이징 계산)
+
+
+        return PageResponseDTO.<NoticeDTO>builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(dtoList)
+                .total(total)
+                .build();
+    }
+    /*
+    * 공지사항 상세보기 ( 조회수 증가 )
+    * */
+    @Transactional
+    public NoticeDTO getNotice(int noticeId) {
+        log.info("getNotice : {}", noticeId);
+
+        // 조회수 증가 (트랜잭션으로 묶어버림)
+        noticeMapper.updateViews(noticeId);
+        log.info("getNotice : {}", noticeId);
+
+        // 상세 정보 조회 ( 내용 포함 전체 데이터 )
+        NoticeDTO noticeDTO = noticeMapper.selectNotice(noticeId);
+
+        if (noticeDTO == null) {
+            log.info("getNotice : {}", noticeId);
+            return null;
+        }
+        log.info("getNotice : {}", noticeId);
+
+
+        return noticeDTO;
     }
 
     public Optional<Notice> getNoticeId(Integer noticeId){

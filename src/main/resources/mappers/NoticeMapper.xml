@@ -42,7 +42,7 @@
         CREATED_AT as createdAt
         FROM TB_NOTICE
         <include refid="searchWhere"/>
-        ORDER BY NOTICE_ID DESC
+        ORDER BY CREATED_AT DESC
         OFFSET #{pageRequestDTO.offset} ROWS
         FETCH NEXT #{pageRequestDTO.size} ROWS ONLY
     </select>

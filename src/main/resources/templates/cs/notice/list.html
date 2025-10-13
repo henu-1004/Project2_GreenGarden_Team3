@@ -14,74 +14,71 @@
                 <a href="#" class="active-breadcrumb">전체</a>
             </div>
             <ul>
-                <li class="menu">
-                    <div class="menu-title">
-                        <a href="#">공지사항</a>
-                    </div>
-                    <ul class="submenu open">
-                        <li class="active"><a href="#">전체</a></li>
-                        <li><a href="#">고객서비스</a></li>
-                        <li><a href="#">안전거래</a></li>
-                        <li><a href="#">위해상품</a></li>
-                        <li><a href="#">버전관리</a></li>
-                    </ul>
+            <li class="menu">
+                <div class="menu-title">
+                    <a href="#">공지사항</a>
+                </div>
+            <ul class="submenu open">
+                <li th:classappend="${pageResponseDTO.type == null or pageResponseDTO.type == ''} ? 'active' : ''">
+                    <a th:href="@{/cs/notice/list}">전체</a>
                 </li>
+                <li th:classappend="${pageResponseDTO.type == '고객 서비스'} ? 'active' : ''">
+                    <a th:href="@{/cs/notice/list(type='고객 서비스')}">고객서비스</a>
+                </li>
+                <li th:classappend="${pageResponseDTO.type == '안전 거래'} ? 'active' : ''">
+                    <a th:href="@{/cs/notice/list(type='안전 거래')}">안전거래</a>
+                </li>
+                <li th:classappend="${pageResponseDTO.type == '위해 상품'} ? 'active' : ''">
+                    <a th:href="@{/cs/notice/list(type='위해 상품')}">위해상품</a>
+                </li>
+                <li th:classappend="${pageResponseDTO.type == '이벤트 당첨'} ? 'active' : ''">
+                    <a th:href="@{/cs/notice/list(type='이벤트 당첨')}">이벤트당첨</a>
+                </li>
+            </ul>
+            </li>
             </ul>
         </aside>
 
         <section id="main-section">
-            <h1 class="cs-main-title">전체</h1>
-
+            <h1 class="cs-main-title"
+                th:text="${pageResponseDTO.type != null and pageResponseDTO.type != ''} ? ${pageResponseDTO.type} : '전체'">
+                전체
+            </h1>
             <div class="cs-section">
                 <div class="cs-content">
                     <ul class="cs-notice-list">
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[안내] 해외결제차 징 문자주의</span>
-                            <span class="cs-notice-date">22.10.31</span>
+                        <li class="cs-notice-item" th:each="notice : ${pageResponseDTO.dtoList}">
+
+                            <a th:href="@{/cs/notice/view(noticeId=${notice.noticeId})}"
+                               style="text-decoration:none; color:inherit;"
+                               th:text="| [${notice.type}] ${notice.title} |">
+                            </a>
+
+                            <span class="cs-notice-date" th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></span>
                         </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[안내] 개인정보 처리방침 변경 안내</span>
-                            <span class="cs-notice-date">22.09.15</span>
-                        </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
-                            <span class="cs-notice-date">22.08.10</span>
-                        </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
-                            <span class="cs-notice-date">22.08.10</span>
-                        </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
-                            <span class="cs-notice-date">22.08.10</span>
-                        </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[안내] 로젠택배 배송지연 안내</span>
-                            <span class="cs-notice-date">22.07.25</span>
-                        </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[안내] 반품/교환 배송비 변경 안내</span>
-                            <span class="cs-notice-date">22.07.20</span>
-                        </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[안내] 개인정보 보호정책 업데이트</span>
-                            <span class="cs-notice-date">22.07.15</span>
-                        </li>
-                        <li class="cs-notice-item">
-                            <span class="cs-notice-title">[공지] 서버 안정화 작업 안내</span>
-                            <span class="cs-notice-date">22.07.01</span>
-                        </li>
+
                     </ul>
                 </div>
             </div>
+
+            <!-- ⭐ 수정: 동적 페이징 -->
             <div class="cs-pagination">
-                <a href="#" class="prev">&lt; 이전</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#" class="next">다음 &gt;</a>
+                <!-- 이전 버튼 -->
+                <a th:if="${pageResponseDTO.prev}"
+                   th:href="@{/cs/notice/list(pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type})}"
+                   class="prev">&lt; 이전</a>
+
+                <!-- 페이지 번호 -->
+                <th:block th:each="i : ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                    <a th:href="@{/cs/notice/list(pg=${i}, type=${pageResponseDTO.type})}"
+                       th:classappend="${i == pageResponseDTO.pg} ? 'active' : ''"
+                       th:text="${i}"></a>
+                </th:block>
+
+                <!-- 다음 버튼 -->
+                <a th:if="${pageResponseDTO.next}"
+                   th:href="@{/cs/notice/list(pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type})}"
+                   class="next">다음 &gt;</a>
             </div>
         </section>
     </div>

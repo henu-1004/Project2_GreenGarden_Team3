@@ -25,8 +25,8 @@ public interface NoticeMapper {
     int selectNoticeCount(@Param("pageRequestDTO")  PageRequestDTO pageRequestDTO);
 
     // 상세보기 (View)
-    NoticeDTO selectNotice(@Param("noticeId") int noticeId);
+    NoticeDTO selectNotice(@Param("noticeId") Integer noticeId);
 
     // 조회수 증가
-    void updateNotice(@Param("noticeDTO") int noticeId);
+    void updateViews(@Param("noticeId") Integer noticeId);
 }

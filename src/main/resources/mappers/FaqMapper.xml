@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.greengarden.mapper.FaqMapper">
+
+    <!-- 검색 조건 재사용 -->
+    <sql id="searchWhere">
+        <where>
+            <!-- 유형 필터 -->
+            <if test="pageRequestDTO.type != null and pageRequestDTO.type != ''">
+                AND TRIM(CATEGORY1) = #{pageRequestDTO.type}
+            </if>
+
+            <!-- 검색 조건 -->
+            <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != null and pageRequestDTO.keyword != ''">
+                <choose>
+                    <when test="pageRequestDTO.searchType == 'title'">
+                        AND TITLE LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'content'">
+                        AND CONTENT LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                    </when>
+                    <when test="pageRequestDTO.searchType == 'titleContent'">
+                        AND (TITLE LIKE '%' || #{pageRequestDTO.keyword} || '%'
+                        OR CONTENT LIKE '%' || #{pageRequestDTO.keyword} || '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </sql>
+
+    <!-- 공지사항 목록 조회 (페이징) -->
+    <select id="selectFaqList" resultType="kr.co.greengarden.dto.FaqDTO">
+        SELECT
+        FAQ_ID as faqId,
+        CATEGORY1 as category1,
+        CATEGORY2 as category2,
+        TITLE as title,
+        CONTENT as content,
+        VIEWS as views,
+        CREATED_AT as createdAt
+        FROM TB_FAQ <include refid="searchWhere"/>
+        ORDER BY FAQ_ID DESC
+    </select>
+
+    <!-- 전체 개수 조회 -->
+    <select id="selectFaqCount" resultType="int">
+        SELECT COUNT(*)
+        FROM TB_Faq
+        <include refid="searchWhere"/>
+    </select>
+
+    <!-- 상세보기 -->
+    <select id="selectFaq" resultType="kr.co.greengarden.dto.FaqDTO">
+        SELECT
+        FAQ_ID as faqId,
+        CATEGORY1 as category1,
+        CATEGORY2 as category2,
+        TITLE as title,
+        CONTENT as content,
+        VIEWS as views,
+        CREATED_AT as createdAt
+        FROM TB_FAQ WHERE FAQ_ID = #{faqId} </select>
+    <!-- 조회수 증가 -->
+    <update id="updateFaqViews"> UPDATE TB_FAQ SET VIEWS = VIEWS + 1
+        WHERE FAQ_ID = #{faqId} </update>
+
+</mapper>
