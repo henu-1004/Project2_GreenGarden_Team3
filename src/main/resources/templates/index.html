@@ -14,12 +14,12 @@
     내용 : Index 화면 구성
 -->
 <body>
-<div th:replace="~{/common/header_index :: header_index}"></div>
+<div th:replace="~{common/header_index :: header}"></div>
 <main>
     <div id="slide">
         <div> s l i d e </div>
     </div>
-    <div th:replace="~{/common/index_nav :: index_nav}"></div> <!-- 카테고리 네비 삽입 -->
+    <div th:replace="~{common/index_nav :: index_nav}"></div> <!-- 카테고리 네비 삽입 -->
     <div id="Ad-banner-top">
         상단 베너 광고
     </div>
@@ -82,7 +82,7 @@
                     </div>
                 </div>
 
-                <div th:replace="~{/common/footer :: footer}"></div>
+                <div th:replace="~{common/footer :: footer}"></div>
             </section>
         </div>
     </div>
