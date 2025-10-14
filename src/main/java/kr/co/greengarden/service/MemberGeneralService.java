@@ -37,6 +37,8 @@ public class MemberGeneralService {
     private final PointRepository pointRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private final MemberGeneralRepository repo;
+
     // 유저 찾기
     public Optional<MemberGeneral> getUser(String memId){
         return memberGeneralRepository.findById(memId);
@@ -99,8 +101,10 @@ public class MemberGeneralService {
     }
 
     // 아이디 찾기
-    public Optional<FindResultDTO> findMemberInfoByNameAndEmail(String name, String email){
-        return memberGeneralRepository.findMemberInfoByNameAndEmail(name, email);
+    public Optional<FindResultDTO> findMemberInfoByNameAndEmail(String name, String email) {
+        String n = name  == null ? "" : name.trim();
+        String e = email == null ? "" : email.trim();
+        return repo.findMemberInfoByNameAndEmail(n, e);
     }
 
 

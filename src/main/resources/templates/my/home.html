@@ -13,11 +13,11 @@
 <body>
 
 <!-- 공통 헤더 -->
-<div th:replace="~{/common/headerNoSearch :: headerNoSearch}"></div>
+<div th:replace="~{common/headerNoSearch :: headerNoSearch}"></div>
 
 <main class="mypage-container">
     <!-- 어사이드 -->
-    <div th:replace="~{/my/aside :: aside}"></div>
+    <div th:replace="~{my/aside :: aside}"></div>
 
     <!-- 본문 -->
     <section class="content">
@@ -180,16 +180,32 @@
                 </div>
             </div>
         </div>
+        <!-- ===========================
+             ✅ 최근 주문 내역 확인용 테스트 블록
+             =========================== -->
+        <div style="background:#f9f9f9; border:1px solid #ccc; padding:15px; margin-top:30px;">
+            <h3 style="margin-bottom:10px;">🧾 최근 주문 내역 (테스트 출력)</h3>
 
+            <div th:if="${#lists.isEmpty(recentOrders)}">
+                <p>최근 주문 내역이 없습니다.</p>
+            </div>
 
-
-
-    </section>
+            <div th:each="order : ${recentOrders}">
+                <div style="border-bottom:1px solid #ddd; padding:8px 0;">
+                    <p>
+                        <strong>주문번호:</strong> <span th:text="${order.orderNo}">O20251014001</span><br>
+                        <strong>상태:</strong> <span th:text="${order.status}">배송완료</span><br>
+                        <strong>주문일:</strong> <span th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}">2025-10-14 15:00</span><br>
+                        <strong>결제금액:</strong> <span th:text="${order.totalPrice}">34000</span>원
+                    </p>
+                </div>
+            </div>
+        </div>
     </section>
 </main>
 
 <!-- 공통 푸터 -->
-<div th:replace="~{/common/footer :: footer}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 
 <!-- ===== 주문상세 모달 ===== -->
 <div id="orderModal" class="modal modal-order">

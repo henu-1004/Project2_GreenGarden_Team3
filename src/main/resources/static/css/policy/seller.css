@@ -15,26 +15,14 @@
 /* 레이아웃: 좌측 사이드바 + 우측 본문 */
 .policy-layout{
     display:grid;
-    grid-template-columns:220px 1fr;
+    grid-template-columns:250px 1fr;
     gap:20px;
 }
 
-/* 사이드바 */
-.policy-aside{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:12px;
-   /* box-shadow:0 2px 8px rgba(17,41,26,.04); */
-    height:max-content;
-}
-.policy-aside a.side-item{
-    display:flex; align-items:center; gap:10px; height:48px; padding:0 12px; margin-bottom:10px;
-    border:1px solid var(--line); border-radius:10px; background:#f7faf9; color:#2a2f2e;
-   /* font-weight:600; text-decoration:none; transition:background .15s, border-color .15s, box-shadow .15s; */
-}
-.policy-aside a.side-item:hover{ background:#eef4f2; border-color:var(--brand); }
-.policy-aside .icon{ width:22px; height:22px; border-radius:6px; border:1px dashed #cfd8d6; background:#eef4f2; }
+.policy-layout #aside{ width:auto; }           /* 250px 고정 해제 → 그리드가 관리 */
+.policy-layout .dropdown{ min-height: 0; }     /* 160px 강제높이 제거 */
+.policy-layout #aside-bottom{ margin-bottom:0; } /* 맨 아래 불필요한 20px 제거 */
+
 
 
 /* 본문 카드 */
