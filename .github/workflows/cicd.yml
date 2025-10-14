@@ -22,13 +22,18 @@ jobs:
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2.6.0
         with:
-          arguments: build
+          arguments: clean build -x test
+
+      - name: Verify JAR output
+        run: ls -al build/libs
 
       - name: Get JAR_FILE
         id: jarfile
         run: |
-          JAR_FILE=$(ls build/libs/*.jar | grep -v plain | head -n 1)
-          echo "JAR_FILE=${JAR_FILE}" >> $GITHUB_ENV
+          # plain JAR이 아닌 경우만 선택, 없으면 plain으로 fallback
+          JAR_FILE=$(ls build/libs/*.jar 2>/dev/null | grep -v plain | head -n 1 || ls build/libs/*.jar | head -n 1)
+          echo "JAR_FILE=$JAR_FILE"
+          echo "JAR_FILE=$JAR_FILE" >> $GITHUB_ENV
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
@@ -46,6 +51,9 @@ jobs:
           name: app
           path: build/libs/
 
+      - name: Verify downloaded file
+        run: ls -al build/libs
+
       - name: Setup SSH Key
         run: |
           echo "${{ secrets.AWS_EC2_KEY }}" > private_key.pem
@@ -53,19 +61,21 @@ jobs:
 
       - name: Copy JAR to EC2
         run: |
+          mkdir -p build/libs
           JAR_FILE=$(ls build/libs/*.jar | head -n 1)
+          echo "Uploading $JAR_FILE to EC2..."
           scp -i private_key.pem \
             -o StrictHostKeyChecking=no \
             $JAR_FILE \
             ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }}:/home/${{ secrets.AWS_EC2_USER }}/
-      
+
       - name: Restart Spring Application on EC2
         run: |
           JAR_FILE=$(basename $(ls build/libs/*.jar | head -n 1))
           ssh -i private_key.pem \
             -o StrictHostKeyChecking=no \
             ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << EOF
-            pgrep java | xargs kill -9;
+            pgrep java | xargs kill -9 || true
             nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE > app.log 2>&1 &
           EOF
 
