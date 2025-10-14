@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>관리자 메인</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/admin/index.css">
+    <meta charset="UTF-8">
+    <title>관리자 메인</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/index.css">
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
 </head>
 <!-- 
 	날짜 : 2025/09/16
@@ -14,11 +14,11 @@
 	내용 : 관리자 메인 작성
  -->
 <body>
-	<jsp:include page="./common/header.jsp" />
+<div th:replace="~{/admin/common/header :: header}"></div>
 	<main>
 		<div id="main">
 			<div id="content-wrap">
-				<jsp:include page="./common/aside.jsp" />
+                <div th:replace="~{/admin/common/aside :: aside}"></div>
 				<section id="main-section">
 					<div id="title">
 						<h1>관리자메인</h1>
@@ -137,7 +137,7 @@
 			</div>
 		</div>
 	</main>
-	<jsp:include page="./common/footer.jsp" />
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 
 </body>
 </html>

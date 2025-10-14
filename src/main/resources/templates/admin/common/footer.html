@@ -1,15 +1,38 @@
 <!--
-	날짜 : 2025/09/28
+    날짜 : 2025/09/25 & 2025/10/04
     이름 : 이수연
-    내용 : admin footer & css
+    내용 : 푸터 디자인(제안),파일 분리 & 디자인 수정
 -->
 <footer th:fragment="footer">
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <div class="footer-container">
-        <div class="footer-logo">Green Garden</div>
         <div class="footer-info">
-            <p>사업자등록번호: 123-45-12345 | 대표이사: 홍길동 | 고객센터: 123-4567 | 이메일: example@kmarket.net</p>
-            <p>주소: 부산광역시 부산진구 중앙대로 300</p>
+            <!-- 회사 소개 -->
+            <div class="company-info">
+                <div class="company-info-title">
+                    <h6 class="company-name">Green Garden</h6>
+                    <h6><a href="#">회사소개</a></h6>
+                </div>
+                <p>123-45-12345 :사업자등록번호<br>
+                    example@kmarket.net  홍길동 :대표이사<br>
+                    부산광역시 부산진구 중앙대로 300 :주소</p>
+            </div>
+            <!-- 로고 -->
+            <div class="footer-logo">
+                <img th:src="@{/images/LogoMark.png}" alt="logo mark">
+            </div>
+            <!-- 고객센터 및 약관 -->
+            <div class="cs-info">
+                <h6><a href="#">고객센터</a></h6>
+                <div class="terms-info">
+                    <a href="#">서비스이용약관</a>
+                    <a href="#">개인정보처리방침</a>
+                    <a href="#">전자금융거래약관</a>
+                </div>
+                <p>고객센터: 1234-5678 (평일 09:00~18:00)<br>
+                    전자금융거래 분쟁 담당: 1234:1234 (365일 09:00~18:00)</p>
+            </div>
         </div>
-        <p class="copyright">COPYRIGHT © K-MARKET ALL RIGHTS RESERVED.</p>
+        <p class="copyright">COPYRIGHT © GREENGARDEN TEAM3 ALL RIGHTS RESERVED.</p> <!-- 사진을 제외한 텍스트, 디자인, 코드 등 그린가든3조가 직접 제작한 창작물에 대한 법적 소유권을 가지고 있음을 명시 -->
     </div>
 </footer>

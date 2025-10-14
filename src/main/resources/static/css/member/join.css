@@ -15,7 +15,7 @@
 
     /* 페이지 배경을 헤더/푸터와 톤 맞춤 */
     #main-wrap{
-        background: var(--bg);
+        /* background: var(--bg); 배경색 통일을 위해 제외시킴*/
         padding: 72px 0 64px;
         text-align: center;
     }

@@ -1,17 +1,16 @@
 <!--
-    날짜 : 2025/09/28
+    날짜 : 2025/09/28 & 2025/10/07
     이름 : 이수연
-    내용 : 주문현황 - 배송입력 모달
+    내용 : 주문현황 - 배송입력 모달 & html,css 완료
 -->
-<div class="madal-delivery" th:fragment="modal-delivery-input">
+<div class="madal-delivery-input" th:fragment="modal-delivery-input">
+    <link rel="stylesheet" th:href="@{/css/admin/order/_deliveryInput.css}">
     <div class="modal-content">
+        <button class="close-button">&times;</button>
         <div class="modal-header">
             <div class="modal-title">
-                <h3>배송입력</h3>
+                <h2>배송입력</h2>
                 <p class="order-number">'주문번호'</p>
-            </div>
-            <div class="close-btn-wrap">
-                <button class="close-btn">x</button>
             </div>
         </div>
         <div class="modal-body">
@@ -59,8 +58,9 @@
                     <td><input type="text" placeholder="기타정보입력"></td>
                 </tr>
             </table>
-            <div class="btn-wrap">
-                <button class="btn">등록하기</button>
+            <!-- 등록하기 버튼 -->
+            <div class="cart-action">
+                <button type="button" id="checkout-btn">등록하기</button>
             </div>
         </div>
 

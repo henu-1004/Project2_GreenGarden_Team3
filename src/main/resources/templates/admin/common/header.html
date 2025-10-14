@@ -4,20 +4,23 @@
     내용 : manager header & css
 -->
 <header th:fragment="header">
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
     <div id="header-wrap">
         <div id="header-top">
-            <th:block th:unless="${member}">
-                <a th:href="@{/member/home}">HOME</a>
-                <a th:href="@{/member/login}">로그인</a>
-                <a th:href="@{/member/cs}">고객센터</a>
-            </th:block>
-            <th:block th:if="${member}">
-                <a th:href="@{/member/logout}">로그아웃</a>
-            </th:block>
+            <div class="header-util">
+                <th:block th:unless="${member}">
+                    <a th:href="@{/member/home}">HOME</a>
+                    <a th:href="@{/member/login}">로그인</a>
+                    <a th:href="@{/member/cs}">고객센터</a>
+                </th:block>
+                <th:block th:if="${member}">
+                    <a th:href="@{/member/logout}">로그아웃</a>
+                </th:block>
+            </div>
         </div>
         <div id="header-middle">
             <a th:href="@{/}" class="logo">
-                <img th:src="@{/images/LogoMark.png}" alt="로고1" />
+                <img th:src="@{/images/LogoWidth.png}" alt="indexLogo" />
             </a>
         </div>
     </div>

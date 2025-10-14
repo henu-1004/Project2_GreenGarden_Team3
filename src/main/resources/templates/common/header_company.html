@@ -1,30 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
 <!--
-	날짜 : 2025/09/15
-    이름 : 한탁원
-    내용 : header_company 초안 작성
+	날짜 : 2025/10/05
+    이름 : 이수연
+    내용 : header util 차이로 인해 파일하나 더 생성.
+
+    사용방법 : css : common/headerWithSearch.css 사용(class명이 달라서 괜찮음)
 -->
-<body>
-	<header>
-		<div id="header-wrap">
-			<div id="header-top">
-				<a href="#"><img src="${pageContext.request.contextPath}/resources/images/LogoWidth.png" alt="로고1" /></a>
-			</div>
-			<div id="header-bottom" >
-				<a href="#">HOME</a>
-				<a href="#">기업문화</a>
-				<a href="#">소식과 이야기</a>
-				<a href="#">채용</a>
-				<a href="#">미디어</a>
-			</div>
-		</div>
-	</header>
-</body>
-</html>
+<header th:fragment="header_company">
+    <div id="header-wrap">
+        <div id="header-top">
+            <div class="header-util">
+                <th:block>
+                    <a th:href="@{#}">HOME</a>
+                    <a th:href="@{#}">기업문화</a>
+                    <a th:href="@{#}">소식과 이야기</a>
+                    <a th:href="@{#}">채용</a>
+                    <a th:href="@{#}">미디어</a>
+                </th:block>
+            </div>
+        </div>
+        <div id="header-middle">
+            <a th:href="@{/}" class="logo">
+                <img th:src="@{/images/LogoWidth.png}" alt="indexLogo" />
+            </a>
+        </div>
+    </div>
+</header>

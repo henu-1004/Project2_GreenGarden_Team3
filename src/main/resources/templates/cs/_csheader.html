@@ -9,25 +9,8 @@
 <head>
     <meta charset="UTF-8">
     <title>::고객센터::</title>
-    <link rel="stylesheet" th:href="@{/css/cs/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/footer.css}"/>
 </head>
-<header th:fragment="header">
-    <div id="header-wrap">
-        <div id="header-top">
-            <th:block th:unless="${member}">
-                <a th:href="@{/member/login}">로그인</a>
-                <a th:href="@{/member/join}">회원가입</a>
-            </th:block>
-            <th:block th:if="${member}">
-                <a th:href="@{/member/logout}">로그아웃</a>
-            </th:block>
-            <a th:href="@{#}">마이페이지</a>
-            <a th:href="@{#}">장바구니</a>
-        </div>
-        <div id="header-middle">
-            <a th:href="@{/}" class="logo">
-                <img th:src="@{/images/logoWidth.png}" alt="로고1" />
-            </a>
-        </div>
-    </div>
-</header>
+<body>
+<div th:replace="~{/common/headerWithSearch :: headerWithSearch}"></div>

@@ -2,13 +2,13 @@
 /*
     날짜 : 2025/09/26
     이름 : 이수연
-    내용 : 상품 보기 상단 카테코리 메뉴 CSS
+    내용 : index.ver_가로형 카테코리 메뉴 CSS
 */
 
 /* * 1. 전체 영역 (aside) - Full-width 배경색 적용을 위해 absolute 사용 */
 #aside {
     width: 100%; /* 뷰포트(화면) 너비의 100%로 확장 */
-    background-color: #f0f0f0;
+    background-color: #C7D9D5;
     box-sizing: border-box; /* 테두리, 패딩이 너비에 포함되도록 설정 */
 }
 /* * 2. 네비게이션 컨테이너 - 콘텐츠 너비를 1200px로 제한하고 가운데 정렬 */

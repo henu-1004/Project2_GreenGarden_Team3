@@ -1,17 +1,17 @@
 /*
     날짜 : 2025/09/28
     이름 : 이수연
-    내용 : 주문현황 - 배송하기 - 배송입력 모달 css
+    내용 : 쿠폰목록 - 쿠폰정보 모달 css
 */
 /* 모달 배경과 위치 설정 */
-.madal-delivery {
+.madal-detail {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: none; /* <-- 이 속성이 flex , none */
+    display: flex; /* <-- 이 속성 flex, none */
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -20,7 +20,7 @@
 .modal-content {
     /* 이 부분의 position, top, left, transform 속성 삭제 */
     background-color: white;
-    width: 90%;
+    width: 80%;
     max-width: 800px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -62,12 +62,13 @@
     margin-left: 10px;
 }
 
-/* 테이블 스타일 */
+/* body 시작 -------- */
 .modal-body {
     margin-top: 20px;
 }
 
-.modal-delivery-info {
+/* 본문 시작------------------------------------ */
+.coupon-table {
     width: 100%;
     margin: 0 15px;
     border-collapse: collapse;
@@ -75,41 +76,8 @@
     border-bottom: 1px solid #ddd;
 }
 
-.modal-delivery-info th,
-.modal-delivery-info td {
+.coupon-table th, td {
     padding: 8px;
     text-align: left;
 }
 
-.modal-delivery-info th {
-    background-color: #f3f7f6;
-}
-
-.modal-delivery-info select,
-.modal-delivery-info input {
-    height: 40px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box;
-}
-
-.modal-delivery-info input {
-    width: 400px;
-}
-
-/* 등록하기 버튼 */
-.btn-wrap {
-    margin-top: 30px;
-    text-align: center;
-}
-.btn {
-    padding: 10px 20px;
-    border: none;
-    margin: 5px;
-    cursor: pointer;
-    font-size: 16px;
-
-    background: #175a48;
-    color: #fff;
-}

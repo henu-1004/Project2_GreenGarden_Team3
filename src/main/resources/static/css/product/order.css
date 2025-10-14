@@ -1,57 +1,53 @@
 @charset "UTF-8";
 /*
-    날짜 : 2025/09/26
+    날짜 : 2025/09/26 & 2025/10/05
     이름 : 이수연
-    내용 : 주문 페이지 CSS
+    내용 : 주문 페이지 CSS & 다듬기
 */
-/* common.css로 분리될 스타일 */
-body, button {
-    font-family: 'Roboto', sans-serif;
-}
-
+/* ㅡㅡㅡ common 스타일 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 a {
     text-decoration: none;
     color: inherit;
 }
 
-body {
-    min-width: 1200px;
-    margin: 0;
-    padding: 0;
-}
-
-/* 전체 레이아웃 */
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
+    display: flex;
+    gap: 20px;
 }
 
-/* 메인 시작 - 상품보기 영역 */
+/* 메인 섹션 */
 #main-section {
-    flex-grow: 1;
-    background: white;
-    padding: 30px;
+    width: 930px;
+    flex-shrink: 0;
+    padding: 20px;
+    border: 3px solid #66968c;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background: white;
+    /* aside와 상단선을 맞춤 */
     box-sizing: border-box;
 }
 
 /* 탑 페이지 네이션 */
-.top_nav {
+.top-nav {
+    min-height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 3px solid #66968c;
+    border-bottom: 1px solid #66968c;
     margin-bottom: 20px;
+    margin-right: 10px;
 }
 
-.top_nav h5 {
+.top-nav h1 {
     font-size: 1.2em;
     font-weight: bold;
+    margin: 10px;
 }
 
-.top_nav .page_nation {
+.top-nav .page-nation {
     display: flex;
     gap: 10px;
     list-style: none;
@@ -60,47 +56,76 @@ body {
     font-size: 0.9em;
 }
 
-.top_nav .page_nation li:not(:last-child)::after {
+.top-nav .page-nation li:not(:last-child)::after {
     content: " > ";
     margin-left: 5px;
     color: #999;
 }
 
-/* order css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-h1 {
+.top-nav h1 {
+    font-size: 20px;
     display: flex;
     align-items: center;
     margin-left: 10px;
 }
-h2 {
-    margin-top: 40px;
-    border-bottom: 2px solid #66968c;
-    padding-bottom: 5px;
+/* ㅡㅡㅡ order css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+
+.order-contain {
+    margin: 40px 20px
 }
+.order-contain h2 {
+    margin-bottom: 20px;
+}
+/*  주문자 정보, 배송 정보 공통 */
 .form-group {
+    display: flex;
+    flex-direction: column; /* 자식 요소들을 세로로 쌓음 */
+    gap: 15px; /* 항목별 간격 */
     margin: 10px 0;
 }
-label {
-    display: inline-block;
-    width: 120px;
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-weight: bold;
-}
-input, select, textarea {
-    padding: 5px;
-    width: 250px;
-}
-textarea {
-    width: 400px;
-    height: 80px;
+    text-align: right;
 }
 
-/* 주문상품 리스트 */
+.order-contain input[type="text"], input[type="email"] {
+    height: 30px;
+    width: 200px;
+    border: 1px solid #66968c;
+    border-radius: 5px;
+}
+
+
+/* 배송 메모 상단 정렬 */
+.form-group label span {
+    width: 80px;
+    flex-shrink: 0; /* 너비가 줄어들지 않도록 함 */
+}
+
+/* 배송 메모 textarea와 상단 정렬 */
+.form-group textarea, .address input {
+    align-self: flex-start; /* textarea만 상단에 정렬 */
+    width: 300px;
+    border: 1px solid #66968c;
+    border-radius: 5px;
+}
+
+/* ㅡㅡㅡ 주문상품 리스트 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.table-area {
+    margin: 10px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+
 .cart_table {
     width: 95%;
     border-collapse: collapse;
     text-align: center;
     align-items: center;
-    margin: 0 20px;
 }
 
 .cart_table th {
@@ -166,8 +191,116 @@ textarea {
     font-weight: bold;
 }
 
+/* ㅡㅡㅡ 결제 정보 전체 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.order-chek {
+    display: flex;
+    align-items: stretch; /* 두 영역의 높이를 동일하게 */
+    text-align: center;
+    justify-content: center;
+    gap: 50px;
+    padding:  10px 30px;
 
-/* 마지막 주문/취소하기 버튼 */
+}
+
+/* 최종결제정보 스타일 */
+.payment-summary {
+    width: 300px;
+    border: 1px solid #66968c;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* 제목 스타일 */
+.payment-summary h2 {
+    font-size: 1.2em; /* 상대적인 크기 */
+    font-weight: bold;
+    margin: 0;
+    padding-bottom: 15px; /* 선과의 간격 */
+    border-bottom: 1px solid #66968c; /* 아래쪽 구분선 */
+}
+
+/* 내용 부분 컨테이너 */
+.summary-details {
+    padding-top: 15px; /* 제목과의 간격 */
+}
+
+/* 개별 항목 스타일 */
+.summary-details .item {
+    display: flex; /* 가로 정렬 */
+    justify-content: space-between; /* 양쪽 끝 정렬 */
+    margin-bottom: 10px; /* 항목별 간격 */
+}
+
+/* 전체주문금액 스타일 */
+.summary-details .total-price {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px; /* 선과의 간격 */
+    font-weight: bold;
+    color: #ff0000; /* 빨간색 */
+}
+
+/* 항목별 값(오른쪽)의 글자 굵기 */
+.summary-details .item span:last-child {
+    font-weight: normal; /* 원래대로 돌려놓기 */
+}
+
+/* 수평선 스타일 */
+hr {
+    border: 0; /* 기본 선 스타일 제거 */
+    height: 1px; /* 선의 높이 */
+    background-color: #66968c; /* 선 색상 */
+    margin: 15px 0; /* 위아래 간격 */
+}
+
+/* ㅡㅡㅡ 결제 방법 선택 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.payment-options {
+    width: 300px;
+    border: 1px solid #66968c;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* 제목 스타일 */
+.payment-options h2 {
+    font-size: 1.2em; /* 상대적인 크기 */
+    font-weight: bold;
+    margin: 0;
+    padding-bottom: 15px; /* 선과의 간격 */
+    border-bottom: 1px solid #66968c; /* 아래쪽 구분선 */
+}
+
+/* 내용 부분 컨테이너 */
+.options-details {
+    padding-top: 15px; /* 제목과의 간격 */
+    display: grid; /* 그리드 컨테이너로 설정 */
+    grid-template-columns: repeat(2, 1fr); /* 2개의 열을 동일한 비율로 생성 */
+    gap: 20px 5px; /* 행 간격 20px, 열 간격 10px */
+}
+
+.options-details label {
+    width: auto; /* 그리드에 맞춰 자동으로 너비 조정 */
+    margin: 0; /* 기존 마진 제거 */
+    padding: 0;
+
+    display: flex; /* 자식 요소들을 가로로 배치 */
+    align-items: center; /* 세로 가운데 정렬 */
+    gap: 5px; /* 라디오 버튼과 텍스트 사이의 간격 */
+}
+
+/* ㅡㅡㅡ 주문동의 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.order-agree label {
+    margin-left: 20px;
+    font-size: 18px;
+    text-align: center;
+    gap: 15px;
+}
+.order-agree input[type="checkbox"] {
+    width: 10px;
+    height: 10px;
+    transform: scale(1.5); /* 2배 확대 */
+}
+/* ㅡㅡㅡ 마지막 주문/취소하기 버튼 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .btn-wrap {
     margin-top: 30px;
     text-align: center;
