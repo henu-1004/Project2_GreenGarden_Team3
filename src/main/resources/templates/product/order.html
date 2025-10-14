@@ -15,12 +15,12 @@
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
-<div th:replace="~{/common/headerWithSearch :: headerWithSearch}"></div>
+<div th:replace="~{common/headerWithSearch :: headerWithSearch}"></div>
 <main>
     <div class="content-wrap">
         <div th:replace="~{common/aside :: aside}"></div>
         <section id="main-section">
-            <form>
+            <form th:action="@{#}" method="post">
                 <div class="top-nav">
                     <h1>주문하기</h1>
                     <ul class="page-nation">
@@ -31,59 +31,64 @@
                 </div>
                 <hr>
                 <div class="main-container">
-                        <div class="order-contain">
-                            <h2>배송 정보</h2>
-                            <div class="group">
-                                <div class="form-group">
-                                    <label><span>이름</span><input type="text" name="name"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label><span>연락처</span><input type="text"></label>
-                                </div>
-                                <div class="form-group address">
-                                    <label><span>주소</span><input type="text"></label>
-                                </div>
-                                <div class="form-group">
-                                    <label><span>배송메모</span><textarea> </textarea></label>
-                                </div>
+                    <div class="order-contain">
+                        <h2>배송 정보</h2>
+                        <div class="group">
+                            <div class="form-group">
+                                <label><span>수령자</span><input type="text" name="name"></label>
+                            </div>
+                            <div class="form-group">
+                                <label><span>휴대폰</span><input type="text"></label>
+                            </div>
+                            <div class="form-group address">
+                                <label><span>우편번호</span><input type="text"><button>검색</button></label>
+                            </div>
+                            <div class="form-group address">
+                                <label><span>기본주소</span><input type="text"></label>
+                            </div>
+                            <div class="form-group address">
+                                <label><span>상세주소</span><input type="text"></label>
+                            </div>
+                            <div class="form-group">
+                                <label><span>배송메모</span><textarea> </textarea></label>
                             </div>
                         </div>
+                    </div>
                     <hr>
                     <div class="order-contain">
                         <h2>주문 상품</h2>
                         <div class="table-area">
-                            <table class="cart_table">
+                            <table class="cart-table">
                                 <thead>
                                 <tr>
                                     <th class="col-item">상품명</th>
                                     <th class="col-count">수량</th>
-                                    <th class="col-dis">할인</th>
+                                    <th class="col-price">판매가</th>
+                                    <th class="col-rate">할인</th>
                                     <th class="col-point">포인트</th>
+                                    <th class="col-fee">배송비</th>
                                     <th class="col-sum">총합</th>
                                 </tr>
                                 </thead>
-                                <tbody id="cart_items">
+                                <tbody id="cart-items">
                                 <tr>
-                                    <td class="col_item_info">
-                                        <div class="product_image">
+                                    <td class="col-item-info">
+                                        <div class="product-image">
                                             <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image"
                                                  alt="상품명"
                                                  onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
                                         </div>
-                                        <div class="product_info">
+                                        <div class="product-info">
                                             <h6>상품명</h6>
                                             <p>간단한 상품 설명</p>
                                         </div>
                                     </td>
                                     <td>1개</td>
-                                    <td>
-                                        <div class="price_after">
-                                            <p class="original_price">30,000원</p>
-                                            <p class="discount_rate">10% ↓</p>
-                                        </div>
-                                    </td>
-                                    <td>포인트</td>
-                                    <td>29,500원</td>
+                                    <td>30,000원</td>
+                                    <td>10%</td>
+                                    <td>270</td>
+                                    <td>무료배송</td>
+                                    <td style="color: red">29,500원</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -91,6 +96,35 @@
                     </div>
                     <hr>
                     <div class="order-contain order-chek">
+                        <div>
+                            <div class="payment-discount">
+                                <h2>할인정보</h2>
+                                <div class="discount-group">
+                                    <label>현재 포인트 : <span>7200</span>점 <input type="number"></label>
+                                    <p>포인트 5,000점 이상이면 현금처럼 사용가능</p>
+                                    <label>쿠폰 적용 :
+                                        <select>
+                                            <option>쿠폰 발급 연결하기</option>
+                                            <option>계좌 이체</option>
+                                            <option>휴대폰 결제</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="payment-options">
+                                <h2>결제방법</h2>
+                                <div class="options-details">
+                                    <label><input type="radio" name="payment-method" value="신용카드"/>신용카드</label>
+                                    <label><input type="radio" name="payment-method" value="체크카드"/>체크카드</label>
+                                    <label><input type="radio" name="payment-method" value="계좌이체"/>계좌이체</label>
+                                    <label><input type="radio" name="payment-method" value="무통장입금"/>무통장입금</label>
+                                    <label><input type="radio" name="payment-method" value="휴대폰결제"/>휴대폰결제</label>
+                                    <label><input type="radio" name="payment-method" value="삼성페이"/>삼성페이</label>
+                                    <label><input type="radio" name="payment-method" value="카카오페이"/>카카오페이</label>
+                                    <label><input type="radio" name="payment-method" value="네이버페이"/>네이버페이</label>
+                                </div>
+                        </div>
+                        </div>
                         <div class="payment-summary">
                             <h2>최종결제정보</h2>
                             <div class="summary-details">
@@ -125,19 +159,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="payment-options">
-                            <h2>최종결제정보</h2>
-                            <div class="options-details">
-                                <label><input type="radio" name="payment-method" value="신용카드"/>신용카드</label>
-                                <label><input type="radio" name="payment-method" value="체크카드"/>체크카드</label>
-                                <label><input type="radio" name="payment-method" value="계좌이체"/>계좌이체</label>
-                                <label><input type="radio" name="payment-method" value="무통장입금"/>무통장입금</label>
-                                <label><input type="radio" name="payment-method" value="휴대폰결제"/>휴대폰결제</label>
-                                <label><input type="radio" name="payment-method" value="삼성페이"/>삼성페이</label>
-                                <label><input type="radio" name="payment-method" value="카카오페이"/>카카오페이</label>
-                                <label><input type="radio" name="payment-method" value="네이버페이"/>네이버페이</label>
-                            </div>
-                        </div>
                     </div>
                     <hr>
                     <div class="order-contain order-agree">
@@ -153,6 +174,6 @@
         </section>
     </div>
 </main>
-<div th:replace="~{/common/footer :: footer}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 </body>
 </html>
