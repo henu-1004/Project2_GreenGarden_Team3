@@ -61,7 +61,7 @@ public class    ProductController {
         model.addAttribute("direction", direction);
         model.addAttribute("slug", slug);
 
-        return "list";
+        return "product/list2";
     }
 
     @GetMapping("/product/view")
