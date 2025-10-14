@@ -36,8 +36,12 @@ public class ProductService {
         productRepository.save(product);
     };
 
-    public Optional<Product> getProduct(int proId) {
-        return productRepository.findById(proId);
+    public Product getProduct(int proId) {
+        Optional<Product> product = productRepository.findById(proId);
+        if(product.isPresent()){
+            return product.get();
+        }
+        return null;
     };
 
     public List<Product> getAllProducts() {
@@ -66,11 +70,17 @@ public class ProductService {
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, 10, sort); // 페이지당 10개
+
         return productRepository.findProducts(pageable, slugs);
     }
 
     @Transactional
     public void deleteProducts(List<Integer> proIds) {
         productRepository.deleteByProductIdIn(proIds);
+    }
+
+    @Transactional
+    public void updateViewProduct(int proId) {
+        productRepository.updateViewByProductId(proId);
     }
 }
