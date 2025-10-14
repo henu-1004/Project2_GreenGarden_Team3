@@ -9,24 +9,24 @@
 
     <aside class="sidebar">
         <div class="cs-breadcrumb">
-            <a href="#">홈</a>
+            <a th:href="@{/cs/faq/list}">홈</a>
             <span>></span>
-            <a href="#" class="active-breadcrumb">자주묻는 질문</a>
+            <a th:href="@{/cs/faq/list}" class="active-breadcrumb" th:text="${faqDTO.category1}">자주묻는 질문</a>
         </div>
 
         <ul>
             <li class="menu open">
                 <div class="menu-title">
-                    <a href="#">자주묻는 질문</a>
+                    <a th:href="@{/cs/faq/list}">자주묻는 질문</a>
                 </div>
                 <ul class="submenu">
-                    <li class="active"><a href="#">회원</a></li>
-                    <li><a href="#">쿠폰/이벤트</a></li>
-                    <li><a href="#">주문/결제</a></li>
-                    <li><a href="#">배송</a></li>
-                    <li><a href="#">취소/반품/교환</a></li>
-                    <li><a href="#">여행/숙박/항공</a></li>
-                    <li><a href="#">안전거래</a></li>
+                    <li th:classappend="${faqDTO.category1 == '회원' ? 'active' : ''}"><a th:href="@{/cs/faq/list(type='회원')}">회원</a></li>
+                    <li th:classappend="${faqDTO.category1 == '쿠폰/이벤트' ? 'active' : ''}"><a th:href="@{/cs/faq/list(type='쿠폰/이벤트')}">쿠폰/이벤트</a></li>
+                    <li th:classappend="${faqDTO.category1 == '주문/결제' ? 'active' : ''}"><a th:href="@{/cs/faq/list(type='주문/결제')}">주문/결제</a></li>
+                    <li th:classappend="${faqDTO.category1 == '배송' ? 'active' : ''}"><a th:href="@{/cs/faq/list(type='배송')}">배송</a></li>
+                    <li th:classappend="${faqDTO.category1 == '취소/반품/교환' ? 'active' : ''}"><a th:href="@{/cs/faq/list(type='취소/반품/교환')}">취소/반품/교환</a></li>
+                    <li th:classappend="${faqDTO.category1 == '여행/숙박/항공' ? 'active' : ''}"><a th:href="@{/cs/faq/list(type='여행/숙박/항공')}">여행/숙박/항공</a></li>
+                    <li th:classappend="${faqDTO.category1 == '안전거래' ? 'active' : ''}"><a th:href="@{/cs/faq/list(type='안전거래')}">안전거래</a></li>
                 </ul>
             </li>
         </ul>
@@ -40,39 +40,25 @@
 
             <div class="cs-view-header">
                 <div class="cs-view-category-title">
-                    <span class="cs-view-category">가입</span>
+                    <span class="cs-view-category" th:text="${faqDTO.category2}">가입</span>
 <!--                    <span class="cs-view-desc">관련 질문입니다.</span>-->
                 </div>
             </div>
 
             <div class="cs-notice-view-box">
-                <h3 class="cs-view-title">케이마켓 회원가입은 어떻게 하나요?</h3>
-                <div class="cs-view-date">2022.11.30</div>
+                <h3 class="cs-view-title" th:text="${faqDTO.title}">케이마켓 회원가입은 어떻게 하나요?</h3>
+                <div class="cs-view-date" th:text="${#temporals.format(faqDTO.createdAt, 'yyyy.MM.dd')}">2022.11.30</div>
             </div>
 
             <div class="cs-content-box">
-                <p>
-                    안녕하세요. 케이마켓입니다.
-                    <br>
-                    회원가입 방법을 안내드립니다.
-                    <br><br>
-                    1. 케이마켓 홈페이지 우측 상단의 [회원가입] 버튼을 클릭합니다.
-                    <br>
-                    2. 본인인증을 진행합니다.
-                    <br>
-                    3. 고양이와 인증샷을 찍어서 올립니다.
-                    <br>
-                    4. 이용약관에 동의합니다.
-                    <br>
-                    5. 가입완료!
-                    <br><br>
-                    명령하지마라.
+                <p th:utext="${faqDTO.content}">
+
                 </p>
             </div>
         </div>
 
         <div class="cs-button-group">
-            <a href="#" class="cs-button">목록</a>
+            <a th:href="@{/cs/faq/list(type=${faqDTO.category1})}" class="cs-button">목록</a>
         </div>
 
     </section>

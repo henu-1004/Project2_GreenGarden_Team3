@@ -48,6 +48,18 @@ body {
     border-radius: 8px;
     padding: 0;
 }
+/* 💡 수정: 2차 메뉴 호버 시 스타일 */
+.sidebar .submenu li a:hover {
+    color: #175a48; /* 메인 컬러로 변경 */
+    background-color: #f7fcfb; /* 연한 배경으로 변경 */
+}
+
+/* 💡 수정: 활성화된 2차 메뉴 (li.active) */
+.sidebar .submenu li.active a {
+    font-weight: bold;
+    color: #175a48;
+    background-color: #e6f2ed; /* 기존 연초록 배경 유지 (브랜드 색상 연한 버전) */
+}
 
 /* 브레드크럼 (사이드바 내부 - HTML 구조상 #main-section으로 이동 권장) */
 .cs-breadcrumb {
@@ -126,11 +138,17 @@ body {
     transition: all 0.2s;
 }
 
-/* 활성화된 2차 메뉴 */
-.sidebar .submenu li.active a {
+/* 💡 수정: 호버 시 스타일 */
+.sidebar .submenu li a:hover {
+    color: #175a48;
+    background-color: #f7fcfb;
+}
+
+/* 💡 수정: 현재 활성화된 메뉴 스타일 (a.active로 변경) */
+.sidebar .submenu li a.active {
     font-weight: bold;
     color: #175a48;
-    background-color: #e6f2ed; /* 기존 연초록 배경 유지 */
+    background-color: #e6f2ed;
 }
 
 /* --- 3. 메인 섹션 (Main Section) 스타일 (view.html) --- */
@@ -443,6 +461,16 @@ body {
 /* FAQ 콘텐츠 영역 */
 .cs-content {
     padding: 0;
+}
+.faq-item a {
+    color: #333; /* 검정색으로 변경 */
+    text-decoration: none; /* 밑줄 제거 */
+    display: block; /* a 태그 전체를 클릭 가능하게 */
+}
+/* 💡 추가: FAQ 질문 제목 호버 시 스타일 */
+.faq-item a:hover {
+    color: #175a48; /* 메인 브랜드 컬러로 변경 */
+    text-decoration: underline; /* 호버 시 밑줄 다시 표시 (선택 사항) */
 }
 
 /* FAQ 블록 전체 */
