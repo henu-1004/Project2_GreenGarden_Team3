@@ -29,7 +29,7 @@ public class Product {
     private String proNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SLUG", referencedColumnName = "SLUG") // 마이그레이션 끝난 뒤 NOT NULL 권장
+    @JoinColumn(name = "category_slug", referencedColumnName = "SLUG") // 마이그레이션 끝난 뒤 NOT NULL 권장
     private Category category;
 
     @Column
