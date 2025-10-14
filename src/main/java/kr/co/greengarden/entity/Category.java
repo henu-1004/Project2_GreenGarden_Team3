@@ -30,7 +30,7 @@ public class Category {
     @Column
     private String name;
 
-    @Column
+    @Column(unique = true)
     private String slug;
 
     @Column
