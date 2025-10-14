@@ -38,12 +38,7 @@ public class    ProductController {
     private final MemberService memberService;
 
     @GetMapping("/product/list")
-    public String productListPage() {
-        return "product/list";
-    }
-
-    @GetMapping("/product/list2")
-    public String productListPage2(@RequestParam(defaultValue = "0") int page,
+    public String productListPage(@RequestParam(defaultValue = "0") int page,
                                    @RequestParam(defaultValue = "proId") String sortBy,
                                    @RequestParam(defaultValue = "desc") String direction,
                                    @RequestParam(defaultValue = "plants") String slug,
@@ -61,7 +56,7 @@ public class    ProductController {
         model.addAttribute("direction", direction);
         model.addAttribute("slug", slug);
 
-        return "product/list2";
+        return "product/list";
     }
 
     @GetMapping("/product/view")
@@ -73,10 +68,10 @@ public class    ProductController {
             model.addAttribute("product", optProduct.get());
         }
 
-        return "product/view2";
+        return "product/view";
     }
 
-    @GetMapping("/product/cart2")
+    @GetMapping("/product/cart")
     public String cartPage(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
         List<CartListDTO> cartList = cartService.getCartList(memberDetails.getUsername());
         for (CartListDTO c : cartList) {
@@ -86,10 +81,15 @@ public class    ProductController {
 
         model.addAttribute("cartList", cartList);
 
-        return "product/cart2";
+        return "product/cart";
     }
 
     @GetMapping("/product/order")
+    public String orderPage(){
+        return "product/order";
+    }
+
+    @GetMapping("/product/order2")
     public String orderPage(@RequestParam String cartId, Model model) {
         List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
         for (CartListDTO c : cartList) {
@@ -98,12 +98,6 @@ public class    ProductController {
         }
 
         model.addAttribute("cartList", cartList);
-
-        return "product/order2";
-    }
-
-    @PostMapping("/product/order")
-    public String orderPage() {
 
         return "product/order2";
     }

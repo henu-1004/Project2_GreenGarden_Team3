@@ -20,146 +20,136 @@
     <div class="content-wrap">
         <div th:replace="~{common/aside :: aside}"></div>
         <section id="main-section">
-            <div class="top-nav">
-                <h1>주문하기</h1>
-                <ul class="page-nation">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">장바구니</a></li>
-                    <li><a href="#">주문하기</a></li>
-                </ul>
-            </div>
-            <div class="main-container">
-                <div class="order-contain">
-                    <h2>주문자 정보</h2>
-                    <div class="grop">
-                        <div class="form-group">
-                            <label><span>이름</span><input type="text"></label>
-                        </div>
-                        <div class="form-group">
-                            <label><span>이메일</span><input type="email"></label>
-                        </div>
-                        <div class="form-group">
-                            <label><span>연락처</span><input type="text"></label>
-                        </div>
-                    </div>
+            <form>
+                <div class="top-nav">
+                    <h1>주문하기</h1>
+                    <ul class="page-nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">장바구니</a></li>
+                        <li><a href="#">주문하기</a></li>
+                    </ul>
                 </div>
                 <hr>
-                <div class="order-contain">
-                    <h2>배송 정보</h2>
-                    <div class="group">
-                        <div class="form-group">
-                            <label><span>이름</span><input type="text"></label>
+                <div class="main-container">
+                        <div class="order-contain">
+                            <h2>배송 정보</h2>
+                            <div class="group">
+                                <div class="form-group">
+                                    <label><span>이름</span><input type="text" name="name"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label><span>연락처</span><input type="text"></label>
+                                </div>
+                                <div class="form-group address">
+                                    <label><span>주소</span><input type="text"></label>
+                                </div>
+                                <div class="form-group">
+                                    <label><span>배송메모</span><textarea> </textarea></label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label><span>연락처</span><input type="text"></label>
+                    <hr>
+                    <div class="order-contain">
+                        <h2>주문 상품</h2>
+                        <div class="table-area">
+                            <table class="cart_table">
+                                <thead>
+                                <tr>
+                                    <th class="col-item">상품명</th>
+                                    <th class="col-count">수량</th>
+                                    <th class="col-dis">할인</th>
+                                    <th class="col-point">포인트</th>
+                                    <th class="col-sum">총합</th>
+                                </tr>
+                                </thead>
+                                <tbody id="cart_items">
+                                <tr>
+                                    <td class="col_item_info">
+                                        <div class="product_image">
+                                            <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image"
+                                                 alt="상품명"
+                                                 onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+                                        </div>
+                                        <div class="product_info">
+                                            <h6>상품명</h6>
+                                            <p>간단한 상품 설명</p>
+                                        </div>
+                                    </td>
+                                    <td>1개</td>
+                                    <td>
+                                        <div class="price_after">
+                                            <p class="original_price">30,000원</p>
+                                            <p class="discount_rate">10% ↓</p>
+                                        </div>
+                                    </td>
+                                    <td>포인트</td>
+                                    <td>29,500원</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="form-group address">
-                            <label><span>주소</span><input type="text"></label>
+                    </div>
+                    <hr>
+                    <div class="order-contain order-chek">
+                        <div class="payment-summary">
+                            <h2>최종결제정보</h2>
+                            <div class="summary-details">
+                                <div class="item">
+                                    <span>상품수</span>
+                                    <span id="product-count">1</span>
+                                </div>
+                                <div class="item">
+                                    <span>상품금액</span>
+                                    <span id="product-price">27,000</span>
+                                </div>
+                                <div class="item">
+                                    <span>할인금액</span>
+                                    <span id="discount-price">-1,350</span>
+                                </div>
+                                <div class="item">
+                                    <span>배송비</span>
+                                    <span id="shipping-fee">0</span>
+                                </div>
+                                <div class="item">
+                                    <span>할인</span>
+                                    <span id="coupon-discount">-1,000</span>
+                                </div>
+                                <hr>
+                                <div class="total-price">
+                                    <span>전체주문금액</span>
+                                    <span id="total-order-price">24,650</span>
+                                </div>
+                                <div class="item">
+                                    <span>적립 포인트</span>
+                                    <span id="earned-points">270</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label><span>배송메모</span><textarea> </textarea></label>
+                        <div class="payment-options">
+                            <h2>최종결제정보</h2>
+                            <div class="options-details">
+                                <label><input type="radio" name="payment-method" value="신용카드"/>신용카드</label>
+                                <label><input type="radio" name="payment-method" value="체크카드"/>체크카드</label>
+                                <label><input type="radio" name="payment-method" value="계좌이체"/>계좌이체</label>
+                                <label><input type="radio" name="payment-method" value="무통장입금"/>무통장입금</label>
+                                <label><input type="radio" name="payment-method" value="휴대폰결제"/>휴대폰결제</label>
+                                <label><input type="radio" name="payment-method" value="삼성페이"/>삼성페이</label>
+                                <label><input type="radio" name="payment-method" value="카카오페이"/>카카오페이</label>
+                                <label><input type="radio" name="payment-method" value="네이버페이"/>네이버페이</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="order-contain order-agree">
+                        <h2>주문 동의</h2>
+                        <label><input type="checkbox">구매조건 확인 및 결제진행 동의합니다.</label>
+                        <div class="btn-wrap">
+                            <button class="btn btn-primary">주문하기</button>
+                            <button class="btn btn-secondary">주문취소</button>
                         </div>
                     </div>
                 </div>
-                <hr>
-                <div class="order-contain">
-                    <h2>주문 상품</h2>
-                    <div class="table-area">
-                        <table class="cart_table">
-                            <thead>
-                            <tr>
-                                <th class="col-item">상품명</th>
-                                <th class="col-count">수량</th>
-                                <th class="col-dis">할인</th>
-                                <th class="col-point">포인트</th>
-                                <th class="col-sum">총합</th>
-                            </tr>
-                            </thead>
-                            <tbody id="cart_items">
-                            <tr>
-                                <td class="col_item_info">
-                                    <div class="product_image">
-                                        <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
-                                    </div>
-                                    <div class="product_info">
-                                        <h6>상품명</h6>
-                                        <p>간단한 상품 설명</p>
-                                    </div>
-                                </td>
-                                <td>1개</td>
-                                <td>
-                                    <div class="price_after">
-                                        <p class="original_price">30,000원</p>
-                                        <p class="discount_rate">10% ↓</p>
-                                    </div>
-                                </td>
-                                <td>포인트</td>
-                                <td>29,500원</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <hr>
-                <div class="order-contain order-chek">
-                    <div class="payment-summary">
-                        <h2>최종결제정보</h2>
-                        <div class="summary-details">
-                            <div class="item">
-                                <span>상품수</span>
-                                <span id="product-count">1</span>
-                            </div>
-                            <div class="item">
-                                <span>상품금액</span>
-                                <span id="product-price">27,000</span>
-                            </div>
-                            <div class="item">
-                                <span>할인금액</span>
-                                <span id="discount-price">-1,350</span>
-                            </div>
-                            <div class="item">
-                                <span>배송비</span>
-                                <span id="shipping-fee">0</span>
-                            </div>
-                            <div class="item">
-                                <span>할인</span>
-                                <span id="coupon-discount">-1,000</span>
-                            </div>
-                            <hr>
-                            <div class="total-price">
-                                <span>전체주문금액</span>
-                                <span id="total-order-price">24,650</span>
-                            </div>
-                            <div class="item">
-                                <span>적립 포인트</span>
-                                <span id="earned-points">270</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="payment-options">
-                        <h2>최종결제정보</h2>
-                        <div class="options-details">
-                            <label><input type="radio" name="payment-method" value="신용카드" />신용카드</label>
-                            <label><input type="radio" name="payment-method" value="체크카드" />체크카드</label>
-                            <label><input type="radio" name="payment-method" value="계좌이체" />계좌이체</label>
-                            <label><input type="radio" name="payment-method" value="무통장입금" />무통장입금</label>
-                            <label><input type="radio" name="payment-method" value="휴대폰결제" />휴대폰결제</label>
-                            <label><input type="radio" name="payment-method" value="삼성페이" />삼성페이</label>
-                            <label><input type="radio" name="payment-method" value="카카오페이" />카카오페이</label>
-                            <label><input type="radio" name="payment-method" value="네이버페이" />네이버페이</label>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="order-contain order-agree">
-                    <h2>주문 동의</h2>
-                    <label><input type="checkbox">구매조건 확인 및 결제진행 동의합니다.</label>
-                    <div class="btn-wrap">
-                        <button class="btn btn-primary">주문하기</button>
-                        <button class="btn btn-secondary">주문취소</button>
-                    </div>
-                </div>
-            </div>
+            </form>
         </section>
     </div>
 </main>
