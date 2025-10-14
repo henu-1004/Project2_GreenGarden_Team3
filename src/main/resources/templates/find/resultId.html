@@ -42,11 +42,11 @@
         </div>
 
         <div th:if="${info == null}" class="error-box">
-            <p>일치하는 회원 정보를 찾을 수 없습니다.</p>
+            <p th:text="${error != null ? error : '일치하는 회원 정보를 찾을 수 없습니다.'}"></p>
         </div>
     </section>
 
-    <p class="helper">고객님의 정보와 일치하는 아이디입니다.</p>
+    <p class="helper" th:if="${info != null}">고객님의 정보와 일치하는 아이디입니다.</p>
 
     <div class="actions right">
         <a th:href="@{/member/login}">
@@ -58,8 +58,6 @@
 
     </div>
 </main>
-
-
 
 
 <div th:replace="~{common/footer :: footer}"></div>

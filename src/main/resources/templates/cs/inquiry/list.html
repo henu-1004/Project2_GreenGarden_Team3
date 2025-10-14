@@ -1,0 +1,144 @@
+<!--
+  날짜 : 2025/10/14
+  이름 : 박효빈
+  내용 : 문의하기 목록 페이지 (Thymeleaf 바인딩 완료)
+-->
+<div th:replace="~{cs/_csheader.html}"></div>
+<div class="main-container">
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+
+    <aside class="sidebar">
+        <div class="cs-breadcrumb">
+            <a th:href="@{/}">홈</a>
+            <span>></span>
+            <a th:href="@{/cs/inquiry/list}" class="active-breadcrumb">문의하기</a>
+        </div>
+        <ul>
+            <!-- 사이드바 메뉴 (CATEGORY1) -->
+            <li class="menu">
+                <div class="menu-title">
+                    <a th:href="@{/cs/inquiry/list}">문의하기</a>
+                </div>
+                <ul class="submenu open">
+                    <!-- 'type' 파라미터로 필터링 -->
+                    <li th:classappend="${pageRequestDTO.type == '회원' ? 'active' : ''}">
+                        <a th:href="@{/cs/inquiry/list(type='회원')}">회원</a>
+                    </li>
+                    <li th:classappend="${pageRequestDTO.type == '쿠폰/이벤트' ? 'active' : ''}">
+                        <a th:href="@{/cs/inquiry/list(type='쿠폰/이벤트')}">쿠폰/이벤트</a>
+                    </li>
+                    <li th:classappend="${pageRequestDTO.type == '주문/결제' ? 'active' : ''}">
+                        <a th:href="@{/cs/inquiry/list(type='주문/결제')}">주문/결제</a>
+                    </li>
+                    <li th:classappend="${pageRequestDTO.type == '배송' ? 'active' : ''}">
+                        <a th:href="@{/cs/inquiry/list(type='배송')}">배송</a>
+                    </li>
+                    <li th:classappend="${pageRequestDTO.type == '취소/반품/교환' ? 'active' : ''}">
+                        <a th:href="@{/cs/inquiry/list(type='취소/반품/교환')}">취소/반품/교환</a>
+                    </li>
+                    <li th:classappend="${pageRequestDTO.type == '여행/숙박/항공' ? 'active' : ''}">
+                        <a th:href="@{/cs/inquiry/list(type='여행/숙박/항공')}">여행/숙박/항공</a>
+                    </li>
+                    <li th:classappend="${pageRequestDTO.type == '안전거래' ? 'active' : ''}">
+                        <a th:href="@{/cs/inquiry/list(type='안전거래')}">안전거래</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </aside>
+
+    <section id="main-section">
+        <!-- 현재 선택된 카테고리를 제목으로 표시 -->
+        <h1 class="cs-main-title" th:text="${pageRequestDTO.type != null and pageRequestDTO.type != '' ? pageRequestDTO.type : '문의하기 전체'}">문의하기 전체</h1>
+
+        <div class="cs-section">
+            <!-- 문의하기 버튼: 작성 페이지로 이동 -->
+            <div class="qna-write-btn-area">
+                <a th:href="@{/cs/inquiry/write}" class="qna-write-btn">문의하기</a>
+            </div>
+
+            <!-- QNA 테이블 -->
+            <div class="cs-content">
+                <table class="qna-table">
+                    <colgroup>
+                        <col style="width: 10%;">
+                        <col style="width: 40%;">
+                        <col style="width: 15%;">
+                        <col style="width: 15%;">
+                        <col style="width: 20%;">
+                    </colgroup>
+                    <thead>
+                    <tr>
+                        <th>유형</th>
+                        <th>제목</th>
+                        <th>답변상태</th>
+                        <th>작성자</th>
+                        <th>날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 목록 데이터 바인딩 -->
+                    <tr th:each="inquiry : ${responseDTO.dtoList}">
+                        <td th:text="${inquiry.category2}">가입</td>
+                        <td class="qna-title">
+                            <!-- 상세 페이지 링크: inquiryId와 검색/페이징 조건 유지 -->
+                            <a th:href="@{/cs/inquiry/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+                               th:text="${inquiry.title}">가입문의드립니다</a>
+                        </td>
+                        <td>
+                            <!-- 답변 상태 표시 -->
+                            <span th:classappend="${inquiry.status == '완료' ? 'completed' : 'waiting'}"
+                                  th:text="${inquiry.status}" class="qna-status">답변완료</span>
+                        </td>
+                        <td th:text="${inquiry.writer}">user***</td>
+                        <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}">23.10.31</td>
+                    </tr>
+                    <!-- 목록이 비어있을 경우 -->
+                    <tr th:if="${responseDTO.dtoList.isEmpty()}">
+                        <td colspan="5" style="text-align: center;">등록된 문의 내역이 없습니다.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 페이징 처리 -->
+        <div class="cs-pagination" th:if="${!responseDTO.dtoList.isEmpty()}">
+
+            <!-- 이전 버튼 (첫 페이지가 아닐 때만 활성화) -->
+            <a th:href="${responseDTO.prev ? #strings.concat('/cs/inquiry/list', pageRequestDTO.getLink(responseDTO.start - 1)) : '#'} "
+               th:classappend="${responseDTO.prev ? '' : 'disabled'}" class="prev">&lt; 이전</a>
+
+            <!-- 페이지 번호 링크 -->
+            <th:block th:each="pageNum : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <a th:href="@{/cs/inquiry/list + ${pageRequestDTO.getLink(pageNum)}}"
+                   th:classappend="${pageNum == pageRequestDTO.pg ? 'active' : ''}"
+                   th:text="${pageNum}">1</a>
+            </th:block>
+
+            <!-- 다음 버튼 (마지막 페이지가 아닐 때만 활성화) -->
+            <a th:href="${responseDTO.next ? #strings.concat('/cs/inquiry/list', pageRequestDTO.getLink(responseDTO.end + 1)) : '#'}"
+               th:classappend="${responseDTO.next ? '' : 'disabled'}" class="next">다음 &gt;</a>
+        </div>
+
+
+        <!-- 검색 폼 -->
+        <div class="search-area">
+            <form action="/cs/inquiry/list" method="get">
+                <!-- 현재 카테고리/유형 유지 (숨겨진 필드) -->
+                <input type="hidden" name="type" th:value="${pageRequestDTO.type}">
+
+                <select name="searchType" class="search-select">
+                    <option value="all" th:selected="${pageRequestDTO.searchType == null or pageRequestDTO.searchType == 'all'}">전체</option>
+                    <option value="T" th:selected="${pageRequestDTO.searchType == 'T'}">제목</option>
+                    <option value="C" th:selected="${pageRequestDTO.searchType == 'C'}">내용</option>
+                    <option value="W" th:selected="${pageRequestDTO.searchType == 'W'}">작성자</option>
+                </select>
+                <input type="text" name="keyword" th:value="${pageRequestDTO.keyword}" class="search-input" placeholder="검색어를 입력하세요">
+                <button type="submit" class="search-button">검색</button>
+            </form>
+        </div>
+
+    </section>
+</div>
+<div th:replace="~{cs/_csfooter.html}"></div>

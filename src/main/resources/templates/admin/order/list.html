@@ -12,17 +12,17 @@
     <link rel="stylesheet" th:href="@{/css/admin/order/commonOrder.css}">
 </head>
 <body>
-<div th:replace="~{/admin/common/header :: header}"></div>
+<div th:replace="~{admin/common/header :: header}"></div>
 <main>
     <section class="content-wrap">
-        <div th:replace="~{/admin/common/aside :: aside}"></div>
+        <div th:replace="~{admin/common/aside :: aside}"></div>
         <section id="main-section">
-            <div class="top_nav">
+            <div class="top-nav">
                 <h5>주문현황</h5>
-                <ul class="page_nation">
+                <ul class="page-nation">
                     <li><a href="#">Home</a></li>
-                    <li><a href="#">마이페이지</a></li>
-                    <li><a href="#">장바구니</a></li>
+                    <li><a href="#">주문관리</a></li>
+                    <li><a href="#">주문현황</a></li>
                 </ul>
             </div>
             <form th:action="@{#}" method="get" class="search-form">
@@ -49,7 +49,7 @@
                     <th>배송</th>
                 </tr>
                 <tr>
-                    <td><a href="#">10121211341</a></td>
+                    <td><span class="order-number-link" onclick="openModal('modalOrderDetail')">10121211341</span></td>
                     <td>abc123</td>
                     <td>김유신</td>
                     <td>2</td>
@@ -58,7 +58,7 @@
                     <td style="color: green">결제완료</td>
                     <td>2025-10-24 13:45:55</td>
                     <td class="del-btn">
-                        <input type="button" value="배송하기">
+                        <input type="button" value="배송하기" onclick="openModal('modalDeliveryInput')">
                     </td>
                 </tr>
                 <tr>
@@ -101,8 +101,9 @@
         </section>
     </section>
 </main>
-<div th:replace="~{/common/footer :: footer}"></div>
-<div th:replace="~{/admin/order/_deliveryInput :: modal-delivery-input}"></div>
-<div th:replace="~{/admin/order/_orderDetail :: modal-order-detail}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
+<div th:replace="~{admin/order/_orderDetail :: modal-order-detail}"></div>
+<div th:replace="~{admin/order/_deliveryInput :: modal-delivery-input}"></div>
+<script th:src="@{/js/admin/order/order.js}"></script>
 </body>
 </html>

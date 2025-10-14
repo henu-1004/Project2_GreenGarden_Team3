@@ -89,8 +89,19 @@ public class FindController {
     @PostMapping("/find/userId/result")
     public String result(@RequestParam String name,
                          @RequestParam String email,
-                         Model model){
+                         Model model,
+                         HttpSession session){
+
+        log.info("[find/userId/result] raw name='{}', email='{}'", name, email);
+
         Optional<FindResultDTO> result = memberGeneralService.findMemberInfoByNameAndEmail(name, email);
+
+        // 결과 로깅
+        log.info("query present? {}", result.isPresent());
+        result.ifPresent(r ->
+                log.info("FOUND -> name='{}', email='{}', memId='{}', joinDate={}",
+                        r.getName(), r.getEmail(), r.getMemId(), r.getJoinDate())
+        );
 
         if(result.isPresent()){
             model.addAttribute("info", result.get());

@@ -3,10 +3,10 @@
     이름 : 이수연
     내용 : 주문현황 - 주문상세 모달 & 화면(html,css)완료
 -->
-<div class="madal-detail" th:fragment="modal-order-detail">
+<div id="modalOrderDetail" th:fragment="modal-order-detail">
     <link rel="stylesheet" th:href="@{/css/admin/order/_orderDetail.css}">
     <div class="modal-content">
-        <button class="close-button">&times;</button>
+        <button class="close-button" onclick="closeModal('modalOrderDetail')">&times;</button>
         <div class="modal-header">
             <div class="modal-title">
                 <h2>주문상세</h2>
