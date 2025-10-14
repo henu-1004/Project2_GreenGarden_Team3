@@ -23,7 +23,7 @@
 }
 
 /* 1차 메뉴 a 태그 */
-#aside > ul > li > a {
+#aside > ul > li > span {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -36,7 +36,7 @@
     transition: color 0.3s;
 }
 
-#aside > ul > li > a:hover {
+#aside > ul > li > span:hover {
     color: #A8C6C4;
     font-weight: bolder;
 }

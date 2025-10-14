@@ -4,6 +4,12 @@
     이름 : 이수연
     내용 : 관리자 쿠폰목록 CSS
 */
+/* 주문번호가 있는 클래스를 지정하여 밑줄을 살림 */
+.coupon-num-link {
+    text-decoration: underline; /* 밑줄을 다시 추가 */
+    cursor: pointer;
+}
+
 a {
     text-decoration: none;
     color: inherit;
@@ -14,7 +20,7 @@ body {
 }
 
 /* 메인 콘텐츠 영역 */
-/* 3. aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content_wrap 컨테이너를 header-wrap과 동일하게 설정 */
+/* 3. aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content-wrap 컨테이너를 header-wrap과 동일하게 설정 */
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
@@ -38,7 +44,7 @@ body {
 }
 
 /* 탑 페이지 네이션 */
-.top_nav {
+.top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,12 +53,12 @@ body {
     margin-bottom: 20px;
 }
 
-.top_nav h5 {
+.top-nav h5 {
     font-size: 1.2em;
     font-weight: bold;
 }
 
-.top_nav .page_nation {
+.top-nav .page-nation {
     display: flex;
     gap: 10px;
     list-style: none;
@@ -61,7 +67,7 @@ body {
     font-size: 0.9em;
 }
 
-.top_nav .page_nation li:not(:last-child)::after {
+.top-nav .page-nation li:not(:last-child)::after {
     content: " > ";
     margin-left: 5px;
     color: #999;
@@ -70,7 +76,6 @@ body {
 /* 검색  ㅡㅡㅡㅡㅡ */
 .search-form {
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
     margin-bottom: 20px;
 
     position: relative; /* input 내부 버튼 위치를 위한 기준점 */
@@ -95,13 +100,18 @@ body {
 
 .search-form select {
     margin-right: 10px;
+    width: 100px;
+}
+
+.search-form input {
+    width: 300px;
 }
 
 .search-form button {
     position: absolute;
-    top: 50%;
+    top: 45%;
     right: 4px;
-    transform: translateY(-45%);
+    transform: translateY(-50%);
     background: none;
     border: none;
     cursor: pointer;
@@ -115,27 +125,20 @@ body {
 
 /* 주문현황 테이블 디자인 ㅡㅡㅡㅡㅡㅡ */
 .coupon-table {
-    width: 100%;
     border-collapse: collapse;
-    text-align: center;
-    align-items: center;
-    font-size: 13px;
 }
 
 .coupon-table th {
     padding: 10px;
     border-top: 3px solid #ddd;
     border-bottom: 3px solid #ddd;
+    font-size: 15px;
 }
 
 .coupon-table td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
-}
-
-/* 주문번호가 있는 클래스를 지정하여 밑줄을 살림 */
-.coupon-table a {
-    text-decoration: underline; /* 밑줄을 다시 추가 */
+    font-size: 10px;
 }
 
 

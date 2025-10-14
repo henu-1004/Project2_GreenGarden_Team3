@@ -1,17 +1,99 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin list</title>
+    <!--
+        날짜 : 2025/10/14
+        이름 : 이수연
+        내용 : 관리자 쿠폰발급현황 페이지
+    -->
+    <link rel="stylesheet" th:href="@{/css/admin/coupon/list.css}">
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/common/aside :: aside}"></div>
+        <section id="main-section">
+            <div class="top-nav">
+                <h3>쿠폰목록</h3>
+                <ul class="page-nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">쿠폰관리</a></li>
+                    <li><a href="#">쿠폰목록</a></li>
+                </ul>
+            </div>
+            <form th:action="@{#}" method="get" class="search-form">
+                <select>
+                    <option>발급번호</option>
+                    <option>쿠폰번호</option>
+                    <option>쿠폰명</option>
+                    <option>사용자</option>
+                </select>
+                <input type="text" name="keyword" placeholder="세부 검색을 해보세요"/>
+                <button type="submit">
+                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />
+                </button>
+            </form>
+            <table class="coupon-table">
+                <tr>
+                    <th>발급번호</th>
+                    <th>쿠폰번호</th>
+                    <th>쿠폰종류</th>
+                    <th>쿠폰명</th>
+                    <th>사용자</th>
+                    <th>상태</th>
+                    <th>사용일</th>
+                    <th>관리</th>
+                </tr>
+                <tr>
+                    <td><span class="coupon-num-link" onclick="openModal('modalIssueInfo')">10121211341</span></td>
+                    <td>10121211341</td>
+                    <td>개별상품 할인</td>
+                    <td>회원가입 축하 쿠폭</td>
+                    <td>a102</td>
+                    <td style="color: green">사용</td>
+                    <td>2025-10-24 13:45:55</td>
+                    <td>
+                        <input type="button" value="종료">
+                    </td>
+                </tr>
+                <tr>
+                    <td><span class="coupon-num-link" onclick="openModal('modalIssueInfo')">10121211341</span></td>
+                    <td>10121211341</td>
+                    <td>개별상품 할인</td>
+                    <td>회원가입 축하 쿠폭</td>
+                    <td>a102</td>
+                    <td style="color: red">미사용</td>
+                    <td>2025-10-24 13:45:55</td>
+                    <td>
+                        <input type="button" value="종료">
+                    </td>
+                </tr>
+            </table>
+            <button type="button" onclick="openModal()">등록하기</button>
+            <section class="pagination">
+                <!-- 이전 페이지 버튼 -->
+                <a href="#" class="prev">&lt; 이전</a>
 
-			</div>
-		</div>
-	</main>
+                <!-- 페이지 번호들 -->
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+
+                <!-- 다음 페이지 버튼 -->
+                <a href="#" class="next">다음 &gt;</a>
+            </section>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
+<div th:replace="~{/admin/coupon/_issuedCouponInfo :: modal-coupon-issued}"></div>
+<script th:src="@{/js/admin/aside.js}"></script>
+<script th:src="@{/js/admin/coupon/coupon.js}"></script>
 </body>
 </html>
