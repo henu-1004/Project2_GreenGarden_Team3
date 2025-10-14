@@ -40,7 +40,7 @@
                         <h3 th:text="${entry.key}">2차 분류 제목</h3>
                         <ul>
                             <li th:each="faq : ${entry.value}" class="faq-item">
-                                <a th:hred="@{/cs/faq/view(faqId=${faq.faqId})}" th:text="${faq.title}">FAQ 제목</a>
+                                <a th:href="@{/cs/faq/view(faqId=${faq.faqId})}" th:text="${faq.title}">FAQ 제목</a>
                             </li>
 
                         </ul>
@@ -55,25 +55,30 @@
 
 <div th:replace="~{cs/_csfooter.html}"></div>
 <script>
-    // 💡 1. 페이지 로드 시, 모든 카테고리별로 3개 초과 항목을 숨기는 로직
+    // 페이지 로드 시, 모든 카테고리별로 3개 초과 항목을 숨기는 로직
     document.addEventListener('DOMContentLoaded', () => {
         const faqBlocks = document.querySelectorAll('.faq-block');
 
         faqBlocks.forEach(faqBlock => {
             const items = faqBlock.querySelectorAll('.faq-item');
             const moreBtn = faqBlock.querySelector('.more-btn');
-            const limit = 3; // 초기 표시 개수: 3개
+            const initialLimit = 3; // 초기 표시 개수: 3개
 
-            // 항목이 3개를 초과할 때만 숨김 처리
-            if (items.length > limit) {
-                // 4번째 항목(index 3)부터 끝까지 순회하며 숨김 처리
-                for (let i = limit; i < items.length; i++) {
+            // 항목이 초기 제한 개수(3개)를 초과할 때만 숨김 처리
+            if (items.length > initialLimit) {
+                // 4번째 항목(index 3)부터 끝까지 숨김 처리
+                for (let i = initialLimit; i < items.length; i++) {
                     items[i].style.display = 'none';
                 }
 
+                // 버튼에 현재 보이는 개수와 전체 개수를 저장
+                moreBtn.dataset.visibleCount = initialLimit;
+                moreBtn.dataset.totalCount = items.length;
+
                 // 더보기 버튼을 활성화하고 텍스트를 설정
+                const remaining = items.length - initialLimit;
                 moreBtn.style.display = 'block';
-                moreBtn.textContent = '더보기 (' + (items.length - limit) + '개 더)';
+                moreBtn.textContent = `더보기 (${remaining}개 더)`;
                 moreBtn.classList.remove('expanded'); // 상태 초기화
             } else {
                 // 항목이 3개 이하일 경우 버튼을 숨김
@@ -82,32 +87,48 @@
         });
     });
 
-    // 💡 2. 더보기/접기 버튼 클릭 이벤트 함수
+    // 💡 2. 더보기/접기 버튼 클릭 이벤트 함수 (수정된 로직)
     function toggleMore(button) {
         const faqBlock = button.closest('.faq-block');
         const items = faqBlock.querySelectorAll('.faq-item');
-        const limit = 3;
+        const totalCount = parseInt(button.dataset.totalCount);
+        const initialLimit = 3; // 초기 표시 개수
+        const step = 10; // 한번에 더 보여줄 개수 (10개)
+        let visibleCount = parseInt(button.dataset.visibleCount);
 
         if (button.classList.contains('expanded')) {
-            // [현재 '접기' 상태] -> '더보기'로 전환 (숨기기)
+            // [현재 '접기' 상태] -> '더보기'로 전환 (초기 3개만 보이기)
 
-            // 4번째 항목(index 3)부터 숨기기
-            for (let i = limit; i < items.length; i++) {
+            // 4번째 항목부터 모두 숨김
+            for (let i = initialLimit; i < totalCount; i++) {
                 items[i].style.display = 'none';
             }
 
             button.classList.remove('expanded');
-            button.textContent = '더보기 (' + (items.length - limit) + '개 더)';
+            button.dataset.visibleCount = initialLimit;
+            button.textContent = `더보기 (${totalCount - initialLimit}개 더)`;
+
         } else {
-            // [현재 '더보기' 상태] -> '접기'로 전환 (모두 보이기)
+            // [현재 '더보기' 상태] -> 다음 스텝 보여주기 또는 '접기'로 전환
 
-            // 모든 항목을 리스트 아이템으로 표시 (보이기)
-            items.forEach(item => {
-                item.style.display = 'list-item';
-            });
+            const nextCount = Math.min(visibleCount + step, totalCount);
 
-            button.classList.add('expanded');
-            button.textContent = '접기';
+            // 현재 보이는 항목 수(visibleCount)부터 다음 스텝까지 보여주기
+            for (let i = visibleCount; i < nextCount; i++) {
+                items[i].style.display = 'list-item';
+            }
+
+            button.dataset.visibleCount = nextCount;
+            const remaining = totalCount - nextCount;
+
+            if (remaining > 0) {
+                // 아직 남은 항목이 있다면 '더보기' 버튼 유지
+                button.textContent = `더보기 (${remaining}개 더)`;
+            } else {
+                // 모든 항목을 다 보여줬다면 '접기'로 전환
+                button.classList.add('expanded');
+                button.textContent = '접기';
+            }
         }
     }
 </script>
