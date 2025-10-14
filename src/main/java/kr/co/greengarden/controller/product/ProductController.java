@@ -7,6 +7,7 @@ package kr.co.greengarden.controller.product;
 */
 import kr.co.greengarden.dto.CartDTO;
 import kr.co.greengarden.dto.CartListDTO;
+import kr.co.greengarden.dto.OrderInfoDTO;
 import kr.co.greengarden.dto.ProductListDTO;
 import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.Cart;
@@ -90,11 +91,40 @@ public class    ProductController {
     @GetMapping("/product/order2")
     public String orderPage(@RequestParam String cartId, Model model) {
         List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
+
+        OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
+
+        int count = 0;
+        int originalTotalPrice = 0;
+        int totalPrice = 0;
+        int discountPrice = 0;
+        int deliveryFee = 0;
+        int totalPoint = 0;
+
         for (CartListDTO c : cartList) {
             int original = (int) Math.ceil(c.getPrice() / (1 - (c.getDiscountRate() / 100.0)));
             c.setOriginalPrice(original);
+
+            count += c.getQuantity();
+            originalTotalPrice += original * count;
+            discountPrice += (c.getPrice() - original) * count;
+            if(deliveryFee < c.getDeliveryFee()) {
+                deliveryFee = c.getDeliveryFee();
+            }
+            totalPoint += c.getPoint() * count;
+            totalPrice += c.getPrice() * count;
         }
 
+        totalPrice += deliveryFee;
+
+        orderInfoDTO.setCount(count);
+        orderInfoDTO.setOriginalTotalPrice(originalTotalPrice);
+        orderInfoDTO.setTotalPrice(totalPrice);
+        orderInfoDTO.setDiscountPrice(discountPrice);
+        orderInfoDTO.setDeliveryFee(deliveryFee);
+        orderInfoDTO.setTotalPoint(totalPoint);
+
+        model.addAttribute("orderInfo", orderInfoDTO);
         model.addAttribute("cartList", cartList);
 
         return "product/order2";
