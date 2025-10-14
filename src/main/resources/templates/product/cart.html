@@ -20,38 +20,38 @@
     <div class="content-wrap">
         <div th:replace="~{common/aside :: aside}"></div>
         <section id="main-section">
-            <div class="top_nav">
+            <div class="top-nav">
                 <h5>장바구니</h5>
-                <ul class="page_nation">
+                <ul class="page-nation">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">마이페이지</a></li>
                     <li><a href="#">장바구니</a></li>
                 </ul>
             </div>
             <section>
-                <form th:action="@{/product/order}" method="POST">
-                    <table class="cart_table">
+                <form th:action="@{/product/order}" method="POST" class="cart-form">
+                    <table class="cart-table">
                         <thead>
                             <tr>
-                                <th class="col_check"><input type="checkbox" id="checkAll"/></th>
-                                <th class="col_item">상품명</th>
-                                <th class="col_count">수량</th>
-                                <th class="col_price">판매가</th>
-                                <th class="col_dis">할인</th>
-                                <th class="col_point">포인트</th>
-                                <th class="col_fee">배송비</th>
-                                <th class="col_sum">총합</th>
-                                <th class="col_del">삭제</th>
+                                <th class="col-check"><input type="checkbox" id="checkAll"/></th>
+                                <th class="col-item">상품명</th>
+                                <th class="col-count">수량</th>
+                                <th class="col-price">판매가</th>
+                                <th class="col-dis">할인</th>
+                                <th class="col-point">포인트</th>
+                                <th class="col-fee">배송비</th>
+                                <th class="col-sum">총합</th>
+                                <th class="col-del">삭제</th>
                             </tr>
                         </thead>
-                        <tbody id="cart_items">
+                        <tbody id="cart-items">
                             <tr th:each="cart : ${cartList}">
                                 <td class="col-check"><input type="checkbox" class="checkAll"/></td>
-                                <td class="col_item_info">
-                                    <div class="product_image">
+                                <td class="col-item-info">
+                                    <div class="product-image">
                                         <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
                                     </div>
-                                    <div class="product_info">
+                                    <div class="product-info">
                                         <h6>[[${cart.name}]]</h6>
                                         <p>[[${cart.description}]]</p>
                                     </div>
@@ -61,17 +61,17 @@
                                     <p class="price">[[${cart.price}]]원</p>
                                 </td>
                                 <td>
-                                    <div class="price_after">
-                                        <p class="original_price">[[${cart.originalPrice}]]원</p>
-                                        <p class="discount_rate">[[${cart.discountRate}]]% ↓</p>
+                                    <div class="price-after">
+                                        <p class="original-price">[[${cart.originalPrice}]]원</p>
+                                        <p class="discount-rate">[[${cart.discountRate}]]% ↓</p>
                                     </div>
                                 </td>
                                 <td>[[${cart.point * cart.quantity}]]</td>
                                 <td>
-                                    <p class="shopping_fee">배송비 [[${cart.deliveryFee}]]원</p>
+                                    <p class="shopping-fee">[[${cart.deliveryFee}]]원</p>
                                 </td>
                                 <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
-                                <td class="col_del_info">
+                                <td class="col-del-info">
                                     <a th:href="@{/product/order(cartId=${cart.cartId})}" > 바로 주문 </a> <br>
                                     <a th:href="@{#}"> 삭제 </a>
                                 </td>
@@ -79,40 +79,37 @@
 
                         </tbody>
                     </table>
-                    <section class="cart-summary">
-                        <h3>전체 합계</h3>
-                        <table border="1" class="order-summary">
-                            <tr>
-                                <th>상 품 수</th>
-                                <td>1개</td>
-                            </tr>
-                            <tr>
-                                <th>상 품 금 액</th>
-                                <td>2원</td>
-                            </tr>
-                            <tr>
-                                <th>할 인 금 액</th>
-                                <td>3원</td>
-                            </tr>
-                            <tr>
-                                <th>배 송 비</th>
-                                <td>4원</td>
-                            </tr>
-                            <tr>
-                                <th>총 금 액</th>
-                                <td>5원</td>
-                            </tr>
-                            <tr>
-                                <th>적립 포인트</th>
-                                <td>6</td>
-                            </tr>
-                        </table>
-
-                        <div class="cart-action">
-                            <button type="button" id="checkout-btn">주문하기</button>
-
+                    <section class="payment-summary">
+                        <h2>전체합계</h2>
+                        <div class="summary-details">
+                            <div class="item">
+                                <span>상품수</span>
+                                <span id="product-count">1</span>
+                            </div>
+                            <div class="item">
+                                <span>상품금액</span>
+                                <span id="product-price">27,000</span>
+                            </div>
+                            <div class="item">
+                                <span>할인금액</span>
+                                <span id="discount-price">-1,350</span>
+                            </div>
+                            <div class="item">
+                                <span>배송비</span>
+                                <span id="shipping-fee">0</span>
+                            </div>
+                            <hr>
+                            <div class="total-price">
+                                <span>전체주문금액</span>
+                                <span id="total-order-price">24,650</span>
+                            </div>
+                            <div class="item">
+                                <span>적립 포인트</span>
+                                <span id="earned-points">270</span>
+                            </div>
                         </div>
                     </section>
+                    <button id="orderButton">주문하기</button>
                 </form>
                 <div class="pagination">
                 <!-- 이전 페이지 버튼 -->
