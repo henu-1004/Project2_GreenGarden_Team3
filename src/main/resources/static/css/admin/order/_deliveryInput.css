@@ -4,7 +4,7 @@
     내용 : 주문현황 - 배송하기 - 배송입력 모달 & html,css 완료
 */
 /* ㅡㅡㅡ 배달 등록 화면에 해당되는 css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-.modal-delivery-info {
+#modalDeliveryInput {
     width: 100%;
     padding: 0 15px;
     border-collapse: collapse;
@@ -12,19 +12,19 @@
     border-bottom: 1px solid #ddd;
 }
 
-.modal-delivery-info td {
+#modalDeliveryInput td {
     padding: 10px;
     text-align: left;
 }
 
-.modal-delivery-info th {
+#modalDeliveryInput th {
     background-color: #f3f7f6;
     padding: 10px;
     text-align: center;
 }
 
-.modal-delivery-info select,
-.modal-delivery-info input {
+#modalDeliveryInput select,
+#modalDeliveryInput input {
     height: 40px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -32,7 +32,7 @@
     box-sizing: border-box;
 }
 
-.modal-delivery-info input {
+#modalDeliveryInput input {
     width: 500px;
 }
 

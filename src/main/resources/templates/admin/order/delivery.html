@@ -17,9 +17,9 @@
     <section class="content-wrap">
         <div th:replace="~{admin/common/aside :: aside}"></div>
         <section id="main-section">
-            <div class="top_nav">
+            <div class="top-nav">
                 <h5>배송현황</h5>
-                <ul class="page_nation">
+                <ul class="page-nation">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">주문관리</a></li>
                     <li><a href="#">배송현황</a></li>
@@ -50,7 +50,7 @@
                     <th>접수일</th>
                 </tr>
                 <tr>
-                    <td><a href="#">10122102315</a></td>
+                    <td><span class="delivery-number-link" onclick="openModal('modalDeliveryDetail')">10122102315</span></td>
                     <td>로젝택배</td>
                     <td><a href="#">10121211341</a></td>
                     <td>김유신</td>
@@ -117,7 +117,7 @@
 </main>
 <div th:replace="~{admin/common/footer :: footer}"></div>
 <div th:replace="~{admin/order/_deliveryDetail :: modal-delivery-detail}"></div>
-</body>
-
 <script th:src="@{/js/admin/aside.js}"></script>
+<script th:src="@{/js/admin/order/order.js}"></script>
+</body>
 </html>
