@@ -24,8 +24,8 @@
                     <h5>상품보기</h5>
                     <ul class="page_nation">
                         <li><a href="#">Home</a></li>
-                        <li><a href="#">1차 카테고리명</a></li>
-                        <li><a href="#">2차 카테고리명</a></li>
+                        <li><a href="#">[[${product.category.parent != null ? product.category.parent.name : product.category.name}]]</a></li>
+                        <li><a href="#">[[${product.category.name}]]</a></li>
                     </ul>
                 </div>
                 <div class="product-view-main">
@@ -46,53 +46,44 @@
                             </div>
                         </div>
                         <div class="product-details-area">
-                            <h2 class="product-price">52,300 원</h2>
-                            <div class="product-benefits">
-                                <span>회원혜택</span>
-                                <span>최대 5% 추가할인, 회원가입 시 3,661원 적립</span>
-                            </div>
-                            <div class="shopping-info">
-                                <span>배송조건</span>
-                                <span>택배: 전국(제주도 불가)</span>
-                                <button>배송가능지역 확인</button>
-                            </div>
-                            <div class="origin-info">
-                                <span>원산지</span>
-                                <span>하단 별도표기</span>
-                            </div>
-                            <div class="product-options">
-                                <div class="option-item">
-                                    <span>상품옵션</span>
-                                    <select>
-                                        <option>-- 배송방법 선택 --</option>
-                                    </select>
+                            <input type="hidden" id="product-price" th:value="${product.price}" value="5000">
+                            <input type="hidden" id="delivery-fee" th:value="${product.deliveryFee}" value="3000">
+
+                            <h2 class="product-price">[[${product.price}]]원</h2>
+                            <p th:text="${product.name}">상품명</p>
+                            <p th:text="${product.description}">간단한 설명</p>
+
+                            <form th:action="@{/product/action}" method="post">
+                                <input type="hidden" name="proId" th:value="${product.proId}">
+                                <div class="product-options">
+                                    <div class="option-item">
+                                        <span>상품옵션</span>
+                                        <select>
+                                            <option>-- 배송방법 선택 --</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="option-item">
-                                    <span>추가구성</span>
-                                    <select>
-                                        <option>-- [리뷰 약속 이벤트] 선택 --</option>
-                                    </select>
+                                <div class="product-options">
+                                    <div class="quantity-controls">
+                                        <button type="button" id="minus" aria-label="수량 감소">-</button>
+                                        <input type="number" id="quantity" name="quantity" min="1" step="1" value="1" inputmode="numeric">
+                                        <button type="button" id="plus" aria-label="수량 증가">+</button>
+                                    </div>
                                 </div>
-                                <div class="option-item">
-                                    <select>
-                                        <option>-- 화병/꽃가위 선택 --</option>
-                                    </select>
+                                <div class="total-price">
+                                    <span>총 상품금액</span> <br>
+                                    <span>배달비: <strong id="delivery-display" th:text="${#numbers.formatInteger(product.deliveryFee, 0)}">3,000</strong> 원</span> <br>
+                                    <span>총 합계: <strong id="total" class="total-price">8,000</strong> 원</span>
                                 </div>
-                                <div class="option-item">
-                                    <select>
-                                        <option>-- 전국 당일 퀵 배송 상품이 필요하세요? --</option>
-                                    </select>
+                                <div class="action-buttons">
+                                    <button class="cart-button" type="submit" name="action" value="cart">
+                                        장바구니
+                                    </button>
+                                    <button class="buy-button" type="submit" name="action" value="order">
+                                        구매하기
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="total-price">
-                                <span>총 상품금액</span>
-                                <span>52,300</span>
-                                <span>원</span>
-                            </div>
-                            <div class="action-buttons">
-                                <button class="cart-button">장바구니</button>
-                                <button class="buy-button">구매하기</button>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 <div class="info-section">
@@ -232,4 +223,95 @@
 	</main>
 <div th:replace="~{/common/footer :: footer}"></div>
 </body>
+
+<script>
+    // 페이지 로드 시 실행
+    document.addEventListener('DOMContentLoaded', function() {
+        // 상품 정보 (Thymeleaf에서 받아온 데이터)
+        const productData = {
+            price: parseInt(document.getElementById('product-price').value) || 5000,
+            deliveryFee: parseInt(document.getElementById('delivery-fee').value) || 3000
+        };
+
+        // DOM 요소들
+        const minusBtn = document.getElementById('minus');
+        const plusBtn = document.getElementById('plus');
+        const quantityInput = document.getElementById('quantity');
+        const deliveryDisplay = document.getElementById('delivery-display');
+        const total = document.getElementById('total');
+
+        // 숫자를 천 단위로 포맷팅하는 함수
+        function formatNumber(num) {
+            return num.toLocaleString('ko-KR');
+        }
+
+        // 가격을 업데이트하는 함수
+        function updatePrices() {
+            const quantity = parseInt(quantityInput.value) || 1;
+            const totalAmount = (productData.price * quantity) + productData.deliveryFee;
+
+            // 가격 표시 업데이트
+            deliveryDisplay.textContent = formatNumber(productData.deliveryFee);
+            total.textContent = formatNumber(totalAmount);
+
+            // 마이너스 버튼 활성화/비활성화
+            minusBtn.disabled = quantity <= 1;
+        }
+
+        // 수량 감소 버튼 이벤트
+        minusBtn.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value) || 1;
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                updatePrices();
+            }
+        });
+
+        // 수량 증가 버튼 이벤트
+        plusBtn.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value) || 1;
+            quantityInput.value = currentValue + 1;
+            updatePrices();
+        });
+
+        // 수량 입력 필드 직접 변경 이벤트
+        quantityInput.addEventListener('input', function() {
+            const value = parseInt(this.value);
+            if (value < 1 || isNaN(value)) {
+                this.value = 1;
+            }
+            updatePrices();
+        });
+
+        // 키보드 이벤트 (Enter, 화살표 키)
+        quantityInput.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                plusBtn.click();
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                minusBtn.click();
+            }
+        });
+
+        // 초기 가격 설정
+        updatePrices();
+    });
+
+    // 썸네일 이미지 변경 함수
+    function changeMainImage(thumbnail) {
+        const mainImage = document.getElementById('main-product-image');
+        mainImage.src = thumbnail.src.replace('80x80', '600x600');
+    }
+
+    // 썸네일 스크롤 함수
+    function scrollThumbs(direction) {
+        const container = document.querySelector('.product-thumbnails');
+        const scrollAmount = 100;
+        container.scrollBy({
+            left: direction * scrollAmount,
+            behavior: 'smooth'
+        });
+    }
+</script>
 </html>
