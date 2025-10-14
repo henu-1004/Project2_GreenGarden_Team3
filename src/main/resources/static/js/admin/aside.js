@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const mainMenus = document.querySelectorAll('#aside > ul > li > a');
+    const mainMenus = document.querySelectorAll('#aside > ul > li > span');
 
     mainMenus.forEach(menu => {
         menu.addEventListener('click', function(e) {

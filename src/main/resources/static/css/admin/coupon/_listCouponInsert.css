@@ -3,12 +3,12 @@
     이름 : 이수연
     내용 : 쿠폰목록 - 쿠폰정보 모달 css
 */
-#modalCouponDetail.active {
+#modalIssueInfo.active {
     display: flex;
 }
 
 /* 모달 배경과 위치 설정 */
-#modalCouponDetail {
+#modalIssueInfo {
     position: fixed;
     top: 0;
     left: 0;
@@ -95,13 +95,49 @@
     border-top: 2px solid #ddd;
     border-bottom: 2px solid #ddd;
     text-align: left;
-    padding: 8px;
 }
 
 .coupon-detail-table th {
-    border-color: #ddd;
+    background-color: #ddd;
+    padding: 10px;
 }
 .coupon-detail-table td {
     border-bottom: 1px solid #ddd;
+    padding: 10px;
+}
+
+.btn-content {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 8px 15px; /* 버튼 내부 여백 */
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px; /* 모서리를 약간 둥글게 */
+    transition: background-color 0.2s;
+}
+
+/* 1. 취소 버튼 (보조 역할 - 회색) */
+.btn-cancel {
+    background-color: #A9A9A9; /* 회색 배경 */
+    color: #ffffff; /* 흰색 글자 */
+}
+.btn-cancel:hover {
+    background-color: #888888;
+}
+
+/* 2. 등록 버튼 (주요 역할 - 강조 색상) */
+.btn-register {
+    background-color: #4CAF50; /* 이미지와 비슷한 초록색 */
+    color: #ffffff; /* 흰색 글자 */
+    font-weight: bold; /* 등록 버튼을 더 강조 */
+}
+.btn-register:hover {
+    background-color: #3e8e41;
 }
 

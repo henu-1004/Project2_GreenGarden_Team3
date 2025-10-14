@@ -3,14 +3,13 @@
     이름 : 이수연
     내용 : 쿠폰목록 - 쿠폰등록 모달
 -->
-<div class="modal-detail" th:fragment="modal-CouponInsert">
+<div class="modalCouponInsert" th:fragment="modal-CouponInsert">
+    <link rel="stylesheet" th:href="@{/css/admin/coupon/_listCouponInsert.css}">
     <div class="modal-content">
+        <button class="close-button" onclick="closeModal('modalCouponInsert')">×</button>
         <div class="modal-header">
             <div class="modal-title">
                 <h3>쿠폰등록</h3>
-            </div>
-            <div class="close-btn-wrap">
-                <button class="close-btn">x</button>
             </div>
         </div>
         <div class="modal-body">
@@ -21,33 +20,50 @@
                 </tr>
                 <tr>
                     <th>쿠폰종류</th>
-                    <td>개별상품 할인</td>
+                    <td>
+                        <select>
+                            <option value="cp1">개별상품할인</option>
+                            <option value="cp2">주문상품할인</option>
+                            <option value="cp3">배송비 무료</option>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <th>쿠폰명</th>
-                    <td>10월 한달 감사 쿠폰 이벤트</td>
+                    <td><textarea></textarea></td>
                 </tr>
                 <tr>
                     <th>혜택</th>
-                    <td>2,000원 할인</td>
+                    <td>
+                        <label><input type="radio" name="discountMethod" value="1000"/>1,000원 할인</label>
+                        <label><input type="radio" name="discountMethod" value="2000"/>2,000원 할인</label>
+                        <label><input type="radio" name="discountMethod" value="3000"/>3,000원 할인</label>
+                        <label><input type="radio" name="discountMethod" value="4000"/>4,000원 할인</label>
+                        <label><input type="radio" name="discountMethod" value="5000"/>5,000원 할인</label>
+                        <label><input type="radio" name="discountMethod" value="10"/>10% 할인</label>
+                        <label><input type="radio" name="discountMethod" value="20"/>20% 할인</label>
+                        <label><input type="radio" name="discountMethod" value="30"/>30% 할인</label>
+                        <label><input type="radio" name="discountMethod" value="40"/>40% 할인</label>
+                        <label><input type="radio" name="discountMethod" value="50"/>50% 할인</label>
+                        <label><input type="radio" name="discountMethod" value="feeFree"/>배송비 무료</label>
+                    </td>
                 </tr>
                 <tr>
                     <th>사용기간</th>
-                    <td>2025-10-24 ~ 2025-10-24</td>
+                    <td>
+                        2025-10-24 ~ 2025-10-24 <br>
+                        <p>또는 발급일로부터 <input type="text"> 이내</p>
+                    </td>
                 </tr>
                 <tr>
                     <th>유의사항</th>
-                    <td>
-                        상품 중복 할인 쿠폰 <br>
-                        - 상품 1개에 대해 사용 가능 <br>
-                        - 판매자 즉시할인/상품할인 쿠폰과 중복 사용 가능 <br>
-                        <br>
-                        사용처 <br>
-                        -(주)다있어
-                    </td>
+                    <td> <textarea></textarea> </td>
                 </tr>
             </table>
-
+            <div class="btn-content">
+                <button class="btn btn-cancel">취소</button>
+                <button class="btn btn-register">등록</button>
+            </div>
         </div>
     </div>
 </div>
