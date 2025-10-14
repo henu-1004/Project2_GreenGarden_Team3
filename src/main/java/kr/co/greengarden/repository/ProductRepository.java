@@ -83,4 +83,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Modifying
     @Query("delete from Product p where p.proId in :ids")
     void deleteByProductIdIn(@Param("ids") List<Integer> ids);
+
+    @Modifying
+    @Query("update Product p set p.views = p.views + 1 where p.proId = :proId")
+    void updateViewByProductId(@Param("proId") int proId);
+
 }

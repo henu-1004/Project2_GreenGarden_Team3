@@ -61,12 +61,10 @@ public class    ProductController {
 
     @GetMapping("/product/view")
     public String productViewPage(@RequestParam String proId, Model model) {
+        Product product = productService.getProduct(Integer.parseInt(proId));
+        productService.updateViewProduct(Integer.parseInt(proId));
 
-        Optional<Product> optProduct = productService.getProduct(Integer.parseInt(proId));
-
-        if(optProduct.isPresent()) {
-            model.addAttribute("product", optProduct.get());
-        }
+        model.addAttribute("product", product);
 
         return "product/view";
     }
