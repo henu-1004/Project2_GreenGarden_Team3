@@ -29,45 +29,6 @@ a {
     box-sizing: border-box;
 }
 
-/* 탑 페이지 네이션 */
-.top-nav {
-    min-height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #66968c;
-    margin-bottom: 20px;
-    margin-right: 10px;
-}
-
-.top-nav h1 {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin: 10px;
-}
-
-.top-nav .page-nation {
-    display: flex;
-    gap: 10px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-size: 0.9em;
-}
-
-.top-nav .page-nation li:not(:last-child)::after {
-    content: " > ";
-    margin-left: 5px;
-    color: #999;
-}
-
-.top-nav h1 {
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    margin-left: 10px;
-}
 /* ㅡㅡㅡ order css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 
 .order-contain {
