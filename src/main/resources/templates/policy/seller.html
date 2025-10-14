@@ -4,22 +4,17 @@
     <meta charset="UTF-8">
     <title>약관동의</title>
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
+    <link rel="stylesheet" th:href="@{/css/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/policy/buyer.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
 
-<div th:replace="~{/common/headerNoSearch :: headerNoSearch}"></div>
+<div th:replace="~{common/headerWithSearch :: headerWithSearch}"></div>
 
 <main class="policy-wrap">
+    <div th:replace="~{common/aside :: aside}"></div>
     <div class="policy-layout">
-
-        <aside class="policy-aside">
-            <a class="side-item" href="#"><span class="icon"></span> 패션·의류·뷰티</a>
-            <a class="side-item" href="#"><span class="icon"></span> 가전·디지털</a>
-            <a class="side-item" href="#"><span class="icon"></span> 식품·생필품</a>
-            <a class="side-item" href="#"><span class="icon"></span> 홈·문구·취미</a>
-        </aside>
 
         <!-- 우측 본문 -->
         <section class="policy-main">
@@ -77,7 +72,7 @@
 </main>
 
 
-<div th:replace="~{/common/footer :: footer}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 
 </body>
 </html>

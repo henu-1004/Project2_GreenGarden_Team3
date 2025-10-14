@@ -1,5 +1,6 @@
 package kr.co.greengarden.controller;
 
+import jakarta.servlet.http.HttpSession;
 import kr.co.greengarden.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,8 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping("/email/code")
-    public ResponseEntity<Map<String, Boolean>> verify(@RequestBody Map<String, String> jsonData) {
+    public ResponseEntity<Map<String, Boolean>> verify(@RequestBody Map<String, String> jsonData,
+                                                       HttpSession session) {
 
         String code = jsonData.get("code");
         log.info("code:{}", code);
