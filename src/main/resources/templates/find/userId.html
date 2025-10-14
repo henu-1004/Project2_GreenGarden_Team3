@@ -38,13 +38,13 @@
 
                 <label for="fi-email">이메일</label>
                 <input id="fi-email" type="text" name="email" placeholder="이메일 입력">
-                <button type="button" class="subbtn">인증번호 받기</button>
-                <span id="emailResult"></span>
+                <button id="btnSend" type="button" class="subbtn">인증번호 받기</button>
+                <span id="emailResult" class="feedback"></span>
 
-
+                <label for="fi-code">인증코드</label>
                 <input id="fi-code" type="text" name="code" placeholder="인증번호 입력">
-                <button type="button" class="subbtn">확인</button>
-                <span id="codeResult"></span>
+                <button id="btnCheck" type="button" class="subbtn">확인</button>
+                <span id="codeResult" class="feedback"></span>
             </div>
         </form>
 
@@ -73,153 +73,125 @@
         <a th:href="@{/member/login}">
             <button type="button" class="btn btn-ghost">취소</button>
         </a>
-        <a th:href="@{/find/resultId}">
-            <button type="button" class="btn btn-primary">다음</button>
-        </a>
+
+        <button type="button" class="btn btn-primary" id="btnNext" disabled>다음</button>
     </div>
 </main>
 
 <div th:replace="~{common/footer :: footer}"></div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
-
-        const emailBtns  = document.getElementsByClassName('subbtn');
-        const btnSend    = emailBtns[0];          // 인증번호 받기
-        const btnCheck   = emailBtns[1];          // 코드 확인
-        const btnNext    = document.getElementsByClassName('btn-primary')[0];
-
-        const inputName  = document.getElementById('fi-name');
+    document.addEventListener('DOMContentLoaded', () => {
         const inputEmail = document.getElementById('fi-email');
         const inputCode  = document.getElementById('fi-code');
+        const btnSend    = document.getElementById('btnSend');
+        const btnCheck   = document.getElementById('btnCheck');
+        const emailMsg   = document.getElementById('emailResult');
+        const codeMsg    = document.getElementById('codeResult');
 
-        const emailResult = document.getElementById('emailResult');
-        const codeResult  = document.getElementById('codeResult');
+        const btnNext = document.getElementById('btnNext');
+        const POST_URL   = '/greengarden/find/userId/result';
 
-        let sending = false;
-        let verifying = false;
-        let verified = false;
+        let sending = false, verifying = false, verified = false;
 
-
+        const setMsg = (el, text, color) => {
+            el.textContent = (text || '').trim();   // ''면 CSS :empty 로 숨김
+            if (el.textContent) el.style.color = color || '#2d6f54';
+        };
 
         // 인증번호 전송
-        btnSend.addEventListener('click', async function(){
+        btnSend.addEventListener('click', async () => {
             if (sending) return;
-
             const email = inputEmail.value.trim();
-            if (email === '') {
-                emailResult.innerText = '이메일을 입력하세요.';
-                emailResult.style.color = 'red';
+            if (!email) {
+                setMsg(emailMsg, '이메일을 입력하세요.', 'red');
                 return;
             }
 
             try {
-                sending = true;
-                btnSend.disabled = true;
-                emailResult.innerText = '인증번호 전송 중입니다…';
-                emailResult.style.color = 'green';
-
+                sending = true; btnSend.disabled = true;
+                setMsg(emailMsg, '인증번호 전송 중입니다…');
                 await fetch('/greengarden/find/userId/sendCode', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: 'email=' + encodeURIComponent(email)
+                    method:'POST',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    body:'email='+encodeURIComponent(email)
                 });
-
-                emailResult.innerText = '인증번호를 전송했습니다.';
-                emailResult.style.color = 'green';
-            } catch (e) {
-                console.error(e);
-                emailResult.innerText = '전송 실패. 잠시 후 다시 시도하세요.';
-                emailResult.style.color = 'red';
+                setMsg(emailMsg, '인증번호를 전송했습니다.', 'green');
+            } catch(e) {
+                setMsg(emailMsg, '전송 실패. 잠시 후 다시 시도하세요.', 'red');
             } finally {
-                sending = false;
-                btnSend.disabled = false;
+                sending = false; btnSend.disabled = false;
             }
         });
 
         // 인증번호 확인
-        btnCheck.addEventListener('click', async function(){
+        btnCheck.addEventListener('click', async () => {
             if (verifying) return;
-
             const email = inputEmail.value.trim();
             const code  = inputCode.value.trim();
-
-            if (code === '') {
-                codeResult.innerText = '인증번호를 입력하세요.';
-                codeResult.style.color = 'red';
+            if (!code) {
+                setMsg(codeMsg, '인증번호를 입력하세요.', 'red');
                 return;
             }
 
             try {
-                verifying = true;
-                btnCheck.disabled = true;
-                codeResult.innerText = '확인 중입니다…';
-                codeResult.style.color = 'green';
-
+                verifying = true; btnCheck.disabled = true;
+                setMsg(codeMsg, '확인 중입니다…');
                 const res = await fetch('/greengarden/find/userId/verifyCode', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: 'email=' + encodeURIComponent(email) + '&code=' + encodeURIComponent(code)
+                    method:'POST',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    body:'email='+encodeURIComponent(email)+'&code='+encodeURIComponent(code)
                 });
                 const ok = await res.json();
-
                 if (ok) {
-                    emailResult.innerText = '이메일이 인증되었습니다.';
-                    emailResult.style.color = 'green';
-                    codeResult.innerText = '인증이 완료되었습니다.';
-                    codeResult.style.color = 'green';
-
+                    setMsg(emailMsg, '이메일이 인증되었습니다.', 'green');
+                    setMsg(codeMsg,  '인증이 완료되었습니다.', 'green');
                     verified = true;
-                    inputEmail.readOnly = true;
-                    inputCode.readOnly  = true;
-                    btnSend.disabled    = true;
-                    btnCheck.disabled   = true;
-                    btnCheck.textContent = '인증 완료';
-
                     btnNext.disabled = false;
-                    btnNext.classList.add('active');
+                    inputEmail.readOnly = true; inputCode.readOnly = true;
+                    btnSend.disabled = true; btnCheck.disabled = true; btnCheck.textContent = '인증 완료';
                 } else {
-                    codeResult.innerText = '인증코드가 올바르지 않습니다.';
-                    codeResult.style.color = 'red';
+                    setMsg(codeMsg, '인증코드가 올바르지 않습니다.', 'red');
+                    btnCheck.disabled = false;
                 }
-            } catch (e) {
-                console.error(e);
-                codeResult.innerText = '검증 실패. 다시 시도하세요.';
-                codeResult.style.color = 'red';
+            } catch(e) {
+                setMsg(codeMsg, '검증 실패. 다시 시도하세요.', 'red');
+                btnCheck.disabled = false;
             } finally {
                 verifying = false;
-                if (!verified) btnCheck.disabled = false;
             }
         });
 
         // 다음 버튼
-        btnNext.addEventListener('click', function (){
+        btnNext.addEventListener('click', (e) => {
+            e.preventDefault();
             if (!verified) {
-                codeResult.innerText = '이메일 인증을 먼저 완료하세요.';
-                codeResult.style.color = 'red';
+                setMsg(codeMsg, '이메일 인증을 먼저 완료하세요.', 'red');
                 return;
             }
 
             const form = document.createElement('form');
             form.method = 'post';
-            form.action = '/find/userId/result'; // 컨트롤러가 /greengarden/...이면 거기로 변경
+            form.action = POST_URL;
 
-            const nameField  = document.createElement('input');
-            nameField.name   = 'name';
-            nameField.value  = inputName.value;
+            const fName  = document.createElement('input');
+            fName.type = 'hidden'; fName.name = 'name';
+            fName.value = document.getElementById('fi-name').value.trim();
 
-            const emailField = document.createElement('input');
-            emailField.name  = 'email';
-            emailField.value = inputEmail.value;
+            const fEmail = document.createElement('input');
+            fEmail.type = 'hidden'; fEmail.name = 'email';
+            fEmail.value = inputEmail.value.trim();
 
-            form.appendChild(nameField);
-            form.appendChild(emailField);
+            form.appendChild(fName);
+            form.appendChild(fEmail);
             document.body.appendChild(form);
             form.submit();
         });
 
+
     });
 </script>
+
 
 </body>
 </html>

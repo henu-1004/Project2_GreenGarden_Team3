@@ -41,7 +41,8 @@
     background:#eef4f2;
     color:var(--muted);
     font-weight:600;
-    cursor:default
+    cursor:default;
+    padding: 0 10px;
 }
 .find-tab.active{
     background:var(--brand);
@@ -129,3 +130,15 @@
 /* 탭별 필드 가시성 (초기: 이메일 인증) */
 .is-email .phone-fields{display:none;}
 .is-phone .email-fields{display:none;}
+
+.form-grid label{ grid-column:1; }
+#fi-email, #fi-code{ grid-column:2; }
+#btnSend, #btnCheck{ grid-column:3; }
+
+/* 메시지는 입력칸 아래(2~3열) — 내용 없으면 완전 숨김 */
+.feedback{
+    grid-column: 2 / 4;
+    margin-top: 6px;
+}
+.feedback:empty{ display:none; } /* 처음엔 공간 0 */
+
