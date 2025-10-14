@@ -3,6 +3,7 @@ package kr.co.greengarden.service;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
 import kr.co.greengarden.dto.SessionDataDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,10 @@ public class EmailService {
     private final SessionDataDTO sessionData;
 
 
+
+
+
+
     public void sendCode(String receiver){
 
         MimeMessage message = mailSender.createMimeMessage();
@@ -49,8 +54,35 @@ public class EmailService {
             //session.setAttribute("sessCode", String.valueOf(code));
             sessionData.setCode(String.valueOf(code));
 
+
         }catch (Exception e){
             log.error(e.getMessage());
+        }
+    }
+
+
+
+
+    public String sendCodeAndReturn(String receiver) {
+        MimeMessage message = mailSender.createMimeMessage();
+        int code = ThreadLocalRandom.current().nextInt(100000, 1000000);
+
+        String title = "[Green Garden] 인증코드 입니다.";
+        String content = "<h1>인증코드는 " + code + "입니다.</h1>";
+
+        try {
+            message.setFrom(new InternetAddress(sender, "보내는 사람", "UTF-8"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiver));
+            message.setSubject(title);
+            message.setContent(content, "text/html;charset=UTF-8");
+
+            mailSender.send(message);
+
+            return String.valueOf(code);
+
+        } catch (Exception e) {
+            log.error("메일 전송 실패", e);
+            throw new RuntimeException("메일 전송 실패", e);
         }
     }
 
@@ -60,6 +92,7 @@ public class EmailService {
         // 현재 세션 코드 가져오기
         //String sessCode = (String) session.getAttribute("sessCode");
         String sessCode = sessionData.getCode();
+
 
         if(sessCode.equals(code)){
             return true;

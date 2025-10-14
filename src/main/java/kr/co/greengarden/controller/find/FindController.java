@@ -53,14 +53,11 @@ public class FindController {
     @PostMapping("/find/userId/sendCode")
     public ResponseEntity<?> sendCode(@RequestParam String email, HttpSession session){
 
-        String code = String.format("%06d", new Random().nextInt(999999));
-        session.setAttribute("authCode", code);
-        session.setAttribute("authEmail", email);
+        String code = emailService.sendCodeAndReturn(email);
+        session.setAttribute("findEmail", email);
+        session.setAttribute("findCode", code);
 
-        // 실제 이메일 전송
-        emailService.sendCode(email);
-        log.info("아이디 찾기용 인증번호 전송: {} ({})", email, code);
-
+        log.info("[FIND:SEND] email={}, savedCode={}", email, code);
         return ResponseEntity.ok(Map.of("result", "OK"));
     }
 
@@ -72,11 +69,17 @@ public class FindController {
                                               @RequestParam String code,
                                               HttpSession session){
 
-        String savedEmail = (String) session.getAttribute("authEmail");
-        String savedCode = (String) session.getAttribute("authCode");
+        String savedEmail = (String) session.getAttribute("findEmail");
+        String savedCode = (String) session.getAttribute("findCode");
 
-        boolean verified = email.equals(savedEmail) && code.equals(savedCode);
-        if(verified) session.setAttribute("verified", true);
+        boolean emailOk = savedEmail != null && savedEmail.trim().equalsIgnoreCase(email.trim());
+        boolean codeOk  = savedCode  != null && savedCode.equals(code);
+
+        boolean verified = emailOk && codeOk;
+        log.info("[FIND:VERIFY] reqEmail={}, reqCode={}, savedEmail={}, savedCode={}, result={}",
+                email, code, savedEmail, savedCode, verified);
+
+        if (verified) session.setAttribute("verified", true);
 
         return ResponseEntity.ok(verified);
 
