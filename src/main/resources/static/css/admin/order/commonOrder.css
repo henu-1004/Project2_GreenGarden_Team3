@@ -14,7 +14,7 @@ body {
 }
 
 /* 메인 콘텐츠 영역 */
-/* aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content_wrap 컨테이너를 header-wrap과 동일하게 설정 */
+/* aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content-wrap 컨테이너를 header-wrap과 동일하게 설정 */
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
@@ -38,7 +38,7 @@ body {
 }
 
 /* ㅡㅡㅡ 탑(제목쪽) 카테고리 네비 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-.top_nav {
+.top-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,12 +47,12 @@ body {
     margin-bottom: 20px;
 }
 
-.top_nav h5 {
+.top-nav h5 {
     font-size: 1.2em;
     font-weight: bold;
 }
 
-.top_nav .page_nation {
+.top-nav .page-nation {
     display: flex;
     gap: 10px;
     list-style: none;
@@ -61,7 +61,7 @@ body {
     font-size: 0.9em;
 }
 
-.top_nav .page_nation li:not(:last-child)::after {
+.top-nav .page-nation li:not(:last-child)::after {
     content: " > ";
     margin-left: 5px;
     color: #66968c;
@@ -134,8 +134,10 @@ body {
 }
 
 /* 주문번호가 있는 클래스를 지정하여 밑줄을 살림 */
-.order-number a {
+.order-number-link,
+.delivery-number-link {
     text-decoration: underline; /* 밑줄을 다시 추가 */
+    cursor: pointer;
 }
 
 .del-btn {
@@ -189,8 +191,9 @@ body {
 /* ㅡㅡㅡ Modal Area 모달 영역 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 
 /* ㅡㅡㅡ 모달 배경과 위치 설정 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-.madal-detail,
-.madal-delivery-input {
+#modalOrderDetail,
+#modalDeliveryInput,
+#modalDeliveryDetail {
     position: fixed;
     top: 0;
     left: 0;
@@ -203,13 +206,18 @@ body {
     z-index: 1000;
 }
 
-.madal-detail {
+#modalOrderDetail,
+#modalDeliveryInput,
+#modalDeliveryDetail {
     display: none; /* <-- 이 속성 flex, none */
 }
 
-.madal-delivery-input {
-    display: none; /* <-- 이 속성 flex, none */
+#modalOrderDetail.active,
+#modalDeliveryInput.active,
+#modalDeliveryDetail.active {
+    display: flex; /* <-- 이 속성 flex, none */
 }
+
 /* ㅡㅡㅡ 모달 내용 박스 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .modal-content {
     /* 모달 창의 크기 및 중앙 배치 */
@@ -230,7 +238,7 @@ body {
 /* 닫힘 버튼 */
 .close-button {
     position: absolute; /* 부모 요소(modal-content)를 기준으로 위치를 잡음 */
-    top: 25px;
+    top: 15px;
     right: 35px;
     font-size: 40px;
     font-weight: bold;
@@ -259,7 +267,7 @@ body {
 
 .order-number {
     color: #999999;
-    font-size: 12px;
+    font-size: 15px;
     margin-left: 20px;
 }
 
@@ -267,11 +275,12 @@ body {
 .modal-body {
     /* 스크롤 영역: 남은 공간을 채우고 스크롤 가능하게 함 */
     padding: 10px;
+    margin: 10px;
     overflow-y: auto; /* 내용이 넘칠 경우에만 스크롤바 생성 */
     flex-grow: 1; /* 남은 세로 공간을 모두 채우도록 함 */
 }
 
 .modal-body section {
-    border-top: 8px solid #175a48;
+    border-top: 4px solid #175a48;
 }
 

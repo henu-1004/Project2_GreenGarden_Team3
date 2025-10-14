@@ -3,10 +3,10 @@
     이름 : 이수연
     내용 : 주문현황 - 배송입력 모달 & html,css 완료
 -->
-<div class="madal-delivery-input" th:fragment="modal-delivery-input">
+<div id="modalDeliveryInput" th:fragment="modal-delivery-input">
     <link rel="stylesheet" th:href="@{/css/admin/order/_deliveryInput.css}">
     <div class="modal-content">
-        <button class="close-button">&times;</button>
+        <button class="close-button" onclick="closeModal('modalDeliveryInput')">&times;</button>
         <div class="modal-header">
             <div class="modal-title">
                 <h2>배송입력</h2>
@@ -66,29 +66,3 @@
 
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 버튼과 모달 요소 선택
-        const openModalBtn = document.querySelector('.open-modal-btn');
-        const modal = document.getElementById('orderDetailModal');
-        const closeBtn = document.querySelector('.close-btn');
-
-        // '주문상세' 버튼 클릭 시 모달 열기
-        openModalBtn.addEventListener('click', function() {
-            modal.style.display = 'flex';
-        });
-
-        // 'X' 버튼 클릭 시 모달 닫기
-        closeBtn.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        // 모달 외부 클릭 시 모달 닫기
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    });
-</script>

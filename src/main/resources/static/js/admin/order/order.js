@@ -6,7 +6,7 @@
 // 1. 모달 엘리먼트를 ID로 가져오기
 const modalOrderDetail = document.getElementById('modalOrderDetail'); // 주문상세
 const modalDeliveryInput = document.getElementById('modalDeliveryInput'); // 배송입력
-
+const modalDeliveryDetail = document.getElementById('modalDeliveryDetail'); // 배송상세
 
 // 2. 모달 열기
 function openModal(modalId) {
@@ -35,6 +35,9 @@ window.addEventListener('click', (event) => {
     }
     else if (modalDeliveryInput && modalDeliveryInput.classList.contains('active') && event.target === modalDeliveryInput) {
         closeModal('modalDeliveryInput');
+    }
+    else if (modalDeliveryDetail && modalDeliveryDetail.classList.contains('active') && event.target === modalDeliveryDetail) {
+        closeModal('modalDeliveryDetail');
     }
 });
 

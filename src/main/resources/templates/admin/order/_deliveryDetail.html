@@ -3,22 +3,20 @@
     이름 : 이수연
     내용 : 배송현황 - 배송상세 모달
 -->
-<div class="madal-detail" th:fragment="modal-delivery-detail">
+<div id="modalDeliveryDetail" th:fragment="modal-delivery-detail">
     <link rel="stylesheet" th:href="@{/css/admin/order/modalDeliveryDetail.css}">
     <div class="modal-content">
+        <button class="close-button" onclick="closeModal('modalDeliveryDetail')">&times;</button>
         <div class="modal-header">
             <div class="modal-title">
                 <h3>결제입력</h3>
                 <p class="order-number">'주문번호'</p>
             </div>
-            <div class="close-btn-wrap">
-                <button class="close-btn">x</button>
-            </div>
         </div>
         <div class="modal-body">
-            <section class="order_list_section">
-                <h2>상품정보</h2>
-                <table class="cart_table">
+            <h2>상품정보</h2>
+            <section class="order-list-section">
+                <table class="cart-table">
                     <thead>
                     <tr>
                         <th></th>
@@ -32,10 +30,10 @@
                         <th>결제금액</th>
                     </tr>
                     </thead>
-                    <tbody id="cart_items">
+                    <tbody id="cart-items">
                     <tr>
-                        <td class="col_item_info">
-                            <div class="product_image">
+                        <td class="col-item-info">
+                            <div class="product-image">
                                 <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
                             </div>
                         </td>
@@ -51,8 +49,8 @@
                     </tbody>
                 </table>
             </section>
+            <h2>배송정보</h2>
             <section>
-                <h2>배송정보</h2>
                 <table class="order-info-table">
                     <tr>
                         <th>주문번호</th>
