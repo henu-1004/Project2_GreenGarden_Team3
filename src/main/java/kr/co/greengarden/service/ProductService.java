@@ -32,6 +32,19 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+    public List<ProductListDTO> getProducts(String sortBy, String direction) {
+        Set<String> allowed = Set.of("price", "discountRate", "views", "stock", "proNo", "createdAt");
+        if (!allowed.contains(sortBy)) sortBy = "proNo"; // 기본 정렬 키
+
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        // 8개만 가져오도록 제한
+        List<ProductListDTO> list = productRepository.findProductOrder(sort);
+        return list.size() > 8 ? list.subList(0, 8) : list;
+    }
+
     public void register(Product product){
         productRepository.save(product);
     };

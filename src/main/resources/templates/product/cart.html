@@ -29,53 +29,56 @@
                 </ul>
             </div>
             <section>
-                <form th:action="@{/product/order}" method="POST" class="cart-form">
+                <form th:action="@{/product/order2}" method="POST" class="cart-form">
                     <table class="cart-table">
                         <thead>
-                            <tr>
-                                <th class="col-check"><input type="checkbox" id="checkAll"/></th>
-                                <th class="col-item">상품명</th>
-                                <th class="col-count">수량</th>
-                                <th class="col-price">판매가</th>
-                                <th class="col-dis">할인</th>
-                                <th class="col-point">포인트</th>
-                                <th class="col-fee">배송비</th>
-                                <th class="col-sum">총합</th>
-                                <th class="col-del">삭제</th>
-                            </tr>
+                        <tr>
+                            <th class="col-check"><input type="checkbox" id="checkAll"/></th>
+                            <th class="col-item">상품명</th>
+                            <th class="col-count">수량</th>
+                            <th class="col-price">판매가</th>
+                            <th class="col-dis">할인</th>
+                            <th class="col-point">포인트</th>
+                            <th class="col-fee">배송비</th>
+                            <th class="col-sum">총합</th>
+                            <th class="col-del">삭제</th>
+                        </tr>
                         </thead>
                         <tbody id="cart-items">
-                            <tr th:each="cart : ${cartList}">
-                                <td class="col-check"><input type="checkbox" class="checkAll"/></td>
-                                <td class="col-item-info">
-                                    <div class="product-image">
-                                        <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
-                                    </div>
-                                    <div class="product-info">
-                                        <h6>[[${cart.name}]]</h6>
-                                        <p>[[${cart.description}]]</p>
-                                    </div>
-                                </td>
-                                <td>[[${cart.quantity}]]개</td>
-                                <td>
-                                    <p class="price">[[${cart.price}]]원</p>
-                                </td>
-                                <td>
-                                    <div class="price-after">
-                                        <p class="original-price">[[${cart.originalPrice}]]원</p>
-                                        <p class="discount-rate">[[${cart.discountRate}]]% ↓</p>
-                                    </div>
-                                </td>
-                                <td>[[${cart.point * cart.quantity}]]</td>
-                                <td>
-                                    <p class="shopping-fee">[[${cart.deliveryFee}]]원</p>
-                                </td>
-                                <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
-                                <td class="col-del-info">
-                                    <a th:href="@{/product/order(cartId=${cart.cartId})}" > 바로 주문 </a> <br>
-                                    <a th:href="@{#}"> 삭제 </a>
-                                </td>
-                            </tr>
+                        <tr th:each="cart : ${cartList.content}">
+                            <td class="col-check">
+                                <input type="checkbox" class="rowCheck" name="cartIds" th:value="${cart.cartId}">
+                            </td>
+                            <td class="col-item-info">
+                                <div class="product-image">
+                                    <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명"
+                                         onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+                                </div>
+                                <div class="product-info">
+                                    <h6>[[${cart.name}]]</h6>
+                                    <p>[[${cart.description}]]</p>
+                                </div>
+                            </td>
+                            <td>[[${cart.quantity}]]개</td>
+                            <td>
+                                <p class="price">[[${cart.price}]]원</p>
+                            </td>
+                            <td>
+                                <div class="price-after">
+                                    <p class="original-price">[[${cart.originalPrice}]]원</p>
+                                    <p class="discount-rate">[[${cart.discountRate}]]% ↓</p>
+                                </div>
+                            </td>
+                            <td>[[${cart.point * cart.quantity}]]</td>
+                            <td>
+                                <p class="shopping-fee">[[${cart.deliveryFee}]]원</p>
+                            </td>
+                            <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
+                            <td class="col-del-info">
+                                <a th:href="@{/product/order(cartId=${cart.cartId})}"> 바로 주문 </a> <br>
+                                <a th:href="@{#}"> 삭제 </a>
+                            </td>
+                        </tr>
 
                         </tbody>
                     </table>
@@ -111,24 +114,72 @@
                     </section>
                     <button id="orderButton">주문하기</button>
                 </form>
-                <div class="pagination">
-                <!-- 이전 페이지 버튼 -->
-                <a href="#" class="prev">&lt; 이전</a>
+                <div class="pagination"
+                     th:with="
+                        page=${cartList},
+                        now=${page.number},
+                        total=${page.totalPages},
+                        size=${page.size},
+                        block=${5},
+                        start=${(now / block) * block},
+                        end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
+                        prev=${ (now > 0) ? (now - 1) : 0 },
+                        next=${ ((now + 1) < total) ? (now + 1) : (total - 1) }
+                     ">
+                    <div th:if="${total > 0}">
+                        <a th:href="@{|?page=0&size=${size}|}"
+                           th:classappend="${page.first} ? ' disabled'">« 처음</a>
 
-                <!-- 페이지 번호들 -->
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
+                        <a th:href="@{|?page=${prev}&size=${size}|}"
+                           th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
 
-                <!-- 다음 페이지 버튼 -->
-                <a href="#" class="next">다음 &gt;</a>
-            </div>
+                        <th:block th:each="i : ${#numbers.sequence(start, end)}">
+                            <a th:href="@{|?page=${i}&size=${size}|}"
+                               th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
+                        </th:block>
+
+                        <a th:href="@{|?page=${next}&size=${size}|}"
+                           th:classappend="${page.last} ? ' disabled'">다음 ›</a>
+
+                        <a th:href="@{|?page=${total - 1}&size=${size}|}"
+                           th:classappend="${page.last} ? ' disabled'">마지막 »</a>
+                    </div>
+                </div>
             </section>
         </section>
     </div>
 </main>
-<div th:replace="~{/common/footer :: footer}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkAll = document.getElementById("checkAll");
+        const checks   = document.querySelectorAll(".rowCheck");
+        const orderBtn = document.getElementById("orderButton");
+        const form     = document.getElementById("orderForm");
+
+        // 전체 선택/해제
+        checkAll.addEventListener("change", () => {
+            checks.forEach(ch => ch.checked = checkAll.checked);
+        });
+
+        // 개별 체크 변화에 따라 헤더 상태 업데이트
+        checks.forEach(ch => ch.addEventListener("change", () => {
+            const all = checks.length;
+            const on  = [...checks].filter(c => c.checked).length;
+            checkAll.checked = (all === on);
+            checkAll.indeterminate = (on > 0 && on < all);
+        }));
+
+        // 주문 전 선택 여부 확인
+        orderBtn.addEventListener("click", (e) => {
+            const hasSelected = [...checks].some(c => c.checked);
+            if (!hasSelected) {
+                e.preventDefault();
+                alert("주문할 상품을 선택하세요.");
+            }
+        });
+    });
+</script>
+
 </html>

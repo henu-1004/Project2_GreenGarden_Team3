@@ -5,6 +5,7 @@ import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,16 +23,29 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
+    /*
+
+     */
     @Query("""
-        select new kr.co.greengarden.dto.ProductListDTO(
-          p.proId, p.img1, p.name, p.description,
-          p.price, p.deliveryFee, p.discountRate, s.company
+        SELECT new kr.co.greengarden.dto.ProductListDTO(
+           p.proId, p.img1, p.name, p.description,
+                  p.price, p.deliveryFee, p.discountRate, s.company
         )
-        from Product p
-        join p.seller s
-        join p.category c
-        where c.slug in :slug
+        FROM Product p
+        JOIN p.seller s
     """)
+    List<ProductListDTO> findProductOrder(Sort sort);
+
+    @Query("""
+                select new kr.co.greengarden.dto.ProductListDTO(
+                  p.proId, p.img1, p.name, p.description,
+                  p.price, p.deliveryFee, p.discountRate, s.company
+                )
+                from Product p
+                join p.seller s
+                join p.category c
+                where c.slug in :slug
+            """)
     Page<ProductListDTO> findProducts(Pageable pageable,
                                       @Param("slug") Collection<String> slug);
 
@@ -87,5 +101,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Modifying
     @Query("update Product p set p.views = p.views + 1 where p.proId = :proId")
     void updateViewByProductId(@Param("proId") int proId);
+
 
 }

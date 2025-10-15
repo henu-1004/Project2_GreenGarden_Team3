@@ -3,8 +3,11 @@ package kr.co.greengarden.repository;
 import kr.co.greengarden.dto.CartListDTO;
 import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.MemberGeneral;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,5 +33,23 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     List<CartListDTO> findCartListByCartId(Integer cartId);
 
     public List<Cart> findAllByMember_MemId(String memId);
+
+    @Query(value = """
+        SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee)
+        FROM Cart c
+        JOIN c.product p
+        WHERE c.member.memId = :memId
+    """)
+    Page<CartListDTO> findCartByMember_MemId(String memId, Pageable pageable);
+
+    @Query("""
+        SELECT new kr.co.greengarden.dto.CartListDTO(
+            c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee
+        )
+        FROM Cart c
+        JOIN c.product p
+        WHERE c.cartId IN :cartIds
+    """)
+    List<CartListDTO> findCartListByCartIds(@Param("cartIds") List<Integer> cartIds);
 
 }
