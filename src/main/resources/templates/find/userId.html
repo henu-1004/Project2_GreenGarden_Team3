@@ -22,11 +22,11 @@
 
     <section class="section">
         <div class="fid-tabs">
-            <button type="button" class="find-tab active">이메일 인증</button>
-            <button type="button" class="find-tab">휴대폰 인증</button>
+            <button type="button" class="find-tab active" id="tab-email">이메일 인증</button>
+            <button type="button" class="find-tab" id="tab-phone">휴대폰 인증</button>
         </div>
 
-        <form th:action="@{/find/userId/result}" method="post" class="email-fields">
+        <form id="emailForm" th:action="@{/find/userId/result}" method="post" class="email-fields">
             <div class="form-grid">
                 <div class="row-divider"></div>
 
@@ -49,25 +49,25 @@
         </form>
 
         <!-- 휴대폰 인증-->
-        <form class="phone-fields">
+        <form id="phoneForm" class="phone-fields" th:action="@{/find/userId/result-phone}" method="post">
             <div class="form-grid">
                 <div class="row-divider"></div>
 
                 <label for="fp-name">이름</label>
-                <input id="fp-phone" type="text" placeholder="휴대폰 번호 입력">
-                <button type="button" class="subbtn">인증번호 받기</button>
-
+                <input id="fp-name" type="text" name="name" placeholder="이름 입력">
                 <span></span>
-                <input id="fp-code" type="text" placeholder="인증번호 입력">
-                <button type="button" class="subbtn">확인</button>
+
+                <label for="fp-phone">휴대폰</label>
+                <input id="fp-phone" type="text" name="phone" placeholder="휴대폰 번호 입력">
+                <button type="button" class="subbtn" id="btnPhoneCheck">휴대폰 인증</button>
+
+                <span id="phoneMsg" class="feedback"></span>
+
             </div>
         </form>
     </section>
 
-    <p class="help">
-        회원가입 시 이메일 주소와 입력한 이메일 주소가 같아야 인증번호를 받을 수 있습니다.<br>
-        인증번호를 입력한 뒤 <strong>확인</strong> 버튼을 누르세요.
-    </p>
+    <p class="help" id="helpText"></p>
 
     <div class="actions right">
         <a th:href="@{/member/login}">
@@ -82,34 +82,85 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const inputEmail = document.getElementById('fi-email');
-        const inputCode  = document.getElementById('fi-code');
-        const btnSend    = document.getElementById('btnSend');
-        const btnCheck   = document.getElementById('btnCheck');
-        const emailMsg   = document.getElementById('emailResult');
-        const codeMsg    = document.getElementById('codeResult');
 
-        const btnNext = document.getElementById('btnNext');
-        const POST_URL   = '/greengarden/find/userId/result';
+        const POST_URL_EMAIL = '/greengarden/find/userId/result';
+        const POST_URL_PHONE = '/greengarden/find/userId/result-phone';
+        const VERIFY_PHONE   = '/greengarden/find/userId/verifyPhone';
 
-        let sending = false, verifying = false, verified = false;
+        const mainWrap = document.querySelector('main.find-wrap');
 
+        const btnNext   = document.getElementById('btnNext');
+        const tabEmail  = document.getElementById('tab-email');
+        const tabPhone  = document.getElementById('tab-phone');
+        const emailForm = document.getElementById('emailForm');
+        const phoneForm = document.getElementById('phoneForm');
+
+        // 이메일 입력/버튼/메시지
+        const eName   = emailForm.elements['name'];
+        const eEmail  = emailForm.elements['email'];
+        const eCode   = emailForm.elements['code'];
+        const btnSend = document.getElementById('btnSend');
+        const btnCheck= document.getElementById('btnCheck');
+        const emailMsg= document.getElementById('emailResult');
+        const codeMsg = document.getElementById('codeResult');
+
+        // 휴대폰 입력/버튼/메시지
+        const pName   = phoneForm.elements['name'];
+        const pPhone  = phoneForm.elements['phone'];
+        const btnPhoneCheck = document.getElementById('btnPhoneCheck');
+        const phoneMsg = document.getElementById('phoneMsg');
+
+        const help = document.getElementById('helpText');
+
+        const EMAIL_HELP = '회원가입 시 이메일 주소와 입력한 이메일 주소가 같아야 인증번호를 받을 수 있습니다.\n인증번호를 입력한 뒤 확인 버튼을 누르세요.';
+        const PHONE_HELP = '회원가입 시 등록된 이름과 휴대폰 번호가 일치해야 확인이 가능합니다.\n휴대폰 번호를 입력한 뒤 휴대폰 인증 버튼을 눌러 확인하세요.';
+
+        // 상태 플래그
+        let sending = false;
+        let verifying = false;
+        let phoneVerified = false;
+        window.verified = window.verified || false;
+
+        // 헬퍼
         const setMsg = (el, text, color) => {
-            el.textContent = (text || '').trim();   // ''면 CSS :empty 로 숨김
+            el.textContent = (text || '').trim();
             if (el.textContent) el.style.color = color || '#2d6f54';
         };
 
-        // 인증번호 전송
+        help.textContent = EMAIL_HELP;
+        // ===== 탭 전환 =====
+        function showEmailTab(){
+            tabEmail.classList.add('active');
+            tabPhone.classList.remove('active');
+            mainWrap.classList.add('is-email');
+            mainWrap.classList.remove('is-phone');
+            emailForm.style.display = '';
+            phoneForm.style.display = 'none';
+            btnNext.disabled = !window.verified;
+            help.textContent = EMAIL_HELP;
+        }
+        function showPhoneTab(){
+            tabPhone.classList.add('active');
+            tabEmail.classList.remove('active');
+            mainWrap.classList.add('is-phone')
+            mainWrap.classList.remove('is-email')
+            phoneForm.style.display = '';
+            emailForm.style.display = 'none';
+            btnNext.disabled = !phoneVerified;
+            help.textContent = PHONE_HELP;
+        }
+        tabEmail.addEventListener('click', showEmailTab);
+        tabPhone.addEventListener('click', showPhoneTab);
+
+        // ===== 이메일: 인증번호 전송 =====
         btnSend.addEventListener('click', async () => {
             if (sending) return;
-            const email = inputEmail.value.trim();
-            if (!email) {
-                setMsg(emailMsg, '이메일을 입력하세요.', 'red');
-                return;
-            }
+            const email = (eEmail.value || '').trim();
+            if (!email) return setMsg(emailMsg, '이메일을 입력하세요.', 'red');
 
             try {
-                sending = true; btnSend.disabled = true;
+                sending = true;
+                btnSend.disabled = true;
                 setMsg(emailMsg, '인증번호 전송 중입니다…');
                 await fetch('/greengarden/find/userId/sendCode', {
                     method:'POST',
@@ -124,15 +175,12 @@
             }
         });
 
-        // 인증번호 확인
+        // ===== 이메일: 인증번호 확인 =====
         btnCheck.addEventListener('click', async () => {
             if (verifying) return;
-            const email = inputEmail.value.trim();
-            const code  = inputCode.value.trim();
-            if (!code) {
-                setMsg(codeMsg, '인증번호를 입력하세요.', 'red');
-                return;
-            }
+            const email = (eEmail.value || '').trim();
+            const code  = (eCode.value || '').trim();
+            if (!code) return setMsg(codeMsg, '인증번호를 입력하세요.', 'red');
 
             try {
                 verifying = true; btnCheck.disabled = true;
@@ -142,14 +190,14 @@
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     body:'email='+encodeURIComponent(email)+'&code='+encodeURIComponent(code)
                 });
-                const ok = await res.json();
+                const ok = await res.json(); // boolean 기대
                 if (ok) {
                     setMsg(emailMsg, '이메일이 인증되었습니다.', 'green');
                     setMsg(codeMsg,  '인증이 완료되었습니다.', 'green');
-                    verified = true;
+                    window.verified = true;
                     btnNext.disabled = false;
-                    inputEmail.readOnly = true; inputCode.readOnly = true;
-                    btnSend.disabled = true; btnCheck.disabled = true; btnCheck.textContent = '인증 완료';
+                    eEmail.readOnly = true; eCode.readOnly = true;
+                    btnSend.disabled = true; btnCheck.textContent = '인증 완료';
                 } else {
                     setMsg(codeMsg, '인증코드가 올바르지 않습니다.', 'red');
                     btnCheck.disabled = false;
@@ -162,35 +210,67 @@
             }
         });
 
-        // 다음 버튼
-        btnNext.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (!verified) {
-                setMsg(codeMsg, '이메일 인증을 먼저 완료하세요.', 'red');
-                return;
+        // ===== 휴대폰: DB 존재 확인(이름+번호) =====
+        btnPhoneCheck.addEventListener('click', async () => {
+            const name  = (pName.value || '').trim();
+            const phone = (pPhone.value || '').trim();
+            if (!name)  return setMsg(phoneMsg, '이름을 입력하세요.', 'red');
+            if (!phone) return setMsg(phoneMsg, '휴대폰 번호를 입력하세요.', 'red');
+
+            try {
+                setMsg(phoneMsg, '확인 중입니다…');
+                const res = await fetch(VERIFY_PHONE, {
+                    method:'POST',
+                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    body:'name='+encodeURIComponent(name)+'&phone='+encodeURIComponent(phone)
+                });
+                const ok = await res.json(); // boolean 기대
+                if (ok === true) {
+                    phoneVerified = true;
+                    pName.readOnly = true;
+                    pPhone.readOnly = true;
+                    btnPhoneCheck.disabled = true;
+                    btnNext.disabled = false;
+                    setMsg(phoneMsg, '회원 정보 확인 완료.', 'green');
+                } else {
+                    phoneVerified = false;
+                    btnNext.disabled = true;
+                    setMsg(phoneMsg, '일치하는 회원 정보가 없습니다.', 'red');
+                }
+            } catch (e) {
+                phoneVerified = false;
+                btnNext.disabled = true;
+                setMsg(phoneMsg, '서버 오류. 잠시 후 다시 시도하세요.', 'red');
             }
-
-            const form = document.createElement('form');
-            form.method = 'post';
-            form.action = POST_URL;
-
-            const fName  = document.createElement('input');
-            fName.type = 'hidden'; fName.name = 'name';
-            fName.value = document.getElementById('fi-name').value.trim();
-
-            const fEmail = document.createElement('input');
-            fEmail.type = 'hidden'; fEmail.name = 'email';
-            fEmail.value = inputEmail.value.trim();
-
-            form.appendChild(fName);
-            form.appendChild(fEmail);
-            document.body.appendChild(form);
-            form.submit();
         });
 
+        // ===== 다음 버튼: 탭별 분기 제출 =====
+        btnNext.addEventListener('click', (e) => {
+            e.preventDefault();
 
+            // 탭 판단은 style 대신 상태 클래스로 (style 값은 빈문자열일 수 있어 오판함)
+            const phoneTabOn = mainWrap.classList.contains('is-phone');
+
+            if (phoneTabOn) {
+                if (!phoneVerified) return setMsg(phoneMsg, '휴대폰 확인을 먼저 완료하세요.', 'red');
+
+                // 새 form 생성 금지 → 기존 phoneForm 그대로 (CSRF 히든 필드가 이미 들어있음)
+                phoneForm.method = 'post';
+                phoneForm.action = POST_URL_PHONE;   // '/greengarden/find/userId/result-phone'
+                // (name="name", name="phone" 값은 이미 입력칸에 있으니 따로 hidden 안 만들어도 됨)
+                phoneForm.submit();
+            } else {
+                if (!window.verified) return setMsg(codeMsg, '이메일 인증을 먼저 완료하세요.', 'red');
+
+                // 기존 emailForm 그대로 제출 (CSRF 포함)
+                emailForm.method = 'post';
+                emailForm.action = POST_URL_EMAIL;   // '/greengarden/find/userId/result'
+                emailForm.submit();
+            }
+        });
     });
 </script>
+
 
 
 </body>

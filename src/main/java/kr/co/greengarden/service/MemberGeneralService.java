@@ -37,7 +37,7 @@ public class MemberGeneralService {
     private final PointRepository pointRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final MemberGeneralRepository repo;
+
 
     // 유저 찾기
     public Optional<MemberGeneral> getUser(String memId){
@@ -100,12 +100,44 @@ public class MemberGeneralService {
         memberRepository.deleteAllByIdInBatch(memIds);
     }
 
-    // 아이디 찾기
+    // 아이디 찾기 - 이메일
     public Optional<FindResultDTO> findMemberInfoByNameAndEmail(String name, String email) {
         String n = name  == null ? "" : name.trim();
         String e = email == null ? "" : email.trim();
-        return repo.findMemberInfoByNameAndEmail(n, e);
+        return memberGeneralRepository.findMemberInfoByNameAndEmail(n, e);
     }
+
+
+    // 아이디 찾기 - 휴대폰
+    public Optional<FindResultDTO> findMemberInfoByNameAndPhone(String name, String phone){
+        String n = name == null ? "" : name.trim();
+        String p = phone == null ? "" : phone.trim();
+        return memberGeneralRepository.findMemberInfoByNameAndPhone(n, p);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean verifyPhone(String name, String phone) {
+        String n = name == null ? "" : name.trim();
+        String p = phone == null ? "" : phone.trim();
+        return memberGeneralRepository.existsByNameAndPhone(n, p);
+    }
+
+    // 비밀번호 찾기 - 이메일
+    @Transactional
+    public void changePassword(String memId, String rawPassword){
+        Member member = memberRepository.findById(memId)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        //member.setPassword(passwordEncoder.encode(rawPassword));
+        memberRepository.save(member);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean canResetPassword(String memId, String email){
+        String id = memId == null ? "" : memId.trim();
+        String em = email == null ? "" : email.trim();
+        return memberGeneralRepository.existsByMember_MemIdAndEmail(id, em);
+    }
+
 
 
 
