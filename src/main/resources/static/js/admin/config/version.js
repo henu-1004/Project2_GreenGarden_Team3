@@ -1,28 +1,38 @@
-// 모달 스크립트
+document.addEventListener('DOMContentLoaded', () => {
+  const $  = (sel, el=document) => el.querySelector(sel);
+  const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
 
-document.addEventListener("DOMContentLoaded", function () {
-    const modal = document.getElementById("myModal");
-    const openBtn = document.querySelector(".btn a[href='#']"); // 등록 버튼
-    const closeX = document.getElementById("closeModal");
-    const closeBtn = document.getElementById("closeModalBtn");
+  const openModal  = (el) => el.classList.add('is-open');
+  const closeModal = (el) => el.classList.remove('is-open');
 
-    // 등록 버튼 클릭 시 모달 열기
-    openBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        modal.style.display = "block";
+  // 확인 모달
+  $('#versionTable').addEventListener('click', e => {
+    const a = e.target.closest('.js-open-view');
+    if (!a) return;
+    e.preventDefault();
+    $('#viewVersion').textContent = a.dataset.version || '';
+    $('#viewChanges').textContent = a.dataset.changes || '';
+    openModal($('#modalView'));
+  });
+
+  // 등록 모달
+  $('#btnCreate').addEventListener('click', e => {
+    e.preventDefault();
+    openModal($('#modalCreate'));
+  });
+
+  // 닫기
+  $$('.js-close').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      closeModal(btn.closest('.modal'));
     });
+  });
 
-    // X 버튼 및 닫기 버튼 클릭 시 닫기
-    closeX.addEventListener("click", () => modal.style.display = "none");
-    closeBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        modal.style.display = "none";
+  // 오버레이 닫기
+  [$('#modalView'), $('#modalCreate')].forEach(modal => {
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closeModal(modal);
     });
-
-    // 배경 클릭 시 닫기
-    window.addEventListener("click", (e) => {
-        if (e.target === modal) {
-            modal.style.display = "none";
-        }
-    });
+  });
 });
