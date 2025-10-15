@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.greengarden.mapper.my.MyMapper">
+
+    <select id="selectRecentOrders" parameterType="string" resultType="kr.co.greengarden.dto.my.OrderSummaryDTO">
+        SELECT
+            o.ORDERNO       AS orderNo,
+            p.NAME          AS productName,
+            p.IMG1          AS productImg,
+            oi.PRICE        AS price,
+            oi.QUANTITY     AS quantity,
+            (oi.PRICE * oi.QUANTITY) AS totalPrice,
+            o.STATUS        AS status,
+            o.ORDEREDAT     AS orderedAt,
+            s.MEMID         AS sellerId,
+            ms.COMPANY      AS sellerName,
+            s.ADDRESSBASIC  AS sellerAddress
+        FROM TB_ORDER o
+                 JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                 JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+                 JOIN TB_MEMBER s ON p.MEMID = s.MEMID
+                 JOIN TB_MEMBER_SELLER ms ON s.MEMID = ms.MEMID
+        WHERE o.MEMID = #{memId}
+        ORDER BY o.ORDEREDAT DESC
+            FETCH FIRST 5 ROWS ONLY
+
+    </select>
+
+</mapper>
