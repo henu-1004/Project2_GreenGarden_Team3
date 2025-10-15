@@ -11,6 +11,8 @@ import kr.co.greengarden.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,10 @@ public class NoticeService {
         // 1. 목록 데이터 조회
 
         List<NoticeDTO> dtoList = noticeMapper.selectNoticeList(pageRequestDTO);
+        // null 체크
+        if (dtoList == null) {
+            dtoList = List.of(); // 빈 리스트로 초기화
+        }
 
         // 2. 전체 개수 조회
         int total = noticeMapper.selectNoticeCount(pageRequestDTO);
@@ -45,7 +51,6 @@ public class NoticeService {
         log.info("조회 된 공지사항 {} 개, 전체 {} 개",dtoList.size(), total);
 
         // 3. PageResponseDTO 생성 (자동 페이징 계산)
-
 
         return PageResponseDTO.<NoticeDTO>builder()
                 .pageRequestDTO(pageRequestDTO)
@@ -86,8 +91,49 @@ public class NoticeService {
         noticeRepository.save(notice);
 
     }
+    // 조회수 증가 없이 조회 ( 수정 폼용)
+    public NoticeDTO getNoticeById(Integer noticeId){
+        NoticeDTO noticeDTO = noticeMapper.selectNotice(noticeId);
+        return noticeDTO;
+    }
+
+    // 수정 (POST)
+    @Transactional
+    public void modifyNotice(NoticeDTO noticeDTO) {
+        Notice notice = noticeRepository.findById(noticeDTO.getNoticeId()).orElseThrow(() -> new RuntimeException("공지사항을 찾을 수 없습니다"));
+
+        notice.update(
+                noticeDTO.getType(),
+                noticeDTO.getTitle(),
+                noticeDTO.getContent()
+        );
+    }
+
+    // 공지사항 작성
+    @Transactional
+    public int registerNotice(NoticeDTO NoticeDTO) {
+        // 1. 작성자 정보 설정
+        String witerId = getLoggedInUserId(); // 아레 코드에서 가져오기
+
+        // 2. DTO -> Entity  변환
+        Notice notice = modelMapper.map(NoticeDTO, Notice.class);
+
+        // 3. DB 저장
+        Notice savedNotice = noticeRepository.save(notice);
+
+        log.info("공지사항 등록 완료 ID : {}", savedNotice.getNoticeId()) ;
+        return savedNotice.getNoticeId();
+    }
 
     public void delete(Integer noticeId){
         noticeRepository.deleteById(noticeId);
+    }
+
+    private String getLoggedInUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            return "관리자";
+        }
+        return auth.getName();
     }
 }

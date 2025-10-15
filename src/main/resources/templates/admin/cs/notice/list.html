@@ -25,19 +25,18 @@
                 </ul>
             </div>
 
-            <form th:action="@{#}" method="get" class="search-form">
-                <select name="type">
-                    <option value="" disabled selected>유형선택</option>
-                    <option value="csoption1">회원</option>
-                    <option value="csoption2">배송</option>
-                    <option value="csoption3">쿠폰</option>
+            <!-- 검색/유형 선택 -->
+            <form th:action="@{/admin/cs/notice/list}" method="get" class="search-form">
+                <select name="type" th:value="${pageRequestDTO.type}" onchange="this.form.submit()">
+                    <option value="">전체</option>
+                    <option value="고객 서비스" th:selected="${pageRequestDTO.type == '고객 서비스'}">고객서비스</option>
+                    <option value="안전 거래" th:selected="${pageRequestDTO.type == '안전 거래'}">안전거래</option>
+                    <option value="위해 상품" th:selected="${pageRequestDTO.type == '위해 상품'}">위해상품</option>
+                    <option value="이벤트 당첨" th:selected="${pageRequestDTO.type == '이벤트 당첨'}">이벤트당첨</option>
                 </select>
-<!--                <input type="text" name="keyword" placeholder="세부 검색을 해보세요" />-->
-<!--                <button type="submit">-->
-<!--                    <img th:src="@{/images/magnifier.png}" alt="돋보기" />-->
-<!--                </button>-->
             </form>
 
+            <!-- 공지사항 목록 테이블 -->
             <table class="admincsnotice-table">
                 <thead>
                 <tr>
@@ -53,83 +52,54 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
-                    <td>1</td>
-                    <td>고양이서비스</td>
-                    <td>해외결재시 어쩌고저쩌고</td>
-                    <td>999</td>
-                    <td>25.10.02</td>
+                <tr th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}">
+                    <td colspan="7" style="text-align: center">등록된 공지사항이 없습니다.</td>
+                </tr>
+                <tr th:each="notice : ${pageResponseDTO.dtoList}">
+                    <td><input type="checkbox" name="admincscheck" th:value="${notice.noticeId}" /></td>
+                    <td th:text="${notice.noticeId}">1</td>
+                    <td th:text="${notice.type}">고양이서비스</td>
                     <td>
-                        <button type="button" class="btn-modify">수정</button>
-                        <button type="button" class="btn-delete">삭제</button>
+                        <a th:href="@{/admin/cs/notice/view(noticeId=${notice.noticeId})}"
+                           th:text="${notice.title}"></a>
+                    </td>
+                    <td th:text="${notice.views}"></td>
+                    <td th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></td>
+                    <td>
+                        <button type="button"
+                                th:onclick="|location.href='@{/admin/cs/notice/modify(noticeId=${notice.noticeId})}'|"
+                                class="btn-modify">수정</button>
+                        <button type="button" class="btn-delete"
+                                th:onclick="deleteNotice([[${notice.noticeId}]])">삭제</button>
                     </td>
                 </tr>
-                <tr>
-                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
-                    <td>2</td>
-                    <td>고양이서비스</td>
-                    <td>해외결재시 어쩌고저쩌고</td>
-                    <td>999</td>
-                    <td>25.10.02</td>
-                    <td>
-                        <button type="button" class="btn-modify">수정</button>
-                        <button type="button" class="btn-delete">삭제</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
-                    <td>3</td>
-                    <td>고양이서비스</td>
-                    <td>해외결재시 어쩌고저쩌고</td>
-                    <td>999</td>
-                    <td>25.10.02</td>
-                    <td>
-                        <button type="button" class="btn-modify">수정</button>
-                        <button type="button" class="btn-delete">삭제</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
-                    <td>4</td>
-                    <td>고양이서비스</td>
-                    <td>해외결재시 어쩌고저쩌고</td>
-                    <td>999</td>
-                    <td>25.10.02</td>
-                    <td>
-                        <button type="button" class="btn-modify">수정</button>
-                        <button type="button" class="btn-delete">삭제</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox" name="admincscheck" value="10121211341" /></td>
-                    <td>5</td>
-                    <td>고양이서비스</td>
-                    <td>해외결재시 어쩌고저쩌고</td>
-                    <td>999</td>
-                    <td>25.10.02</td>
-                    <td>
-                        <button type="button" class="btn-modify">수정</button>
-                        <button type="button" class="btn-delete">삭제</button>
-                    </td>
-                </tr>
-
                 </tbody>
             </table>
 
-            <section class="pagination">
-                <a href="#" class="prev">&lt; 이전</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#" class="next">다음 &gt;</a>
-            </section>
+            <!-- 페이지네이션 -->
+            <div class="cs-pagination" th:if="${!pageResponseDTO.dtoList.isEmpty()}">
+                <!-- 이전 버튼 -->
+                <a th:href="@{/admin/cs/notice/list(pg=${pageResponseDTO.start - 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type})}"
+                   th:if="${pageResponseDTO.prev}" class="prev">&lt; 이전</a>
+                <span th:unless="${pageResponseDTO.prev}" class="prev disabled">&lt; 이전</span>
+
+                <!-- 페이지 번호 링크 -->
+                <th:block th:each="pageNum : ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                    <a th:href="@{/admin/cs/notice/list(pg=${pageNum}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type})}"
+                       th:classappend="${pageNum == pageRequestDTO.pg ? 'active' : ''}"
+                       th:text="${pageNum}">1</a>
+                </th:block>
+
+                <!-- 다음 버튼 -->
+                <a th:href="@{/admin/cs/notice/list(pg=${pageResponseDTO.end + 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type})}"
+                   th:if="${pageResponseDTO.next}" class="next">다음 &gt;</a>
+                <span th:unless="${pageResponseDTO.next}" class="next disabled">다음 &gt;</span>
+            </div>
 
             <div class="action-buttons">
                 <button type="button" onclick="deleteSelected()" class="btn-delete-all">전체삭제</button>
-                <button type="button" onclick="#" class="btn-write">작성하기</button>
+                <button type="button" class="btn-write"
+                        th:onclick="|location.href='@{/admin/cs/notice/write}'|">작성하기</button>
             </div>
         </section>
     </section>
@@ -142,7 +112,8 @@
         const checkboxes = document.getElementsByName('admincscheck');
         checkboxes.forEach(cb => cb.checked = source.checked);
     }
-    // 전체삭제 클릭 시 체크된 항목이 없으면 경고
+
+    // 전체삭제 클릭 시 체크된 항목 없으면 경고
     function deleteSelected() {
         const checkedBoxes = [...document.getElementsByName('admincscheck')].filter(cb => cb.checked);
         if (checkedBoxes.length === 0) {
@@ -150,7 +121,7 @@
             return;
         }
         if (confirm(`${checkedBoxes.length}개 항목을 삭제하시겠습니까?`)) {
-            // TODO: 삭제 처리 로직 추가
+            // TODO: 삭제 처리 로직
             alert('삭제처리 완료 (예시)');
         }
     }

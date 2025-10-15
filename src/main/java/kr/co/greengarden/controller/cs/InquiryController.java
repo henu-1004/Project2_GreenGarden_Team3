@@ -18,6 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * 이름 : 박효빈
  * 내용 : InquiryController  추가
  */
+/**
+ * 이름 : 박효빈
+ * 날짜 : 2025/10/13
+ * 내용 : 고객센터 - InquiryController 구현
+ */
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -43,7 +48,7 @@ public class InquiryController {
     // 글보기
     @GetMapping("/cs/inquiry/view")
     // int -> Integer (래퍼 클래스)로 변경하여 null 값을 처리할 수 있게 함
-    public String view(Integer inquiryId, Model model) {
+    public String view(Integer inquiryId,PageRequestDTO pageRequestDTO ,Model model) {
 
         // inquiryId가 null 이거나 0 이하일 경우 목록으로 리다이렉트하여 오류 방지
         if (inquiryId == null || inquiryId <= 0) {
@@ -55,6 +60,7 @@ public class InquiryController {
             return "redirect:/cs/inquiry/list";
         }
         model.addAttribute("inquiryDTO",inquiryDTO);
+        model.addAttribute("PageRequestDTO",pageRequestDTO);
         return "cs/inquiry/view";
     }
 

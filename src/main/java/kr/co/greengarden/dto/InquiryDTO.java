@@ -8,6 +8,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+/**
+ * 이름 : 박효빈
+ * 날짜 : 2025/10/13
+ * 내용 : 고객센터 - Inquiry DTO 구현
+ */
 public class InquiryDTO {
 
     /** 문의 고유 번호 (PK) */
@@ -32,7 +37,8 @@ public class InquiryDTO {
     private String answer;
 
     /** 문의 처리 상태 */
-    private String status;
+    @Builder.Default
+    private String status="답변대기";
 
     /** 문의 채널 (예: 이메일, 전화, 웹) */
     private String channel;

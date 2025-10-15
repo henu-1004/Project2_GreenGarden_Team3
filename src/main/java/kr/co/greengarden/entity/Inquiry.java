@@ -14,11 +14,16 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "TB_INQUIRY")
+/**
+ * 이름 : 박효빈
+ * 날짜 : 2025/10/13
+ * 내용 : 고객센터 - Inquiry Entity 구현
+ */
 public class Inquiry {
     @Id // 기본 키 설정
     @GeneratedValue(strategy = GenerationType.IDENTITY) // DB에서 ID 자동 생성 시
     @Column(name = "INQUIRY_ID")
-    private int inquiryId;    // 문의 ID
+    private Integer inquiryId;    // 문의 ID
 
     @Column(name = "CATEGORY1", length = 100)
     private String category1;  // 1차 분류

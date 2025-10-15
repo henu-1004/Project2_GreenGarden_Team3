@@ -33,6 +33,4 @@ public class PageRequestDTO {
         return (pg -1) * size;
     }
 
-
-
 }
