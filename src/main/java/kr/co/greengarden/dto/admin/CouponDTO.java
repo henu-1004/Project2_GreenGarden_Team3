@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 public class CouponDTO {
 
+    private String couponNo; // 쿠폰번호
     private String type; // 쿠폰종류
     private String name; // 쿠폰명
     private String benefit; // 혜택
