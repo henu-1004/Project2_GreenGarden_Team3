@@ -117,30 +117,58 @@ body {
     text-decoration: underline;
 }
 
-/* --- 페이지 네이션 --- */
-.pagination {
+.cs-pagination {
+    /* 중앙 정렬 유지 */
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 30px;
-    gap: 5px;
+    margin-top: 30px; /* 상단 마진 약간 축소 */
+    margin-bottom: 20px;
+    font-size: 0.9em; /* 전체 글자 크기 살짝 줄임 */
 }
-.pagination a {
-    border: 1px solid #ccc;
-    padding: 8px 12px;
-    border-radius: 4px;
-    transition: background-color 0.2s;
-    color: #333;
+
+.cs-pagination a {
+    display: block;
+    padding: 6px 10px; /* 내부 여백(패딩) 축소 */
+    margin: 0 3px; /* 버튼 간 간격(마진) 축소 */
+    color: #555;
     text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: all 0.2s;
 }
-.pagination a:hover {
-    background-color: #f0f0f0;
+
+/* 호버 스타일 */
+.cs-pagination a:hover {
+    color: #175a48;
+    border-color: #175a48;
+    background-color: #f7fcfb;
 }
-.pagination a.active {
-    background-color: #333;
-    color: white;
-    border-color: #333;
+
+/* 활성화된 페이지 (현재 페이지) */
+.cs-pagination a.active {
+    color: #fff;
+    background-color: #175a48;
+    border-color: #175a48;
     font-weight: bold;
+    pointer-events: none;
+}
+
+/* '이전' 및 '다음' 버튼 */
+.cs-pagination a.prev,
+.cs-pagination a.next {
+    font-weight: 500;
+    color: #333;
+    border: none;
+    padding: 6px 12px; /* 패딩 조정 */
+}
+
+.cs-pagination a.prev:hover,
+.cs-pagination a.next:hover {
+    color: #175a48;
+    background-color: transparent;
+    text-decoration: underline;
+    border-color: transparent;
 }
 
 /* --- 사이드바 --- */

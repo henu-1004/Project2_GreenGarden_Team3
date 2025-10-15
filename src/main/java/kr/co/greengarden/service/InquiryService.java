@@ -10,15 +10,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
+/**
+ * 이름 : 박효빈
+ * 날짜 : 2025/10/15
+ * 내용 : 고객센터 - Inquiry Service 구현
+ */
 public class InquiryService {
 
     private final InquiryMapper inquiryMapper; // mybatis(List, Count, View)용
@@ -69,13 +77,29 @@ public class InquiryService {
 
     @Transactional
     public int registerInquiry(InquiryDTO inquiryDTO) {
-        //DTO -> Entity 변환 (ModelMapper)
-        Inquiry inquiry = modelMapper.map(inquiryDTO, Inquiry.class);
 
+        // 1. 현재 로그인 사용자 ID 가져오기
+        String writerId = getLoggedInUserId();
+
+        // 2. Builder로 새 Entity 생성 (ID 제외 - 자동 생성되도록)
+        Inquiry inquiry = Inquiry.builder()
+                .category1(inquiryDTO.getCategory1())
+                .category2(inquiryDTO.getCategory2())
+                .title(inquiryDTO.getTitle())
+                .content(inquiryDTO.getContent())
+                .channel(inquiryDTO.getChannel())
+                .writer(writerId)
+                .createdAt(LocalDateTime.now())
+                .status("대기")  // 초기 상태
+                // inquiryId는 절대 설정하지 않음!
+                .build();
+
+        // 3. DB 저장
         Inquiry savedInquiry = inquiryRepository.save(inquiry);
 
-        log.info("문의 등록 완료 ID:{}",savedInquiry.getInquiryId());
-        return savedInquiry.getInquiryId();
+        log.info("문의 등록 완료 ID:{}", savedInquiry.getInquiryId());
+        return savedInquiry.getInquiryId().intValue();
+
     }
 
     @Transactional
@@ -97,6 +121,16 @@ public class InquiryService {
     @Transactional
     public void removeInquiry(int inquiryId) {
         inquiryRepository.deleteById(inquiryId);
+    }
+
+    // --- 유틸리티 메소드: 로그인 ID 가져오기 ---
+    private String getLoggedInUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            return "익명사용자"; // 로그인하지 않은 경우
+        }
+        // Spring Security UserDetails 객체에서 사용자 ID 추출
+        return auth.getName();
     }
 
 

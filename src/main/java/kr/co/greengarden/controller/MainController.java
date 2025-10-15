@@ -1,12 +1,20 @@
 package kr.co.greengarden.controller;
 
 
+import kr.co.greengarden.controller.product.ProductController;
+import kr.co.greengarden.dto.ProductListDTO;
+import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.Member;
 import kr.co.greengarden.security.MemberDetails;
+import kr.co.greengarden.service.ProductService;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 /*
  * 날짜 : 2025/09/23
@@ -14,11 +22,16 @@ import org.springframework.web.bind.annotation.GetMapping;
  * 내용 : MainController 설정
  */
 @Controller
+@RequiredArgsConstructor
 public class MainController {
+
+    private final ProductService productService;
 
     @GetMapping(value = {"/", "/index"})
     public String index(Authentication authentication, Model model) {
 
+
+        List<ProductListDTO> hitList = productService.getProducts("views", "desc");
 
         if(authentication != null) {
 
@@ -27,6 +40,8 @@ public class MainController {
 
             model.addAttribute("member", member);
         }
+
+        model.addAttribute("hitList", hitList);
 
         return "index";
     }

@@ -9,9 +9,9 @@
 
     <aside class="sidebar">
         <div class="cs-breadcrumb">
-            <a href="#">홈</a>
+            <a href="@{/cs/inquiry/list">홈</a>
             <span>></span>
-            <a href="#" class="active-breadcrumb">문의하기</a>
+            <a th:href="@{/cs/inquiry/write}" class="active-breadcrumb">문의하기</a>
         </div>
 
         <ul>
@@ -20,13 +20,14 @@
                     <a href="#">문의하기</a>
                 </div>
                 <ul class="submenu">
-                    <li class="active"><a href="#">회원</a></li>
-                    <li><a href="#">쿠폰/이벤트</a></li>
-                    <li><a href="#">주문/결제</a></li>
-                    <li><a href="#">배송</a></li>
-                    <li><a href="#">취소/반품/교환</a></li>
-                    <li><a href="#">여행/숙박/항공</a></li>
-                    <li><a href="#">안전거래</a></li>
+                    <!-- 현재 문의의 카테고리(category1)와 일치하는 항목에 'active' 클래스 부여 예시 -->
+                    <li th:classappend="${inquiryDTO.category1 == '회원'} ? active : ''"><a th:href="@{/cs/inquiry/list(type='회원')}">회원</a></li>
+                    <li th:classappend="${inquiryDTO.category1 == '쿠폰/이벤트'} ? active : ''"><a th:href="@{/cs/inquiry/list(type='쿠폰/이벤트')}">쿠폰/이벤트</a></li>
+                    <li th:classappend="${inquiryDTO.category1 == '주문/결제'} ? active : ''"><a th:href="@{/cs/inquiry/list(type='주문/결제')}">주문/결제</a></li>
+                    <li th:classappend="${inquiryDTO.category1 == '배송'} ? active : ''"><a th:href="@{/cs/inquiry/list(type='배송')}">배송</a></li>
+                    <li th:classappend="${inquiryDTO.category1 == '취소/반품/교환'} ? active : ''"><a th:href="@{/cs/inquiry/list(type='취소/반품/교환')}">취소/반품/교환</a></li>
+                    <li th:classappend="${inquiryDTO.category1 == '여행/숙박/항공'} ? active : ''"><a th:href="@{/cs/inquiry/list(type='여행/숙박/항공')}">여행/숙박/항공</a></li>
+                    <li th:classappend="${inquiryDTO.category1 == '안전거래'} ? active : ''"><a th:href="@{/cs/inquiry/list(type='안전거래')}">안전거래</a></li>
                 </ul>
             </li>
         </ul>
@@ -42,54 +43,52 @@
             <div class="qna-question-section">
                 <div class="qna-question-header">
                     <span class="qna-badge question">질문</span>
-                    <span class="qna-view-category">[가입] 가입문의드립니다</span>
+                    <span class="qna-view-category" th:text="'[' + ${inquiryDTO.category1} + '] ' + ${inquiryDTO.title}">[가입] 가입문의드립니다</span>
                 </div>
                 <div class="qna-meta-info">
-                    <span>user*** 님의 문의내용 입니다.</span>
+                    <span th:text="${inquiryDTO.writer} + '님의 문의 내용입니다.'">user*** 님의 문의내용 입니다.</span>
                 </div>
                 <div class="qna-content-box">
-                    <p>
-                        회원가입 시 필요한 정보가 무엇인가요?
-                        <br>
-                        그리고 고양이도 회원가입이 가능한지 궁금합니다.
+                    <p th:utext="${#strings.replace(inquiryDTO.content, '\n', '&lt;br&gt;')}">
+
                     </p>
                 </div>
             </div>
 
             <!-- 답변 영역 -->
-            <div class="qna-answer-section">
+            <div class="qna-answer-section" th:if="${inquiryDTO.status == '완료'}">
                 <div class="qna-answer-header">
                     <span class="qna-badge answer">답변</span>
-                    <span class="qna-answer-title">[답변] 가입문의드립니다</span>
+                    <span class="qna-answer-title">[답변] 문의에 대한 답변</span>
                 </div>
                 <div class="qna-answer-meta">
-                    <span>답변 작성일 : 2023.10.31 | 작성자 : 관리자</span>
+                    <span>답변 상태 : <span th:text="${inquiryDTO.status}"></span> | 작성자 : <span th:text="${inquiryDTO.writer}"></span></span>
                 </div>
                 <div class="qna-content-box">
-                    <p>
-                        안녕하세요.
-                        <br><br>
-                        회원가입 시 필요한 정보는 아래와 같습니다.
-                        <br>
-                        - 이메일 주소
-                        <br>
-                        - 휴대폰 번호
-                        <br>
-                        - 비밀번호
-                        <br>
-                        - 이름
-                        <br><br>
-                        고양이도 회원으로가입도 가능하며, 사진로 본인인증을 진행하시면 됩니다.
-                        <br><br>
-                        감사합니다.
+                    <p th:utext="${#strings.replace(inquiryDTO.answer, '\n','&lt;br&gt;')}">
+
                     </p>
                 </div>
             </div>
-
+        </div>
+        <div class="qna-answer-section" th:if="${inquiryDTO.status != '완료'}">
+            <div class="qna-answer-header">
+                <span class="qna-badge answer">대기</span>
+                <span class="qna-answer-title">[답변] 대기 상태</span>
+            </div>
+            <div class="qna-answer-meta">
+                <span>답변 상태 : <span th:text="${inquiryDTO.status}"></span> | 작성자 : <span th:text="${inquiryDTO.writer}"></span></span>
+            </div>
+            <div class="qna-content-box">
+                <p>
+                    최대한 빠른 시간 내에 답변드리겠습니다. 잠시만 기다려주세요.
+                </p>
+            </div>
         </div>
 
         <div class="cs-button-group">
-            <a href="#" class="cs-button">목록</a>
+            <!-- 목록 버튼: PageRequestDTO 상태를 모두 유지하여 원래 보던 목록으로 돌아가도록 설정 -->
+            <a th:href="@{/cs/inquiry/list(pg=${pageRequestDTO.pg}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}" class="cs-button">목록</a>
         </div>
 
     </section>

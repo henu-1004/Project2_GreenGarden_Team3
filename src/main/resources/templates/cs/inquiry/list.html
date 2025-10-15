@@ -105,20 +105,22 @@
         <!-- 페이징 처리 -->
         <div class="cs-pagination" th:if="${!responseDTO.dtoList.isEmpty()}">
 
-            <!-- 이전 버튼 (첫 페이지가 아닐 때만 활성화) -->
-            <a th:href="${responseDTO.prev ? #strings.concat('/cs/inquiry/list', pageRequestDTO.getLink(responseDTO.start - 1)) : '#'} "
-               th:classappend="${responseDTO.prev ? '' : 'disabled'}" class="prev">&lt; 이전</a>
+            <!-- 이전 버튼 -->
+            <a th:href="@{/cs/inquiry/list(pg=${responseDTO.start - 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+               th:if="${responseDTO.prev}" class="prev">&lt; 이전</a>
+            <span th:unless="${responseDTO.prev}" class="prev disabled">&lt; 이전</span>
 
             <!-- 페이지 번호 링크 -->
             <th:block th:each="pageNum : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                <a th:href="@{/cs/inquiry/list + ${pageRequestDTO.getLink(pageNum)}}"
+                <a th:href="@{/cs/inquiry/list(pg=${pageNum}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
                    th:classappend="${pageNum == pageRequestDTO.pg ? 'active' : ''}"
                    th:text="${pageNum}">1</a>
             </th:block>
 
-            <!-- 다음 버튼 (마지막 페이지가 아닐 때만 활성화) -->
-            <a th:href="${responseDTO.next ? #strings.concat('/cs/inquiry/list', pageRequestDTO.getLink(responseDTO.end + 1)) : '#'}"
-               th:classappend="${responseDTO.next ? '' : 'disabled'}" class="next">다음 &gt;</a>
+            <!-- 다음 버튼 -->
+            <a th:href="@{/cs/inquiry/list(pg=${responseDTO.end + 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+               th:if="${responseDTO.next}" class="next">다음 &gt;</a>
+            <span th:unless="${responseDTO.next}" class="next disabled">다음 &gt;</span>
         </div>
 
 

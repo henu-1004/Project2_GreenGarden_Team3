@@ -17,7 +17,7 @@
                 <th:block th:if="${#authorization.expression('isAuthenticated()')}">
                     <a th:href="@{/member/logout}">로그아웃</a>
                 </th:block>
-                <a th:href="@{#}">마이페이지</a>
+                <a th:href="@{/my/home}">마이페이지</a>
                 <a th:href="@{#}">장바구니</a>
             </div>
         </div>

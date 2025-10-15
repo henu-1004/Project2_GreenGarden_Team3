@@ -107,7 +107,7 @@ public interface MemberGeneralRepository extends JpaRepository<MemberGeneral, St
     @Query("delete from MemberGeneral g where g.memId in :ids")
     void deleteByMemIdIn(@Param("ids") List<String> ids);
 
-    // 아이디 찾기
+    // 아이디 찾기 ( 이메일 )
     @Query("""
         SELECT new kr.co.greengarden.dto.FindResultDTO(
             g.name,
@@ -121,6 +121,29 @@ public interface MemberGeneralRepository extends JpaRepository<MemberGeneral, St
     """)
     Optional<FindResultDTO> findMemberInfoByNameAndEmail(@Param("name") String name,
                                                          @Param("email") String email);
+
+    // 아이디 찾기 ( 휴대폰 )
+    boolean existsByNameAndPhone(String name, String phone);
+
+    @Query("""
+        SELECT new kr.co.greengarden.dto.FindResultDTO(
+            g.name,
+            g.email,
+            m.memId,
+            m.joinDate
+        )
+            From MemberGeneral g
+            JOIN g.member m
+            WHERE g.name = :name AND g.phone = :phone
+    """)
+    Optional<FindResultDTO> findMemberInfoByNameAndPhone(@Param("name") String name,
+                                                         @Param("phone") String phone);
+
+    // 아이디 이메일 확인 ( 비밀번호 재설정용 )
+    boolean existsByMember_MemIdAndEmail(String memId, String email);
+
+
+
 
 
 

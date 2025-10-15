@@ -17,7 +17,7 @@
 <div th:replace="~{common/header_index :: header}"></div>
 <main>
     <div id="slide">
-        <div> s l i d e </div>
+        <div> s l i d e</div>
     </div>
     <div th:replace="~{common/index_nav :: index_nav}"></div> <!-- 카테고리 네비 삽입 -->
     <div id="Ad-banner-top">
@@ -47,11 +47,23 @@
                 </div>
 
                 <div class="products right" title="HIT">
-                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
-                        <img th:src="@{/images/sample_thumb.png}" alt="상품">
-                        <p>상품명</p>
-                        <span><a>30,000원</a><a>10%</a></span><br>
-                        <span><a>27,000원</a><button>무료배송</button></span>
+                    <div class="products_item" th:each="product : ${hitList}">
+                        <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
+                        <p th:text="${product.name}">상품명</p>
+
+                        <span>
+                            <a th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}">30,000원</a>
+                            <a th:text="${product.discountRate + '%'}">10%</a>
+                        </span><br>
+
+                        <span>
+                            <a th:text="${#numbers.formatInteger(product.price * (1 - product.discountRate / 100.0), 3, 'COMMA') + '원'}">
+                                27,000원
+                            </a>
+                            <button th:text="${product.deliveryFee == 0 ? '무료배송' : product.deliveryFee + '원'}">
+                                무료배송
+                            </button>
+                        </span>
                     </div>
                 </div>
 

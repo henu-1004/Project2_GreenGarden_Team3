@@ -43,4 +43,10 @@ public class Notice {
     @Column(name = "CREATED_AT")
     private LocalDateTime createdAt; // 작성일
 
+    public void update(String type, String title, String content) {
+        this.type = type;
+        this.title = title;
+        this.content = content;
+    }
+
 }
