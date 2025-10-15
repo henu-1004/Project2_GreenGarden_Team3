@@ -1,5 +1,6 @@
 package kr.co.greengarden.controller.admin.coupon;
 
+import kr.co.greengarden.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,9 @@ public class AdminCouponController {
 
     @GetMapping("/admin/coupon/list")
     public String couponListPage() {
+
+
+
         return "admin/coupon/list";
     }
 

@@ -7,6 +7,8 @@
 
 // 1. 모달 엘리먼트를 ID로 가져오기
 const modalIssueInfo = document.getElementById('modalIssueInfo'); //쿠폰상세정보
+const modalCouponInsert = document.getElementById('modalCouponInsert'); //쿠폰등록
+const modalCouponInfo = document.getElementById('modalCouponInfo'); //쿠폰정보
 
 // 2. 모달 열기
 function openModal(modalId) {
@@ -32,6 +34,11 @@ function closeModal(modalId) {
 window.addEventListener('click', (event) => {
     if(modalIssueInfo && modalIssueInfo.classList.contains('active') && event.target === modalIssueInfo) {
         closeModal('modalIssueInfo');
+    }
+    else if (modalCouponInsert && modalCouponInsert.classList.contains('active') && event.target === modalCouponInsert) {
+        closeModal('modalCouponInsert');
+    }else if (modalCouponInfo && modalCouponInfo.classList.contains('active') && event.target === modalCouponInfo) {
+        closeModal('modalCouponInfo');
     }
 });
 

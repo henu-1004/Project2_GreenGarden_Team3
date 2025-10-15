@@ -36,6 +36,20 @@
     width: 500px;
 }
 
+#modalDeliveryInput input[readonly] {
+    cursor: default;
+    pointer-events: none;
+    color: #ccc;
+}
+
+.ex-textbox {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
 
 /* ㅡㅡㅡ 등록하기 버튼 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
 .cart-action {

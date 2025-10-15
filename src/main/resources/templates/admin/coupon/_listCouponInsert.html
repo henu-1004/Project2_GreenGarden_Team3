@@ -3,7 +3,7 @@
     이름 : 이수연
     내용 : 쿠폰목록 - 쿠폰등록 모달
 -->
-<div class="modalCouponInsert" th:fragment="modal-CouponInsert">
+<div id="modalCouponInsert" th:fragment="modal-CouponInsert">
     <link rel="stylesheet" th:href="@{/css/admin/coupon/_listCouponInsert.css}">
     <div class="modal-content">
         <button class="close-button" onclick="closeModal('modalCouponInsert')">×</button>
@@ -13,28 +13,28 @@
             </div>
         </div>
         <div class="modal-body">
-            <table class="coupon-table">
+            <table class="coupon-insert-table">
                 <tr>
                     <th>발급처</th>
-                    <td><input type="text" placeholder="발급처 이름을 입력하게요."></td>
+                    <td><label><input type="text" value="(주)Green Garden"></label></td>
                 </tr>
                 <tr>
                     <th>쿠폰종류</th>
-                    <td>
-                        <select>
+                    <td><label>
+                        <select class="coupon-cat"> <!-- (명세서)쿠폰 종류는 3종류로 제한 -->
                             <option value="cp1">개별상품할인</option>
                             <option value="cp2">주문상품할인</option>
                             <option value="cp3">배송비 무료</option>
-                        </select>
+                        </select></label>
                     </td>
                 </tr>
                 <tr>
                     <th>쿠폰명</th>
-                    <td><textarea></textarea></td>
+                    <td><label><input type="text" class="coupon-name-box"></label></td>
                 </tr>
                 <tr>
                     <th>혜택</th>
-                    <td>
+                    <td class="radio-group">
                         <label><input type="radio" name="discountMethod" value="1000"/>1,000원 할인</label>
                         <label><input type="radio" name="discountMethod" value="2000"/>2,000원 할인</label>
                         <label><input type="radio" name="discountMethod" value="3000"/>3,000원 할인</label>
@@ -51,14 +51,14 @@
                 <tr>
                     <th>사용기간</th>
                     <td>
-                        2025-10-24 ~ 2025-10-24 <br>
+                        <input type="date"> ~ <input type="date"> <br>
                         <p>또는 발급일로부터 <input type="text"> 이내</p>
                     </td>
                 </tr>
-                <tr>
+                <trD>
                     <th>유의사항</th>
-                    <td> <textarea></textarea> </td>
-                </tr>
+                    <td> <textarea class="ex-textbox" maxlength="200"></textarea> </td>
+                </trD>
             </table>
             <div class="btn-content">
                 <button class="btn btn-cancel">취소</button>
