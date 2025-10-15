@@ -1,0 +1,405 @@
+@charset "UTF-8";
+/*
+    날짜 : 2025/10/14
+    이름 : 조지영
+    내용 : HOME > 관리자 환경설정 > 카테고리 CSS
+*/
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+body {
+    min-width: 1200px;
+}
+
+
+/* 메인 콘텐츠 영역 */
+.content-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    gap: 20px;
+    /* 상단 정렬 */
+    align-items: flex-start;
+    padding-top: 20px;
+}
+
+/* 메인 섹션 */
+#main-section {
+    width: 930px;
+    flex-shrink: 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    /* aside와 상단선을 맞춤 */
+    box-sizing: border-box;
+}
+
+
+
+
+/* 탑 페이지 네이션 */
+.top_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.top_nav h5 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.top_nav .page_nation {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.top_nav .page_nation li:not(:last-child)::after {
+    content: " > ";
+    margin-left: 5px;
+    color: #999;
+}
+
+
+
+
+
+
+.info-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #333;
+}
+
+.info-box {
+    background: #f3f7f6;
+    padding: 15px;
+    border: 0 solid #eee;
+    margin-bottom: 10px;
+    font-size: 14px;
+    margin-top: 20px; /* 안내문 위쪽 여백 */
+}
+
+.page-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+.page-title h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.breadcrumb {
+    font-size: 14px;
+    color: #555;
+}
+
+.tab-menu {
+    display: flex;
+    margin-bottom: 20px;
+}
+.tab-menu button {
+    border: 1px solid #ccc;
+    width: 100%;
+    border-bottom: 1px solid #000;
+    background: #f7f7f7;
+    padding: 8px 20px;
+    cursor: pointer;
+}
+.tab-menu button.active {
+    background: #fff;
+    border-top: 3px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-bottom: 2px solid #fff;
+    font-weight: bold;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+th {
+    background: #f3f7f6;
+    font-weight: bold;
+    text-align: center;
+}
+
+td a {
+    color: #333;
+    text-decoration: none;
+}
+
+.banner{
+    text-align: left;
+}
+
+.img-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 50px;
+    background: #ddd;
+    font-size: 12px;
+    color: #666;
+}
+
+.btn {
+    background: #175a48;
+    color: #fff;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+.btn.gray {
+    background: #ccc;
+    color: #333;
+}
+.btn.gray a {
+    color: #333;
+    text-decoration: none;
+}
+.btn-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px; /* 버튼 위쪽 여백 */
+}
+.btn-wrap a {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+
+
+/* 페이지 네이션 ㅡㅡㅡㅡㅡ */
+.pagination {
+    display: flex;
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin-top: 30px;
+    gap: 5px; /* 페이지 번호 사이 간격 */
+}
+
+.pagination a {
+    border: 1px solid #ccc; /* 테두리 */
+    padding: 8px 12px; /* 내부 여백 */
+    border-radius: 4px; /* 둥근 모서리 */
+    transition: background-color 0.2s; /* 부드러운 색 변화 */
+    color: #333;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+}
+
+.pagination a.active {
+    background-color: #333;
+    color: white;
+<<<<<<< HEAD
+=======
+
+}
+
+/* 모달 시작 ㅡㅡㅡㅡㅡ */
+/* =========================
+   모달 디자인 (새 버전)
+   ========================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+
+    /* 중앙 정렬 */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    margin: 0 auto;
+    border-radius: 0;
+    width: 40%;
+    max-width: 612px;
+    min-width: 484px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #175a48;
+    color: #fff;
+    font-size: 14px;
+    padding: 12px 16px;
+}
+
+.modal-title {
+    font-weight: bold;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #fff;
+}
+
+/* 이용약관 */
+.terms-box {
+width: 96%;
+height: 150px;
+border: 1px solid #ccc;
+padding: 10px;
+overflow-y: scroll;
+background: #f3f7f6;
+font-size: 14px;
+line-height: 1.5;
+text-align: left;
+}
+
+/* 버전 입력창, 변경내역 입력창 정렬 개선 */
+.version-box {
+padding: 16px; }
+
+.version-box table {
+width: 100%; border-collapse: collapse; table-layout: fixed; /* 셀 폭 균일하게 */ height: 200px; /* 테이블 높이 고정 */
+}
+
+.version-box th {
+    width: 100px; /* 기존보다 좁게: 80~120px 사이에서 조정 가능 */
+    background: #f3f7f6;
+    text-align: center;
+}
+
+.version-box input[type="text"],
+.version-box textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+}
+
+/* textarea 높이 및 정렬 */
+.version-box textarea {
+    height: 150px;
+    resize: none;
+    vertical-align: top; /* 위쪽부터 정렬 */
+}
+
+.version-box th,
+.version-box td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle; /* 세로 정렬 중앙 */
+}
+
+/* 모달 끝 ㅡㅡㅡㅡㅡ */
+
+
+/* ===================== 카테고리 ===================== */
+/* 컨테이너 */
+.container { display: flex; }
+.sidebar { width: 400px; background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 10px 0; }
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.menu { border-bottom: 2px solid #eee; }
+.menu a { color: #000; display: block; }
+.menu a:hover { color: #175a48; font-weight: bold; }
+
+/* 메뉴 타이틀 */
+.menu-title {
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.menu-title .arrow { width: 10px; transition: transform 0.3s; }
+
+/* category-name 왼쪽 정렬 */
+.category-name {
+  flex: 1;
+  text-align: left;
+  padding-left: 10px;
+}
+
+/* open 상태 스타일 */
+.menu.open .menu-title .arrow { transform: rotate(180deg); }
+.menu.open .submenu { display: block; }
+
+/* 서브메뉴 */
+.submenu { display: none; color: #555; }
+.submenu-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 40px; }
+.submenu-item span { color: #333; }
+.submenu li { margin: 4px 0; }
+
+/* 버튼 */
+.btn { border: none; cursor: pointer; font-size: 14px; transition: 0.2s; border-radius: 4px; }
+.btn.gray { background: #fff; color: gray; border: 1px solid gray; padding: 3px 8px; }
+.btn.red { background: #fff; color: red; border: 1px solid red; padding: 3px 8px; }
+.btn.gray:hover { background: #f3f3f3; }
+.btn.red:hover { background: #ffecec; }
+.btn-wrap {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    margin-top: 20px; /* 위쪽 여백 (선택) */
+}
+
+/* 추가버튼 */
+.add-main button, .add-sub-btn { width: 100%; text-align: left; }
+.add-main { padding: 10px 20px; }
+.add-main, .add-sub {
+  cursor: default !important;
+}
+
+/* 드래그 효과 */
+.menu[draggable="true"], .submenu-item[draggable="true"] { cursor: grab; }
+.menu[draggable="true"]:active, .submenu-item[draggable="true"]:active { cursor: grabbing; opacity: 0.7; }
+

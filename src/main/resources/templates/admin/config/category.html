@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HOME > 관리자 환경설정 > 카테고리</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/config/category.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
+</head>
+<!--
+    날짜 : 2025/10/04
+    이름 : 조지영
+    내용 : HOME > 관리자 환경설정 > 카테고리
+-->
+<body>
+<div th:replace="~{/admin/common/header :: header}"></div>
+<section class="content-wrap">
+    <div th:replace="~{/admin/common/aside :: aside}"></div>
+    <main>
+        <div id="main">
+            <section id="main-section">
+                <div class="top_nav">
+                    <!-- 페이지 타이틀 -->
+                    <h5>카테고리</h5>
+                    <ul class="page_nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">환경설정</a></li>
+                        <li><a href="#">카테고리</a></li>
+                    </ul>
+                </div>
+
+                <!-- 제목 -->
+                <div class="info-title">
+                    <h2>카테고리 관리</h2>
+                </div>
+                <div class="info-box">
+                    <strong>쇼핑몰 메인, 상품페이지 사이드 카테고리 메뉴 입니다.</strong>
+                </div>
+
+                <!-- 메인 컨테이너 -->
+                <div class="container">
+                    <!-- 좌측 사이드바 -->
+                    <aside class="sidebar">
+                        <ul id="categoryList">
+                            <!-- (1) 식물 - 기본 펼쳐진 상태 -->
+                            <li class="menu open" draggable="true">
+                                <div class="menu-title">
+                                    <img th:src="@{/images/arrow_1.png}" alt="화살표" class="arrow">
+                                    <span class="category-name">식물</span>
+                                    <button class="btn red delete-main">삭제</button>
+                                </div>
+                                <ul class="submenu">
+                                    <li class="submenu-item" draggable="true"><span>수경재배식물</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>다육식물</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>생화</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>씨앗.구근</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item add-sub"><button class="btn gray add-sub-btn"><span>&nbsp;+&nbsp;</span>2차 카테고리 추가</button></li>
+                                </ul>
+                            </li>
+
+                            <!-- (2) 꽃다발.플라워박스 -->
+                            <li class="menu" draggable="true">
+                                <div class="menu-title">
+                                    <img th:src="@{/images/arrow_1.png}" alt="화살표" class="arrow">
+                                    <span class="category-name">꽃다발.플라워박스</span>
+                                    <button class="btn red delete-main">삭제</button>
+                                </div>
+                                <ul class="submenu">
+                                    <li class="submenu-item" draggable="true"><span>꽃다발</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>꽃바구니</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>플라워박스</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item add-sub"><button class="btn gray add-sub-btn"><span>&nbsp;+&nbsp;</span>2차 카테고리 추가</button></li>
+                                </ul>
+                            </li>
+
+                            <!-- (3) 가드닝용품 -->
+                            <li class="menu" draggable="true">
+                                <div class="menu-title">
+                                    <img th:src="@{/images/arrow_1.png}" alt="화살표" class="arrow">
+                                    <span class="category-name">가드닝용품</span>
+                                    <button class="btn red delete-main">삭제</button>
+                                </div>
+                                <ul class="submenu">
+                                    <li class="submenu-item" draggable="true"><span>화병, 화분</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>원예도구</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>흙,비료,자갈</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item" draggable="true"><span>식물생장</span><button class="btn red delete-sub">삭제</button></li>
+                                    <li class="submenu-item add-sub"><button class="btn gray add-sub-btn"><span>&nbsp;+&nbsp;</span>2차 카테고리 추가</button></li>
+                                </ul>
+                            </li>
+
+                            <!-- (4) 1차 카테고리 추가 -->
+                            <li class="add-main">
+                                <div class="submenu-item">
+                                    <button class="btn gray" id="addMainCategoryBtn"><span>&nbsp;+&nbsp;</span>1차 카테고리 추가</button>
+                                </div>
+                            </li>
+                        </ul>
+                    </aside>
+                </div>
+                <!-- 안내말 -->
+                <div class="info-box">
+                    <strong>카테고리 메뉴 순서를 변경할 때 드래그 앤 드롭으로 1차, 2차 카테고리 메뉴 이동 후 수정하기를 클릭합니다.</strong>
+                </div>
+
+                <!-- 하단 버튼 -->
+                <div class="btn-wrap">
+                    <button class="btn"><a href="#">수정하기</a></button>
+                </div>
+            </section>
+        </div>
+    </main>
+</section>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
+</body>
+<script th:src="@{/js/admin/config/category.js}"></script>
+<script th:src="@{/js/admin/aside.js}"></script>
+</html>
