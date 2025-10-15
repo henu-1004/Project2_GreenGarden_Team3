@@ -142,3 +142,10 @@
 }
 .feedback:empty{ display:none; } /* 처음엔 공간 0 */
 
+.help{
+    margin:14px 2px 18px;
+    color:#62716e;
+    line-height:1.55;
+    white-space: pre-line; /* ← 줄바꿈 문자(\n)도 개행 */
+}
+
