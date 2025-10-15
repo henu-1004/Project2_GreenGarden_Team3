@@ -3,6 +3,7 @@ package kr.co.greengarden.service;
 import kr.co.greengarden.dto.CartDTO;
 import kr.co.greengarden.dto.CartListDTO;
 import kr.co.greengarden.dto.MemberDTO;
+import kr.co.greengarden.dto.admin.MemberGeneralListDTO;
 import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.Member;
 import kr.co.greengarden.entity.Product;
@@ -11,6 +12,9 @@ import kr.co.greengarden.repository.MemberRepository;
 import kr.co.greengarden.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,8 +46,17 @@ public class CartService {
         return cartRepository.findCartListByCartId(cartId);
     }
 
+    public List<CartListDTO> getCartListBycartIds(List<Integer> cartIds) {
+        return cartRepository.findCartListByCartIds(cartIds);
+    }
+
     public List<CartListDTO> getCartList(String memId){
         return cartRepository.findCartListByMemId(memId);
+    }
+
+    public Page<CartListDTO> getCartPage(String memId, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return cartRepository.findCartByMember_MemId(memId, pageable);
     }
 
     public List<Cart> getAllCartsByMemberId(String memId){
