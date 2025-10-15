@@ -301,7 +301,7 @@ hr {
     padding-top: 15px; /* 제목과의 간격 */
     display: grid; /* 그리드 컨테이너로 설정 */
     grid-template-columns: repeat(2, 1fr); /* 2개의 열을 동일한 비율로 생성 */
-    gap: 10px 5px; /* 행 간격 20px, 열 간격 10px */
+    gap: 10px 5px; /* 행 간격 5px, 열 간격 10px */
 }
 
 .options-details label {

@@ -12,10 +12,10 @@
     <link rel="stylesheet" th:href="@{/css/admin/coupon/list.css}">
 </head>
 <body>
-<div th:replace="~{/admin/common/header :: header}"></div>
+<div th:replace="~{admin/common/header :: header}"></div>
 <main>
     <section class="content-wrap">
-        <div th:replace="~{/admin/common/aside :: aside}"></div>
+        <div th:replace="~{admin/common/aside :: aside}"></div>
         <section id="main-section">
             <div class="top-nav">
                 <h3>쿠폰목록</h3>
@@ -51,7 +51,7 @@
                     <th>관리</th>
                 </tr>
                 <tr>
-                    <td><span class="coupon-num-link" onclick="openModal('modalCouponDetail')">10121211341</span></td>
+                    <td><span class="coupon-num-link" onclick="openModal('modalCouponInfo')">10121211341</span></td>
                     <td>개별상품 할인</td>
                     <td>회원가입 축하 쿠폭</td>
                     <td>15% 할인</td>
@@ -81,7 +81,7 @@
                     </td>
                 </tr>
             </table>
-            <button type="button" class="btn-register" onclick="openModal()">등록하기</button>
+            <button type="button" class="btn-insert" onclick="openModal('modalCouponInsert')">등록하기</button>
             <section class="pagination">
                 <!-- 이전 페이지 버튼 -->
                 <a href="#" class="prev">&lt; 이전</a>
@@ -99,9 +99,9 @@
         </section>
     </section>
 </main>
-<div th:replace="~{/admin/common/footer :: footer}"></div>
-<div th:replace="~{/admin/coupon/_listCouponInfo :: modal-ListCouponInfo}"></div>
-<div th:replace="~{/admin/coupon/_listCouponInsert :: modal-CouponInsert}"></div>
+<div th:replace="~{admin/common/footer :: footer}"></div>
+<div th:replace="~{admin/coupon/_listCouponInfo :: modal-ListCouponInfo}"></div>
+<div th:replace="~{admin/coupon/_listCouponInsert :: modal-CouponInsert}"></div>
 <script th:src="@{/js/admin/aside.js}"></script>
 <script th:src="@{/js/admin/coupon/coupon.js}"></script>
 </body>

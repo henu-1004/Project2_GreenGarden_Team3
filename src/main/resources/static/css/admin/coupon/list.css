@@ -126,6 +126,8 @@ body {
 /* 주문현황 테이블 디자인 ㅡㅡㅡㅡㅡㅡ */
 .coupon-table {
     border-collapse: collapse;
+    width: 100%;
+    text-align: center;
 }
 
 .coupon-table th {
@@ -139,6 +141,28 @@ body {
     padding: 10px;
     border-bottom: 1px solid #ddd;
     font-size: 10px;
+}
+
+/* 등록하기 버튼 ㅡㅡㅡㅡㅡㅡ */
+.btn-insert {
+    display: block;
+    margin-left: auto;
+    margin-top: 20px;
+    width: 80px;
+
+    padding: 8px 15px; /* 버튼 내부 여백 */
+    border: none;
+    cursor: pointer;
+    border-radius: 4px; /* 모서리를 약간 둥글게 */
+    transition: background-color 0.2s;
+
+    background-color: #175a48;
+    color: #ffffff; /* 흰색 글자 */
+    font-weight: bold; /* 등록 버튼을 더 강조 */
+}
+
+.btn-insert:hover {
+    background-color: #3e8e41;
 }
 
 

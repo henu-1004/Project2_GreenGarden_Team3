@@ -3,12 +3,12 @@
     이름 : 이수연
     내용 : 쿠폰목록 - 쿠폰정보 모달 css
 */
-#modalCouponDetail.active {
+#modalCouponInfo.active {
     display: flex;
 }
 
 /* 모달 배경과 위치 설정 */
-#modalCouponDetail {
+#modalCouponInfo {
     position: fixed;
     top: 0;
     left: 0;
@@ -41,7 +41,7 @@
 /* 닫힘 버튼 */
 .close-button {
     position: absolute; /* 부모 요소(modal-content)를 기준으로 위치를 잡음 */
-    top: 15px;
+    top: 10px;
     right: 35px;
     font-size: 40px;
     font-weight: bold;
@@ -94,14 +94,16 @@
     border-collapse: collapse;
     border-top: 2px solid #ddd;
     border-bottom: 2px solid #ddd;
-    text-align: left;
-    padding: 8px;
 }
 
 .coupon-detail-table th {
-    border-color: #ddd;
+    background-color: #ddd;
+    text-align: center;
+    padding: 8px;
 }
 .coupon-detail-table td {
     border-bottom: 1px solid #ddd;
+    text-align: left;
+    padding: 8px;
 }
 

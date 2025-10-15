@@ -30,7 +30,7 @@ body {
     width: 1030px;
     flex-shrink: 0;
     padding: 20px;
-    border: 3px solid #66968c;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     background: white;
     /* aside와 상단선을 맞춤 */
