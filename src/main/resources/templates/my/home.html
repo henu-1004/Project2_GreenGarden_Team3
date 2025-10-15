@@ -36,6 +36,10 @@
         </div>
 
         <div class="order-list">
+
+            <!-- ==========================
+                 🧱 [1] 기존 하드코딩 블록
+                 ========================== -->
             <div class="order-item">
                 <div class="thumb"><img th:src="@{/img/sample.png}" alt="상품"></div>
                 <div class="info">
@@ -54,7 +58,62 @@
                     <button onclick="openModal('returnModal')">반품신청</button>
                 </div>
             </div>
+
+            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
+            <h4 style="margin-bottom:10px; color:#555;">🧩 아래는 실제 DB 기반 recentOrders 출력 테스트</h4>
+
+            <!-- ==========================
+                 🧩 [2] 실제 데이터 바인딩 블록
+                 ========================== -->
+
+            <!-- 주문 없음 -->
+            <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
+                <p>최근 주문 내역이 없습니다.</p>
+            </div>
+
+            <!-- 주문 있음 -->
+            <div th:each="order : ${recentOrders}" class="order-item">
+                <!-- 썸네일 -->
+                <div class="thumb">
+                    <img th:src="@{${order.productImg}}" alt="상품 이미지" onerror="this.src='/img/sample.png'">
+                </div>
+
+                <!-- 주문 정보 -->
+                <div class="info">
+                    <p class="date" th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2025-10-14</p>
+                    <p class="order-num">
+                        주문번호 :
+                        <a href="javascript:void(0)"
+                           th:text="${order.orderNo}"
+                           onclick="openModal('orderModal')">O20251014001</a>
+                    </p>
+                    <p class="product">
+                        [<a href="javascript:void(0)"
+                            th:text="${order.sellerId}"
+                            onclick="openModal('sellerModal')">㈜그린샵</a>]
+                        <span th:text="${order.productName}">샘플 상품</span>
+                        (<span th:text="${order.quantity}">1</span>개)
+                    </p>
+                    <p class="price">
+                        <span th:text="${order.totalPrice}">34000</span>원
+                    </p>
+                </div>
+
+                <div class="status" th:text="${order.status}">배송완료</div>
+
+                <div class="actions">
+                    <button th:if="${order.status == '배송중' or order.status == '배송완료'}"
+                            onclick="openModal('confirmModal')">구매확정</button>
+                    <button th:if="${order.status == '배송완료'}"
+                            onclick="openModal('reviewModal')">상품평작성</button>
+                    <button th:if="${order.status == '배송중'}"
+                            onclick="openModal('exchangeModal')">교환신청</button>
+                    <button th:if="${order.status == '배송중'}"
+                            onclick="openModal('returnModal')">반품신청</button>
+                </div>
+            </div>
         </div>
+
 
         <!-- ✅ 포인트 적립 내역 -->
         <div class="section-header">
@@ -180,6 +239,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- ✅ 최근 주문 내역 (MyBatis DTO 기반 출력) -->
+        <div th:each="order : ${recentOrders}" class="order-item">
+            <div class="thumb">
+                <img th:if="${order.productImg != null}"
+                     th:src="@{${order.productImg}}"
+                     alt="상품 이미지">
+
+                <img th:unless="${order.productImg != null}"
+                     th:src="@{/img/noimg.png}"
+                     alt="기본 이미지">
+            </div>
+
+            <div class="info">
+                <p><strong>상품명:</strong> <span th:text="${order.productName ?: '정보없음'}"></span></p>
+                <p><strong>주문번호:</strong> <span th:text="${order.orderNo ?: 'N/A'}"></span></p>
+                <p><strong>주문일자:</strong>
+                    <span th:text="${order.orderedAt != null ? #temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm') : '날짜없음'}"></span>
+                </p>
+                <p><strong>주문상태:</strong> <span th:text="${order.status ?: '미정'}"></span></p>
+                <p><strong>결제금액:</strong> <span th:text="${order.totalPrice}"></span>원</p>
+            </div>
+        </div>
+
+
+
         <!-- ===========================
              ✅ 최근 주문 내역 확인용 테스트 블록
              =========================== -->
