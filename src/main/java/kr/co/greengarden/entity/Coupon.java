@@ -42,4 +42,14 @@ public class Coupon {
 
     private String note; // 기타(비고)
 
+    // ModelMapper나 Builder 패턴 사용을 위해 @Setter 대신 개별 메서드 생성
+    public void setCouponNo(String couponNo) {
+        this.couponNo = couponNo;
+    }
+    public void setIssuedAt(LocalDateTime issuedAt) {
+        this.issuedAt = issuedAt;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
