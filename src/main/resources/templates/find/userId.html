@@ -26,7 +26,7 @@
             <button type="button" class="find-tab" id="tab-phone">휴대폰 인증</button>
         </div>
 
-        <form id="emailForm" th:action="@{/find/userId/result}" method="post" class="email-fields">
+        <form id="emailForm" th:action="@{/find/resultId}" method="post" class="email-fields">
             <div class="form-grid">
                 <div class="row-divider"></div>
 
@@ -49,7 +49,7 @@
         </form>
 
         <!-- 휴대폰 인증-->
-        <form id="phoneForm" class="phone-fields" th:action="@{/find/userId/result-phone}" method="post">
+        <form id="phoneForm" class="phone-fields" th:action="@{/find/resultId-phone}" method="post">
             <div class="form-grid">
                 <div class="row-divider"></div>
 
@@ -83,9 +83,11 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        const POST_URL_EMAIL = '/greengarden/find/userId/result';
-        const POST_URL_PHONE = '/greengarden/find/userId/result-phone';
+        const POST_URL_EMAIL = '/greengarden/find/resultId';
+        const POST_URL_PHONE = '/greengarden/find/resultId-phone';
         const VERIFY_PHONE   = '/greengarden/find/userId/verifyPhone';
+        const SEND_URL = '/greengarden/find/userId/sendCode';
+        const VERIFY_URL = 'greengarden/find/userId/verifyCode';
 
         const mainWrap = document.querySelector('main.find-wrap');
 
@@ -156,13 +158,15 @@
         btnSend.addEventListener('click', async () => {
             if (sending) return;
             const email = (eEmail.value || '').trim();
+
             if (!email) return setMsg(emailMsg, '이메일을 입력하세요.', 'red');
+
 
             try {
                 sending = true;
                 btnSend.disabled = true;
                 setMsg(emailMsg, '인증번호 전송 중입니다…');
-                await fetch('/greengarden/find/userId/sendCode', {
+                await fetch(SEND_URL, {
                     method:'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     body:'email='+encodeURIComponent(email)
@@ -185,7 +189,7 @@
             try {
                 verifying = true; btnCheck.disabled = true;
                 setMsg(codeMsg, '확인 중입니다…');
-                const res = await fetch('/greengarden/find/userId/verifyCode', {
+                const res = await fetch(VERIFY_URL, {
                     method:'POST',
                     headers:{'Content-Type':'application/x-www-form-urlencoded'},
                     body:'email='+encodeURIComponent(email)+'&code='+encodeURIComponent(code)
@@ -264,7 +268,7 @@
 
                 // 기존 emailForm 그대로 제출 (CSRF 포함)
                 emailForm.method = 'post';
-                emailForm.action = POST_URL_EMAIL;   // '/greengarden/find/userId/result'
+                emailForm.action = POST_URL_EMAIL;
                 emailForm.submit();
             }
         });

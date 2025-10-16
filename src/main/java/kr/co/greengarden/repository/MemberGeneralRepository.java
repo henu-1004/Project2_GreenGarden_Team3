@@ -141,6 +141,8 @@ public interface MemberGeneralRepository extends JpaRepository<MemberGeneral, St
 
     // 아이디 이메일 확인 ( 비밀번호 재설정용 )
     boolean existsByMember_MemIdAndEmail(String memId, String email);
+    // 아이디 휴대폰 확인( 비밀번호 재설정용)
+    boolean existsByMember_MemIdAndPhone(String memId, String phone);
 
 
 
