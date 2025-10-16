@@ -5,11 +5,9 @@ package kr.co.greengarden.service;
 *   내용 : 관리자 쿠폰 - 등록 구현
 */
 
-import kr.co.greengarden.dto.PageRequestDTO;
-import kr.co.greengarden.dto.PageResponseDTO;
+import jakarta.transaction.Transactional;
 import kr.co.greengarden.dto.admin.CouponDTO;
 import kr.co.greengarden.entity.Coupon;
-import kr.co.greengarden.mapper.CouponMapper;
 import kr.co.greengarden.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,64 +16,67 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Random;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor // Repository를 주입받기 위함
 public class CouponService {
 
-    private final CouponRepository couponRepository; // JPA
+    private final CouponRepository couponRepository;
     private final ModelMapper modelMapper;
 
     // --- 쿠폰 종류별 식별 코드 (상수) ---
-    private static final String TYPE_INDIVIDUAL = "1";
-    private static final String TYPE_ORDER = "2";
-    private static final String TYPE_SHIPPING = "3";
-    private final CouponMapper couponMapper;
+    private static final String TYPE_INDIVIDUAL = "1";  // 개별상품할인
+    private static final String TYPE_ORDER = "2";       // 주문상품할인
+    private static final String TYPE_SHIPPING = "3";    // 배송비 무료
+
+    // ----------------------------------------------------------------------
+    //  11자리 쿠폰 번호 조합 로직 (타입 + 년월 + 시퀀스)
+    // ----------------------------------------------------------------------
+    private String generateCouponNo(String couponType) {
+
+        // 1. 타입 코드 (1자리)
+        String typeCode = switch (couponType) {
+            case "개별상품할인" -> TYPE_INDIVIDUAL;
+            case "주문상품할인" -> TYPE_ORDER;
+            case "배송비 무료" -> TYPE_SHIPPING;
+            default -> "0";
+        };
+
+        // 2. 년월 코드 (4자리: YYMM)
+        String dateCode = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMM"));
+
+        // 3. 순차 번호 (6자리: 오라클 SEQUENCE 사용)
+        Long nextVal = couponRepository.getNextSequenceValue();
+        // %06d: 숫자를 무조건 6자리로 만들고, 앞자리는 0으로 채운다.
+        String uniqueCode = String.format("%06d", nextVal);
+
+        // 4. 11자리 최종 조합
+        return typeCode + dateCode + uniqueCode;
+    }
 
     // ----------------------------------------------------------------------
     // 1. 등록 (C: Create)
     // ----------------------------------------------------------------------
-    public CouponDTO save(CouponDTO dto) {
+    @Transactional
+    public CouponDTO register(CouponDTO dto) {
 
-        // 1. 중복되지 않는 11자리 쿠폰 번호 생성
-        String newCouponNo;
-        do {
-            newCouponNo = generateCouponNo(dto.getCouponNo());
-        } while (couponRepository.existsByCouponNo(newCouponNo));
+        // 1. 쿠폰 번호 조합 및 생성 (타입종류 + 년월 + 순차번호)
+        String newCouponNo = generateCouponNo(dto.getType());
 
         // 2. DTO -> Entity 변환 (ModelMapper 사용)
         Coupon coupon = modelMapper.map(dto, Coupon.class);
 
-        // 3. Entity에 서버 설정 값 주입 (개별 set 메서드 필요)
-        //    *주의*: Coupon.java에 setCouponNo, setIssuedAt, setStatus 메서드가 있어야 작동한다.
+        // 3. Entity에 서버 설정 값 주입
         coupon.setCouponNo(newCouponNo);
         coupon.setIssuedAt(LocalDateTime.now());
-        coupon.setStatus("ISSUED");
+        coupon.setStatus("ISSUED"); // 발급 완료 상태로 설정
 
         // 4. DB에 저장
         Coupon savedCoupon = couponRepository.save(coupon);
 
-        // 5. 저장된 Entity -> DTO로 변환하여 반환 (응답)
+        // 5. 저장된 Entity -> DTO로 변환하여 반환
         return modelMapper.map(savedCoupon, CouponDTO.class);
-    }
-
-    // ----------------------------------------------------------------------
-    // [보조] 11자리 쿠폰 번호 생성 로직
-    // ----------------------------------------------------------------------
-    private String generateCouponNo(String couponNo) {
-        String NomCode = switch (couponNo) {
-            case "개별상품할인" -> TYPE_INDIVIDUAL;
-            case "주문상품할인" -> TYPE_ORDER;
-            case "배송비무료" -> TYPE_SHIPPING;
-            default -> "0";
-        };
-        String dateCode = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMM"));
-        Random random = new Random();
-        int uniqueNum = random.nextInt(900000) + 100000;
-        return NomCode + dateCode + String.valueOf(uniqueNum);
     }
 
 }
