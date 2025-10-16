@@ -77,7 +77,12 @@
                         <a th:href="@{/admin/cs/qna/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
                            th:text="${inquiry.title}">문의 제목</a>
                     </td>
-                    <td th:text="${inquiry.status}">답변대기</td>
+                    <td>
+    <span class="qna-status"
+          th:classappend="${inquiry.status == '대기'} ? 'waiting' :
+                          (${inquiry.status == '완료'} ? 'completed' : '')"
+          th:text="${inquiry.status}">답변대기</span>
+                    </td>
                     <td th:text="${inquiry.writer}"></td>
                     <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}"></td>
                     <td>

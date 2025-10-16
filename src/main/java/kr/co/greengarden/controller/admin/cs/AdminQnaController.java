@@ -86,4 +86,10 @@ public class AdminQnaController {
         // 3. 상세 페이지로 리다렉트
         return "redirect:/admin/cs/qna/view?inquiryId="+newId;
     }
+
+    @PostMapping("/admin/cs/qna/delete")
+    public String adminCsDelete(int noticeId) {
+        inquiryService.delete(noticeId);
+        return "redirect:/admin/cs/qna/list";
+    }
 }
