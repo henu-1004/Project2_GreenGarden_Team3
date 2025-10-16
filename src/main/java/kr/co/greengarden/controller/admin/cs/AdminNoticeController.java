@@ -52,25 +52,39 @@ public class AdminNoticeController {
             return "redirect:/admin/cs/notice/list";
         }
         model.addAttribute("noticeDTO", noticeDTO);
-
-
         return "admin/cs/notice/modify";
     }
+
     // 수정 처리
     @PostMapping("/admin/cs/notice/modify")
     public String adminCsModifyProc(NoticeDTO noticeDTO) {
 
         noticeService.modifyNotice(noticeDTO);
 
-
-
         return "redirect:/admin/cs/notice/list";
     }
+
+
+    // 글쓰기 폼 (GET)
+    @GetMapping("/admin/cs/notice/write")
+    public String adminCsWriteForm(Model model) {
+        model.addAttribute("noticeDTO", new NoticeDTO());
+        return "admin/cs/notice/write";
+    }
+
+    // 글 쓰기
     @PostMapping("/admin/cs/notice/write")
     public String adminCsWrite(NoticeDTO noticeDTO) {
 
         int noticeId = noticeService.registerNotice(noticeDTO);
         return "redirect:/admin/cs/notice/view?noticeId=" + noticeId;
+    }
+
+    // 삭제 처리 (POST)
+    @PostMapping("/admin/cs/notice/delete")
+    public String adminCsDelete(int noticeId) {
+        noticeService.delete(noticeId);
+        return "redirect:/admin/cs/notice/list";
     }
 
 

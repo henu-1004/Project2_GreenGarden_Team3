@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,14 @@ public class FindController {
         return "find/password";
     }
 
+    // 비밀번호 변경 페이지 직접 이동 x. 인증 후 이동 가능.
     @GetMapping("/find/changePassword")
-    public String changePassword(){
+    public String changePassword(HttpSession session){
+
+        if(!Boolean.TRUE.equals(session.getAttribute("pwVerified"))
+        || session.getAttribute("pwVerified") == null){
+            return "redirect:/find/password";
+        }
         return "find/changePassword";
     }
 
@@ -86,45 +93,44 @@ public class FindController {
     }
 
     // 아이디 결과
-    @PostMapping("/find/userId/result")
+    @PostMapping("/find/resultId")
     public String result(@RequestParam String name,
                          @RequestParam String email,
-                         Model model,
-                         HttpSession session){
+                         RedirectAttributes ra){
 
-        log.info("[find/userId/result] raw name='{}', email='{}'", name, email);
+        log.info("[find/resultId] raw name='{}', email='{}'", name, email);
 
-        Optional<FindResultDTO> result = memberGeneralService.findMemberInfoByNameAndEmail(name, email);
+        var opt = memberGeneralService.findMemberInfoByNameAndEmail(name.trim(), email.trim());
 
         // 결과 로깅
-        log.info("query present? {}", result.isPresent());
-        result.ifPresent(r ->
+        log.info("query present? {}", opt.isPresent());
+        opt.ifPresent(r ->
                 log.info("FOUND -> name='{}', email='{}', memId='{}', joinDate={}",
                         r.getName(), r.getEmail(), r.getMemId(), r.getJoinDate())
         );
 
-        if(result.isPresent()){
-            model.addAttribute("info", result.get());
+        if(opt.isPresent()){
+            ra.addFlashAttribute("info", opt.get());
         }else{
-            model.addAttribute("error", "일치하는 회원 정보가 없습니다.");
+            ra.addFlashAttribute("error", "일치하는 회원 정보가 없습니다.");
         }
 
-        return "find/resultId";
+        return "redirect:/find/resultId";
     }
 
     // 아이디 찾기 - 휴대폰
-    @PostMapping("/find/userId/result-phone")
+    @PostMapping("/find/resultId-phone")
     public String resultByPhone(@RequestParam String name,
                                 @RequestParam String phone,
-                                Model model){
-        var opt = memberGeneralService.findMemberInfoByNameAndPhone(name, phone);
+                                RedirectAttributes ra){
+        var opt = memberGeneralService.findMemberInfoByNameAndPhone(name.trim(), phone.trim());
         if(opt.isPresent()){
-            model.addAttribute("info", opt.get());
+            ra.addFlashAttribute("info", opt.get());
 
         }else{
-            model.addAttribute("error", "일치하는 회원 정보가 없습니다.");
+            ra.addFlashAttribute("error", "일치하는 회원 정보가 없습니다.");
         }
-        return "find/resultId";
+        return "redirect:/find/resultId";
     }
 
     @ResponseBody
@@ -192,7 +198,7 @@ public class FindController {
         }
 
         session.setAttribute("pwTargetId", memId);
-        return "find/changePassword";
+        return "redirect:/find/changePassword";
 
     }
 
@@ -213,7 +219,7 @@ public class FindController {
 
         if(newPassword == null || !newPassword.equals(confirmPassword)) {
             model.addAttribute("error", "비밀번호가 다릅니다.");
-            return "find/password";
+            return "find/changePassword";
         }
 
         memberGeneralService.changePassword(memId, newPassword);
@@ -224,7 +230,31 @@ public class FindController {
         session.removeAttribute("pwFindCode");
 
         return "redirect:/member/login";
+    }
 
+    // 비밀번호 찾기 - 휴대폰
+    @ResponseBody
+    @PostMapping("/find/password/verifyPhone")
+    public ResponseEntity<Boolean> pwVerifyPhone(@RequestParam String memId,
+                                                 @RequestParam String phone){
+        boolean ok  = memberGeneralService.canResetPasswordByPhone(memId, phone);
+        return ResponseEntity.ok(ok);
+    }
+
+    @PostMapping("/find/password/confirm-phone")
+    public String pwConfirmByPhone(@RequestParam String memId,
+                                   @RequestParam String phone,
+                                   HttpSession session,
+                                   Model model){
+        if(!memberGeneralService.canResetPasswordByPhone(memId, phone)) {
+            model.addAttribute("error", "아이디와 휴대폰 번호가 일치하지 않습니다.");
+            model.addAttribute("memId", memId);
+            return "find/password";
+        }
+
+        session.setAttribute("pwVerified", true);
+        session.setAttribute("pwTargetId", memId);
+        return "redirect:/find/changePassword";
     }
 
 

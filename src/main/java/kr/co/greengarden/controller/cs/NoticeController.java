@@ -27,7 +27,6 @@ public class NoticeController {
     @GetMapping("/cs/notice/list")
     public String list(PageRequestDTO pageRequestDTO, Model model) {
 
-
         //Service 에서 데이터 조회
         PageResponseDTO<NoticeDTO> pageResponseDTO = noticeService.getNoticesList(pageRequestDTO);
 

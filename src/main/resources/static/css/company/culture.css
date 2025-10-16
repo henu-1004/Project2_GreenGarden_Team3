@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+/*
+ * 날짜 : 2025/10/16
+ * 이름 : 한탁원
+ * 내용 : culture - css 초안 작성
+ */
+body {
+    min-width: 1200px;
+}
+.content-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    gap: 20px;
+    /* 상단 정렬 */
+    align-items: flex-start;
+    padding-top: 20px;
+}
+
+/* 메인 섹션 */
+#main-section {
+    width: 1200px;
+    flex-shrink: 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    /* aside와 상단선을 맞춤 */
+    box-sizing: border-box;
+}

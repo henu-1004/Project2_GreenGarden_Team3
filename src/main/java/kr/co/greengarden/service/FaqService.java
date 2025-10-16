@@ -3,9 +3,12 @@ package kr.co.greengarden.service;
 import kr.co.greengarden.dto.FaqDTO;
 import kr.co.greengarden.dto.PageRequestDTO;
 import kr.co.greengarden.dto.PageResponseDTO;
+import kr.co.greengarden.entity.Faq;
 import kr.co.greengarden.mapper.FaqMapper;
+import kr.co.greengarden.repository.FaqRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ import java.util.List;
 public class FaqService {
 
     private final FaqMapper faqMapper; // 의존성 주입 (만들어둔 Mapper)
+    private final ModelMapper modelMapper;
+    private final FaqRepository faqRepository;
 
     // 1. 목록 조회
     public PageResponseDTO<FaqDTO> getFaqList(PageRequestDTO pageRequestDTO) {
@@ -70,6 +75,41 @@ public class FaqService {
         log.info("FAQ 상세 조회 완료 제목: {}", faqDTO.getTitle());
         return faqDTO;
     }
+
+    // FAQ 수정
+    public FaqDTO getFaqById(int faqId) {
+        return faqMapper.selectFaq(faqId);
+    }
+    // FAQ 작성 Service
+    @Transactional
+    public int registerFaq(FaqDTO faqDTO) {
+        Faq faq = modelMapper.map(faqDTO, Faq.class);
+        faqDTO.setViews(0);
+
+        Faq savedFaq = faqRepository.save(faq);
+        log.info("FAQ 등록완료 ID: {}",savedFaq.getFaqId());
+        return savedFaq.getFaqId();
+    }
+    // FAQ 수정
+    @Transactional
+    public void modifyFaq(FaqDTO faqDTO) {
+        Faq faq = faqRepository.findById(faqDTO.getFaqId())
+                .orElseThrow(() -> new RuntimeException("FAQ를 찾을 수 없습니다"));
+
+        faq.update(
+                faqDTO.getCategory1(),
+                faqDTO.getCategory2(),
+                faqDTO.getTitle(),
+                faqDTO.getContent()
+        );
+    }
+
+    // FAQ 삭제
+    public void delete(int faqId) {
+        faqRepository.deleteById(faqId);
+    }
+
+    // 로그인 사용자 id 가져오기 (일단 공란)
 
     }
 

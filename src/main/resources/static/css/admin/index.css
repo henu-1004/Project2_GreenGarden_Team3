@@ -1,0 +1,67 @@
+@charset "UTF-8";
+
+/*
+ * 날짜 : 2025/10/16
+ * 이름 : 한탁원
+ * 내용 : index - css 초안 작성
+ */
+body {
+    min-width: 1200px;
+}
+
+.content-wrap {
+    margin: 0 auto;
+    max-width: 1200px;
+    display: flex;
+    gap: 20px;
+    /* 상단 정렬 */
+    align-items: flex-start;
+    padding-top: 20px;
+}
+
+/* 메인 섹션 */
+#main-section {
+    width: 1030px;
+    flex-shrink: 0;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    /* aside와 상단선을 맞춤 */
+    box-sizing: border-box;
+}
+
+/* 탑 페이지 네이션 */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.top-nav h5 {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.top-nav .page-nation {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9em;
+}
+
+.top-nav .page-nation li:not(:last-child)::after {
+    content: " > ";
+    margin-left: 5px;
+    color: #999;
+}
+
+#cs-section {
+    display: flex;
+    justify-content: space-between; /* 두 테이블 사이에 공간을 두려면 사용 */
+}

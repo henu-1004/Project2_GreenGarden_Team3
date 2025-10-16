@@ -70,8 +70,7 @@
                                 th:onclick="|location.href='@{/admin/cs/notice/modify(noticeId=${notice.noticeId})}'|"
                                 class="btn-modify">수정</button>
                         <button type="button" class="btn-delete"
-                                th:onclick="deleteNotice([[${notice.noticeId}]])">삭제</button>
-                    </td>
+                                th:onclick="deleteNotice('${notice.noticeId}')">삭제</button>                    </td>
                 </tr>
                 </tbody>
             </table>

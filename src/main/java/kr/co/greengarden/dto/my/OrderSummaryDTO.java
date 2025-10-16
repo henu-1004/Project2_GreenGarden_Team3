@@ -20,8 +20,7 @@ public class OrderSummaryDTO {
     private LocalDateTime orderedAt;// 주문일자
     private String sellerId;        // 판매자 ID
     private String sellerAddress;   // 판매자 주소
-    private String sellerName;// TB_MEMBER_SELLER.COMPANY
-
+    private String sellerName;      // TB_MEMBER_SELLER.COMPANY
     // ✅ 10.16 추가된 상태 관리 컬럼
     private String confirmYn;       // 구매확정 여부 ('Y' or 'N')
     private String reviewYn;        // 리뷰작성 여부 ('Y' or 'N')

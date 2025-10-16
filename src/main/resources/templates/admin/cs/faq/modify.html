@@ -1,16 +1,158 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>admin CS FAQ Modify</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/cs/aside :: aside}"></div>
 
-			</div>
-		</div>
-	</main>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>FAQ 수정</h5>
+                <ul class="page_nation">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a th:href="@{/admin/cs/faq/list}">FAQ</a></li>
+                </ul>
+            </div>
+
+            <form class="admincs-write-form" th:action="@{/admin/cs/faq/modify}" method="post">
+                <input type="hidden" name="faqId" th:value="${faqDTO.faqId}" />
+
+                <div class="admincs-view-row admincs-view-category1">
+                    <span class="admincs-view-label-text">1차 카테고리</span>
+                    <div class="admincs-write-input-wrap">
+                        <select name="category1" id="category1SelectModify" onchange="updateCategory2OptionsModify()" class="admincs-input-select">
+                            <option value="" disabled>1차 카테고리 선택</option>
+                            <option value="회원" th:selected="${faqDTO.category1 == '회원'}">회원</option>
+                            <option value="쿠폰/이벤트" th:selected="${faqDTO.category1 == '쿠폰/이벤트'}">쿠폰/이벤트</option>
+                            <option value="주문/결재" th:selected="${faqDTO.category1 == '주문/결재'}">주문/결재</option>
+                            <option value="배송" th:selected="${faqDTO.category1 == '배송'}">배송</option>
+                            <option value="취소/반품/교환" th:selected="${faqDTO.category1 == '취소/반품/교환'}">취소/반품/교환</option>
+                            <option value="여행/숙박/항공" th:selected="${faqDTO.category1 == '여행/숙박/항공'}">여행/숙박/항공</option>
+                            <option value="안전거래" th:selected="${faqDTO.category1 == '안전거래'}">안전거래</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admincs-view-row admincs-view-category2">
+                    <span class="admincs-view-label-text">2차 카테고리</span>
+                    <div class="admincs-write-input-wrap">
+                        <select name="category2" id="category2SelectModify" class="admincs-input-select">
+                            <option value="" disabled selected>2차 카테고리 선택</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admincs-view-row admincs-view-title">
+                    <span class="admincs-view-label-text">제목</span>
+                    <div class="admincs-write-input-wrap">
+                        <input type="text" name="title" th:value="${faqDTO.title}" placeholder="제목을 입력해주세요" class="admincs-input-text"/>
+                    </div>
+                </div>
+
+                <div class="admincs-view-content-area admincs-view-content-write">
+                    <span class="admincs-view-label-text">내용</span>
+                    <div class="admincs-write-input-wrap admincs-content-textarea-wrap">
+                        <textarea name="content" th:text="${faqDTO.content}" placeholder="내용을 입력(FAQ 답변)" class="admincs-input-textarea"></textarea>
+                    </div>
+                </div>
+
+                <div class="admincs-write-actions">
+                    <button type="button" class="btn-cancel" th:onclick="|location.href='@{/admin/cs/faq/list}'|">
+                        <span>취소하기</span>
+                    </button>
+                    <button type="submit" class="btn-register">
+                        <span>수정 완료</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
+
+<script th:inline="javascript">
+    // FAQ 목록 페이지에서 가져온 2차 카테고리 옵션 데이터
+    const category2Options = {
+        '회원': ['가입', '탈퇴', '회원정보'],
+        '쿠폰/이벤트': ['쿠폰', '이벤트/할인'],
+        '주문/결재': ['주문', '결재'],
+        '배송': ['배송 일반', '택배/수령'],
+        '취소/반품/교환': ['취소/변경', '반품/교환'],
+        '여행/숙박/항공': ['예약/구매', '취소/변경'],
+        '안전거래': ['이용규정', '피해예방'],
+    };
+
+    // Thymeleaf에서 현재 DTO 값 가져오기
+    const currentCategory1 = [[${faqDTO.category1}]];
+    const currentCategory2 = [[${faqDTO.category2}]];
+
+    // 1차 카테고리 변경 시 2차 카테고리 옵션 업데이트 (수정 페이지 전용 함수)
+    function updateCategory2OptionsModify() {
+        const category1Select = document.getElementById('category1SelectModify');
+        const category2Select = document.getElementById('category2SelectModify');
+        const category1 = category1Select.value;
+
+        // 2차 카테고리 초기화
+        category2Select.innerHTML = ''; // 기존 옵션 모두 제거
+
+        if (category1) {
+            const options = category2Options[category1] || [];
+
+            // 기본 옵션 추가
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = '';
+            defaultOpt.textContent = '2차 카테고리 선택';
+            defaultOpt.disabled = true;
+            category2Select.appendChild(defaultOpt);
+
+            // 동적 옵션 추가 및 기존 값 선택
+            let foundMatch = false;
+            options.forEach(option => {
+                const optElement = document.createElement('option');
+                optElement.value = option;
+                optElement.textContent = option;
+
+                // 현재 1차 카테고리가 선택되어 있고, 2차 옵션이 현재 값과 일치하는 경우
+                if (option === currentCategory2 && category1 === currentCategory1) {
+                    optElement.selected = true;
+                    foundMatch = true;
+                }
+
+                category2Select.appendChild(optElement);
+            });
+
+            // 만약 일치하는 옵션이 없거나 2차 카테고리가 없는 경우 기본 옵션을 선택 상태로 유지
+            if (!foundMatch) {
+                defaultOpt.selected = true;
+            }
+            category2Select.disabled = false;
+
+        } else {
+            // 1차 카테고리가 선택되지 않은 경우
+            const defaultOpt = document.createElement('option');
+            defaultOpt.value = '';
+            defaultOpt.textContent = '2차 카테고리 선택';
+            defaultOpt.disabled = true;
+            defaultOpt.selected = true;
+            category2Select.appendChild(defaultOpt);
+            category2Select.disabled = true;
+        }
+    }
+
+    // 페이지 로드 시 기존 값에 따라 2차 카테고리 옵션 로드 및 선택
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCategory2OptionsModify();
+    });
+</script>
 </body>
 </html>

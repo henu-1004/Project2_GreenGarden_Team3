@@ -125,10 +125,13 @@ public class MemberGeneralService {
     // 비밀번호 찾기 - 이메일
     @Transactional
     public void changePassword(String memId, String rawPassword){
-        Member member = memberRepository.findById(memId)
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-        //member.setPassword(passwordEncoder.encode(rawPassword));
-        memberRepository.save(member);
+
+        String encoded = passwordEncoder.encode(rawPassword);
+        int updated = memberRepository.updatePassword(memId, encoded);
+
+        if(updated != 1){
+            throw new IllegalArgumentException("회원이 존재하지 않습니다.");
+        }
     }
 
     @Transactional(readOnly = true)
@@ -136,6 +139,14 @@ public class MemberGeneralService {
         String id = memId == null ? "" : memId.trim();
         String em = email == null ? "" : email.trim();
         return memberGeneralRepository.existsByMember_MemIdAndEmail(id, em);
+    }
+
+    // 비밀번호 찾기 - 휴대폰
+    @Transactional(readOnly = true)
+    public boolean canResetPasswordByPhone(String memId, String phone) {
+        String id = memId == null ? "" : memId.trim();
+        String ph = phone == null ? "" : phone.trim();
+        return memberGeneralRepository.existsByMember_MemIdAndPhone(id, ph);
     }
 
 

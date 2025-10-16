@@ -1,16 +1,117 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>admin CS FAQ Write</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/cs/aside :: aside}"></div>
 
-			</div>
-		</div>
-	</main>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>FAQ 작성</h5>
+                <ul class="page_nation">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a th:href="@{/admin/cs/faq/list}">FAQ</a></li>
+                </ul>
+            </div>
+
+            <form class="admincs-write-form" th:action="@{/admin/cs/faq/write}" method="post">
+
+                <div class="admincs-view-row admincs-view-category1">
+                    <span class="admincs-view-label-text">1차 카테고리</span>
+                    <div class="admincs-write-input-wrap">
+                        <select name="category1" id="category1SelectWrite" onchange="updateCategory2OptionsWrite()" class="admincs-input-select">
+                            <option value="" disabled selected>1차 카테고리 선택</option>
+                            <option value="회원">회원</option>
+                            <option value="쿠폰/이벤트">쿠폰/이벤트</option>
+                            <option value="주문/결재">주문/결재</option>
+                            <option value="배송">배송</option>
+                            <option value="취소/반품/교환">취소/반품/교환</option>
+                            <option value="여행/숙박/항공">여행/숙박/항공</option>
+                            <option value="안전거래">안전거래</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admincs-view-row admincs-view-category2">
+                    <span class="admincs-view-label-text">2차 카테고리</span>
+                    <div class="admincs-write-input-wrap">
+                        <select name="category2" id="category2SelectWrite" class="admincs-input-select" disabled>
+                            <option value="" disabled selected>2차 카테고리 선택</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="admincs-view-row admincs-view-title">
+                    <span class="admincs-view-label-text">제목</span>
+                    <div class="admincs-write-input-wrap">
+                        <input type="text" name="title" placeholder="제목을 입력해주세요" class="admincs-input-text"/>
+                    </div>
+                </div>
+
+                <div class="admincs-view-content-area admincs-view-content-write">
+                    <span class="admincs-view-label-text">내용</span>
+                    <div class="admincs-write-input-wrap admincs-content-textarea-wrap">
+                        <textarea name="content" placeholder="내용을 입력(FAQ 답변)" class="admincs-input-textarea"></textarea>
+                    </div>
+                </div>
+
+                <div class="admincs-write-actions">
+                    <button type="button" class="btn-cancel" th:onclick="|location.href='@{/admin/cs/faq/list}'|">
+                        <span>취소하기</span>
+                    </button>
+                    <button type="submit" class="btn-register">
+                        <span>등록하기</span>
+                    </button>
+                </div>
+            </form>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
+
+<script>
+    // FAQ 목록 페이지에서 가져온 2차 카테고리 옵션 데이터
+    const category2Options = {
+        '회원': ['가입', '탈퇴', '회원정보'],
+        '쿠폰/이벤트': ['쿠폰', '이벤트/할인'],
+        '주문/결재': ['주문', '결재'],
+        '배송': ['배송 일반', '택배/수령'],
+        '취소/반품/교환': ['취소/변경', '반품/교환'],
+        '여행/숙박/항공': ['예약/구매', '취소/변경'],
+        '안전거래': ['이용규정', '피해예방'],
+    };
+
+    // 1차 카테고리 변경 시 2차 카테고리 옵션 업데이트 (작성 페이지 전용 함수)
+    function updateCategory2OptionsWrite() {
+        const category1Select = document.getElementById('category1SelectWrite');
+        const category2Select = document.getElementById('category2SelectWrite');
+        const category1 = category1Select.value;
+
+        // 2차 카테고리 초기화
+        category2Select.innerHTML = '<option value="" disabled selected>2차 카테고리 선택</option>';
+        category2Select.disabled = true;
+
+        if (category1) {
+            const options = category2Options[category1] || [];
+            options.forEach(option => {
+                const optElement = document.createElement('option');
+                optElement.value = option;
+                optElement.textContent = option;
+                category2Select.appendChild(optElement);
+            });
+            category2Select.disabled = false;
+        }
+    }
+</script>
 </body>
 </html>

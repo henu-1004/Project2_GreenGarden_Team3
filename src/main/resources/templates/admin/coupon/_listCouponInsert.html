@@ -12,58 +12,64 @@
                 <h3>쿠폰등록</h3>
             </div>
         </div>
-        <div class="modal-body">
+        <form th:action="@{/admin/coupon/couponRegister}" method="post" id="couponForm" class="modal-body">
             <table class="coupon-insert-table">
                 <tr>
                     <th>발급처</th>
-                    <td><label><input type="text" value="(주)Green Garden"></label></td>
+                    <td><label><input type="text" id="issuer" name="issuer" value="(주)Green Garden"></label></td>
                 </tr>
                 <tr>
                     <th>쿠폰종류</th>
                     <td><label>
-                        <select class="coupon-cat"> <!-- (명세서)쿠폰 종류는 3종류로 제한 -->
-                            <option value="cp1">개별상품할인</option>
-                            <option value="cp2">주문상품할인</option>
-                            <option value="cp3">배송비 무료</option>
+                        <select class="coupon-cat" id="type" name="type"> <!-- (명세서)쿠폰 종류는 3종류로 제한 -->
+                            <option value="1">개별상품할인</option>
+                            <option value="2">주문상품할인</option>
+                            <option value="3">배송비 무료</option>
                         </select></label>
                     </td>
                 </tr>
                 <tr>
                     <th>쿠폰명</th>
-                    <td><label><input type="text" class="coupon-name-box"></label></td>
+                    <td><label><input type="text" id="name" name="name" class="coupon-name-box"></label></td>
                 </tr>
                 <tr>
                     <th>혜택</th>
                     <td class="radio-group">
-                        <label><input type="radio" name="discountMethod" value="1000"/>1,000원 할인</label>
-                        <label><input type="radio" name="discountMethod" value="2000"/>2,000원 할인</label>
-                        <label><input type="radio" name="discountMethod" value="3000"/>3,000원 할인</label>
-                        <label><input type="radio" name="discountMethod" value="4000"/>4,000원 할인</label>
-                        <label><input type="radio" name="discountMethod" value="5000"/>5,000원 할인</label>
-                        <label><input type="radio" name="discountMethod" value="10"/>10% 할인</label>
-                        <label><input type="radio" name="discountMethod" value="20"/>20% 할인</label>
-                        <label><input type="radio" name="discountMethod" value="30"/>30% 할인</label>
-                        <label><input type="radio" name="discountMethod" value="40"/>40% 할인</label>
-                        <label><input type="radio" name="discountMethod" value="50"/>50% 할인</label>
-                        <label><input type="radio" name="discountMethod" value="feeFree"/>배송비 무료</label>
+                        <label><input type="radio" name="discountValue" value="1000" data-type="AMOUNT"/>1,000원 할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>2,000원 할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>3,000원 할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>4,000원 할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>5,000원 할인</label>
+
+                        <label><input type="radio" name="discountValue" value="10" data-type="PERCENT"/>10% 할인</label>
+                        <label><input type="radio" name="discountValue" value="20" data-type="PERCENT"/>20% 할인</label>
+                        <label><input type="radio" name="discountValue" value="30" data-type="PERCENT"/>30% 할인</label>
+                        <label><input type="radio" name="discountValue" value="40" data-type="PERCENT"/>40% 할인</label>
+                        <label><input type="radio" name="discountValue" value="50" data-type="PERCENT"/>50% 할인</label>
+
+                        <label><input type="radio" name="discountValue" value="0" data-type="SHIPPING"/>배송비 무료</label>
+
+                        <input type="hidden" id="benefitName" name="benefit" />
+                        <input type="hidden" id="discountType" name="discountType" />
                     </td>
                 </tr>
                 <tr>
                     <th>사용기간</th>
                     <td>
-                        <input type="date"> ~ <input type="date"> <br>
-                        <p>또는 발급일로부터 <input type="text"> 이내</p>
+                        <input type="datetime-local" id="startDate" name="startDate" /> ~ <input type="datetime-local" id="endDate" name="endDate" />
+                        <!-- <br> <p>또는 발급일로부터 <input type="number"> 이내</p> -->
                     </td>
                 </tr>
-                <trD>
+                <tr>
                     <th>유의사항</th>
-                    <td> <textarea class="ex-textbox" maxlength="200"></textarea> </td>
-                </trD>
+                    <td> <textarea id="note" name="note" class="ex-textbox" maxlength="200"></textarea> </td>
+                </tr>
             </table>
             <div class="btn-content">
-                <button class="btn btn-cancel">취소</button>
-                <button class="btn btn-register">등록</button>
+                <button class="btn btn-cancel" type="button" onclick="closeModal('modalCouponInsert')">취소</button>
+                <button class="btn btn-register" type="submit">등록</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
+

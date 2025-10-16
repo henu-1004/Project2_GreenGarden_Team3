@@ -527,3 +527,23 @@ body {
     color: #fff;
 }
 
+/* 답변상태 배지 */
+.qna-status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+/* 답변완료 */
+.qna-status.completed {
+    background-color: #e6f2ed;
+    color: #175a48;
+}
+
+/* 답변대기 */
+.qna-status.waiting {
+    background-color: #fff3e0;
+    color: #f57c00;
+}

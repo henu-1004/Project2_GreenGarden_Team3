@@ -119,7 +119,7 @@ public class InquiryService {
 
     // 5. 문의 삭제
     @Transactional
-    public void removeInquiry(int inquiryId) {
+    public void delete(int inquiryId) {
         inquiryRepository.deleteById(inquiryId);
     }
 
