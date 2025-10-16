@@ -7,12 +7,18 @@
 
     <sql id="searchWhere">
         <where>
-            <!-- 공지사항 유형 필터 (type) -->
+            <if test="pageRequestDTO.category1 != null and pageRequestDTO.category1 != ''">
+                AND CATEGORY1 = #{pageRequestDTO.category1}
+            </if>
+
+            <if test="pageRequestDTO.category2 != null and pageRequestDTO.category2 != ''">
+                AND CATEGORY2 = #{pageRequestDTO.category2}
+            </if>
+
             <if test="pageRequestDTO.type != null and pageRequestDTO.type != ''">
                 AND CATEGORY1 = #{pageRequestDTO.type}
             </if>
 
-            <!-- 검색 조건 (searchType, keyword) -->
             <if test="pageRequestDTO.searchType != null and pageRequestDTO.keyword != null and pageRequestDTO.keyword != ''">
                 <choose>
                     <when test="pageRequestDTO.searchType == 'T'">

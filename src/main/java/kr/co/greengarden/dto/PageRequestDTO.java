@@ -29,6 +29,13 @@ public class PageRequestDTO {
     private String searchType;
     private String keyword;
 
+    // [⭐ QNA 필터링을 위해 추가 (500 에러 해결) ⭐]
+    /** 관리자 QNA 1차 분류 필터 조건 */
+    private String category1;
+
+    /** 관리자 QNA 2차 분류 필터 조건 */
+    private String category2;
+
     public int getOffset() {
         return (pg -1) * size;
     }

@@ -47,5 +47,12 @@ public class Faq {
     @Column(name = "CONTENT", length = 2000)
     private String content; // 내용
 
+    // ✅ 수정용 메서드
+    public void update(String category1, String category2, String title, String content) {
+        this.category1 = category1;
+        this.category2 = category2;
+        this.title = title;
+        this.content = content;
+    }
 
 }
