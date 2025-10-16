@@ -7,6 +7,7 @@
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/admin/index.css}">
 </head>
 <!-- 
 	날짜 : 2025/09/16
@@ -14,130 +15,143 @@
 	내용 : 관리자 메인 작성
  -->
 <body>
-<div th:replace="~{/admin/common/header :: header}"></div>
-	<main>
-		<div id="main">
-			<div id="content-wrap">
-                <div th:replace="~{/admin/common/aside :: aside}"></div>
-				<section id="main-section">
-					<div id="title">
-						<h1>관리자메인</h1>
-						<p>HOME > 관리자 메인
-						<p>
-					</div>
+<div th:replace="~{admin/common/header :: header}"></div>
+<main>
+    <div id="main">
+        <div class="content-wrap">
+            <div th:replace="~{admin/common/aside :: aside}"></div>
+            <section id="main-section">
+                <div class="top-nav">
+                    <h3>관리자메인</h3>
+                    <ul class="page-nation">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">관리자메인</a></li>
+                    </ul>
+                </div>
 
-					<div>
-						<h2>집계현황</h2>
-						<table border="1">
-							<tr>
-								<td>
-									<img src="" alt="">
-								</td>
-								<td>
-								
-									<img src="" alt="">
-								</td>
-							</tr>
-						</table>	
-					</div>
-					
-					<div>
-						<h2>운영현황</h2>
-						<table border="1">
-							<tr>
-								<td>입금대기</td>
-								<td>배송준비</td>
-								<td>취소요청</td>
-								<td>교환요청</td>
-								<td>반품요청</td>
-							</tr>
-							<tr>
-								<td>주문건수</td>
-								<td>주문금액</td>
-								<td>회원가입</td>
-								<td>방문자 수</td>
-								<td>문의 게시물</td>
-							</tr>
-						</table>
-						
-						<table border="1">
-							<tr>
-								<td colspan="2">입금대기</td>
-								<td colspan="2">배송준비</td>
-								<td colspan="2">취소요청</td>
-								<td colspan="2">교환요청</td>
-								<td colspan="2">반품요청</td>
-							</tr>
-							<tr>
-								<td colspan="2">주문건수</td>
-								<td colspan="2">주문금액</td>
-								<td colspan="2">회원가입</td>
-								<td colspan="2">방문자 수</td>
-								<td colspan="2">문의 게시물</td>
-							</tr>
-							<tr>
-								<td>오늘</td>
-								<td>60</td>
-								<td>오늘</td>
-								<td>60</td>
-								<td>오늘</td>
-								<td>60</td>
-								<td>오늘</td>
-								<td>60</td>
-								<td>오늘</td>
-								<td>60</td>
-							</tr>
-							<tr>
-								<td>어제</td>
-								<td>60</td>
-								<td>어제</td>
-								<td>60</td>
-								<td>어제</td>
-								<td>60</td>
-								<td>어제</td>
-								<td>60</td>
-								<td>어제</td>
-								<td>60</td>
-							</tr>
-						</table>
-					</div>
-					
-					<div>
-						<div>
-							<h2>공지사항</h2>
-							<table border="1">
-							<tr>
-								<td>
-									[안내] 해외 결제사칭문자주의
-								</td>
-								<td>
-									22.10.31
-								</td>
-							</tr>
-							</table>
-						</div>
-						<div>
-							<h2>고객문의</h2>
-							<table border="1">
-							<tr>
-								<td>
-									[안내] 해외 결제사칭문자주의
-								</td>
-								<td>
-									작성자
-								</td>
-								<td>
-									22.10.31
-								</td>
-							</tr>
-							</table>
-						</div>
-					</div>
-				</section>
-			</div>
-		</div>
-	</main>
-<div th:replace="~{/admin/common/footer :: footer}"></div>
+                <div>
+                    <h2>집계현황</h2>
+                    <table border="1">
+                        <tr>
+                            <td>
+                                <img src="" alt="">
+                            </td>
+                            <td>
+
+                                <img src="" alt="">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <h2>운영현황</h2>
+                    <table border="1">
+                        <tr>
+                            <td>입금대기</td>
+                            <td>배송준비</td>
+                            <td>취소요청</td>
+                            <td>교환요청</td>
+                            <td>반품요청</td>
+                        </tr>
+                        <tr>
+                            <td>주문건수</td>
+                            <td>주문금액</td>
+                            <td>회원가입</td>
+                            <td>방문자 수</td>
+                            <td>문의 게시물</td>
+                        </tr>
+                    </table>
+
+                    <table border="1">
+                        <tr>
+                            <td colspan="2">입금대기</td>
+                            <td colspan="2">배송준비</td>
+                            <td colspan="2">취소요청</td>
+                            <td colspan="2">교환요청</td>
+                            <td colspan="2">반품요청</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">주문건수</td>
+                            <td colspan="2">주문금액</td>
+                            <td colspan="2">회원가입</td>
+                            <td colspan="2">방문자 수</td>
+                            <td colspan="2">문의 게시물</td>
+                        </tr>
+                        <tr>
+                            <td>오늘</td>
+                            <td>60</td>
+                            <td>오늘</td>
+                            <td>60</td>
+                            <td>오늘</td>
+                            <td>60</td>
+                            <td>오늘</td>
+                            <td>60</td>
+                            <td>오늘</td>
+                            <td>60</td>
+                        </tr>
+                        <tr>
+                            <td>어제</td>
+                            <td>60</td>
+                            <td>어제</td>
+                            <td>60</td>
+                            <td>어제</td>
+                            <td>60</td>
+                            <td>어제</td>
+                            <td>60</td>
+                            <td>어제</td>
+                            <td>60</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <section id="cs-section">
+                    <div>
+                        <h2>공지사항</h2>
+                        <table class="admincsnotice-table">
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}">
+                                <td colspan="7" style="text-align: center">등록된 공지사항이 없습니다.</td>
+                            </tr>
+                            <tr th:each="notice, iterStat : ${pageResponseDTO.dtoList}" th:if="${iterStat.index < 5}">
+                                <td th:text="${notice.type}">고양이서비스</td>
+                                <td>
+                                    <a th:href="@{/admin/cs/notice/view(noticeId=${notice.noticeId})}"
+                                       th:text="${notice.title}"></a>
+                                </td>
+                                <td th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        <h2>고객문의</h2>
+                        <table class="qna-table">
+                            <tbody>
+                            <!-- 목록 데이터 바인딩 -->
+                            <tr th:each="inquiry, iterStat : ${responseDTO.dtoList}" th:if="${iterStat.index < 5}">
+                                <td th:text="${inquiry.category2}">가입</td>
+                                <td class="qna-title">
+                                    <!-- 상세 페이지 링크: inquiryId와 검색/페이징 조건 유지 -->
+                                    <a th:href="@{/cs/inquiry/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+                                       th:text="${inquiry.title}">가입문의드립니다</a>
+                                </td>
+                                <td th:text="${inquiry.writer}">user***</td>
+                                <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}">23.10.31</td>
+                            </tr>
+                            <!-- 목록이 비어있을 경우 -->
+                            <tr th:if="${responseDTO.dtoList.isEmpty()}">
+                                <td colspan="5" style="text-align: center;">등록된 문의 내역이 없습니다.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </section>
+        </div>
+    </div>
+</main>
+<div th:replace="~{admin/common/footer :: footer}"></div>
 
 </body>
 </html>

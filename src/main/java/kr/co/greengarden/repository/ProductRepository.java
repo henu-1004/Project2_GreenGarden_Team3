@@ -29,7 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("""
         SELECT new kr.co.greengarden.dto.ProductListDTO(
            p.proId, p.img1, p.name, p.description,
-                  p.price, p.deliveryFee, p.discountRate, s.company
+                  p.price, p.deliveryFee, p.discountRate, s.company, p.createdAt
         )
         FROM Product p
         JOIN p.seller s
