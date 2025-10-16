@@ -65,15 +65,10 @@ jobs:
           ssh -i private_key.pem \
             -o StrictHostKeyChecking=no \
             ${{ secrets.AWS_EC2_USER }}@${{ secrets.AWS_EC2_HOST }} << EOF
-            sudo mkdir -p /var/www/uploads
-            sudo chown $USER:$USER /var/www/uploads
-            sudo chmod 755 /var/www/uploads
-            pgrep java | xargs kill -9 || true
-            sleep 2
-            nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE \
-              --spring.profiles.active=prod \
-              > /home/${{ secrets.AWS_EC2_USER }}/app.log 2>&1 &
+            pgrep java | xargs kill -9;
+            nohup java -jar /home/${{ secrets.AWS_EC2_USER }}/$JAR_FILE > app.log 2>&1 &
           EOF
+
 
       - name: Cleanup
         run: rm -f private_key.pem
