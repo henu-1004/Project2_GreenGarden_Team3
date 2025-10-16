@@ -83,7 +83,14 @@
                           (${inquiry.status == '완료'} ? 'completed' : '')"
           th:text="${inquiry.status}">답변대기</span>
                     </td>
-                    <td th:text="${inquiry.writer}"></td>
+                    <td>
+                        <th:block th:with="writerId=${inquiry.writer}">
+                            <span th:if="${#strings.length(writerId) >= 3}">
+                                <span th:text="${#strings.substring(writerId, 0, 3)}">hyo</span>***
+                            </span>
+                            <span th:unless="${#strings.length(writerId) >= 3}" th:text="${writerId}"></span>
+                        </th:block>
+                    </td>
                     <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}"></td>
                     <td>
                         <button type="button"

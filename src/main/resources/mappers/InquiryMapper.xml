@@ -88,4 +88,15 @@
         WHERE INQUIRY_ID = #{inquiryId}
     </select>
 
+    <!--index 5개 가져오기-->
+    <select id="selectLatestInquiry" resultType="kr.co.greengarden.dto.InquiryDTO">
+        SELECT
+        INQUIRY_ID,
+        TITLE,
+        CREATED_AT
+        FROM TB_INQUIRY
+        ORDER BY CREATED_AT DESC
+        FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
 </mapper>

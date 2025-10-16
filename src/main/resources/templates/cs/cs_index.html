@@ -18,25 +18,14 @@
                     </div>
                     <div class="cs-content">
                         <ul class="cs-notice-list">
-                            <li class="cs-notice-item">
-                                <span class="cs-notice-title">[안내] 해외결제차 징 문자주의</span>
-                                <span class="cs-notice-date">22.10.31</span>
+                            <li class="cs-notice-item" th:each="notice : ${latestNotices}">
+                                <a th:href="@{/cs/notice/view(noticeId=${notice.noticeId})}">
+                                    <span class="cs-notice-title" th:text="${notice.title}">[안내] 해외결제차 징 문자주의</span>
+                                </a>
+                                <span class="cs-notice-date" th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}">22.10.31</span>
                             </li>
-                            <li class="cs-notice-item">
-                                <span class="cs-notice-title">[안내] 개인정보 처리방침 변경 안내</span>
-                                <span class="cs-notice-date">22.09.15</span>
-                            </li>
-                            <li class="cs-notice-item">
-                                <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
-                                <span class="cs-notice-date">22.08.10</span>
-                            </li>
-                            <li class="cs-notice-item">
-                                <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
-                                <span class="cs-notice-date">22.08.10</span>
-                            </li>
-                            <li class="cs-notice-item">
-                                <span class="cs-notice-title">[공지] 시스템 점검 안내</span>
-                                <span class="cs-notice-date">22.08.10</span>
+                            <li th:if="${#lists.isEmpty(latestNotices)}" class="cs-notice-item">
+                                <span class="cs-notice-title">등록된 공지사항이 없습니다.</span>
                             </li>
                         </ul>
                     </div>
@@ -45,33 +34,45 @@
                 <div class="cs-section">
                     <div class="cs-section-header">
                         <div class="cs-section-title">자주하는질문</div>
-                        <a href="#" class="cs-view-all">전체보기</a>
+                        <a th:href="@{/cs/faq/list}" class="cs-view-all">전체보기</a>
                     </div>
                     <div class="cs-content">
                         <div class="cs-category-grid">
                             <div class="cs-category-item">
-                                <div class="cs-category-icon"></div>
-                                <div class="cs-category-name">회원</div>
+                                <a th:href="@{/cs/faq/list(type='회원')}">
+                                    <div class="cs-category-icon"></div>
+                                    <div class="cs-category-name">회원</div>
+                                </a>
                             </div>
                             <div class="cs-category-item">
-                                <div class="cs-category-icon"></div>
-                                <div class="cs-category-name">쿠폰/이벤트</div>
+                                <a th:href="@{/cs/faq/list(type='쿠폰/이벤트')}">
+                                    <div class="cs-category-icon"></div>
+                                    <div class="cs-category-name">쿠폰/이벤트</div>
+                                </a>
                             </div>
                             <div class="cs-category-item">
-                                <div class="cs-category-icon"></div>
-                                <div class="cs-category-name">주문/결제</div>
+                                <a th:href="@{/cs/faq/list(type='주문/결제')}">
+                                    <div class="cs-category-icon"></div>
+                                    <div class="cs-category-name">주문/결제</div>
+                                </a>
                             </div>
                             <div class="cs-category-item">
-                                <div class="cs-category-icon"></div>
-                                <div class="cs-category-name">배송</div>
+                                <a th:href="@{/cs/faq/list(type='배송')}">
+                                    <div class="cs-category-icon"></div>
+                                    <div class="cs-category-name">배송</div>
+                                </a>
                             </div>
                             <div class="cs-category-item">
-                                <div class="cs-category-icon"></div>
-                                <div class="cs-category-name">취소/반품/환불</div>
+                                <a th:href="@{/cs/faq/list(type='취소/반품/환불')}">
+                                    <div class="cs-category-icon"></div>
+                                    <div class="cs-category-name">취소/반품/환불</div>
+                                </a>
                             </div>
                             <div class="cs-category-item">
-                                <div class="cs-category-icon"></div>
-                                <div class="cs-category-name">안전결제</div>
+                                <a th:href="@{/cs/faq/list(type='안전결제')}">
+                                    <div class="cs-category-icon"></div>
+                                    <div class="cs-category-name">안전결제</div>
+                                </a>
                             </div>
                         </div>
                     </div>

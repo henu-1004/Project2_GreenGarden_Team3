@@ -74,4 +74,15 @@
         WHERE NOTICE_ID = #{noticeId}
     </update>
 
+    <!--index 5개 가져오기-->
+    <select id="selectLatestNotices" resultType="kr.co.greengarden.dto.NoticeDTO">
+        SELECT
+        NOTICE_ID,
+        TITLE,
+        CREATED_AT
+        FROM TB_NOTICE
+        ORDER BY CREATED_AT DESC
+        FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
 </mapper>

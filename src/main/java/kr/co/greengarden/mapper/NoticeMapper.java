@@ -29,4 +29,7 @@ public interface NoticeMapper {
 
     // 조회수 증가
     void updateViews(@Param("noticeId") Integer noticeId);
+
+    // index 용 공지사항 5개 가져오기
+    List<NoticeDTO> selectLatestNotices(@Param("limit") int limit);
 }
