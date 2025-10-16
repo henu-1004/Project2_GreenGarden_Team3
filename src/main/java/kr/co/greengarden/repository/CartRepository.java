@@ -20,13 +20,13 @@ import java.util.List;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
 
-    @Query("SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee) " +
+    @Query("SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, p.proId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee) " +
             "FROM Cart c " +
             "JOIN c.product p " +
             "WHERE c.member.memId = :memId")
     List<CartListDTO> findCartListByMemId(String memId);
 
-    @Query("SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee) " +
+    @Query("SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, p.proId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee) " +
             "FROM Cart c " +
             "JOIN c.product p " +
             "WHERE c.cartId = :cartId")
@@ -35,7 +35,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     public List<Cart> findAllByMember_MemId(String memId);
 
     @Query(value = """
-        SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee)
+        SELECT new kr.co.greengarden.dto.CartListDTO(c.cartId, p.proId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee)
         FROM Cart c
         JOIN c.product p
         WHERE c.member.memId = :memId
@@ -44,7 +44,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     @Query("""
         SELECT new kr.co.greengarden.dto.CartListDTO(
-            c.cartId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee
+            c.cartId, p.proId, c.quantity, p.name, p.description, p.img1, p.price, p.discountRate, p.point, p.deliveryFee
         )
         FROM Cart c
         JOIN c.product p

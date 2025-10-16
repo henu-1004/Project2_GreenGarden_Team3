@@ -20,16 +20,16 @@
     <div class="content-wrap">
         <div th:replace="~{common/aside :: aside}"></div>
         <section id="main-section">
-            <form th:action="@{/product/order}" method="POST">
-                <div class="top-nav">
-                    <h1>주문하기</h1>
-                    <ul class="page-nation">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">장바구니</a></li>
-                        <li><a href="#">주문하기</a></li>
-                    </ul>
-                </div>
-                <hr>
+            <div class="top-nav">
+                <h1>주문하기</h1>
+                <ul class="page-nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">장바구니</a></li>
+                    <li><a href="#">주문하기</a></li>
+                </ul>
+            </div>
+            <hr>
+            <form th:action="@{/product/orderFix}" method="POST">
                 <div class="main-container">
                     <div class="order-contain">
                         <h2>배송 정보</h2>
@@ -42,11 +42,13 @@
                             </div>
                             <div class="form-group address">
                                 <label><span>주소</span>
-                                <input type="text" id="zip_code" name="recZipCode" placeholder="우편번호" readonly>
-                                <button type="button" class="subbtn" onclick="postcode()">우편번호 검색</button>
+                                    <input type="text" id="zip_code" name="recZipCode" placeholder="우편번호" readonly>
+                                    <button type="button" class="subbtn" onclick="postcode()">우편번호 검색</button>
                                 </label>
-                                <label><span>&nbsp;</span><input type="text" id="address_basic" name="recAddressBasic" placeholder="기본주소" readonly></label>
-                                <label><span>&nbsp;</span><input type="text" id="address_detail" name="recAddressDetail" placeholder="상세주소" readonly></label>
+                                <label><span>&nbsp;</span><input type="text" id="address_basic" name="recAddressBasic"
+                                                                 placeholder="기본주소" readonly></label>
+                                <label><span>&nbsp;</span><input type="text" id="address_detail" name="recAddressDetail"
+                                                                 placeholder="상세주소" ></label>
                             </div>
                             <div class="form-group">
                                 <label><span>배송메모</span><textarea> </textarea></label>
@@ -70,7 +72,7 @@
                                 </tr>
                                 </thead>
                                 <tbody id="cart-items">
-                                <tr th:each="cart : ${cartList}">
+                                <tr th:each="cart, stat  : ${cartList}">
                                     <td class="col-item-info">
                                         <div class="product-image">
                                             <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image"
@@ -88,7 +90,7 @@
                                     </td>
                                     <td>
                                         <div class="price-after">
-                                            <p class="original-price">[[${cart.originalPrice}]]원</p>
+                                            <p class="original-price"><[[${cart.originalPrice}]]원</p>
                                             <p class="discount-rate">[[${cart.discountRate}]]% ↓</p>
                                         </div>
                                     </td>
@@ -97,6 +99,11 @@
                                         <p class="shopping_fee">배송비 [[${cart.deliveryFee}]]원</p>
                                     </td>
                                     <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
+
+                                    <input type="hidden" th:name="|items[${stat.index}].proId|" th:value="${cart.proId}">
+                                    <input type="hidden" th:name="|items[${stat.index}].quantity|" th:value="${cart.quantity}">
+                                    <input type="hidden" th:name="|items[${stat.index}].price|" th:value="${cart.price}">
+                                    <input type="hidden" th:name="|items[${stat.index}].discountRate|" th:value="${cart.discountRate}">
                                 </tr>
                                 </tbody>
                             </table>
@@ -120,17 +127,18 @@
                                     </label>
                                 </div>
                             </div>
+
                             <div class="payment-options">
                                 <h2>결제방법</h2>
                                 <div class="options-details">
-                                    <label><input type="radio" name="payment-method" value="신용카드"/>신용카드</label>
-                                    <label><input type="radio" name="payment-method" value="체크카드"/>체크카드</label>
-                                    <label><input type="radio" name="payment-method" value="계좌이체"/>계좌이체</label>
-                                    <label><input type="radio" name="payment-method" value="무통장입금"/>무통장입금</label>
-                                    <label><input type="radio" name="payment-method" value="휴대폰결제"/>휴대폰결제</label>
-                                    <label><input type="radio" name="payment-method" value="삼성페이"/>삼성페이</label>
-                                    <label><input type="radio" name="payment-method" value="카카오페이"/>카카오페이</label>
-                                    <label><input type="radio" name="payment-method" value="네이버페이"/>네이버페이</label>
+                                    <label><input type="radio" name="payMethod" value="신용카드"/>신용카드</label>
+                                    <label><input type="radio" name="payMethod" value="체크카드"/>체크카드</label>
+                                    <label><input type="radio" name="payMethod" value="계좌이체"/>계좌이체</label>
+                                    <label><input type="radio" name="payMethod" value="무통장입금"/>무통장입금</label>
+                                    <label><input type="radio" name="payMethod" value="휴대폰결제"/>휴대폰결제</label>
+                                    <label><input type="radio" name="payMethod" value="삼성페이"/>삼성페이</label>
+                                    <label><input type="radio" name="payMethod" value="카카오페이"/>카카오페이</label>
+                                    <label><input type="radio" name="payMethod" value="네이버페이"/>네이버페이</label>
                                 </div>
                             </div>
                         </div>
@@ -161,6 +169,7 @@
                                 <div class="total-price">
                                     <span>전체주문금액</span>
                                     <span id="total-order-price">[[${orderInfo.totalPrice}]]</span>
+                                    <input type="hidden" name="totalPrice" th:value="${orderInfo.totalPrice}">
                                 </div>
                                 <div class="item">
                                     <span>적립 포인트</span>

@@ -17,11 +17,11 @@ public class CouponDTO {
 
     // 클라이언트가 입력할 필수 필드
     private String issuer; // 발급처
-    private String type; // 쿠폰종류
+    private String type; // 쿠폰종류 : 개별상품할인-1, 주문상품할인-2, 배송비무료-3
     private String name; // 쿠폰명
-    private String benefit; // 혜택
-    private int discountValue; // 할인값
-    private String discountType; // 할인단위
+    private String benefit; // 혜택명
+    private int discountValue; // 할인값: 계산용 숫자
+    private String discountType; // 할인 종류 구분자: AMOUNT(정액), PERCENT(정률), SHIPPING배송
     private LocalDateTime startDate; // 사용시작일
     private LocalDateTime endDate; // 사용종료일
 

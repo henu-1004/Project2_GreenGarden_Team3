@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.apache.logging.log4j.util.Lazy;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * 날짜 : 2025/09/25
@@ -55,6 +57,9 @@ public class Order {
 
     @Column
     private String recAddressDetail;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     @PrePersist
     void onCreate() { if (orderedAt == null) orderedAt = LocalDateTime.now(); }

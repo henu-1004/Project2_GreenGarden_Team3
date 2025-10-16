@@ -42,4 +42,7 @@ public class OrderItem {
 
     @Column
     private int pointUsed;
+
+    @Column
+    private int proId;
 }
