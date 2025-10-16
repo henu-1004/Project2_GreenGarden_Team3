@@ -12,6 +12,9 @@ server:
   servlet:
     context-path: /greengarden
 
+app:
+  upload-dir: ./uploads
+
 spring:
   application:
     name: GreenGarden
@@ -52,6 +55,14 @@ spring:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 30MB
+
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+        - file:./uploads/
+    mvc:
+      static-path-pattern: /uploads/**
 
   mail:
     host: smtp.gmail.com
