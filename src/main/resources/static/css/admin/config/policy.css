@@ -15,7 +15,6 @@ body {
 
 
 /* 메인 콘텐츠 영역 */
-/* 3. aside가 왼쪽에 붙지 않고 중앙에 정렬되도록 content_wrap 컨테이너를 header-wrap과 동일하게 설정 */
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
@@ -70,6 +69,7 @@ body {
     margin-left: 5px;
     color: #999;
 }
+
 
 
 
