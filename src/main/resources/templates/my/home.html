@@ -114,35 +114,39 @@
                 <div class="actions">
                     <!-- ✅ 구매확정 -->
                     <button th:if="${order.confirmYn == 'N'}"
-                            th:onclick="'openModal(\\'confirmModal\\', \\''
-            + ${order.orderNo} + '\\')'"
+                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}')|"
                             class="btn-primary">구매확정</button>
+
                     <button th:if="${order.confirmYn == 'Y'}"
                             class="btn-secondary done" disabled>구매확정 완료</button>
 
+
                     <!-- ✅ 상품평작성 -->
                     <button th:if="${order.reviewYn == 'N'}"
-                            th:onclick="'openModal(\\'reviewModal\\', \\''
-            + ${order.orderNo} + '\\')'"
+                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}')|"
                             class="btn-primary">상품평작성</button>
+
                     <button th:if="${order.reviewYn == 'Y'}"
                             class="btn-secondary done" disabled>상품평 작성완료</button>
 
+
                     <!-- ✅ 교환신청 -->
                     <button th:if="${order.exchangeYn == 'N'}"
-                            th:onclick="'openModal(\\'exchangeModal\\', \\''
-            + ${order.orderNo} + '\\')'"
+                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}')|"
                             class="btn-primary">교환신청</button>
+
                     <button th:if="${order.exchangeYn == 'Y'}"
                             class="btn-secondary done" disabled>교환신청 완료</button>
 
+
                     <!-- ✅ 반품신청 -->
                     <button th:if="${order.returnYn == 'N'}"
-                            th:onclick="'openModal(\\'returnModal\\', \\''
-            + ${order.orderNo} + '\\')'"
+                            th:attr="onclick=|openModal('returnModal','${order.orderNo}')|"
                             class="btn-primary">반품신청</button>
+
                     <button th:if="${order.returnYn == 'Y'}"
                             class="btn-secondary done" disabled>반품신청 완료</button>
+
                 </div>
 
             </div>
@@ -588,62 +592,86 @@
     /**
      * ✅ 공통 모달 열기
      * @param id - 열 모달의 ID
-     * @param orderNo - 해당 주문번호
+     * @param orderNo - 해당 주문번호 (없을 경우 null)
      */
     function openModal(id, orderNo) {
         const modal = document.getElementById(id);
+        if (!modal) return;
+
         modal.style.display = "flex";
 
-        // hidden input에 주문번호 세팅
+        // hidden input에 주문번호 세팅 (confirm/review/return/exchange용)
         const hiddenInput = modal.querySelector("input[name='orderNo']");
-        if (hiddenInput) hiddenInput.value = orderNo;
+        if (hiddenInput && orderNo) {
+            hiddenInput.value = orderNo;
+        }
+
+        // 별점 초기화 (상품평 모달 열릴 때만)
+        if (id === 'reviewModal') {
+            resetStars();
+        }
     }
 
     /** ✅ 모달 닫기 */
     function closeModal(id) {
-        document.getElementById(id).style.display = "none";
+        const modal = document.getElementById(id);
+        if (modal) modal.style.display = "none";
     }
 
-    /** ✅ 판매자 정보 → 문의하기 */
+    /** ✅ 판매자 정보 → 문의하기 전환 */
     function openInquiry() {
         closeModal('sellerModal');
         openModal('inquiryModal');
     }
 
+    /** ✅ 별점 초기화 */
+    function resetStars() {
+        const stars = document.querySelectorAll('#starRating span');
+        const ratingInput = document.getElementById("ratingValue");
+        if (!stars.length || !ratingInput) return;
+
+        ratingInput.value = 0;
+        stars.forEach(s => {
+            s.classList.remove('selected', 'hovered');
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         /* =========================
-           ⭐ 별점 선택
+           ⭐ 별점 선택 로직
         ========================= */
         const stars = document.querySelectorAll('#starRating span');
         const ratingInput = document.getElementById("ratingValue");
         let selectedRating = 0;
 
-        stars.forEach((star, index) => {
-            const value = index + 1;
+        if (stars.length && ratingInput) {
+            stars.forEach((star, index) => {
+                const value = index + 1;
 
-            // hover 시
-            star.addEventListener('mouseenter', () => {
-                stars.forEach((s, i) => s.classList.toggle('hovered', i < value));
-            });
+                // hover 시
+                star.addEventListener('mouseenter', () => {
+                    stars.forEach((s, i) => s.classList.toggle('hovered', i < value));
+                });
 
-            // hover 해제 시 (선택된 별점만 유지)
-            star.addEventListener('mouseleave', () => {
-                stars.forEach((s, i) => {
-                    s.classList.remove('hovered');
-                    s.classList.toggle('selected', i < selectedRating);
+                // hover 해제 시 (선택된 별점만 유지)
+                star.addEventListener('mouseleave', () => {
+                    stars.forEach((s, i) => {
+                        s.classList.remove('hovered');
+                        s.classList.toggle('selected', i < selectedRating);
+                    });
+                });
+
+                // 클릭 시 (별점 확정)
+                star.addEventListener('click', () => {
+                    selectedRating = value;
+                    ratingInput.value = selectedRating;
+                    stars.forEach((s, i) => s.classList.toggle('selected', i < selectedRating));
                 });
             });
-
-            // 클릭 시 (별점 확정)
-            star.addEventListener('click', () => {
-                selectedRating = value;
-                ratingInput.value = selectedRating;
-                stars.forEach((s, i) => s.classList.toggle('selected', i < selectedRating));
-            });
-        });
+        }
 
         /* =========================
-           📸 리뷰 사진 업로드
+           📸 리뷰 이미지 업로드 미리보기
         ========================= */
         const previewArea = document.getElementById("previewArea");
         const inputs = [
@@ -652,37 +680,38 @@
             document.getElementById("reviewFile3")
         ];
 
-        inputs.forEach((input, idx) => {
-            if (!input) return;
-            input.addEventListener("change", (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
+        if (previewArea) {
+            inputs.forEach((input, idx) => {
+                if (!input) return;
 
-                // 기존 이미지 제거
-                const oldImg = previewArea.querySelector(`img[data-slot="${idx}"]`);
-                if (oldImg) oldImg.remove();
+                input.addEventListener("change", (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
 
-                // 새 이미지 미리보기
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    const img = document.createElement("img");
-                    img.src = ev.target.result;
-                    img.dataset.slot = idx;
-                    img.style.width = "80px";
-                    img.style.height = "80px";
-                    img.style.objectFit = "cover";
-                    img.style.border = "1px solid #ccc";
-                    img.style.borderRadius = "4px";
-                    previewArea.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+                    // 기존 동일 슬롯 이미지 제거
+                    const oldImg = previewArea.querySelector(`img[data-slot="${idx}"]`);
+                    if (oldImg) oldImg.remove();
+
+                    // 새 이미지 미리보기 추가
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        const img = document.createElement("img");
+                        img.src = ev.target.result;
+                        img.dataset.slot = idx;
+                        img.style.width = "80px";
+                        img.style.height = "80px";
+                        img.style.objectFit = "cover";
+                        img.style.border = "1px solid #ccc";
+                        img.style.borderRadius = "4px";
+                        img.style.marginRight = "5px";
+                        previewArea.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
             });
-        });
+        }
     });
 </script>
-
-
-
 
 </body>
 </html>
