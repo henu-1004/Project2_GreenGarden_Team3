@@ -21,6 +21,10 @@ public class OrderSummaryDTO {
     private String sellerId;        // 판매자 ID
     private String sellerAddress;   // 판매자 주소
     private String sellerName;// TB_MEMBER_SELLER.COMPANY
+    private String reviewYn;
+    private String returnYn;
+    private String exchangeYn;
+
 
 }
 

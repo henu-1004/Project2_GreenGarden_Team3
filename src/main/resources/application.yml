@@ -1,56 +1,70 @@
 logging:
-    file:
-        name: logs/greengarden.log
-    level:
-        root: info
+  file:
+    name: logs/greengarden.log
+  level:
+    root: info
+
 mybatis:
-    mapper-locations: classpath:mappers/**/*.xml
+  mapper-locations: classpath:mappers/**/*.xml
+
 server:
-    port: 8080
-    servlet:
-        context-path: /greengarden
+  port: 8080
+  servlet:
+    context-path: /greengarden
+
 spring:
-    application:
-        name: GreenGarden
-        version: ${version}
-    datasource:
-        driver-class-name: oracle.jdbc.driver.OracleDriver
-        password: rmflszjavbxj123!
-        url: jdbc:oracle:thin:@3.35.197.89:1522:xe
-        username: team3
+  application:
+    name: GreenGarden
+    version: ${version}
 
-    devtools:
-        livereload:
-            enabled: true
-    jpa:
-        autoconfigure:
-            exclude: org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
-        hibernate:
-            ddl-auto: update
-            naming:
-                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        properties:
-            hibernate:
-                format_sql: true
-                show_sql: true
-    servlet:
-        multipart:
-            maxFileSize: 10MB
-            maxRequestSize: 30MB
+  datasource:
+    driver-class-name: oracle.jdbc.driver.OracleDriver
+    url: jdbc:oracle:thin:@3.35.197.89:1522:xe
+    username: team3
+    password: rmflszjavbxj123!
 
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username: whdqhd4149@gmail.com
-      password: oamopnpsvbpzxfqq
-      properties:
-        mail:
-          smtp:
-            auth: true
-            timeout: 5000
-            starttls:
-              required: true
-              enable: true
-            ssl:
-              trust: smtp.gmail.com
+    hikari:
+      pool-name: HikariPool-GreenGarden   # ✅ 커넥션 풀 이름
+      maximum-pool-size: 10               # 동시에 유지할 최대 연결 수
+      minimum-idle: 3                     # 최소 유지 커넥션 수
+      idle-timeout: 300000                # 유휴 커넥션 정리 시간 (5분)
+      max-lifetime: 1800000               # 커넥션 최대 수명 (30분)
+      connection-timeout: 20000           # 커넥션 획득 최대 대기시간 (20초)
+      auto-commit: true                   # 자동 커밋 여부
 
+  devtools:
+    livereload:
+      enabled: true
+
+  jpa:
+    autoconfigure:
+      exclude: org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 30MB
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: whdqhd4149@gmail.com
+    password: oamopnpsvbpzxfqq
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            required: true
+            enable: true
+          ssl:
+            trust: smtp.gmail.com
