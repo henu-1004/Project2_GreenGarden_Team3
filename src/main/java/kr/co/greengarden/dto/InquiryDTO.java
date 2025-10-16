@@ -38,7 +38,7 @@ public class InquiryDTO {
 
     /** 문의 처리 상태 */
     @Builder.Default
-    private String status="답변대기";
+    private String status="처리중";
 
     /** 문의 채널 (예: 이메일, 전화, 웹) */
     private String channel;

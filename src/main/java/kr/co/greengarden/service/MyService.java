@@ -44,4 +44,19 @@ public class MyService {
     public List<Order> findAllByMember_MemId(String memberId) {
         return orderRepository.findAllByMember_MemId(memberId);
     }
+
+    public void updateConfirmYn(String orderNo, String yn) {
+        myMapper.updateConfirmYn(orderNo, yn);
+    }
+    public void updateReviewYn(String orderNo, String yn) {
+        myMapper.updateReviewYn(orderNo, yn);
+    }
+    public void updateExchangeYn(String orderNo, String yn) {
+        myMapper.updateExchangeYn(orderNo, yn);
+    }
+    public void updateReturnYn(String orderNo, String yn) {
+        myMapper.updateReturnYn(orderNo, yn);
+    }
+
+
 }

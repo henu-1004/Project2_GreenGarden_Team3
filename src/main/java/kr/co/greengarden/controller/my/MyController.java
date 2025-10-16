@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -79,4 +82,42 @@ public class MyController {
         model.addAttribute("currentUri", request.getRequestURI());
         return "my/info";
     }
+
+
+    @PostMapping("/confirm")
+    public String confirmOrder(@RequestParam String orderNo,
+                               @AuthenticationPrincipal UserDetails userDetails,
+                               RedirectAttributes redirect) {
+        myService.updateConfirmYn(orderNo, "Y");
+        redirect.addFlashAttribute("msg", "구매확정 완료되었습니다.");
+        return "redirect:/my/home";
+    }
+
+    @PostMapping("/review/complete")
+    public String completeReview(@RequestParam String orderNo,
+                                 @AuthenticationPrincipal UserDetails userDetails,
+                                 RedirectAttributes redirect) {
+        myService.updateReviewYn(orderNo, "Y");
+        redirect.addFlashAttribute("msg", "상품평 작성완료!");
+        return "redirect:/my/home";
+    }
+
+    @PostMapping("/exchange/complete")
+    public String completeExchange(@RequestParam String orderNo,
+                                   @AuthenticationPrincipal UserDetails userDetails,
+                                   RedirectAttributes redirect) {
+        myService.updateExchangeYn(orderNo, "Y");
+        redirect.addFlashAttribute("msg", "교환신청 완료!");
+        return "redirect:/my/home";
+    }
+
+    @PostMapping("/return/complete")
+    public String completeReturn(@RequestParam String orderNo,
+                                 @AuthenticationPrincipal UserDetails userDetails,
+                                 RedirectAttributes redirect) {
+        myService.updateReturnYn(orderNo, "Y");
+        redirect.addFlashAttribute("msg", "반품신청 완료!");
+        return "redirect:/my/home";
+    }
+
 }

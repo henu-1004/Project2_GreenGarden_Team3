@@ -63,8 +63,8 @@
             <h4 style="margin-bottom:10px; color:#555;">🧩 아래는 실제 DB 기반 recentOrders 출력 테스트</h4>
 
             <!-- ==========================
-                 🧩 [2] 실제 데이터 바인딩 블록
-                 ========================== -->
+     🧩 [2] 실제 데이터 바인딩 블록
+     ========================== -->
 
             <!-- 주문 없음 -->
             <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
@@ -99,23 +99,59 @@
                     </p>
                 </div>
 
+                <!-- 상태 -->
                 <div class="status" th:text="${order.status}">배송완료</div>
 
+                <!-- 상태 확인용 -->
+                <p class="yn-check">
+                    confirmYn: <span th:text="${order.confirmYn}"></span>,
+                    reviewYn: <span th:text="${order.reviewYn}"></span>,
+                    exchangeYn: <span th:text="${order.exchangeYn}"></span>,
+                    returnYn: <span th:text="${order.returnYn}"></span>
+                </p>
+
+                <!-- 버튼 영역 -->
                 <div class="actions">
-                    <button th:if="${order.status == '배송중' or order.status == '배송완료'}"
-                            onclick="openModal('confirmModal')">구매확정</button>
-                    <button th:if="${order.status == '배송완료'}"
-                            onclick="openModal('reviewModal')">상품평작성</button>
-                    <button th:if="${order.status == '배송중'}"
-                            onclick="openModal('exchangeModal')">교환신청</button>
-                    <button th:if="${order.status == '배송중'}"
-                            onclick="openModal('returnModal')">반품신청</button>
+                    <!-- ✅ 구매확정 -->
+                    <button th:if="${order.confirmYn == 'N'}"
+                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}')|"
+                            class="btn-primary">구매확정</button>
+
+                    <button th:if="${order.confirmYn == 'Y'}"
+                            class="btn-secondary done" disabled>구매확정 완료</button>
+
+
+                    <!-- ✅ 상품평작성 -->
+                    <button th:if="${order.reviewYn == 'N'}"
+                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}')|"
+                            class="btn-primary">상품평작성</button>
+
+                    <button th:if="${order.reviewYn == 'Y'}"
+                            class="btn-secondary done" disabled>상품평 작성완료</button>
+
+
+                    <!-- ✅ 교환신청 -->
+                    <button th:if="${order.exchangeYn == 'N'}"
+                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}')|"
+                            class="btn-primary">교환신청</button>
+
+                    <button th:if="${order.exchangeYn == 'Y'}"
+                            class="btn-secondary done" disabled>교환신청 완료</button>
+
+
+                    <!-- ✅ 반품신청 -->
+                    <button th:if="${order.returnYn == 'N'}"
+                            th:attr="onclick=|openModal('returnModal','${order.orderNo}')|"
+                            class="btn-primary">반품신청</button>
+
+                    <button th:if="${order.returnYn == 'Y'}"
+                            class="btn-secondary done" disabled>반품신청 완료</button>
+
                 </div>
+
             </div>
-        </div>
 
-
-        <!-- ✅ 포인트 적립 내역 -->
+            <!-- ✅ 포인트 적립 내역 -->
         <div class="section-header">
             <h2>포인트 적립 내역</h2>
             <a th:href="@{/my/points}" class="more">더보기 ></a>
@@ -411,13 +447,17 @@
             <h2>구매확정</h2>
             <span class="close" onclick="closeModal('confirmModal')">&times;</span>
         </div>
-        <div class="modal-body">
-            <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
-            <div class="actions">
-                <button class="btn-primary">확정하기</button>
-                <button class="btn-secondary" onclick="closeModal('confirmModal')">취소</button>
+        <!-- 💡 form 추가 -->
+        <form th:action="@{/my/confirm}" method="post">
+            <input type="hidden" name="orderNo" value="">
+            <div class="modal-body">
+                <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
+                <div class="actions">
+                    <button type="submit" class="btn-primary">확정하기</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('confirmModal')">취소</button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -428,8 +468,10 @@
             <h2>상품평작성</h2>
             <span class="close" onclick="closeModal('reviewModal')">&times;</span>
         </div>
-        <div class="modal-body">
-            <form>
+        <!-- 💡 form 추가 -->
+        <form th:action="@{/my/review/complete}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="orderNo" value="">
+            <div class="modal-body">
                 <div class="form-group">
                     <label>상품명</label>
                     <p>[㈜그린샵] 샘플 상품</p>
@@ -447,7 +489,7 @@
                 </div>
                 <div class="form-group">
                     <label>내용</label>
-                    <textarea placeholder="최소 10자 이상, 200자 이내 작성해주세요."></textarea>
+                    <textarea name="content" placeholder="최소 10자 이상, 200자 이내 작성해주세요."></textarea>
                 </div>
                 <div class="form-group">
                     <label>사진</label>
@@ -460,74 +502,49 @@
                     </div>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-primary">작성완료</button>
+                    <button type="submit" class="btn-primary">작성완료</button>
                     <button type="button" class="btn-secondary" onclick="closeModal('reviewModal')">취소</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
+<!-- ===== 반품신청 모달 ===== -->
 <div id="returnModal" class="modal modal-return">
     <div class="modal-content">
         <div class="modal-header">
             <h2>반품신청</h2>
             <span class="close" onclick="closeModal('returnModal')">&times;</span>
         </div>
-        <div class="modal-body">
-            <!-- 상품정보 -->
-            <h3>상품정보</h3>
-            <table>
-                <tr><td>날짜</td><td>2025-10-01</td></tr>
-                <tr>
-                    <td>상품정보</td>
-                    <td class="product-info">
-                        <img src="sample.jpg" alt="상품">
-                        <div>
-                            <p>샘플 상품 (1개)</p>
-                            <small>주문번호: 20221234</small>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>결제금액</td>
-                    <td>
-                        <div class="price-info">
-                            <p>판매가: 34,000원</p>
-                            <p>할인: -3,000원</p>
-                            <p><strong>결제금액: 31,000원</strong></p>
-                        </div>
-                    </td>
-                </tr>
-                <tr><td>상태</td><td>배송완료</td></tr>
-            </table>
-
-            <!-- 반품정보 입력 -->
-            <h3>반품정보 입력</h3>
-            <form>
+        <!-- 💡 form 추가 -->
+        <form th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="orderNo" value="">
+            <div class="modal-body">
+                <h3>반품정보 입력</h3>
                 <div class="form-group">
                     <label>반품유형</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="reason"> 단순변심</label>
-                        <label><input type="radio" name="reason"> 파손 및 불량</label>
-                        <label><input type="radio" name="reason"> 주문 실수</label>
-                        <label><input type="radio" name="reason"> 기타</label>
+                        <label><input type="radio" name="reason" value="단순변심"> 단순변심</label>
+                        <label><input type="radio" name="reason" value="불량"> 파손 및 불량</label>
+                        <label><input type="radio" name="reason" value="주문실수"> 주문 실수</label>
+                        <label><input type="radio" name="reason" value="기타"> 기타</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>사유입력</label>
-                    <textarea placeholder="반품 사유를 입력해주세요."></textarea>
+                    <label>상세사유</label>
+                    <textarea name="detail" placeholder="반품 사유를 입력해주세요."></textarea>
                 </div>
                 <div class="form-group">
                     <label>사진첨부</label>
-                    <input type="file">
+                    <input type="file" name="file" accept="image/*">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">반품신청</button>
                     <button type="button" class="btn-secondary" onclick="closeModal('returnModal')">취소</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -539,41 +556,13 @@
             <h2>교환신청</h2>
             <span class="close" onclick="closeModal('exchangeModal')">&times;</span>
         </div>
-        <div class="modal-body">
-            <!-- 상품정보 -->
-            <div class="section">
-                <h3>상품정보</h3>
-                <table>
-                    <tr><td>날짜</td><td>2025-10-01</td></tr>
-                    <tr>
-                        <td>상품정보</td>
-                        <td>
-                            <div class="product-info">
-                                <img src="/img/sample.png" alt="상품">
-                                <div>[㈜그린샵] 샘플 상품 (1개)<br>주문번호 : 202212341</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>결제금액</td>
-                        <td>
-                            <div class="price-info">
-                                <p>판매가: 34,000원</p>
-                                <p>할인: -3,000원</p>
-                                <p><strong>결제금액: 31,000원</strong></p>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr><td>상태</td><td>배송완료</td></tr>
-                </table>
-            </div>
-
-            <!-- 교환정보 입력 -->
-            <div class="section">
-                <h3>교환정보 입력</h3>
+        <!-- 💡 form 추가 -->
+        <form th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="orderNo" value="">
+            <div class="modal-body">
                 <div class="form-group">
                     <label>교환유형</label>
-                    <select>
+                    <select name="reason">
                         <option>사이즈 문제</option>
                         <option>색상 문제</option>
                         <option>상품하자</option>
@@ -582,71 +571,107 @@
                 </div>
                 <div class="form-group">
                     <label>사유입력</label>
-                    <textarea rows="4" placeholder="교환 사유를 입력해주세요."></textarea>
+                    <textarea name="detail" rows="4" placeholder="교환 사유를 입력해주세요."></textarea>
                 </div>
                 <div class="form-group">
                     <label>사진첨부</label>
-                    <input type="file" accept="image/*">
+                    <input type="file" name="file" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">교환신청</button>
+                    <button type="button" class="btn-secondary" onclick="closeModal('exchangeModal')">취소</button>
                 </div>
             </div>
-
-            <div class="form-actions">
-                <button type="button" class="btn-primary">교환신청</button>
-                <button type="button" class="btn-secondary" onclick="closeModal('exchangeModal')">취소</button>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
 
 
 <!-- ===== JS ===== -->
 <script>
-    function openModal(id) {
-        document.getElementById(id).style.display = "flex";
-    }
-    function closeModal(id) {
-        document.getElementById(id).style.display = "none";
+    /**
+     * ✅ 공통 모달 열기
+     * @param id - 열 모달의 ID
+     * @param orderNo - 해당 주문번호 (없을 경우 null)
+     */
+    function openModal(id, orderNo) {
+        const modal = document.getElementById(id);
+        if (!modal) return;
+
+        modal.style.display = "flex";
+
+        // hidden input에 주문번호 세팅 (confirm/review/return/exchange용)
+        const hiddenInput = modal.querySelector("input[name='orderNo']");
+        if (hiddenInput && orderNo) {
+            hiddenInput.value = orderNo;
+        }
+
+        // 별점 초기화 (상품평 모달 열릴 때만)
+        if (id === 'reviewModal') {
+            resetStars();
+        }
     }
 
+    /** ✅ 모달 닫기 */
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) modal.style.display = "none";
+    }
+
+    /** ✅ 판매자 정보 → 문의하기 전환 */
     function openInquiry() {
         closeModal('sellerModal');
         openModal('inquiryModal');
     }
 
+    /** ✅ 별점 초기화 */
+    function resetStars() {
+        const stars = document.querySelectorAll('#starRating span');
+        const ratingInput = document.getElementById("ratingValue");
+        if (!stars.length || !ratingInput) return;
+
+        ratingInput.value = 0;
+        stars.forEach(s => {
+            s.classList.remove('selected', 'hovered');
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         /* =========================
-           ⭐ 별점 선택
+           ⭐ 별점 선택 로직
         ========================= */
         const stars = document.querySelectorAll('#starRating span');
         const ratingInput = document.getElementById("ratingValue");
         let selectedRating = 0;
 
-        stars.forEach((star, index) => {
-            const value = index + 1;
+        if (stars.length && ratingInput) {
+            stars.forEach((star, index) => {
+                const value = index + 1;
 
-            // hover 시
-            star.addEventListener('mouseenter', () => {
-                stars.forEach((s, i) => s.classList.toggle('hovered', i < value));
-            });
+                // hover 시
+                star.addEventListener('mouseenter', () => {
+                    stars.forEach((s, i) => s.classList.toggle('hovered', i < value));
+                });
 
-            // hover 해제 시 (선택된 별점만 유지)
-            star.addEventListener('mouseleave', () => {
-                stars.forEach((s, i) => {
-                    s.classList.remove('hovered');
-                    s.classList.toggle('selected', i < selectedRating);
+                // hover 해제 시 (선택된 별점만 유지)
+                star.addEventListener('mouseleave', () => {
+                    stars.forEach((s, i) => {
+                        s.classList.remove('hovered');
+                        s.classList.toggle('selected', i < selectedRating);
+                    });
+                });
+
+                // 클릭 시 (별점 확정)
+                star.addEventListener('click', () => {
+                    selectedRating = value;
+                    ratingInput.value = selectedRating;
+                    stars.forEach((s, i) => s.classList.toggle('selected', i < selectedRating));
                 });
             });
-
-            // 클릭 시 (별점 확정)
-            star.addEventListener('click', () => {
-                selectedRating = value;
-                ratingInput.value = selectedRating;
-                stars.forEach((s, i) => s.classList.toggle('selected', i < selectedRating));
-            });
-        });
+        }
 
         /* =========================
-           📸 사진 업로드 (파일 input 3개)
+           📸 리뷰 이미지 업로드 미리보기
         ========================= */
         const previewArea = document.getElementById("previewArea");
         const inputs = [
@@ -655,35 +680,38 @@
             document.getElementById("reviewFile3")
         ];
 
-        inputs.forEach((input, idx) => {
-            input.addEventListener("change", (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
+        if (previewArea) {
+            inputs.forEach((input, idx) => {
+                if (!input) return;
 
-                // 기존 같은 위치의 미리보기 제거
-                const oldImg = previewArea.querySelector(`img[data-slot="${idx}"]`);
-                if (oldImg) oldImg.remove();
+                input.addEventListener("change", (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
 
-                // 새 이미지 미리보기
-                const reader = new FileReader();
-                reader.onload = ev => {
-                    const img = document.createElement("img");
-                    img.src = ev.target.result;
-                    img.dataset.slot = idx; // input 번호별로 고정
-                    img.style.width = "80px";
-                    img.style.height = "80px";
-                    img.style.objectFit = "cover";
-                    img.style.border = "1px solid #ccc";
-                    img.style.borderRadius = "4px";
-                    previewArea.appendChild(img);
-                };
-                reader.readAsDataURL(file);
+                    // 기존 동일 슬롯 이미지 제거
+                    const oldImg = previewArea.querySelector(`img[data-slot="${idx}"]`);
+                    if (oldImg) oldImg.remove();
+
+                    // 새 이미지 미리보기 추가
+                    const reader = new FileReader();
+                    reader.onload = ev => {
+                        const img = document.createElement("img");
+                        img.src = ev.target.result;
+                        img.dataset.slot = idx;
+                        img.style.width = "80px";
+                        img.style.height = "80px";
+                        img.style.objectFit = "cover";
+                        img.style.border = "1px solid #ccc";
+                        img.style.borderRadius = "4px";
+                        img.style.marginRight = "5px";
+                        previewArea.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                });
             });
-        });
+        }
     });
 </script>
-
-
 
 </body>
 </html>

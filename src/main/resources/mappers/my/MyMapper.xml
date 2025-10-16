@@ -17,7 +17,14 @@
             o.ORDEREDAT     AS orderedAt,
             s.MEMID         AS sellerId,
             ms.COMPANY      AS sellerName,
-            s.ADDRESSBASIC  AS sellerAddress
+            s.ADDRESSBASIC  AS sellerAddress,
+
+            -- ✅ 10.16 추가: 상태 관리 컬럼 4종
+            o.CONFIRM_YN    AS confirmYn,
+            o.REVIEW_YN     AS reviewYn,
+            o.EXCHANGE_YN   AS exchangeYn,
+            o.RETURN_YN     AS returnYn
+
         FROM TB_ORDER o
                  JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
                  JOIN TB_PRODUCT p ON oi.PROID = p.PROID
@@ -26,7 +33,22 @@
         WHERE o.MEMID = #{memId}
         ORDER BY o.ORDEREDAT DESC
             FETCH FIRST 5 ROWS ONLY
-
     </select>
+
+    <update id="updateConfirmYn">
+        UPDATE TB_ORDER SET CONFIRM_YN = #{yn} WHERE ORDERNO = #{orderNo}
+    </update>
+
+    <update id="updateReviewYn">
+        UPDATE TB_ORDER SET REVIEW_YN = #{yn} WHERE ORDERNO = #{orderNo}
+    </update>
+
+    <update id="updateExchangeYn">
+        UPDATE TB_ORDER SET EXCHANGE_YN = #{yn} WHERE ORDERNO = #{orderNo}
+    </update>
+
+    <update id="updateReturnYn">
+        UPDATE TB_ORDER SET RETURN_YN = #{yn} WHERE ORDERNO = #{orderNo}
+    </update>
 
 </mapper>
