@@ -21,6 +21,12 @@ public class Coupon {
     private String name; // 쿠폰명
     private String benefit; // 혜택
 
+    @Column(name = "DISCOUNT_VALUE")
+    private int discountValue; // 할인값
+
+    @Column(name = "DISCOUNT_TYPE")
+    private String discountType; // 할인단위
+
     @Column(name = "START_DATE")
     private LocalDateTime startDate; // 사용시작일
 
@@ -42,7 +48,7 @@ public class Coupon {
 
     private String note; // 기타(비고)
 
-    // ModelMapper나 Builder 패턴 사용을 위해 @Setter 대신 개별 메서드 생성
+    // Service에서 서버 값을 주입하기 위한 개별 Setter (필수)
     public void setCouponNo(String couponNo) {
         this.couponNo = couponNo;
     }
