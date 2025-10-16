@@ -32,6 +32,7 @@ public class MainController {
 
 
         List<ProductListDTO> hitList = productService.getProducts("views", "desc");
+        List<ProductListDTO> newList = productService.getProducts("createdAt", "desc");
 
         if(authentication != null) {
 
@@ -41,6 +42,7 @@ public class MainController {
             model.addAttribute("member", member);
         }
 
+        model.addAttribute("newList", newList);
         model.addAttribute("hitList", hitList);
 
         return "index";

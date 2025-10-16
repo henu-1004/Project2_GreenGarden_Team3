@@ -3,6 +3,10 @@ package kr.co.greengarden.entity;
 import jakarta.persistence.*;
 import kr.co.greengarden.dto.ProductDTO;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /*
  * 날짜 : 2025/09/24
@@ -67,6 +71,10 @@ public class Product {
 
     @Column
     private String imgDetail;
+
+    @CreationTimestamp
+    @Column
+    private LocalDateTime createdAt;
 
     @Column
     private int views;
