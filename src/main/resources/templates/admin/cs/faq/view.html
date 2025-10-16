@@ -1,16 +1,84 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>admin CS FAQ View</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{/admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{/admin/cs/aside :: aside}"></div>
 
-			</div>
-		</div>
-	</main>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>FAQ 보기</h5>
+                <ul class="page_nation">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a th:href="@{/admin/cs/faq/list}">FAQ</a></li>
+                </ul>
+            </div>
+
+            <div class="admincs-view-container">
+
+                <div class="admincs-view-row admincs-view-category">
+                    <span class="admincs-view-label-text">카테고리</span>
+                    <span class="admincs-view-content">
+                        <span th:text="${faqDTO.category1}">회원</span>
+                        <span> - </span>
+                        <span th:text="${faqDTO.category2}">가입</span>
+                    </span>
+                </div>
+
+                <div class="admincs-view-row admincs-view-title">
+                    <span class="admincs-view-label-text">제목</span>
+                    <span class="admincs-view-content" th:text="${faqDTO.title}">케이마켓 회원가입은 어떻게 하나요?</span>
+                </div>
+
+                <div class="admincs-view-row admincs-view-info">
+                    <span class="admincs-view-label-text">작성일</span>
+                    <span class="admincs-view-content" th:text="${#temporals.format(faqDTO.createdAt, 'yyyy.MM.dd HH:mm')}">2025.10.16 14:00</span>
+
+                    <span class="admincs-view-label-text" style="margin-left: 20px;">조회수</span>
+                    <span class="admincs-view-content" th:text="${faqDTO.views}">10</span>
+                </div>
+
+                <div class="admincs-view-content-area">
+                    <span class="admincs-view-label-text">내용</span>
+                    <div class="admincs-view-content-text">
+                        <p th:utext="${faqDTO.content}">이메일 주소와 휴대폰 인증을 통해 빠르고 간편하게 가입할 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <div class="admincs-view-actions">
+
+                    <form th:action="@{/admin/cs/faq/delete}" method="post">
+                        <input type="hidden" name="faqId" th:value="${faqDTO.faqId}" />
+                        <button type="submit" class="btn-delete">삭제</button>
+                    </form>
+
+                    <button type="button"
+                            th:onclick="|location.href='@{/admin/cs/faq/modify(faqId=${faqDTO.faqId})}'|"
+                            class="btn-modify">
+                        수정
+                    </button>
+
+                    <button type="button"
+                            th:onclick="|location.href='@{/admin/cs/faq/list}'|"
+                            class="btn-list">
+                        목록
+                    </button>
+                </div>
+
+            </div>
+        </section>
+    </section>
+</main>
+<div th:replace="~{/admin/common/footer :: footer}"></div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package kr.co.greengarden.controller.cs;
+package kr.co.greengarden.controller.admin.cs;
 
 
 import kr.co.greengarden.dto.InquiryDTO;
@@ -18,21 +18,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  * 이름 : 박효빈
  * 내용 : InquiryController  추가
  */
+
 /**
  * 이름 : 박효빈
  * 날짜 : 2025/10/13
- * 내용 : 고객센터 - InquiryController 구현
+ * 내용 : 고객센터 - AdminQnaController 구현
  */
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class InquiryController {
+public class AdminQnaController {
     private final InquiryService inquiryService;
 
     // 전체 리스트
-    @GetMapping("/cs/inquiry/list")
+    @GetMapping("/admin/cs/qna/list")
     public String list(Model model, PageRequestDTO pageRequestDTO) {
-        log.info("Inquiry List Request", pageRequestDTO.toString());
+        log.info("qna List Request", pageRequestDTO.toString());
 
         // 1. service 호출하여 리스트 데이터와 페이징 정보 가져오기
         PageResponseDTO<InquiryDTO> responseDTO = inquiryService.getInquiryList(pageRequestDTO);
@@ -42,36 +43,36 @@ public class InquiryController {
         // 검색, 페이징 조건 유지 하기위해 requestDTO전달
         model.addAttribute("pageRequestDTO", pageRequestDTO);
 
-        return "cs/inquiry/list";
+        return "admin/cs/qna/list";
     }
 
     // 글보기
-    @GetMapping("/cs/inquiry/view")
+    @GetMapping("/admin/cs/qna/view")
     // int -> Integer (래퍼 클래스)로 변경하여 null 값을 처리할 수 있게 함
     public String view(Integer inquiryId,PageRequestDTO pageRequestDTO ,Model model) {
 
         // inquiryId가 null 이거나 0 이하일 경우 목록으로 리다이렉트하여 오류 방지
         if (inquiryId == null || inquiryId <= 0) {
-            return "redirect:/cs/inquiry/list";
+            return "redirect:/admin/cs/qna/list";
         }
 
         InquiryDTO inquiryDTO = inquiryService.getInquiry(inquiryId);
         if (inquiryDTO == null) {
-            return "redirect:/cs/inquiry/list";
+            return "redirect:/admin/cs/qna/list";
         }
         model.addAttribute("inquiryDTO",inquiryDTO);
         model.addAttribute("PageRequestDTO",pageRequestDTO);
-        return "cs/inquiry/view";
+        return "admin/cs/qna/view";
     }
 
     // 문의 작성폼
-    @GetMapping("/cs/inquiry/write")
+    @GetMapping("/admin/cs/qna/write")
     public String writeForm() {
-        return "cs/inquiry/write";
+        return "admin/cs/qna/write";
     }
 
     // 문의 작성 처리 (서버) Post
-    @PostMapping("/cs/inquiry/write")
+    @PostMapping("/admin/cs/qna/write")
     public String writeProcess(InquiryDTO inquiryDTO, RedirectAttributes rttr){
 
         // 1. 문의 저장 및 새로 생성된 id 획득
@@ -83,6 +84,6 @@ public class InquiryController {
         rttr.addFlashAttribute("msg","문의가 성공적으로 등록되었습니다");
 
         // 3. 상세 페이지로 리다렉트
-        return "redirect:/cs/inquiry/view?inquiryId="+newId;
+        return "redirect:/admin/cs/qna/view?inquiryId="+newId;
     }
 }
