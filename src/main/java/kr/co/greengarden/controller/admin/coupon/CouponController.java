@@ -1,7 +1,6 @@
 package kr.co.greengarden.controller.admin.coupon;
 
 import kr.co.greengarden.dto.admin.CouponDTO;
-import kr.co.greengarden.entity.Coupon;
 import kr.co.greengarden.service.CouponService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,11 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/coupon")
 public class CouponController {
@@ -32,6 +28,16 @@ public class CouponController {
     }
 
     @PostMapping("/couponRegister")
+    public String couponRegister(CouponDTO couponDTO) {
+
+        couponService.register(couponDTO);
+
+        return "redirect:/admin/coupon/list";
+    }
+
+    /*
+    @PostMapping("/couponRegister")
+    @ResponseBody
     public ResponseEntity<CouponDTO> couponRegister(@RequestBody CouponDTO requestDto) {
 
         // (필수 유효성 검증 로직 추가)
@@ -47,7 +53,6 @@ public class CouponController {
             // 오류 처리
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-
     }
-
+    */
 }
