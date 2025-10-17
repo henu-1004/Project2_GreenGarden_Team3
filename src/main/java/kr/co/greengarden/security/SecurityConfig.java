@@ -19,8 +19,9 @@ public class SecurityConfig {
         // 로그인 설정
         http.formLogin(form -> form
                 .loginPage("/member/login")
-                .defaultSuccessUrl("/")
-                .failureUrl("/user/login?error=true")
+                .loginProcessingUrl("/member/login")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/member/login?error=true")
                 .usernameParameter("memId")
                 .passwordParameter("password")
         );
@@ -46,7 +47,8 @@ public class SecurityConfig {
         );
 
         // 기타 설정
-        http.csrf(CsrfConfigurer::disable);
+        //http.csrf(CsrfConfigurer::disable);
+
 
         return http.build();
     }

@@ -121,3 +121,48 @@
         height: 100%;       /* 부모 박스 높이에 꽉 차게 */
         object-fit: cover;  /* 비율 유지하면서 빈공간 없이 */
     }
+
+    /* === GreenGarden Toast === */
+    .gg-toast {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 9999;
+        min-width: 280px;
+        max-width: 420px;
+        padding: 14px 16px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,.12);
+        background: #fff;
+        color: #111;
+        display: flex;
+        align-items: start;
+        gap: 10px;
+        animation: gg-slide-in .18s ease-out;
+        border: 1px solid #e6ecea;
+    }
+    .gg-toast.success { border-color: #d9efe5; }
+    .gg-toast.error   { border-color: #f1d9d9; }
+
+    .gg-toast .gg-dot {
+        width: 10px; height: 10px; margin-top: 6px; border-radius: 50%;
+        background: #2d6f54;           /* brand */
+    }
+    .gg-toast.success .gg-dot { background:#2d6f54; }
+    .gg-toast.error   .gg-dot { background:#d33; }
+
+    .gg-toast .gg-msg { line-height: 1.45; font-size: 14px; }
+    .gg-toast .gg-close {
+        margin-left: auto; cursor: pointer; font-size: 18px; line-height: 1;
+        border: 0; background: transparent; padding: 2px 4px; color: #6f7b79;
+    }
+    .gg-toast .gg-close:hover { color:#111; }
+
+    @keyframes gg-slide-in {
+        from { transform: translateY(-8px); opacity: 0; }
+        to   { transform: translateY(0);    opacity: 1; }
+    }
+    @keyframes gg-fade-out {
+        to { transform: translateY(-6px); opacity: 0; }
+    }
+

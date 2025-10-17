@@ -82,3 +82,20 @@ header, body {
     width: 25px;
     height: 25px;
 }
+/* 헤더: 로그아웃 버튼을 링크처럼 보이게 */
+.header-util form { display: inline; }              /* 폼이 줄바꿈 만들지 않게 */
+
+.header-util .btn-link {
+    background: none;
+    border: 0;
+    padding: 0 0 0 10px;                              /* #header-top a 와 동일 간격 */
+    margin: 0;
+    color: #175a48;                                   /* 링크 색과 동일 */
+    font: inherit;
+    line-height: 1;
+    cursor: pointer;
+    appearance: none;                                 /* 기본 버튼 외형 제거 */
+    -webkit-appearance: none;
+}
+
+.header-util .btn-link:focus { outline: 2px solid rgba(0,0,0,.15); outline-offset: 2px; }
