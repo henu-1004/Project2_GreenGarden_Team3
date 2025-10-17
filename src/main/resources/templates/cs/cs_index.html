@@ -9,7 +9,7 @@
     <title>고객센터 메인</title>
 </head>
 <body>
-<div th:replace="~{common/headerNoSearch.html}"></div>
+<div th:replace="~{common/headerNoSearch :: header}"></div>
 <div class="main-container">
     <section id="main-section">
         <div id="dynamic-content">
@@ -25,8 +25,8 @@
                         <li class="cs-notice-item" th:each="notice : ${latestNotices}">
                             <a th:href="@{/cs/notice/view(noticeId=${notice.noticeId})}">
                                 <span class="cs-notice-title" th:text="${notice.title}">[안내] 해외결제차 징 문자주의</span>
+                                <span class="cs-notice-date" th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}">22.10.31</span>
                             </a>
-                            <span class="cs-notice-date" th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}">22.10.31</span>
                         </li>
                         <li th:if="${#lists.isEmpty(latestNotices)}" class="cs-notice-item">
                             <span class="cs-notice-title">등록된 공지사항이 없습니다.</span>
