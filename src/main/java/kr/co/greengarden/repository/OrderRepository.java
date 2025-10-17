@@ -1,6 +1,7 @@
 package kr.co.greengarden.repository;
 
 import kr.co.greengarden.controller.admin.order.AdminOrderController;
+import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
 import kr.co.greengarden.dto.admin.AdminOrderListDTO;
 import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.Order;
@@ -38,5 +39,12 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "JOIN m.general g " +
             "LEFT JOIN o.orderItems oi")
     List<AdminOrderListDTO> findAllAdminOrderList();
+
+
+    // 관리자 인덱스용
+    @Query("SELECT new kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO(" +
+           "COALESCE(o.status, '미지정'), o.totalPrice) " +
+           "FROM Order o")
+    List<AdminIndexOrderInfoDTO> findAdminIndexOrderInfo();
 
 }

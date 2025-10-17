@@ -142,4 +142,11 @@ public class InquiryService {
     }
 
 
+    // 관리자 인덱스용
+    public int getInquiryCount() {
+        List<Inquiry> inquiryList = inquiryRepository.findAll();
+
+        return inquiryList.size();
+    }
+
 }
