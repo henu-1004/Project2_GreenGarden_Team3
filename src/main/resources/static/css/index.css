@@ -163,3 +163,66 @@
 .left::after .hit_title {
     content: "ed";
 }
+
+/* =====================
+   한 장씩 전환되는 페이드형 메인 배너
+   ===================== */
+#slide {
+    position: relative;
+    min-width: 1200px;
+    margin: 0 auto 20px;
+    border: 1px solid #66968c;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+/* 모든 이미지 겹쳐놓기 */
+#slide .slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#slide .slides img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;      /* ✅ 비율 유지하면서 전체 표시 */
+    background-color: #fff;   /* ✅ 남는 여백은 흰색으로 */
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+
+/* 점 네비게이션 */
+#slide .dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+#slide .dot {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+#slide .dot.active,
+#slide .dot:hover {
+    background: #175a48;
+}
+
+/* 현재 활성화된 이미지만 보이게 */
+#slide .slides img.active {
+    opacity: 1;
+    z-index: 1;
+}
