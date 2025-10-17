@@ -15,9 +15,9 @@
     내용 : HOME > 관리자 환경설정 > 기본설정
 -->
 <body>
-<div th:replace="~{/admin/common/header :: header}"></div>
+<div th:replace="~{admin/common/header :: header}"></div>
 <section class="content-wrap">
-    <div th:replace="~{/admin/config/aside :: aside}"></div>
+    <div th:replace="~{admin/config/aside :: aside}"></div>
     <main>
         <div id="main">
             <section id="main-section">
@@ -182,7 +182,7 @@
         </div>
     </main>
 </section>
-<div th:replace="~{/admin/common/footer :: footer}"></div>
+<div th:replace="~{admin/common/footer :: footer}"></div>
 </body>
 <script th:src="@{/js/admin/aside.js}"></script>
 </html>

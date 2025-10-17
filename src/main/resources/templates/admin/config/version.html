@@ -17,10 +17,10 @@
 
 <body>
 <!-- 헤더 -->
-<div th:replace="~{/admin/common/header :: header}"></div>
+<div th:replace="~{admin/common/header :: header}"></div>
 
 <section class="content-wrap">
-    <div th:replace="~{/admin/config/aside :: aside}"></div>
+    <div th:replace="~{admin/config/aside :: aside}"></div>
     <main>
         <div id="main">
             <section id="main-section">
@@ -173,7 +173,7 @@
 
 <!-- 모달 본문 끝 -->
 
-<div th:replace="~{/admin/common/footer :: footer}"></div>
+<div th:replace="~{admin/common/footer :: footer}"></div>
 </body>
 <script th:src="@{/js/admin/aside.js}"></script>
 <script th:src="@{/js/admin/config/version.js}"></script>
