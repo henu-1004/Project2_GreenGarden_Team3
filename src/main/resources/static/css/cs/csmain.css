@@ -926,9 +926,21 @@ body {
     z-index: 5;
 }
 
+.cs-notice-item a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 8px 0;
+}
 /* 마우스 오버 시 색상 변경이나 밑줄을 넣으면 UX 개선에 도움이 됩니다. */
 .cs-notice-item a:hover,
 .cs-inquiry-item a:hover {
     color: #4CAF50; /* 예시: 그린 색상으로 변경 */
     text-decoration: underline; /* 예시: 마우스 오버 시에만 밑줄 표시 */
+}
+/* 문의하기 링크 전체 클릭 가능하게 */
+.cs-inquiry-item a.cs-item-link {
+    display: block;
+    width: 100%;
 }

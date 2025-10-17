@@ -14,7 +14,7 @@
 
 <body>
 <!-- 공통 헤더 (검색 없는 버전) -->
-<div th:replace="~{common/headerNoSearch.html}"></div>
+<div th:replace="~{common/headerNoSearch :: header}"></div>
 
 <div class="main-container">
 
@@ -88,6 +88,6 @@
 </div>
 
 <!-- 공통 푸터 -->
-<div th:replace="~{cs/_csfooter.html}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 </body>
 </html>

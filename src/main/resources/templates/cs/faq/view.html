@@ -3,7 +3,7 @@
   이름 : 박효빈
   내용 : 박효빈 고객센터 페이지 제작
 -->
-<div th:replace="~{common/headerNoSearch.html}"></div>
+<div th:replace="~{common/headerNoSearch :: header}"></div>
 <div class="main-container">
     <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
@@ -64,7 +64,7 @@
 
     </section>
 </div>
-<div th:replace="~{cs/_csfooter.html}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 
 </body>
 </html>
