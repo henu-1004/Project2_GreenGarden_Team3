@@ -40,6 +40,8 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "LEFT JOIN o.orderItems oi")
     List<AdminOrderListDTO> findAllAdminOrderList();
 
+    String orderNo(String orderNo);
+
 
     // 관리자 인덱스용
     @Query("SELECT new kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO(" +

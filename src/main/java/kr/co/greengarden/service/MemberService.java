@@ -67,3 +67,4 @@ public class MemberService {
         return mer.size();
     }
 }
+

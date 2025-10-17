@@ -15,7 +15,7 @@
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <body>
-<div th:replace="~{common/header_index :: header}"></div>
+<div th:replace="~{common/headerWithSearch :: headerWithSearch}"></div>
 <main>
     <div class="content-wrap">
         <div th:replace="~{common/aside :: aside}"></div>
@@ -28,116 +28,123 @@
                     <li><a href="#">주문완료</a></li>
                 </ul>
             </section>
-            <h3>고객님의 주문이 정상적으로 완료되었습니다.</h3>
-            <p>항상 고객님을 위한 Green Garden이 되겠습니다. <br> 감사합니다.</p>
-            <section>
-                <h2>배송정보</h2>
-                <table class="del_info">
-                    <tr>
-                        <th>주문날짜</th>
-                        <td>2025.09.30.  18:31:52</td>
-                    </tr>
-                    <tr class="order_num">
-                        <th>주문번호</th>
-                        <td>
-                            2025092116848666
-                            <span>
-                                <input type="button" value="영수증"/>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>주문자명</th>
-                        <td>김철수</td>
-                    </tr>
-                    <tr>
-                        <th>배송 주소</th>
-                        <td>서울특별시 강남구 ...</td>
-                    </tr>
-                    <tr>
-                        <th>연락처</th>
-                        <td>010-1234-5678</td>
-                    </tr>
-                </table>
-            </section>
-            <section>
-                <h2>결제정보</h2>
-                <table class="order-info">
-                    <tr>
-                        <th>수취인</th>
-                        <td>김철수</td>
-                    </tr>
-                    <tr>
-                        <th>연락처</th>
-                        <td>010-1234-5678</td>
-                    </tr>
-                    <tr>
-                        <th>배송지 주소</th>
-                        <td>서울특별시 강남구 ...</td>
-                    </tr>
-                </table>
-            </section>
-            <section class="order_list_section">
-                <h2>주문상품</h2>
-                <table class="cart_table">
-                    <thead>
-                    <tr>
-                        <th class="col-item">상품명</th>
-                        <th class="col-count">수량</th>
-                        <th class="col-sum">총합</th>
-                    </tr>
-                    </thead>
-                    <tbody id="cart_items">
-                    <tr>
-                        <td class="col_item_info">
-                            <div class="product_image">
-                                <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
-                            </div>
-                            <div class="product_info">
-                                <h6>상품명</h6>
-                                <p>간단한 상품 설명</p>
-                            </div>
-                        </td>
-                        <td>1개</td>
-                        <td>29,500원</td>
-                    </tr>
-
-
-                    </tbody>
-                </table>
-                <div class="cart-summary">
-                    <h3>전체 합계</h3>
-                    <table border="1" class="order-summary">
-                        <tr>
-                            <th>상 품 수</th>
-                            <td>1개</td>
+            <form th:action="@{/product/complete}" method="POST">
+                <div class="complete_message">
+                    <h3>고객님의 주문이 정상적으로 완료되었습니다.</h3>
+                    <p>항상 고객님을 위한 Green Garden이 되겠습니다. <br> 감사합니다.</p>
+                </div>
+                <section class="order_info_section">
+                    <h2>결제정보</h2>
+                    <table class="del_info">
+                        <tr class="order_num">
+                            <th>주문번호</th>
+                            <td>12121212112</td>
                         </tr>
                         <tr>
-                            <th>상 품 금 액</th>
-                            <td>27,000원</td>
+                            <th>결제방법</th>
+                            <td>신용카드</td>
                         </tr>
                         <tr>
-                            <th>할 인 금 액</th>
-                            <td>3,000원</td>
+                            <th>주문자</th>
+                            <td>김철수</td>
                         </tr>
                         <tr>
-                            <th>배 송 비</th>
-                            <td>2,500</td>
+                            <th>연락처</th>
+                            <td>010-1234-5678</td>
                         </tr>
                         <tr>
-                            <th>총 금 액</th>
-                            <td>29,500원</td>
-                        </tr>
-                        <tr>
-                            <th>적립 포인트</th>
-                            <td>0</td>
+                            <th>총 결제 금액</th>
+                            <td>24,650원</td>
                         </tr>
                     </table>
-                    <div class="cart-action">
-                        <button type="button" id="checkout-btn">주문하기</button>
+                </section>
+                <section class="order_info_section">
+                    <h2>배송정보</h2>
+                    <table class="order-info">
+                        <tr>
+                            <th>수취인</th>
+                            <td>김철수</td>
+                        </tr>
+                        <tr>
+                            <th>연락처</th>
+                            <td>010-1234-5678</td>
+                        </tr>
+                        <tr>
+                            <th>배송지 주소</th>
+                            <td>서울특별시 강남구 ...</td>
+                        </tr>
+                    </table>
+                </section>
+                <section class="order_info_section">
+                    <h2>주문상품</h2>
+                    <table class="cart_table">
+                        <thead>
+                        <tr>
+                            <th class="col-item">상품명</th>
+                            <th class="col-count">수량</th>
+                            <th class="col-sum">총합</th>
+                        </tr>
+                        </thead>
+                        <tbody id="cart_items">
+                        <tr>
+                            <td class="col_item_info">
+                                <div class="product_image">
+                                    <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image"
+                                         alt="상품명"
+                                         onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
+                                </div>
+                                <div class="product_info">
+                                    <h6>상품명</h6>
+                                    <p>상품설명</p>
+                                </div>
+                            </td>
+                            <td>2개</td>
+                            <td>
+                                <p class="price">26,500원</p>
+                            </td>
+                        </tr>
+
+
+                        </tbody>
+                    </table>
+                    <div class="order-contain order-chek">
+                        <div class="payment-summary">
+                            <h2>최종결제정보</h2>
+                            <div class="summary-details">
+                                <div class="item">
+                                    <span>상품수</span>
+                                    <span id="product-count">1</span>
+                                </div>
+                                <div class="item">
+                                    <span>상품금액</span>
+                                    <span id="product-price">27,000</span>
+                                </div>
+                                <div class="item">
+                                    <span>할인금액</span>
+                                    <span id="discount-price">-1,350</span>
+                                </div>
+                                <div class="item">
+                                    <span>배송비</span>
+                                    <span id="shipping-fee">0</span>
+                                </div>
+                                <div class="item">
+                                    <span>할인</span>
+                                    <span id="coupon-discount">-1,000</span>
+                                </div>
+                                <hr>
+                                <div class="total-price">
+                                    <span>전체주문금액</span>
+                                    <span id="total-order-price">24,650</span>
+                                </div>
+                                <div class="item">
+                                    <span>적립 포인트</span>
+                                    <span id="earned-points">270</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </form>
         </section>
     </div>
 </main>

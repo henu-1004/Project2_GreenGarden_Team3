@@ -1,10 +1,7 @@
 package kr.co.greengarden.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.apache.logging.log4j.util.Lazy;
 
 import java.time.LocalDateTime;
@@ -20,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString(exclude = {"member", "orderItems"})
 @Entity
 @Table(name = "TB_ORDER")
 public class Order {
