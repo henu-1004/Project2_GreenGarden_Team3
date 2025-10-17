@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import kr.co.greengarden.dto.OrderDTO;
 import kr.co.greengarden.dto.OrderItemDTO;
 import kr.co.greengarden.dto.OrderItemListWrapper;
+import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
+import kr.co.greengarden.dto.admin.AdminIndexOrderInfoWrapperDTO;
 import kr.co.greengarden.dto.admin.AdminOrderListDTO;
 import kr.co.greengarden.dto.admin.CouponDTO;
 import kr.co.greengarden.entity.Coupon;
@@ -20,8 +22,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /*
@@ -87,7 +88,7 @@ public class OrderService {
     public List<AdminOrderListDTO> getOrderList() {
         return orderRepository.findAllAdminOrderList();
     }
-
+    
     public void getCompleteOrderList(String orderNo) {
 
         /*
@@ -111,6 +112,25 @@ public class OrderService {
             System.out.println(orderItemList.toString());
         }
 
+    }
+
+    // 관리자 인덱스용
+    public AdminIndexOrderInfoWrapperDTO getAdminIndexOrderInfo() {
+        List<AdminIndexOrderInfoDTO> orderInfo = orderRepository.findAdminIndexOrderInfo();
+        
+        // 상태, 주문 총액, 주문 수
+        int statusCount = 0;
+        int totalPrice = 0;
+        int count = orderInfo.size();
+
+        for (AdminIndexOrderInfoDTO orderInfoDTO : orderInfo) {
+            if(orderInfoDTO.getStatus().equals("결제 대기")) {
+                statusCount++;
+            }
+            totalPrice += orderInfoDTO.getTotalPrice();
+        }
+        
+        return new AdminIndexOrderInfoWrapperDTO(statusCount, totalPrice, count);
     }
 
 }

@@ -37,7 +37,6 @@ public class MainController {
     @GetMapping(value = {"/", "/index"})
     public String index(Authentication authentication, Model model) {
 
-
         List<ProductListDTO> hitList = productService.getProducts("views", "desc");
         List<ProductListDTO> newList = productService.getProducts("createdAt", "desc");
 

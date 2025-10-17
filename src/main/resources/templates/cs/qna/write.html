@@ -3,10 +3,11 @@
   이름 : 박효빈
   내용 : 고객센터 QNA 작성 페이지
 -->
-<div th:replace="~{cs/_csheader.html}"></div>
 
+<div th:replace="~{common/headerNoSearch :: header}"></div>
 <div class="main-container">
     <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
 
     <aside class="sidebar">
         <div class="cs-breadcrumb">
@@ -86,7 +87,7 @@
     </section>
 </div>
 
-<div th:replace="~{cs/_csfooter.html}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 
 <script>
     const category2Options = {

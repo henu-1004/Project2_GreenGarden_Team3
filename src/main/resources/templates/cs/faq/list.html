@@ -4,9 +4,11 @@
   이름 : 박효빈
   내용 : 박효빈 고객센터 페이지 제작
 -->
-<div th:replace="~{cs/_csheader.html}"></div>
+<div th:replace="~{common/headerNoSearch :: header}"></div>
     <div class="main-container">
         <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+        <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
+
         <aside class="sidebar">
             <div class="cs-breadcrumb">
                 <a href="#">홈</a>
@@ -53,7 +55,7 @@
         </section>
     </div>
 
-<div th:replace="~{cs/_csfooter.html}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 <script>
     // 페이지 로드 시, 모든 카테고리별로 3개 초과 항목을 숨기는 로직
     document.addEventListener('DOMContentLoaded', () => {

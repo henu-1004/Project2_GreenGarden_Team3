@@ -42,10 +42,7 @@ public class MemberService {
         memberRepository.deleteById(memId);
     }
 
-
-
     public int countMember(String type, String value){
-
         int count = 0;
 
         if(type.equals("memId")){
@@ -64,5 +61,10 @@ public class MemberService {
         return count;
     }
 
+    // 관리자 인덱스용
+    public int getMemberCount(){
+        List<Member> mer = memberRepository.findAll();
+        return mer.size();
+    }
 }
 

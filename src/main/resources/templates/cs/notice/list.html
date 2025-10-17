@@ -1,88 +1,99 @@
-
 <!--
   날짜 : 2025/09/29
   이름 : 박효빈
   내용 : 박효빈 고객센터 페이지 제작
 -->
-<div th:replace="~{cs/_csheader.html}"></div>
-    <div class="main-container">
-        <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
-        <aside class="sidebar">
-            <div class="cs-breadcrumb">
-                <a href="#">홈</a>
-                <span>></span>
-                <a href="#" class="active-breadcrumb">전체</a>
-            </div>
-            <ul>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>공지사항</title>
+
+    <!-- ✅ CSS는 반드시 head 안에서 불러오기 -->
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}" />
+</head>
+<body>
+<!-- ✅ header는 body 안으로 이동 -->
+<div th:replace="~{common/headerNoSearch :: header}"></div>
+
+<div class="main-container">
+    <aside class="sidebar">
+        <div class="cs-breadcrumb">
+            <a href="#">홈</a>
+            <span>></span>
+            <a href="#" class="active-breadcrumb">전체</a>
+        </div>
+        <ul>
             <li class="menu">
                 <div class="menu-title">
                     <a href="#">공지사항</a>
                 </div>
-            <ul class="submenu open">
-                <li th:classappend="${pageResponseDTO.type == null or pageResponseDTO.type == ''} ? 'active' : ''">
-                    <a th:href="@{/cs/notice/list}">전체</a>
-                </li>
-                <li th:classappend="${pageResponseDTO.type == '고객 서비스'} ? 'active' : ''">
-                    <a th:href="@{/cs/notice/list(type='고객 서비스')}">고객서비스</a>
-                </li>
-                <li th:classappend="${pageResponseDTO.type == '안전 거래'} ? 'active' : ''">
-                    <a th:href="@{/cs/notice/list(type='안전 거래')}">안전거래</a>
-                </li>
-                <li th:classappend="${pageResponseDTO.type == '위해 상품'} ? 'active' : ''">
-                    <a th:href="@{/cs/notice/list(type='위해 상품')}">위해상품</a>
-                </li>
-                <li th:classappend="${pageResponseDTO.type == '이벤트 당첨'} ? 'active' : ''">
-                    <a th:href="@{/cs/notice/list(type='이벤트 당첨')}">이벤트당첨</a>
-                </li>
-            </ul>
+                <ul class="submenu open">
+                    <li th:classappend="${pageResponseDTO.type == null or pageResponseDTO.type == ''} ? 'active' : ''">
+                        <a th:href="@{/cs/notice/list}">전체</a>
+                    </li>
+                    <li th:classappend="${pageResponseDTO.type == '고객 서비스'} ? 'active' : ''">
+                        <a th:href="@{/cs/notice/list(type='고객 서비스')}">고객서비스</a>
+                    </li>
+                    <li th:classappend="${pageResponseDTO.type == '안전 거래'} ? 'active' : ''">
+                        <a th:href="@{/cs/notice/list(type='안전 거래')}">안전거래</a>
+                    </li>
+                    <li th:classappend="${pageResponseDTO.type == '위해 상품'} ? 'active' : ''">
+                        <a th:href="@{/cs/notice/list(type='위해 상품')}">위해상품</a>
+                    </li>
+                    <li th:classappend="${pageResponseDTO.type == '이벤트 당첨'} ? 'active' : ''">
+                        <a th:href="@{/cs/notice/list(type='이벤트 당첨')}">이벤트당첨</a>
+                    </li>
+                </ul>
             </li>
-            </ul>
-        </aside>
+        </ul>
+    </aside>
 
-        <section id="main-section">
-            <h1 class="cs-main-title"
-                th:text="${pageResponseDTO.type != null and pageResponseDTO.type != ''} ? ${pageResponseDTO.type} : '전체'">
-                전체
-            </h1>
-            <div class="cs-section">
-                <div class="cs-content">
-                    <ul class="cs-notice-list">
-                        <li class="cs-notice-item" th:each="notice : ${pageResponseDTO.dtoList}">
+    <section id="main-section">
+        <h1 class="cs-main-title"
+            th:text="${pageResponseDTO.type != null and pageResponseDTO.type != ''} ? ${pageResponseDTO.type} : '전체'">
+            전체
+        </h1>
 
-                            <a th:href="@{/cs/notice/view(noticeId=${notice.noticeId})}"
-                               style="text-decoration:none; color:inherit;"
-                               th:text="| [${notice.type}] ${notice.title} |">
-                            </a>
-
-                            <span class="cs-notice-date" th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></span>
-                        </li>
-
-                    </ul>
-                </div>
+        <div class="cs-section">
+            <div class="cs-content">
+                <ul class="cs-notice-list">
+                    <li class="cs-notice-item" th:each="notice : ${pageResponseDTO.dtoList}">
+                        <a th:href="@{/cs/notice/view(noticeId=${notice.noticeId})}"
+                           style="text-decoration:none; color:inherit;"
+                           th:text="| [${notice.type}] ${notice.title} |"></a>
+                        <span class="cs-notice-date"
+                              th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></span>
+                    </li>
+                </ul>
             </div>
+        </div>
 
-            <!-- ⭐ 수정: 동적 페이징 -->
-            <div class="cs-pagination">
-                <!-- 이전 버튼 -->
-                <a th:if="${pageResponseDTO.prev}"
-                   th:href="@{/cs/notice/list(pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type})}"
-                   class="prev">&lt; 이전</a>
+        <!-- ⭐ 동적 페이징 -->
+        <div class="cs-pagination">
+            <!-- 이전 버튼 -->
+            <a th:if="${pageResponseDTO.prev}"
+               th:href="@{/cs/notice/list(pg=${pageResponseDTO.start - 1}, type=${pageResponseDTO.type})}"
+               class="prev">&lt; 이전</a>
 
-                <!-- 페이지 번호 -->
-                <th:block th:each="i : ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
-                    <a th:href="@{/cs/notice/list(pg=${i}, type=${pageResponseDTO.type})}"
-                       th:classappend="${i == pageResponseDTO.pg} ? 'active' : ''"
-                       th:text="${i}"></a>
-                </th:block>
+            <!-- 페이지 번호 -->
+            <th:block th:each="i : ${#numbers.sequence(pageResponseDTO.start, pageResponseDTO.end)}">
+                <a th:href="@{/cs/notice/list(pg=${i}, type=${pageResponseDTO.type})}"
+                   th:classappend="${i == pageResponseDTO.pg} ? 'active' : ''"
+                   th:text="${i}"></a>
+            </th:block>
 
-                <!-- 다음 버튼 -->
-                <a th:if="${pageResponseDTO.next}"
-                   th:href="@{/cs/notice/list(pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type})}"
-                   class="next">다음 &gt;</a>
-            </div>
-        </section>
-    </div>
+            <!-- 다음 버튼 -->
+            <a th:if="${pageResponseDTO.next}"
+               th:href="@{/cs/notice/list(pg=${pageResponseDTO.end + 1}, type=${pageResponseDTO.type})}"
+               class="next">다음 &gt;</a>
+        </div>
+    </section>
+</div>
 
-<div th:replace="~{cs/_csfooter.html}"></div>
+<!-- ✅ footer는 body 내부에 유지 -->
+<div th:replace="~{common/footer :: footer}"></div>
 </body>
 </html>
