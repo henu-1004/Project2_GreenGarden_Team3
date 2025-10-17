@@ -74,7 +74,9 @@ public class AdminQnaController {
     }
     // 답변 등록 처리 POST
     @PostMapping("/admin/cs/qna/reply")
-    public String saverReply(InquiryDTO inquiryDTO){
+    public String saverReply(Integer inquiryId,String answer,RedirectAttributes redirectAttributes) {
+
+        inquiryService.saveAnswer(inquiryId,answer);
         return "redirect:/admin/cs/qna/list";
     }
 

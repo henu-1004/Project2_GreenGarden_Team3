@@ -22,7 +22,6 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 /**
  * 이름 : 박효빈
  * 날짜 : 2025/10/15
@@ -122,6 +121,18 @@ public class InquiryService {
     @Transactional
     public void delete(int inquiryId) {
         inquiryRepository.deleteById(inquiryId);
+    }
+
+    // 6. 관리자 Qna 답변 등록 Service
+    @Transactional
+    public void saveAnswer(Integer inquiryId, String answer) {
+        Inquiry inquiry = inquiryRepository.findById(inquiryId)
+                .orElseThrow(() -> new RuntimeException("해당 문의를 찾을 수 없습니다"));
+
+        inquiry.updateAnswer(answer);
+
+        inquiryRepository.flush();
+        log.info("답변 등록 완료 : inquiryId:{}, status='완료'",inquiryId);
     }
 
     //공지사항 5개 가져오는 서비스 ? 만들기
