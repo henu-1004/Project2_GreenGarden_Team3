@@ -5,6 +5,7 @@ import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
 import kr.co.greengarden.dto.admin.AdminOrderListDTO;
 import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.Order;
+import kr.co.greengarden.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,7 @@
 package kr.co.greengarden.service;
 
 import jakarta.transaction.Transactional;
+import kr.co.greengarden.dto.MemberGeneralDTO;
 import kr.co.greengarden.dto.OrderDTO;
 import kr.co.greengarden.dto.OrderItemDTO;
 import kr.co.greengarden.dto.OrderItemListWrapper;
@@ -8,14 +9,8 @@ import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
 import kr.co.greengarden.dto.admin.AdminIndexOrderInfoWrapperDTO;
 import kr.co.greengarden.dto.admin.AdminOrderListDTO;
 import kr.co.greengarden.dto.admin.CouponDTO;
-import kr.co.greengarden.entity.Coupon;
-import kr.co.greengarden.entity.Member;
-import kr.co.greengarden.entity.Order;
-import kr.co.greengarden.entity.OrderItem;
-import kr.co.greengarden.repository.MemberRepository;
-import kr.co.greengarden.repository.OrderItemRepository;
-import kr.co.greengarden.repository.OrderRepository;
-import kr.co.greengarden.repository.PointRepository;
+import kr.co.greengarden.entity.*;
+import kr.co.greengarden.repository.*;
 import kr.co.greengarden.security.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -37,6 +32,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final MemberRepository memberRepository;
+    private final MemberGeneralRepository memberGeneralRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -93,15 +89,17 @@ public class OrderService {
 
         /*
             1. 주문 정보 조회
-            2. 주문 상품 목록 조회
+             - 주문 정보 - optOrder
+             - 주문자 정보 - 이름, 연락처(로그인한 회원 정보) memberGeneral
+            2. 주문 상품 목록 조회 - orderItemList
             3. 최종 결제 정보 계산/조회
             4. 주문자 정보 조회(member 서비스?)
         */
 
-
-
         // - 주문 정보 가져오기 (Order 테이블) findById
         Optional<Order> optOrder = orderRepository.findById(orderNo);
+        // - 주문자 정보 가져오기 (MemberGeneral 테이블)
+
 
         if(optOrder.isPresent()){
             Order order = optOrder.get();
@@ -110,6 +108,27 @@ public class OrderService {
 
             System.out.println(order);
             System.out.println(orderItemList.toString());
+
+            String memId = order.getMember().getMemId();
+
+            Optional<MemberGeneral> optGeneral = memberGeneralRepository.findById(memId);
+
+            if(optGeneral.isPresent()){
+                MemberGeneral general = optGeneral.get();
+                general.getName();
+                general.getPhone();
+            }
+            Order orderCompleteList = Order.builder()
+                    .orderNo(order.getOrderNo())
+                    .payMethod(order.getPayMethod())
+                    .totalPrice(order.getTotalPrice())
+                    .recName(order.getRecName())
+                    .recPhone(order.getRecPhone())
+                    .recZipCode(order.getRecZipCode())
+                    .recAddressBasic(order.getRecAddressBasic())
+                    .recAddressDetail(order.getRecAddressDetail())
+                    .orderItems(orderItemList)
+                    .build();
         }
 
     }
