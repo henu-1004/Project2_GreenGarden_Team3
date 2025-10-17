@@ -7,6 +7,10 @@
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <link rel="stylesheet" th:href="@{/css/member/register.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
 </head>
 <!--
     날짜 : 2025/10/02
