@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
+
     <title>고객센터 메인</title>
 </head>
 <body>
-<div th:replace="~{cs/_csheader.html}"></div>
+<div th:replace="~{common/headerNoSearch.html}"></div>
 <div class="main-container">
-    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
     <section id="main-section">
         <div id="dynamic-content">
             <h1 class="cs-main-title"> 어떤 도움이 필요하신가요 ?</h1>
@@ -85,31 +87,38 @@
                     <div class="cs-section-title">문의하기</div>
                     <a th:href="@{/cs/qna/list}" class="cs-view-all">전체보기</a>
                 </div>
+
                 <div class="cs-content">
-                    <ul class="cs-inquiry-list">
-                        <li class="cs-inquiry-item" th:each="inquiry : ${latestInquiries}">
+                    <div class="cs-inquiry-list">
+                        <!-- 문의 목록 -->
+                        <div class="cs-inquiry-item" th:each="inquiry : ${latestInquiries}">
                             <a th:href="@{/cs/qna/view(inquiryId=${inquiry.inquiryId})}" class="cs-item-link">
-                                <span class="cs-inquiry-title">
+                                <div class="cs-inquiry-title">
                                     <span th:if="${inquiry.category1}" th:text="'[' + ${inquiry.category1} + '] '"></span>
                                     <span th:text="${inquiry.title}">문의 제목입니다.</span>
-                                </span>
+                                </div>
+
                                 <div class="cs-inquiry-meta">
-                                    <span class="cs-inquiry-user">
-                                        <th:block th:with="writerId=${inquiry.writer} ?: ''">
-                                            <span th:if="${writerId != '' and #strings.length(writerId) >= 3}">
-                                                <span th:text="${#strings.substring(writerId, 0, 3)}">hyb</span>***
-                                            </span>
-                                            <span th:unless="${writerId != '' and #strings.length(writerId) >= 3}" th:text="${writerId}">hyb</span>
-                                        </th:block>
-                                    </span>
+                        <span class="cs-inquiry-user">
+                            <th:block th:with="writerId=${inquiry.writer}">
+                                <span th:if="${writerId != '' and #strings.length(writerId) >= 3}">
+                                    <span th:text="${#strings.substring(writerId, 0, 3)}">hyb</span>***
+                                </span>
+                                <span th:unless="${writerId != '' and #strings.length(writerId) >= 3}" th:text="${writerId}">hyb</span>
+                            </th:block>
+                        </span>
                                     <span class="cs-inquiry-date" th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}">22.10.31</span>
                                 </div>
                             </a>
-                        </li>
-                        <li th:if="${#lists.isEmpty(latestInquiries)}" class="cs-inquiry-item">
+                        </div>
+
+                        <!-- 문의가 없을 경우 -->
+                        <div th:if="${#lists.isEmpty(latestInquiries)}" class="cs-inquiry-item">
                             <div class="cs-inquiry-title" style="text-align: center;">등록된 1:1 문의가 없습니다.</div>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
+
+                    <!-- 문의글 작성 버튼 -->
                     <div class="cs-inquiry-write">
                         <a th:href="@{/cs/qna/write}">문의글 작성 &gt;</a>
                     </div>
@@ -143,6 +152,6 @@
         </div>
     </section>
 </div>
-<div th:replace="~{/common/footer :: footer}"></div>
+<div th:replace="~{common/footer :: footer}"></div>
 </body>
 </html>

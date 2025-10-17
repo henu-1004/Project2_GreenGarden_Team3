@@ -1,17 +1,24 @@
+<!--
+  날짜 : 2025/09/29
+  이름 : 박효빈
+  내용 : 고객센터 - 공지사항 상세 페이지
+-->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>고객센터 - 공지사항 상세</title>
     <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
-</head>
-<body>
-
-<div th:replace="~{common/headerNoSearch.html}"></div>
-<div class="main-container">
-    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
+</head>
 
+<body>
+<!-- 공통 헤더 (검색 없는 버전) -->
+<div th:replace="~{common/headerNoSearch.html}"></div>
+
+<div class="main-container">
+
+    <!-- 사이드바 -->
     <aside class="sidebar">
         <div class="cs-breadcrumb">
             <a href="#">홈</a>
@@ -26,32 +33,45 @@
                 </div>
                 <ul class="submenu">
                     <li><a th:href="@{/cs/notice/list}">전체</a></li>
-                    <li><a th:href="@{/notice/list(type='고객 서비스')}">고객서비스</a></li>
-                    <li><a th:href="@{/notice/list(type='안전 거래')}">안전거래</a></li>
-                    <li><a th:href="@{/notice/list(type='위해 상품')}">위해상품</a></li>
-                    <li><a th:href="@{/notice/list(type='이벤트 당첨')}">이벤트당첨</a></li>
+                    <li><a th:href="@{/cs/notice/list(type='고객 서비스')}">고객서비스</a></li>
+                    <li><a th:href="@{/cs/notice/list(type='안전 거래')}">안전거래</a></li>
+                    <li><a th:href="@{/cs/notice/list(type='위해 상품')}">위해상품</a></li>
+                    <li><a th:href="@{/cs/notice/list(type='이벤트 당첨')}">이벤트당첨</a></li>
                 </ul>
             </li>
         </ul>
     </aside>
 
+    <!-- 메인 섹션 -->
     <section id="main-section">
-
         <h1 class="cs-main-title" th:text="${noticeDTO.type}">전체</h1>
 
         <div class="cs-section">
-
+            <!-- 공지 헤더 -->
             <div class="cs-view-header">
                 <div class="cs-view-category-title">
-                    <span class="cs-view-desc" th:text="|공지사항 ${noticeDTO.type} 내용입니다.|">공지사항 전체 내용입니다.</span>
+                        <span class="cs-view-desc"
+                              th:text="|공지사항 ${noticeDTO.type} 내용입니다.|">
+                              공지사항 전체 내용입니다.
+                        </span>
                 </div>
             </div>
+
+            <!-- 공지 내용 -->
             <div class="cs-notice-view-box">
-                <h3 class="cs-view-title" th:text="| [${noticeDTO.type}] ${noticeDTO.title} |"></h3>
+                <h3 class="cs-view-title"
+                    th:text="| [${noticeDTO.type}] ${noticeDTO.title} |">
+                    [전체] 제목 예시
+                </h3>
 
                 <div class="cs-view-info">
-                    <span class="cs-view-date" th:text="${#temporals.format(noticeDTO.createdAt, 'yyyy.MM.dd')}">2025.10.13</span>
-                    <span class="cs-view-views">조회수: <span th:text="${noticeDTO.views}">0</span></span>
+                        <span class="cs-view-date"
+                              th:text="${#temporals.format(noticeDTO.createdAt, 'yyyy.MM.dd')}">
+                              2025.10.13
+                        </span>
+                    <span class="cs-view-views">
+                            조회수: <span th:text="${noticeDTO.views}">0</span>
+                        </span>
                 </div>
             </div>
 
@@ -60,15 +80,14 @@
             </div>
         </div>
 
-
+        <!-- 버튼 -->
         <div class="cs-button-group">
             <a th:href="@{/cs/notice/list(type=${noticeDTO.type})}" class="cs-button">목록</a>
         </div>
-
     </section>
 </div>
 
+<!-- 공통 푸터 -->
 <div th:replace="~{cs/_csfooter.html}"></div>
-
 </body>
 </html>
