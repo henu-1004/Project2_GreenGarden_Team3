@@ -4,13 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>문의하기 목록</title>
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
+
+
 </head>
 <body>
 <div th:replace="~{common/headerNoSearch :: header}"></div>
 <div class="main-container">
-    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
-    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
-
     <aside class="sidebar">
         <div class="cs-breadcrumb">
             <a th:href="@{/}">홈</a>
