@@ -251,6 +251,8 @@ body {
 }
 
 .cs-view-all {
+    position: relative;
+    z-index: 10;
     font-size: 0.9em;
     color: #175a48; /* 브랜드 포인트 컬러 유지 */
     text-decoration: none;
@@ -269,6 +271,7 @@ body {
 }
 
 .cs-notice-item {
+    position: relative;
     display: flex;
     justify-content: space-between;
     padding: 8px 0;
@@ -906,17 +909,21 @@ body {
     /* 텍스트 색상을 부모 요소에서 상속받도록 설정 (검은색 등) */
     color: inherit;
 }
+#main-section .cs-inquiry-item a {
+    text-decoration: none;
+    color: inherit;
+}
 
 /* --------------------------------------
  * 2. 공지사항 및 문의 목록 링크 스타일
  * -------------------------------------- */
 
 /* 공지사항 제목 링크 */
-.cs-notice-item a,
-    /* 문의하기 제목 링크 */
+
 .cs-inquiry-item a {
-    /* 마우스 오버 시 밑줄 효과를 주고 싶다면 (선택 사항) */
-    /* text-decoration: none; */
+    display: block;
+    position: relative;
+    z-index: 5;
 }
 
 /* 마우스 오버 시 색상 변경이나 밑줄을 넣으면 UX 개선에 도움이 됩니다. */
