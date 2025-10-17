@@ -52,4 +52,9 @@ public class Inquiry {
 
     @Column(name = "CHANNEL", length = 100)
     private String channel;    // 문의채널
+
+    public void updateAnswer(String answer) {
+        this.answer = answer;
+        this.status = "완료";
+    }
 }

@@ -2,6 +2,7 @@ package kr.co.greengarden.controller.my;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.greengarden.service.MyService;
+import kr.co.greengarden.service.PointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,7 @@ import java.util.List;
 public class MyController {
 
     private final MyService myService;
+    private final PointService pointService;
 
     @GetMapping("/home")
     public String home(HttpServletRequest request, Model model,
@@ -40,6 +42,10 @@ public class MyController {
 
             // ✅ 내가 작성한 상품평 내역 조회
             model.addAttribute("myReviews", myService.getMyReviews(memId));
+
+            // ✅ 포인트 내역 (최근 5건 + 총 포인트)
+            model.addAttribute("recentPoints", pointService.getRecentLedger(memId));
+            model.addAttribute("totalPoint", pointService.getTotalPoint(memId));
 
             model.addAttribute("loginStatus", true);
         }

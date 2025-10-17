@@ -91,9 +91,9 @@
     <!--index 5개 가져오기-->
     <select id="selectLatestInquiry" resultType="kr.co.greengarden.dto.InquiryDTO">
         SELECT
-        INQUIRY_ID,
-        TITLE,
-        WRITER,
+        INQUIRY_ID AS inquiryId,
+        TITLE AS title,
+        WRITER AS writer,
         CREATED_AT as createdAt
         FROM TB_INQUIRY
         ORDER BY CREATED_AT DESC
