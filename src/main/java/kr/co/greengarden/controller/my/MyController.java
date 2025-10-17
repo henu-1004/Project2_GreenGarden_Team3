@@ -8,10 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -40,12 +37,16 @@ public class MyController {
 
             // ✅ MyBatis 기반 최근 주문내역 조회 (상품명, 이미지 포함)
             model.addAttribute("recentOrders", myService.getRecentOrderSummary(memId));
+
+            // ✅ 내가 작성한 상품평 내역 조회
+            model.addAttribute("myReviews", myService.getMyReviews(memId));
+
             model.addAttribute("loginStatus", true);
         }
 
-
         return "my/home";
     }
+
 
     @GetMapping("/order")
     public String order(HttpServletRequest request, Model model) {
@@ -94,13 +95,23 @@ public class MyController {
     }
 
     @PostMapping("/review/complete")
-    public String completeReview(@RequestParam String orderNo,
+    public String completeReview(@ModelAttribute kr.co.greengarden.dto.my.ProductReviewDTO reviewDTO,
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  RedirectAttributes redirect) {
-        myService.updateReviewYn(orderNo, "Y");
-        redirect.addFlashAttribute("msg", "상품평 작성완료!");
+
+        if (userDetails == null) {
+            redirect.addFlashAttribute("msg", "로그인이 필요합니다.");
+            return "redirect:/member/login";
+        }
+
+        reviewDTO.setMemId(userDetails.getUsername());
+        myService.writeProductReview(reviewDTO);
+
+        redirect.addFlashAttribute("msg", "상품평이 등록되었습니다!");
         return "redirect:/my/home";
     }
+
+
 
     @PostMapping("/exchange/complete")
     public String completeExchange(@RequestParam String orderNo,
@@ -119,5 +130,7 @@ public class MyController {
         redirect.addFlashAttribute("msg", "반품신청 완료!");
         return "redirect:/my/home";
     }
+
+
 
 }

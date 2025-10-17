@@ -418,3 +418,39 @@
     justify-content: flex-end;
     gap: 10px;
 }
+
+/* =========================
+   ⭐ 별점 선택 디자인
+   ========================= */
+.star-rating {
+    display: flex;
+    gap: 6px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #ccc;
+    justify-content: center;
+    margin: 10px 0;
+    user-select: none;
+}
+.star-rating span {
+    transition: color 0.2s ease;
+}
+.star-rating span.hovered,
+.star-rating span.selected {
+    color: #ffb400;
+}
+
+/* 이미지 미리보기 */
+.preview-area {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    gap: 5px;
+}
+.preview-area img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
