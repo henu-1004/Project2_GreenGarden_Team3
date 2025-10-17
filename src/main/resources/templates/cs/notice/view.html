@@ -7,9 +7,10 @@
 </head>
 <body>
 
-<div th:replace="~{cs/_csheader.html}"></div>
-
+<div th:replace="~{common/headerNoSearch.html}"></div>
 <div class="main-container">
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}"/>
 
     <aside class="sidebar">
         <div class="cs-breadcrumb">
