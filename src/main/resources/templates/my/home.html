@@ -154,8 +154,10 @@
             <!-- ✅ 포인트 적립 내역 -->
             <div class="section-header">
                 <h2>포인트 적립 내역</h2>
-                <a th:href="@{/my/points}" class="more">더보기 ></a>
+                <a th:href="@{/my/point}" class="more">더보기 ></a>
             </div>
+
+            <!-- 1️⃣ 기존 하드코딩 영역 (샘플 유지) -->
             <table class="point-table">
                 <thead>
                 <tr>
@@ -186,6 +188,41 @@
                 </tr>
                 </tbody>
             </table>
+
+            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
+
+            <!-- 2️⃣ 실제 DB 기반 출력 -->
+            <hr style="margin:25px 0; border:1px dashed #ddd;">
+
+            <!-- DB 기반 출력 -->
+            <h4 style="margin-bottom:10px; color:#555;">🧩 실제 DB 기반 recentPoints 출력</h4>
+            <table class="point-table">
+                <thead>
+                <tr>
+                    <th>날짜</th>
+                    <th>내용</th>
+                    <th>구분</th>
+                    <th>포인트</th>
+                    <th>주문번호</th>
+                    <th>유효기간</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(recentPoints)}">
+                    <td colspan="6">포인트 내역이 없습니다.</td>
+                </tr>
+                <tr th:each="p : ${recentPoints}">
+                    <td th:text="${#temporals.format(p.earnedAt, 'yyyy-MM-dd')}"></td>
+                    <td th:text="${p.note}"></td>
+                    <td th:text="${p.type}"></td>
+                    <td th:text="${p.amount > 0 ? '+' + p.amount : p.amount}"
+                        th:classappend="${p.amount > 0} ? 'plus' : 'minus'"></td>
+                    <td th:text="${p.orderNo ?: '-'}"></td>
+                    <td th:text="${#temporals.format(p.expiredAt, 'yyyy-MM-dd')}"></td>
+                </tr>
+                </tbody>
+            </table>
+
 
             <!-- ✅ 상품평 내역 (하드코딩 샘플) -->
             <div class="section-header">

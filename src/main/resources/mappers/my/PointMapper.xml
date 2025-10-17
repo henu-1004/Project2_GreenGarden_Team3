@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.greengarden.mapper.my.PointMapper">
+
+    <!-- 회원별 포인트 내역 조회 -->
+    <select id="selectPointLedger" parameterType="string"
+            resultType="kr.co.greengarden.dto.my.PointLedgerDTO">
+        SELECT
+        L.LEGID        AS legId,
+        L.POINTID      AS pointId,
+        L.AMOUNT       AS amount,
+        L.TYPE         AS type,
+        L.NOTE         AS note,
+        L.ORDERNO      AS orderNo,
+        L.EARNEDAT     AS earnedAt,
+        L.EXPIREDAT    AS expiredAt
+        FROM TB_POINT_LEDGER L
+        JOIN TB_POINT P ON L.POINTID = P.POINTID
+        WHERE P.MEMID = #{memId}
+        ORDER BY L.EARNEDAT DESC
+    </select>
+
+    <!-- 총 보유 포인트 -->
+    <select id="selectTotalPoint" parameterType="string" resultType="int">
+        SELECT NVL(TOTALPOINT, 0)
+        FROM TB_POINT
+        WHERE MEMID = #{memId}
+    </select>
+
+</mapper>
