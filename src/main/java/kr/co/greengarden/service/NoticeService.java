@@ -129,6 +129,13 @@ public class NoticeService {
         noticeRepository.deleteById(noticeId);
     }
 
+    //공지사항 5개 가져오는 서비스 ? 만들기
+    public List<NoticeDTO> getLatestNotices(int limit) {
+        // 컨트롤러에서 넘어온 limit(5) 그대로 Mapper에 전달
+        return noticeMapper.selectLatestNotices(limit);
+    }
+
+    // 아이디 호출
     private String getLoggedInUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {

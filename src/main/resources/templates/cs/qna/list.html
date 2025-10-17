@@ -1,11 +1,14 @@
-<!--
-  날짜 : 2025/10/14
-  이름 : 박효빈
-  내용 : QnA 목록 페이지 (Thymeleaf 바인딩 완료)
--->
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>문의하기 목록</title>
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+</head>
+<body>
 <div th:replace="~{cs/_csheader.html}"></div>
 <div class="main-container">
-    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
 
     <aside class="sidebar">
         <div class="cs-breadcrumb">
@@ -14,7 +17,6 @@
             <a th:href="@{/cs/qna/list}" class="active-breadcrumb">문의하기</a>
         </div>
         <ul>
-            <!-- 사이드바 메뉴 (CATEGORY1) -->
             <li class="menu">
                 <div class="menu-title">
                     <a th:href="@{/cs/qna/list}">문의하기</a>
@@ -83,7 +85,15 @@
                             <span th:classappend="${inquiry.status == '완료' ? 'completed' : 'waiting'}"
                                   th:text="${inquiry.status}" class="qna-status">답변완료</span>
                         </td>
-                        <td th:text="${inquiry.writer}">user***</td>
+
+                        <td>
+                            <th:block th:with="writerId=${inquiry.writer}">
+                                <span th:if="${#strings.length(writerId) >= 3}">
+                                    <span th:text="${#strings.substring(writerId, 0, 3)}">user</span>***
+                                </span>
+                                <span th:unless="${#strings.length(writerId) >= 3}" th:text="${writerId}">user</span>
+                            </th:block>
+                        </td>
                         <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}">23.10.31</td>
                     </tr>
                     <tr th:if="${responseDTO.dtoList.isEmpty()}">
@@ -110,7 +120,6 @@
             <span th:unless="${responseDTO.next}" class="next disabled">다음 &gt;</span>
         </div>
 
-        <!-- 검색 폼 -->
         <div class="search-area">
             <form action="/cs/qna/list" method="get">
                 <input type="hidden" name="type" th:value="${pageRequestDTO.type}">
@@ -128,3 +137,5 @@
     </section>
 </div>
 <div th:replace="~{cs/_csfooter.html}"></div>
+</body>
+</html>

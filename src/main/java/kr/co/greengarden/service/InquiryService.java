@@ -1,6 +1,7 @@
 package kr.co.greengarden.service;
 
 import kr.co.greengarden.dto.InquiryDTO;
+import kr.co.greengarden.dto.NoticeDTO;
 import kr.co.greengarden.dto.PageRequestDTO;
 import kr.co.greengarden.dto.PageResponseDTO;
 import kr.co.greengarden.entity.Inquiry;
@@ -122,6 +123,13 @@ public class InquiryService {
     public void delete(int inquiryId) {
         inquiryRepository.deleteById(inquiryId);
     }
+
+    //공지사항 5개 가져오는 서비스 ? 만들기
+    public List<InquiryDTO> getLatestInquiry(int limit) {
+        // 컨트롤러에서 넘어온 limit(5) 그대로 Mapper에 전달
+        return inquiryMapper.selectLatestInquiry(limit);
+    }
+
 
     // --- 유틸리티 메소드: 로그인 ID 가져오기 ---
     private String getLoggedInUserId() {

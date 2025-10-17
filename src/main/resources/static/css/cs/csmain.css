@@ -76,7 +76,7 @@ body {
 }
 
 .cs-breadcrumb .active-breadcrumb {
-    color: #175a48; /* 브랜드 포인트 컬러 유지 */
+    color: #66968c; /* 브랜드 포인트 컬러 유지 */
     font-weight: bold;
 }
 
@@ -329,6 +329,9 @@ body {
 }
 
 .cs-inquiry-item {
+    display: block;
+    justify-content: space-between;
+    align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #f1f1f1;
 }
@@ -587,7 +590,7 @@ body {
 .qna-write-btn {
     display: inline-block;
     padding: 10px 30px;
-    background-color: #175a48;
+    background-color: #66968c;
     color: #fff;
     text-decoration: none;
     border-radius: 4px;
@@ -893,4 +896,32 @@ body {
 
 .qna-submit-btn:hover {
     background-color: #2b6b34;
+}
+/* --------------------------------------
+ * 1. 전체 A 태그 기본 스타일 재정의
+ * -------------------------------------- */
+#main-section a {
+    /* 💡 밑줄 제거 */
+    text-decoration: none;
+    /* 텍스트 색상을 부모 요소에서 상속받도록 설정 (검은색 등) */
+    color: inherit;
+}
+
+/* --------------------------------------
+ * 2. 공지사항 및 문의 목록 링크 스타일
+ * -------------------------------------- */
+
+/* 공지사항 제목 링크 */
+.cs-notice-item a,
+    /* 문의하기 제목 링크 */
+.cs-inquiry-item a {
+    /* 마우스 오버 시 밑줄 효과를 주고 싶다면 (선택 사항) */
+    /* text-decoration: none; */
+}
+
+/* 마우스 오버 시 색상 변경이나 밑줄을 넣으면 UX 개선에 도움이 됩니다. */
+.cs-notice-item a:hover,
+.cs-inquiry-item a:hover {
+    color: #4CAF50; /* 예시: 그린 색상으로 변경 */
+    text-decoration: underline; /* 예시: 마우스 오버 시에만 밑줄 표시 */
 }

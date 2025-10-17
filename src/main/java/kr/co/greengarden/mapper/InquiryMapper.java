@@ -1,6 +1,7 @@
 package kr.co.greengarden.mapper;
 
 import kr.co.greengarden.dto.InquiryDTO;
+import kr.co.greengarden.dto.NoticeDTO;
 import kr.co.greengarden.dto.PageRequestDTO;
 import kr.co.greengarden.entity.Inquiry;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,5 +22,8 @@ public interface InquiryMapper {
     InquiryDTO selectInquiry(@Param("inquiryId") int inquiryId);
 
     // 4. 1차 분류 목록 조회
+
+    List<InquiryDTO> selectLatestInquiry(@Param("limit") int limit);
+
 
 }

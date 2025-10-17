@@ -1,11 +1,14 @@
-<!--
-  날짜 : 2025/10/01
-  이름 : 박효빈
-  내용 : 고객센터 QNA view 페이지
--->
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>문의 상세 보기</title>
+    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
+</head>
+<body>
 <div th:replace="~{cs/_csheader.html}"></div>
 <div class="main-container">
-    <link rel="stylesheet" th:href="@{/css/cs/csmain.css}"/>
 
     <aside class="sidebar">
         <div class="cs-breadcrumb">
@@ -36,21 +39,26 @@
         <h1 class="cs-main-title">문의하기</h1>
 
         <div class="cs-section">
-            <!-- 질문 영역 -->
             <div class="qna-question-section">
                 <div class="qna-question-header">
                     <span class="qna-badge question">질문</span>
                     <span class="qna-view-category" th:text="'[' + ${inquiryDTO.category1} + '] ' + ${inquiryDTO.title}">[가입] 가입문의드립니다</span>
                 </div>
+
                 <div class="qna-meta-info">
-                    <span th:text="${inquiryDTO.writer} + '님의 문의 내용입니다.'">user*** 님의 문의내용 입니다.</span>
+                    <th:block th:with="writerId=${inquiryDTO.writer}">
+                        <span th:if="${#strings.length(writerId) >= 3}">
+                            <span th:text="${#strings.substring(writerId, 0, 3)}">user</span>***
+                        </span>
+                        <span th:unless="${#strings.length(writerId) >= 3}" th:text="${writerId}">user</span>
+                    </th:block>
+                    <span> 님의 문의 내용입니다.</span>
                 </div>
                 <div class="qna-content-box">
                     <p th:utext="${#strings.replace(inquiryDTO.content, '\n', '<br>')}"></p>
                 </div>
             </div>
 
-            <!-- 답변 영역 -->
             <div class="qna-answer-section" th:if="${inquiryDTO.status == '완료'}">
                 <div class="qna-answer-header">
                     <span class="qna-badge answer">답변</span>
@@ -83,3 +91,5 @@
     </section>
 </div>
 <div th:replace="~{cs/_csfooter.html}"></div>
+</body>
+</html>
