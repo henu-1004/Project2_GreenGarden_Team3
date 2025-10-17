@@ -7,6 +7,8 @@
  */
 body {
     min-width: 1200px;
+    margin: 0;
+    padding: 0;
 }
 
 .content-wrap {
@@ -31,7 +33,7 @@ body {
     box-sizing: border-box;
 }
 
-/* 탑 페이지 네이션 */
+/* ㅡㅡㅡ 탑(제목쪽) 카테고리 네비 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .top-nav {
     display: flex;
     justify-content: space-between;
@@ -41,7 +43,7 @@ body {
     margin-bottom: 20px;
 }
 
-.top-nav h5 {
+.top-nav h3 {
     font-size: 1.2em;
     font-weight: bold;
 }
@@ -61,7 +63,127 @@ body {
     color: #999;
 }
 
+/* ㅡㅡㅡ 본문시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+
+/* 집계현황 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+.chart-section {
+    display: flex;
+    align-items: stretch; /* 두 영역의 높이를 동일하게 */
+    text-align: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 10px;
+}
+
+.line-chart-container {
+    width: 60%;
+    border: 1px solid #ddd;
+}
+.pie-chart-container {
+    width: 40%;
+    border: 1px solid #ddd;
+}
+
+.chart-canvas {
+    width: 100%;
+    height: 400px;
+}
+
+/* 운영현황 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+.status-section {
+    display: block;
+    gap: 20px;
+    padding: 10px;
+}
+
+.status-table {
+    /* 부모 영역(table-area)의 가로 폭과 동일하게 맞춤 */
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px; /* 테이블 간 세로 간격 */
+
+    /* 열(Column) 너비를 동일하게 나눔 */
+    table-layout: fixed; /* 브라우저가 첫 행을 기준으로 너비를 고정하도록 지시 */
+    border: 1px solid #ddd;
+}
+
+/* 테이블 기본 디자인 */
+.status-table th,
+.status-table td {
+    border: 1px solid #66968c;
+    padding: 10px 15px;
+    text-align: center;
+}
+.status-table th {
+    background-color: #ddd;
+    font-weight: bold;
+    color: #444;
+}
+
+
+
+/* cs 영역 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
 #cs-section {
     display: flex;
-    justify-content: space-between; /* 두 테이블 사이에 공간을 두려면 사용 */
+    align-items: flex-start;
+    gap: 30px;
+    padding: 10px;
 }
+
+.cs-section h2 {
+    text-align: left;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px; /* 보더와 텍스트 사이 간격 */
+    margin-bottom: 15px;
+}
+
+.admincsnotice-table-wrap,
+.qna-table-wrap {
+    flex: 1;
+}
+
+.qna-table,
+.admincsnotice-table {
+    width: 100%; /* 부모 컨테이너 너비를 꽉 채움 */
+    border-collapse: collapse;
+    /* !!! 핵심: TD/TH 너비 비율을 정밀하게 제어할 수 있게 설정 !!! */
+    table-layout: fixed;
+}
+
+/* 테이블의 셀 공통 스타일 */
+.qna-table td,
+.admincsnotice-table td { /* 공지사항 td도 포함 */
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    white-space: nowrap; /* 한 줄로 만들어주는 역할 : 내용이 길어도 줄바꿈 방지 */
+    overflow: hidden; /* 잘라내는 역할 : 내용이 영역을 벗어날 때 숨기기 */
+    text-overflow: ellipsis; /* 말줄임표를 찍는 역할 : 숨겨진 부분 대신 ...을 표시 */
+}
+
+/* 공지사항 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+/* 1열: 유형 - 15% */
+.admincsnotice-table td:nth-child(1) { width: 15%; }
+
+/* 2열: 제목 - 60% */
+.admincsnotice-table td:nth-child(2) {
+    width: 60%;
+    text-align: left; /* 제목은 왼쪽 정렬 */
+    padding-left: 20px;
+}
+
+/* 3열: 날짜 - 25% */
+.admincsnotice-table td:nth-child(3) { width: 25%; }
+
+/* 고객문의 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+.qna-title {
+    /* 테이블 전체 너비(100%) 중 60%를 문의 제목 셀이 차지하도록 지정 */
+    width: 60%;
+    text-align: left !important; /* 제목은 왼쪽 정렬 */
+    padding-left: 20px !important;
+}
+
+.qna-table td:nth-child(1) { width: 10%; } /* 카테고리 */
+.qna-table td:nth-child(3) { width: 15%; } /* 작성자 */
+.qna-table td:nth-child(4) { width: 15%; } /* 날짜 */
+/* 10% + 60% + 15% + 15% = 100% */

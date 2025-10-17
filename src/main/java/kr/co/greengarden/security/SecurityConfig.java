@@ -46,9 +46,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
         );
 
-        // 기타 설정
-        //http.csrf(CsrfConfigurer::disable);
-
+        http.csrf(CsrfConfigurer::disable);
 
         return http.build();
     }
