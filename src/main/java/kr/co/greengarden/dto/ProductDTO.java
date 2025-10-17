@@ -36,6 +36,7 @@ public class ProductDTO {
     private String img3;
     private String imgDetail;
     private int views;
+    private int orderCount;
 
     public Product toEntity(MemberSeller seller, Category category) {
         return Product.builder()
@@ -56,6 +57,7 @@ public class ProductDTO {
                 .img3(img3)
                 .imgDetail(imgDetail)
                 .views(views)
+                .orderCount(orderCount)
                 .build();
     }
 }

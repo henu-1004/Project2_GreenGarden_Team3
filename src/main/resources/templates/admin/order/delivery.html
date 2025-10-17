@@ -27,9 +27,9 @@
             </div>
             <form th:action="@{#}" method="get" class="search-form">
                 <select>
-                    <option>송장번호</option>
-                    <option>주문번호</option>
-                    <option>수령인</option>
+                    <option name="searchType" value="invoiceNo">송장번호</option>
+                    <option name="searchType" value="orderNo">주문번호</option>
+                    <option name="searchType" value="name">수령인</option>
                 </select>
                 <input type="text" name="keyword" placeholder="세부 검색을 해보세요"/>
                 <button type="submit">
@@ -49,6 +49,19 @@
                     <th>배송상태</th>
                     <th>접수일</th>
                 </tr>
+                <tr th:each="delivery, stat : ${deliveryList}">
+                    <td><span class="delivery-number-link" onclick="openModal('modalDeliveryDetail')">[[${delivery.invoiceNo}]]</span></td>
+                    <td>-</td>
+                    <td>[[${delivery.orderNo}]]</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td>-</td>
+                    <td style="color: dodgerblue">[[${delivery.status}]]</td>
+                    <td>[[${delivery.createdAt}]]</td>
+                </tr>
+
                 <tr>
                     <td><span class="delivery-number-link" onclick="openModal('modalDeliveryDetail')">10122102315</span></td>
                     <td>로젝택배</td>
@@ -61,57 +74,41 @@
                     <td style="color: dodgerblue">배송준비</td>
                     <td>2025-10-24 13:45:55</td>
                 </tr>
-                <tr>
-                    <td><a href="#">10122102315</a></td>
-                    <td>한진택배</td>
-                    <td><a href="#">10121211341</a></td>
-                    <td>김유신</td>
-                    <td>OOO</td>
-                    <td>3</td>
-                    <td>68,400</td>
-                    <td>무료</td>
-                    <td style="color: dodgerblue">배송중</td>
-                    <td>2025-10-24 13:45:55</td>
-                </tr>
-                <tr>
-                    <td><a href="#">10122102315</a></td>
-                    <td>우체국</td>
-                    <td><a href="#">10121211341</a></td>
-                    <td>김유신</td>
-                    <td>OOO</td>
-                    <td>3</td>
-                    <td>68,400</td>
-                    <td>무료</td>
-                    <td style="color: red">반품요청</td>
-                    <td>2025-10-24 13:45:55</td>
-                </tr>
-                <tr>
-                    <td><a href="#">10122102315</a></td>
-                    <td>CJ대한통운</td>
-                    <td><a href="#">10121211341</a></td>
-                    <td>김유신</td>
-                    <td>OOO</td>
-                    <td>3</td>
-                    <td>68,400</td>
-                    <td>무료</td>
-                    <td style="color: green">배송완료</td>
-                    <td>2025-10-24 13:45:55</td>
-                </tr>
+
             </table>
-            <section class="pagination">
-                <!-- 이전 페이지 버튼 -->
-                <a href="#" class="prev">&lt; 이전</a>
+            <div class="pagination"
+                 th:with="
+                    page=${deliveryList},
+                    now=${page.number},
+                    total=${page.totalPages},
+                    size=${page.size},
+                    block=${5},
+                    start=${(now / block) * block},
+                    end=${ ((total - 1) < (start + block - 1)) ? (total - 1) : (start + block - 1) },
+                    prev=${ (now > 0) ? (now - 1) : 0 },
+                    next=${ ((now + 1) < total) ? (now + 1) : (total - 1) },
+                    st=${param.searchType != null ? param.searchType[0] : ''},
+                    kw=${param.keyword    != null ? param.keyword[0]    : ''}
+                 ">
+                <div th:if="${total > 0}">
+                    <a th:href="@{|?page=0&size=${size}&searchType=${st}&keyword=${kw}|}"
+                       th:classappend="${page.first} ? ' disabled'">« 처음</a>
 
-                <!-- 페이지 번호들 -->
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
+                    <a th:href="@{|?page=${prev}&size=${size}&searchType=${st}&keyword=${kw}|}"
+                       th:classappend="${page.first} ? ' disabled'">‹ 이전</a>
 
-                <!-- 다음 페이지 버튼 -->
-                <a href="#" class="next">다음 &gt;</a>
-            </section>
+                    <th:block th:each="i : ${#numbers.sequence(start, end)}">
+                        <a th:href="@{|?page=${i}&size=${size}&searchType=${st}&keyword=${kw}|}"
+                           th:classappend="${i == now} ? ' active'">[[${i + 1}]]</a>
+                    </th:block>
+
+                    <a th:href="@{|?page=${next}&size=${size}&searchType=${st}&keyword=${kw}|}"
+                       th:classappend="${page.last} ? ' disabled'">다음 ›</a>
+
+                    <a th:href="@{|?page=${total - 1}&size=${size}&searchType=${st}&keyword=${kw}|}"
+                       th:classappend="${page.last} ? ' disabled'">마지막 »</a>
+                </div>
+            </div>
         </section>
     </section>
 </main>

@@ -1,16 +1,16 @@
 package kr.co.greengarden.repository;
 
-import kr.co.greengarden.controller.admin.order.AdminOrderController;
+import kr.co.greengarden.dto.admin.DeliveryDTO;
 import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
 import kr.co.greengarden.dto.admin.AdminOrderListDTO;
-import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.Order;
-import kr.co.greengarden.entity.OrderItem;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
 
 /*
@@ -49,5 +49,58 @@ public interface OrderRepository extends JpaRepository<Order, String> {
            "COALESCE(o.status, '미지정'), o.totalPrice) " +
            "FROM Order o")
     List<AdminIndexOrderInfoDTO> findAdminIndexOrderInfo();
+
+    @Query(
+            value = """
+                      SELECT new kr.co.greengarden.dto.admin.AdminOrderListDTO(
+                        o.orderNo, m.memId, g.name, COALESCE(oi.quantity, 0), o.totalPrice, o.payMethod, o.status, o.orderedAt
+                      )
+                      from Order o
+                      join o.member m
+                      join m.general g 
+                      left join o.orderItems oi
+                      where
+                        (:keyword is null or :keyword = '')
+                        or (
+                          ( :searchType is null or :searchType = '' ) and (
+                            lower(o.orderNo)    like lower(concat('%', :keyword, '%')) or
+                            lower(m.memId)  like lower(concat('%', :keyword, '%')) or
+                            lower(g.name) like lower(concat('%', :keyword, '%'))
+                          )
+                        )
+                        or (:searchType = 'orderNo'    and lower(o.orderNo)    like lower(concat('%', :keyword, '%')))
+                        or (:searchType = 'memId'  and lower(m.memId)  like lower(concat('%', :keyword, '%')))
+                        or (:searchType = 'name' and lower(g.name) like lower(concat('%', :keyword, '%')))
+                    """
+    )
+    Page<AdminOrderListDTO> findAllOrderBySearch(
+            @Param("searchType") String searchType,
+            @Param("keyword") String keyword,
+            Pageable pageable);
+
+    @Query(
+            value = """
+                      SELECT new kr.co.greengarden.dto.admin.DeliveryDTO(
+                        d.deliveryId, d.order.orderNo, d.invoiceNo, d.status, d.cratedAt, d.note
+                      )
+                      from Delivery d
+                      where
+                        (:keyword is null or :keyword = '')
+                        or (
+                          ( :searchType is null or :searchType = '' ) and (
+                            lower(d.invoiceNo)    like lower(concat('%', :keyword, '%')) or
+                            lower(d.order.orderNo)  like lower(concat('%', :keyword, '%')) or
+                            lower(d.note) like lower(concat('%', :keyword, '%'))
+                          )
+                        )
+                        or (:searchType = 'invoiceNo'    and lower(d.invoiceNo)    like lower(concat('%', :keyword, '%')))
+                        or (:searchType = 'orderNo'  and lower(d.order.orderNo)  like lower(concat('%', :keyword, '%')))
+                        or (:searchType = 'name' and lower(d.note) like lower(concat('%', :keyword, '%')))
+                    """
+    )
+    Page<DeliveryDTO> findAllDeliveryBySearch(
+            @Param("searchType") String searchType,
+            @Param("keyword") String keyword,
+            Pageable pageable);
 
 }

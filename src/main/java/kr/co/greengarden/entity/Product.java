@@ -79,6 +79,9 @@ public class Product {
     @Column
     private int views;
 
+    @Column
+    private int orderCount;
+
     public ProductDTO toDTO() {
         return ProductDTO.builder()
                 .proId(this.proId)
@@ -98,6 +101,7 @@ public class Product {
                 .img3(this.img3)
                 .imgDetail(this.imgDetail)
                 .views(this.views)
+                .orderCount(this.views)
                 .build();
     }
 

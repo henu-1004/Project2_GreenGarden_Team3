@@ -3,6 +3,7 @@ package kr.co.greengarden.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.apache.logging.log4j.util.Lazy;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class Order {
     @Column
     private String status;
 
+    @CreationTimestamp
     @Column
     private LocalDateTime orderedAt;
 
@@ -58,10 +60,5 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
-
-    @PrePersist
-    void onCreate() { if (orderedAt == null) orderedAt = LocalDateTime.now(); }
-
-
 
 }
