@@ -51,14 +51,20 @@ public class MyService {
         return orderRepository.findAllByMember_MemId(memberId);
     }
 
-    public void updateConfirmYn(String orderNo, String yn) {
-        myMapper.updateConfirmYn(orderNo, yn);
+    public void updateConfirmYn(String orderNo, Long proId, String yn) {
+        myMapper.updateConfirmYn(orderNo, proId, yn);
     }
-    public void updateExchangeYn(String orderNo, String yn) {
-        myMapper.updateExchangeYn(orderNo, yn);
+
+    public void updateReviewYn(String orderNo, Long proId, String yn) {
+        myMapper.updateReviewYn(orderNo, proId, yn);
     }
-    public void updateReturnYn(String orderNo, String yn) {
-        myMapper.updateReturnYn(orderNo, yn);
+
+    public void updateExchangeYn(String orderNo, Long proId, String yn) {
+        myMapper.updateExchangeYn(orderNo, proId, yn);
+    }
+
+    public void updateReturnYn(String orderNo, Long proId, String yn) {
+        myMapper.updateReturnYn(orderNo, proId, yn);
     }
 
     /** ✅ 리뷰 등록 로직 (파일 업로드 포함) */

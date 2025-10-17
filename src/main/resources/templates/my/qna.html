@@ -2,13 +2,16 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지 | Green Garden</title>
+    <title>마이페이지 | 문의 내역</title>
+
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
-    <link rel="stylesheet" th:href="@{/css/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+
     <!-- my 전용 CSS -->
     <link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <link rel="stylesheet" th:href="@{/css/my/qna.css}">
+    <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
 
@@ -16,45 +19,104 @@
 <div th:replace="~{common/headerNoSearch :: headerNoSearch}"></div>
 
 <main class="mypage-container">
-    <!-- 공통 어사이드 -->
-    <div th:replace="~{common/aside :: aside}"></div>
+    <!-- 어사이드 -->
+    <div th:replace="~{my/aside :: aside}"></div>
 
     <!-- 본문 -->
     <section class="content">
-        <!-- 요약 박스 -->
-        <div class="summary-box">
-            <div class="item"><span>주문</span><strong>2</strong></div>
-            <div class="item"><span>쿠폰</span><strong>1</strong></div>
-            <div class="item"><span>포인트</span><strong>1000</strong></div>
-            <div class="item"><span>문의</span><strong>1</strong></div>
+        <h1>문의 내역</h1>
+        <p class="lead">배송, 교환, 상품에 대한 질문을 등록하고 답변 상태를 확인하세요.</p>
+
+        <!-- 인트로 안내 -->
+        <div class="qna-intro">
+            <div class="intro-card">
+                <h3>자주 묻는 질문</h3>
+                <p>배송 지연, 교환/반품, 회원 정보 변경 등 자주 묻는 질문을 먼저 확인해 보세요.</p>
+            </div>
+            <div class="intro-card">
+                <h3>1:1 문의 운영시간</h3>
+                <p>평일 09:00~18:00 · 주말/공휴일 휴무<br>답변은 영업일 기준 24시간 이내 제공됩니다.</p>
+            </div>
+            <div class="intro-card">
+                <h3>문의 작성 가이드</h3>
+                <p>주문번호와 상세 내용을 남겨주시면 보다 정확한 답변을 드릴 수 있습니다.</p>
+            </div>
         </div>
 
-        <!-- 배너 -->
-        <div class="banner">810 × 86 배너 광고</div>
-
-        <!-- 최근 주문내역 -->
-        <div class="section-header">
-            <h2>최근주문내역</h2>
-            <a th:href="@{/my/order}" class="more">더보기 ></a>
+        <!-- 필터 영역 -->
+        <div class="qna-filters">
+            <div class="chip-group">
+                <button class="chip active">전체</button>
+                <button class="chip">배송</button>
+                <button class="chip">교환/반품</button>
+                <button class="chip">상품</button>
+                <button class="chip">기타</button>
+            </div>
+            <div class="actions">
+                <button class="btn-outline">FAQ 보기</button>
+                <button class="btn-primary">문의 등록</button>
+            </div>
         </div>
 
-        <div class="order-list">
-            <div class="order-item">
-                <div class="thumb"><img th:src="@{/img/sample.png}" alt="상품"></div>
-                <div class="info">
-                    <p class="date">2022-12-13</p>
-                    <p class="order-num">주문번호 : 202212341</p>
-                    <p class="product">샘플 상품 (1개)</p>
-                    <p class="price">34,000원</p>
-                </div>
-                <div class="status">배송완료</div>
-                <div class="actions">
-                    <button onclick="openOrderModal()">주문상세</button>
-                    <button>구매확정</button>
-                    <button>리뷰작성</button>
-                    <button>교환</button>
-                    <button>반품</button>
-                </div>
+        <!-- 문의 테이블 -->
+        <table class="data-table qna-table">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>유형</th>
+                <th>제목</th>
+                <th>진행상태</th>
+                <th>작성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- 샘플 데이터 -->
+            <tr th:if="${qnaList == null}">
+                <td>3</td>
+                <td>배송</td>
+                <td class="left">주문한 상품 배송이 지연되고 있어요.</td>
+                <td class="status waiting">답변중</td>
+                <td>2025-10-12</td>
+            </tr>
+            <tr th:if="${qnaList == null}">
+                <td>2</td>
+                <td>상품</td>
+                <td class="left">상품 색상 교환이 가능한가요?</td>
+                <td class="status completed">답변완료</td>
+                <td>2025-10-07</td>
+            </tr>
+
+            <!-- 실제 데이터 -->
+            <tr th:each="qna, iter : ${qnaList}" th:if="${qnaList != null}">
+                <td th:text="${iter.count}">1</td>
+                <td th:text="${qna.type}">배송</td>
+                <td class="left" th:text="${qna.title}">문의 제목</td>
+                <td class="status" th:classappend="${qna.status == '답변완료'} ? ' completed' : ' waiting'"
+                    th:text="${qna.status}">답변중</td>
+                <td th:text="${#temporals.format(qna.createdAt, 'yyyy-MM-dd')}">2025-09-30</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- 문의 내역 없음 -->
+        <div class="empty-state" th:if="${qnaList != null and #lists.isEmpty(qnaList)}">
+            등록된 문의가 없습니다. 궁금한 사항을 남겨주세요.
+        </div>
+
+        <!-- 추가 액션 -->
+        <div class="qna-actions">
+            <button class="btn-outline">이전 문의 불러오기</button>
+        </div>
+
+        <!-- 안내 박스 -->
+        <div class="qna-guide">
+            <div class="guide-item">
+                <strong>답변 알림</strong>
+                <span>답변 완료 시 이메일과 문자로 안내해 드립니다.</span>
+            </div>
+            <div class="guide-item">
+                <strong>개인정보 보호</strong>
+                <span>주문번호 및 연락처 등 개인정보는 관리자에게만 노출됩니다.</span>
             </div>
         </div>
     </section>
@@ -62,32 +124,6 @@
 
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
-
-<!-- 주문상세 모달 -->
-<div id="orderModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>주문상세 <span class="date">2022-12-13</span></h2>
-            <span class="close" onclick="closeOrderModal()">&times;</span>
-        </div>
-        <div class="modal-body">
-            <table>
-                <tr><td>상품명</td><td>샘플 상품</td></tr>
-                <tr><td>결제금액</td><td>34,000원</td></tr>
-                <tr><td>상태</td><td>배송중</td></tr>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script>
-    function openOrderModal() {
-        document.getElementById("orderModal").style.display = "flex";
-    }
-    function closeOrderModal() {
-        document.getElementById("orderModal").style.display = "none";
-    }
-</script>
 
 </body>
 </html>

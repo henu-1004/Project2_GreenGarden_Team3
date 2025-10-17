@@ -1,0 +1,78 @@
+
+.point-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 18px;
+    margin-bottom: 32px;
+}
+
+.point-summary .summary-card {
+    background: linear-gradient(135deg, rgba(23, 90, 72, 0.9), rgba(102, 150, 140, 0.85));
+    color: #fff;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 8px 18px rgba(23, 90, 72, 0.25);
+}
+
+.point-summary .summary-card span {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.point-summary .summary-card strong {
+    display: block;
+    font-size: 24px;
+    margin-top: 6px;
+}
+
+.point-summary .summary-card small {
+    display: block;
+    margin-top: 12px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.point-log .data-table td.amount-plus {
+    color: #1d8a55;
+    font-weight: 700;
+}
+
+.point-log .data-table td.amount-minus {
+    color: #d9534f;
+    font-weight: 700;
+}
+
+.point-guide {
+    margin-top: 36px;
+    display: grid;
+    gap: 18px;
+}
+
+.point-guide .guide-box {
+    border: 1px solid var(--gg-border);
+    border-radius: 16px;
+    padding: 22px;
+    background: rgba(23, 90, 72, 0.05);
+}
+
+.point-guide .guide-box h3 {
+    margin-bottom: 12px;
+    color: var(--gg-green-dark);
+}
+
+.point-guide .guide-box ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--gg-muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.point-log .filter-bar {
+    margin-bottom: 16px;
+}
+
+.point-log .chip-group {
+    display: flex;
+    gap: 10px;
+}

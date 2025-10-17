@@ -8,46 +8,64 @@
     <select id="selectRecentOrders" parameterType="string"
             resultType="kr.co.greengarden.dto.my.OrderSummaryDTO">
         SELECT
-        o.ORDERNO       AS orderNo,
-        p.PROID         AS proId,          <!-- ✅ 상품 ID 추가 -->
-        p.NAME          AS productName,
-        p.IMG1          AS productImg,
-        oi.PRICE        AS price,
-        oi.QUANTITY     AS quantity,
-        (oi.PRICE * oi.QUANTITY) AS totalPrice,
-        o.STATUS        AS status,
-        o.ORDEREDAT     AS orderedAt,
-        s.MEMID         AS sellerId,
-        ms.COMPANY      AS sellerName,
-        s.ADDRESSBASIC  AS sellerAddress,
+            o.ORDERNO       AS orderNo,
+            p.PROID         AS proId,
+            p.NAME          AS productName,
+            p.IMG1          AS productImg,
+            oi.PRICE        AS price,
+            oi.QUANTITY     AS quantity,
+            (oi.PRICE * oi.QUANTITY) AS totalPrice,
+            o.STATUS        AS status,
+            o.ORDEREDAT     AS orderedAt,
+            s.MEMID         AS sellerId,
+            ms.COMPANY      AS sellerName,
+            s.ADDRESSBASIC  AS sellerAddress,
 
-        -- ✅ 10.16 추가: 상태 관리 컬럼 4종
-        o.CONFIRM_YN    AS confirmYn,
-        o.REVIEW_YN     AS reviewYn,
-        o.EXCHANGE_YN   AS exchangeYn,
-        o.RETURN_YN     AS returnYn
+            -- ✅ 상품 단위 상태 관리
+            oi.CONFIRM_YN   AS confirmYn,
+            oi.REVIEW_YN    AS reviewYn,
+            oi.EXCHANGE_YN  AS exchangeYn,
+            oi.RETURN_YN    AS returnYn
 
         FROM TB_ORDER o
-        JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
-        JOIN TB_PRODUCT p ON oi.PROID = p.PROID
-        JOIN TB_MEMBER s ON p.MEMID = s.MEMID
-        JOIN TB_MEMBER_SELLER ms ON s.MEMID = ms.MEMID
+                 JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                 JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+                 JOIN TB_MEMBER s ON p.MEMID = s.MEMID
+                 JOIN TB_MEMBER_SELLER ms ON s.MEMID = ms.MEMID
         WHERE o.MEMID = #{memId}
         ORDER BY o.ORDEREDAT DESC
-        FETCH FIRST 5 ROWS ONLY
+            FETCH FIRST 5 ROWS ONLY
     </select>
 
 
+
     <update id="updateConfirmYn">
-        UPDATE TB_ORDER SET CONFIRM_YN = #{yn} WHERE ORDERNO = #{orderNo}
+        UPDATE TB_ORDER_ITEM
+        SET CONFIRM_YN = #{yn}
+        WHERE ORDERNO = #{orderNo}
+          AND PROID = #{proId}
     </update>
 
     <update id="updateExchangeYn">
-        UPDATE TB_ORDER SET EXCHANGE_YN = #{yn} WHERE ORDERNO = #{orderNo}
+        UPDATE TB_ORDER_ITEM
+        SET EXCHANGE_YN = #{yn}
+        WHERE ORDERNO = #{orderNo}
+          AND PROID = #{proId}
     </update>
 
     <update id="updateReturnYn">
-        UPDATE TB_ORDER SET RETURN_YN = #{yn} WHERE ORDERNO = #{orderNo}
+        UPDATE TB_ORDER_ITEM
+        SET RETURN_YN = #{yn}
+        WHERE ORDERNO = #{orderNo}
+          AND PROID = #{proId}
+    </update>
+
+    <!--상품개별의 리뷰작성관리를 위한 쿼리 👇-->
+    <update id="updateReviewYn">
+        UPDATE TB_ORDER_ITEM
+        SET REVIEW_YN = #{yn}
+        WHERE ORDERNO = #{orderNo}
+          AND PROID = #{proId}
     </update>
 
     <!--리뷰 등록 쿼리 추가 👇-->
@@ -90,12 +108,5 @@
         ORDER BY r.CREATED_AT DESC
     </select>
 
-    <!--상품개별의 리뷰작성관리를 위한 쿼리 👇-->
-    <update id="updateReviewYn">
-        UPDATE TB_ORDER_ITEM
-        SET REVIEW_YN = #{yn}
-        WHERE ORDERNO = #{orderNo}
-          AND PROID = #{proId}
-    </update>
 
 </mapper>

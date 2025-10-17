@@ -2,25 +2,105 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지 | Green Garden</title>
+    <title>마이페이지 | 나의 리뷰</title>
+
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+
+    <!-- my 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <link rel="stylesheet" th:href="@{/css/my/review.css}">
+    <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
 
 <!-- 공통 헤더 -->
 <div th:replace="~{common/headerNoSearch :: headerNoSearch}"></div>
 
+<main class="mypage-container">
+    <!-- 어사이드 -->
+    <div th:replace="~{my/aside :: aside}"></div>
 
-	<main>
-		<div id="main">
+    <!-- 본문 -->
+    <section class="content">
+        <h1>나의 리뷰</h1>
+        <p class="lead">작성한 리뷰를 관리하고, 추가 혜택을 챙겨보세요.</p>
 
-		</div>
-	</main>
+        <!-- 리뷰 요약 -->
+        <div class="review-summary">
+            <div class="score-box">
+                <span>평균 평점</span>
+                <strong>4.7</strong>
+                <span>(최근 6개월 기준)</span>
+            </div>
+            <div class="detail-box">
+                <dl>
+                    <dt>작성한 리뷰</dt>
+                    <dd>12건</dd>
+                    <dt>포토 리뷰</dt>
+                    <dd>4건</dd>
+                    <dt>답변 완료</dt>
+                    <dd>9건</dd>
+                </dl>
+            </div>
+        </div>
 
+        <!-- 필터 -->
+        <div class="review-filters">
+            <div class="chip-group">
+                <button class="chip active">전체</button>
+                <button class="chip">포토 리뷰</button>
+                <button class="chip">구매확정</button>
+                <button class="chip">답변 요청</button>
+            </div>
+            <button class="btn-outline">리뷰 작성 가이드</button>
+        </div>
+
+        <!-- 샘플 데이터 -->
+        <article class="review-item" th:if="${reviewList == null}">
+            <div class="item-header">
+                <h3>[㈜그린가든] 싱그러운 몬스테라</h3>
+                <div class="rating">★★★★★</div>
+            </div>
+            <div class="item-meta">2025-10-01 · 주문번호 20251001001</div>
+            <div class="item-body">
+                식물이 매우 건강하고 배송도 빨랐어요! 다음에도 다시 구매하겠습니다.
+            </div>
+            <div class="item-actions">
+                <button class="btn-outline">리뷰 수정</button>
+                <button class="btn-outline">삭제</button>
+            </div>
+        </article>
+
+        <!-- 실제 데이터 -->
+        <article class="review-item" th:each="review : ${reviewList}" th:if="${reviewList != null}">
+            <div class="item-header">
+                <h3 th:text="${review.productName}">상품명</h3>
+                <div class="rating" th:text="${review.ratingStars}">★★★★☆</div>
+            </div>
+            <div class="item-meta">
+                <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">2025-09-22</span>
+                · 주문번호 <span th:text="${review.orderNo}">20250922001</span>
+            </div>
+            <div class="item-body" th:text="${review.content}">
+                리뷰 내용이 표시됩니다.
+            </div>
+            <div class="item-actions">
+                <button class="btn-outline" th:attr="data-review=${review.id}">수정</button>
+                <button class="btn-outline" th:attr="data-review=${review.id}">삭제</button>
+            </div>
+        </article>
+
+        <!-- 리뷰 없음 -->
+        <div class="empty-state review-empty" th:if="${reviewList != null and #lists.isEmpty(reviewList)}">
+            아직 작성한 리뷰가 없습니다.
+        </div>
+    </section>
+</main>
 
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
+
 </body>
 </html>

@@ -1,0 +1,117 @@
+.review-summary {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.review-summary .score-box {
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(23, 90, 72, 0.95), rgba(102, 150, 140, 0.85));
+    color: #fff;
+    padding: 28px;
+    text-align: center;
+}
+
+.review-summary .score-box strong {
+    font-size: 48px;
+    display: block;
+    line-height: 1;
+}
+
+.review-summary .score-box span {
+    display: block;
+    margin-top: 8px;
+    opacity: 0.8;
+}
+
+.review-summary .detail-box {
+    border: 1px solid var(--gg-border);
+    border-radius: 18px;
+    padding: 24px;
+    background: #fff;
+}
+
+.review-summary .detail-box dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    row-gap: 12px;
+    column-gap: 12px;
+    margin: 0;
+}
+
+.review-summary .detail-box dt {
+    font-weight: 600;
+    color: var(--gg-text);
+}
+
+.review-summary .detail-box dd {
+    margin: 0;
+    color: var(--gg-muted);
+}
+
+.review-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.review-filters .chip-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.review-item {
+    border: 1px solid var(--gg-border);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.review-item .item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.review-item .item-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--gg-text);
+}
+
+.review-item .item-header .rating {
+    color: #ffb400;
+    font-size: 18px;
+}
+
+.review-item .item-meta {
+    font-size: 13px;
+    color: var(--gg-muted);
+    margin-bottom: 12px;
+}
+
+.review-item .item-body {
+    color: var(--gg-text);
+    line-height: 1.6;
+}
+
+.review-item .item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.review-empty {
+    margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+        .review-summary {
+            grid-template-columns: 1fr;
+        }
+}
