@@ -87,9 +87,10 @@ public class MyController {
 
     @PostMapping("/confirm")
     public String confirmOrder(@RequestParam String orderNo,
+                               @RequestParam Long proId,
                                @AuthenticationPrincipal UserDetails userDetails,
                                RedirectAttributes redirect) {
-        myService.updateConfirmYn(orderNo, "Y");
+        myService.updateConfirmYn(orderNo, proId, "Y");
         redirect.addFlashAttribute("msg", "구매확정 완료되었습니다.");
         return "redirect:/my/home";
     }
@@ -111,22 +112,22 @@ public class MyController {
         return "redirect:/my/home";
     }
 
-
-
     @PostMapping("/exchange/complete")
     public String completeExchange(@RequestParam String orderNo,
+                                   @RequestParam Long proId,
                                    @AuthenticationPrincipal UserDetails userDetails,
                                    RedirectAttributes redirect) {
-        myService.updateExchangeYn(orderNo, "Y");
+        myService.updateExchangeYn(orderNo, proId, "Y");
         redirect.addFlashAttribute("msg", "교환신청 완료!");
         return "redirect:/my/home";
     }
 
     @PostMapping("/return/complete")
     public String completeReturn(@RequestParam String orderNo,
+                                 @RequestParam Long proId,
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  RedirectAttributes redirect) {
-        myService.updateReturnYn(orderNo, "Y");
+        myService.updateReturnYn(orderNo, proId, "Y");
         redirect.addFlashAttribute("msg", "반품신청 완료!");
         return "redirect:/my/home";
     }

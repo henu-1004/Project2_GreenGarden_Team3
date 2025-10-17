@@ -1,0 +1,189 @@
+
+.order-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}
+
+.order-hero .status-overview {
+    display: flex;
+    gap: 16px;
+}
+
+.order-hero .status-pill {
+    background: rgba(23, 90, 72, 0.1);
+    padding: 14px 20px;
+    border-radius: 14px;
+    min-width: 150px;
+}
+
+.order-hero .status-pill span {
+    display: block;
+    font-size: 13px;
+    color: var(--gg-muted);
+    margin-bottom: 6px;
+}
+
+.order-hero .status-pill strong {
+    font-size: 20px;
+    color: var(--gg-green-dark);
+}
+
+.order-card {
+    border: 1px solid var(--gg-border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    background: #fff;
+    box-shadow: 0 6px 16px rgba(23, 90, 72, 0.05);
+}
+
+.order-card .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.order-card .card-header .left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.order-card .card-header .order-id {
+    font-weight: 600;
+    color: var(--gg-text);
+}
+
+.order-card .card-header time {
+    font-size: 13px;
+    color: var(--gg-muted);
+}
+
+.order-card .meta {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px;
+    gap: 20px;
+    align-items: center;
+}
+
+.order-card .thumb img {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid var(--gg-border);
+}
+
+.order-card .info strong {
+    display: block;
+    font-size: 16px;
+    color: var(--gg-text);
+    margin-bottom: 6px;
+}
+
+.order-card .info .options {
+    color: var(--gg-muted);
+    font-size: 13px;
+    margin-bottom: 12px;
+}
+
+.order-card .info .price {
+    font-size: 18px;
+    color: var(--gg-green-dark);
+    font-weight: 700;
+}
+
+.order-card .timeline {
+    margin-top: 24px;
+    border-top: 1px dashed var(--gg-border);
+    padding-top: 18px;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.order-card .timeline .step {
+    flex: 1;
+    min-width: 160px;
+}
+
+.order-card .timeline .step strong {
+    color: var(--gg-green-dark);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.order-card .timeline .step span {
+    font-size: 12px;
+    color: var(--gg-muted);
+}
+
+.order-card .actions {
+    margin-top: 20px;
+}
+
+.order-card .actions .btn,
+.order-card .actions .btn-outline {
+    min-width: 110px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+.pagination a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid var(--gg-border);
+    color: var(--gg-text);
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.pagination a.active,
+.pagination a:hover {
+    background: var(--gg-green-dark);
+    color: #fff;
+    border-color: var(--gg-green-dark);
+}
+
+@media (max-width: 992px) {
+        .order-card .meta {
+            grid-template-columns: 100px 1fr;
+            grid-template-rows: auto auto;
+        }
+    
+        .order-card .meta .status-area {
+            grid-column: 1 / -1;
+            justify-self: flex-start;
+        }
+}
+
+@media (max-width: 600px) {
+        .order-hero {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+    
+        .order-hero .status-overview {
+            width: 100%;
+            flex-wrap: wrap;
+        }
+    
+        .order-card {
+            padding: 20px;
+        }
+    
+        .order-card .meta {
+            grid-template-columns: 1fr;
+        }
+}

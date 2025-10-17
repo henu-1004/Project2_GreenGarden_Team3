@@ -2,88 +2,195 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지 | Green Garden</title>
+    <title>마이페이지 | 주문 내역</title>
+
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
-   <link rel="stylesheet" href="css/style.css">
+
+    <!-- my 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <link rel="stylesheet" th:href="@{/css/my/order.css}">
+    <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
+
 <!-- 공통 헤더 -->
 <div th:replace="~{common/headerNoSearch :: headerNoSearch}"></div>
 
-  <!-- 메인 레이아웃 -->
-  <main class="mypage-container">
-    <!-- 사이드바 -->
-    <aside class="sidebar">
-      <h3>나의 쇼핑정보</h3>
-      <ul>
-        <li><a href="#">전체주문내역</a></li>
-        <li><a href="#">포인트내역</a></li>
-        <li><a href="#">쿠폰</a></li>
-        <li><a href="#">나의리뷰</a></li>
-        <li><a href="#">문의하기</a></li>
-        <li><a href="#">내회원정보</a></li>
-      </ul>
-    </aside>
+<main class="mypage-container">
+    <!-- 어사이드 -->
+    <div th:replace="~{my/aside :: aside}"></div>
 
-    <!-- 콘텐츠 -->
+    <!-- 본문 -->
     <section class="content">
-      <!-- 상단 배너 -->
-      <div class="banner">810 × 86 배너 광고</div>
+        <h1>전체 주문 내역</h1>
+        <p class="lead">최근 주문 현황과 배송 진행 상황을 한눈에 확인해 보세요.</p>
 
-      <h2>전체주문내역</h2>
-
-      <!-- 기간검색 -->
-      <div class="filter">
-        <label>기간검색 :</label>
-        <input type="date"> ~ <input type="date">
-        <button>조회</button>
-      </div>
-
-      <!-- 주문 리스트 -->
-      <div class="order-list">
-        <!-- 주문 아이템 -->
-        <div class="order-item">
-          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
-          <div class="info">
-            <p>주문일자 : 2022-12-13</p>
-            <p>주문번호 : 202212341</p>
-            <p>상품명 : (주) Green Garden 샘플상품 1개</p>
-            <p class="price">34,000원</p>
-          </div>
-          <div class="actions">
-            <button>구매확정</button>
-            <button>리뷰작성</button>
-          </div>
+        <!-- 주문 요약 -->
+        <div class="order-hero">
+            <div class="status-overview">
+                <div class="status-pill">
+                    <span>최근 3개월 주문</span>
+                    <strong>5건</strong>
+                </div>
+                <div class="status-pill">
+                    <span>배송중</span>
+                    <strong>2건</strong>
+                </div>
+                <div class="status-pill">
+                    <span>구매확정 대기</span>
+                    <strong>1건</strong>
+                </div>
+            </div>
+            <div class="actions hero-actions">
+                <button class="btn-outline">주문내역 엑셀 다운로드</button>
+                <button class="btn-primary">교환/반품 안내 보기</button>
+            </div>
         </div>
 
-        <div class="order-item">
-          <div class="thumb"><img src="img/sample.png" alt="상품"></div>
-          <div class="info">
-            <p>주문일자 : 2022-12-13</p>
-            <p>주문번호 : 202212342</p>
-            <p>상품명 : (주) Green Garden 샘플상품 2개</p>
-            <p class="price">15,000원</p>
-          </div>
-          <div class="actions">
-            <button>구매확정</button>
-          </div>
+        <!-- 필터 바 -->
+        <div class="filter-bar">
+            <label>기간검색</label>
+            <div class="quick-range">
+                <button class="active">1개월</button>
+                <button>3개월</button>
+                <button>6개월</button>
+                <button>1년</button>
+            </div>
+            <input type="date">
+            <span>~</span>
+            <input type="date">
+            <select>
+                <option>전체 주문상태</option>
+                <option>입금대기</option>
+                <option>배송중</option>
+                <option>배송완료</option>
+            </select>
+            <button class="btn-primary">조회하기</button>
         </div>
-      </div>
 
-      <!-- 페이지네이션 -->
-      <div class="pagination">
-        <a href="#">이전</a>
-        <a href="#">1</a>
-        <a href="#">2</a>
-        <a href="#">3</a>
-        <a href="#">다음</a>
-      </div>
+        <!-- 샘플 카드 (데이터 없을 경우) -->
+        <div class="order-card sample-card" th:if="${orderList == null}">
+            <div class="card-header">
+                <div class="left">
+                    <span class="order-id">주문번호 202212341</span>
+                    <time datetime="2022-12-13">2022-12-13</time>
+                </div>
+                <span class="status-badge">배송완료</span>
+            </div>
+            <div class="meta">
+                <div class="thumb">
+                    <img th:src="@{/img/sample.png}" alt="상품 이미지">
+                </div>
+                <div class="info">
+                    <strong>[㈜그린가든] 그린 플랜트 화분</strong>
+                    <p class="options">옵션 : 중형 / 포장 포함 · 수량 1개</p>
+                    <p class="price">34,000원</p>
+                </div>
+                <div class="status-area">
+                    <p class="helper-text">구매확정을 진행해주세요.</p>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="step">
+                    <strong>주문접수</strong>
+                    <span>2022-12-13 12:30</span>
+                </div>
+                <div class="step">
+                    <strong>배송중</strong>
+                    <span>2022-12-14 09:10</span>
+                </div>
+                <div class="step">
+                    <strong>배송완료</strong>
+                    <span>2022-12-15 16:40</span>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn-primary">구매확정</button>
+                <button class="btn-outline">리뷰 작성</button>
+                <button class="btn-outline">교환 신청</button>
+                <button class="btn-outline">반품 신청</button>
+            </div>
+        </div>
+
+        <!-- 주문 내역이 없을 경우 -->
+        <div class="empty-state" th:if="${orderList != null and #lists.isEmpty(orderList)}">
+            조회된 주문 내역이 없습니다.
+        </div>
+
+        <!-- 주문 내역 리스트 -->
+        <div class="order-card"
+             th:each="order : ${orderList}"
+             th:if="${orderList != null and !#lists.isEmpty(orderList)}">
+            <div class="card-header">
+                <div class="left">
+                    <span class="order-id">주문번호 <span th:text="${order.orderNo}">O20231012001</span></span>
+                    <time th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2023-10-12</time>
+                </div>
+                <span class="status-badge" th:text="${order.status}">배송중</span>
+            </div>
+
+            <div class="meta">
+                <div class="thumb">
+                    <img th:if="${order.productImg != null}" th:src="@{${order.productImg}}" alt="상품 이미지">
+                    <img th:unless="${order.productImg != null}" th:src="@{/img/sample.png}" alt="상품 이미지">
+                </div>
+                <div class="info">
+                    <strong th:text="${order.productName}">상품명</strong>
+                    <p class="options">
+                        수량 <span th:text="${order.quantity}">1</span>개 · 금액
+                        <span th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')}">0</span>원
+                    </p>
+                    <p class="price" th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'">0원</p>
+                </div>
+                <div class="status-area">
+                    <p class="helper-text">
+                        <span th:text="${order.statusDetail}">택배사 : 한진택배 (송장번호 1234-5678)</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="timeline" th:if="${order.progressSteps != null}">
+                <div class="step" th:each="step : ${order.progressSteps}">
+                    <strong th:text="${step.title}">배송중</strong>
+                    <span th:text="${step.timestamp}">2023-10-13 10:00</span>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button class="btn-primary" th:if="${order.canConfirm}" th:attr="data-order=${order.orderNo}">구매확정</button>
+                <button class="btn-outline" th:if="${order.canReview}" th:attr="data-order=${order.orderNo}">리뷰 작성</button>
+                <button class="btn-outline" th:if="${order.canExchange}" th:attr="data-order=${order.orderNo}">교환 신청</button>
+                <button class="btn-outline" th:if="${order.canReturn}" th:attr="data-order=${order.orderNo}">반품 신청</button>
+            </div>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="pagination">
+            <a href="#" class="prev">〈</a>
+            <a href="#" class="active">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#" class="next">〉</a>
+        </div>
+
+        <!-- 안내 문구 -->
+        <div class="notice-box" style="margin-top: 32px;">
+            <i>ℹ️</i>
+            <div>
+                <strong>주문/배송 안내</strong>
+                <p class="helper-text">
+                    입금 확인 후 주문상태가 "배송중"으로 변경되며,
+                    배송완료 후 7일 이내에 구매확정을 진행해주세요.
+                </p>
+            </div>
+        </div>
     </section>
-  </main>
+</main>
 
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
+
 </body>
 </html>

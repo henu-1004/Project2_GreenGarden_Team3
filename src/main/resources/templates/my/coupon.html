@@ -1,23 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>my coupon page</title>
+    <title>마이페이지 | 쿠폰함</title>
+
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+
+    <!-- my 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <link rel="stylesheet" th:href="@{/css/my/coupon.css}">
+    <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
 
 <!-- 공통 헤더 -->
 <div th:replace="~{common/headerNoSearch :: headerNoSearch}"></div>
 
-<main>
-    <div id="main">
+<main class="mypage-container">
+    <!-- 어사이드 -->
+    <div th:replace="~{my/aside :: aside}"></div>
 
-    </div>
+    <!-- 본문 -->
+    <section class="content">
+        <h1>나의 쿠폰함</h1>
+        <p class="lead">다운받은 쿠폰을 확인하고 사용 가능한 혜택을 챙겨보세요.</p>
+
+        <!-- 요약 카드 -->
+        <div class="coupon-overview">
+            <div class="overview-card">
+                <span>사용 가능 쿠폰</span>
+                <strong>3장</strong>
+            </div>
+            <div class="overview-card">
+                <span>이번 주 만료 예정</span>
+                <strong>1장</strong>
+            </div>
+            <div class="overview-card">
+                <span>총 할인 금액</span>
+                <strong>27,000원</strong>
+            </div>
+        </div>
+
+        <!-- 탭 -->
+        <div class="coupon-tabs">
+            <button class="active">사용 가능</button>
+            <button>사용 완료</button>
+            <button>기간 만료</button>
+        </div>
+
+        <!-- 쿠폰 리스트 -->
+        <div class="coupon-grid">
+            <!-- 기본 예시 카드 (데이터 없을 때) -->
+            <div class="coupon-card" th:if="${availableCoupons == null}">
+                <h3>10% Welcome 쿠폰</h3>
+                <p>최대 20,000원 할인 · 30,000원 이상 구매 시</p>
+                <div class="coupon-meta">
+                    <span class="tag">~ 2025-11-30</span>
+                    <button class="btn-outline">사용 가능 상품 보기</button>
+                </div>
+            </div>
+
+            <div class="coupon-card" th:if="${availableCoupons == null}">
+                <h3>Garden Day 5,000원</h3>
+                <p>일부 프로모션 상품 제외</p>
+                <div class="coupon-meta">
+                    <span class="tag">~ 2025-12-15</span>
+                    <button class="btn-outline">즉시 사용</button>
+                </div>
+            </div>
+
+            <!-- 실제 쿠폰 데이터 -->
+            <div class="coupon-card" th:each="coupon : ${availableCoupons}" th:if="${availableCoupons != null}">
+                <h3 th:text="${coupon.title}">쿠폰명</h3>
+                <p th:text="${coupon.description}">쿠폰 설명</p>
+                <div class="coupon-meta">
+                    <span class="tag" th:text="${coupon.expireAt}">~ 2025-12-31</span>
+                    <button class="btn-outline" th:attr="data-coupon=${coupon.id}">사용하기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 빈 상태 -->
+        <div class="empty-state coupon-empty" th:if="${availableCoupons != null and #lists.isEmpty(availableCoupons)}">
+            보유 중인 사용 가능 쿠폰이 없습니다.
+        </div>
+
+        <!-- 이용 안내 -->
+        <div class="coupon-guide">
+            <h3>쿠폰 이용 안내</h3>
+            <ul>
+                <li>쿠폰은 주문 결제 단계에서 적용 가능합니다.</li>
+                <li>일부 상품 또는 브랜드는 쿠폰 적용이 제한될 수 있습니다.</li>
+                <li>사용 완료한 쿠폰은 "사용 완료" 탭에서 확인할 수 있습니다.</li>
+                <li>기간이 만료된 쿠폰은 자동으로 소멸됩니다.</li>
+            </ul>
+        </div>
+    </section>
 </main>
-
 
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>

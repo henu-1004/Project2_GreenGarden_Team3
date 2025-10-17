@@ -2,98 +2,142 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>별점 Hover 테스트</title>
+    <title>마이페이지 | 포인트</title>
+
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
-    <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            padding: 50px;
-        }
 
-        /* 별점 컨테이너 */
-        #starRating {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            direction: ltr;
-            unicode-bidi: bidi-override;
-        }
-
-        /* 별 스타일 */
-        #starRating span {
-            font-size: 40px;
-            color: #ccc;
-            cursor: pointer;
-            user-select: none;
-            transition: color 0.2s;
-            margin-right: 5px;
-        }
-
-        /* hover */
-        #starRating .hovered {
-            color: #ffcc66;
-        }
-
-        /* 클릭 확정 */
-        #starRating .selected {
-            color: #ffb400;
-        }
-    </style>
+    <!-- my 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <link rel="stylesheet" th:href="@{/css/my/point.css}">
+    <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
 
 <!-- 공통 헤더 -->
 <div th:replace="~{common/headerNoSearch :: headerNoSearch}"></div>
 
-<!-- 메인 바디 부분 -->
-<main>
-    <h2>별점 Hover 테스트</h2>
-    <div id="starRating">
-        <span data-value="1">★</span>
-        <span data-value="2">★</span>
-        <span data-value="3">★</span>
-        <span data-value="4">★</span>
-        <span data-value="5">★</span>
-    </div>
+<main class="mypage-container">
+    <!-- 어사이드 -->
+    <div th:replace="~{my/aside :: aside}"></div>
 
+    <!-- 본문 -->
+    <section class="content">
+        <h1>포인트 현황</h1>
+        <p class="lead">적립과 사용 내역을 확인하고 다양한 혜택을 놓치지 마세요.</p>
+
+        <!-- 요약 -->
+        <div class="point-summary">
+            <div class="summary-card">
+                <span>보유 포인트</span>
+                <strong>12,500P</strong>
+                <small>쇼핑 시 현금처럼 사용 가능합니다.</small>
+            </div>
+            <div class="summary-card">
+                <span>이번 달 적립</span>
+                <strong>+1,200P</strong>
+                <small>리뷰 작성 및 구매 적립 포함</small>
+            </div>
+            <div class="summary-card">
+                <span>소멸 예정</span>
+                <strong>300P</strong>
+                <small>2025-01-31까지 사용하세요.</small>
+            </div>
+        </div>
+
+        <!-- 포인트 로그 -->
+        <div class="point-log">
+            <div class="filter-bar">
+                <label>기간</label>
+                <div class="quick-range">
+                    <button class="active">1개월</button>
+                    <button>3개월</button>
+                    <button>6개월</button>
+                </div>
+                <input type="date">
+                <span>~</span>
+                <input type="date">
+                <div class="chip-group">
+                    <button class="chip active">전체</button>
+                    <button class="chip">적립</button>
+                    <button class="chip">사용</button>
+                </div>
+                <button class="btn-primary">조회하기</button>
+            </div>
+
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>일자</th>
+                    <th>구분</th>
+                    <th>상세내역</th>
+                    <th>변동 포인트</th>
+                    <th>잔여 포인트</th>
+                    <th>유효기간</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 샘플 데이터 -->
+                <tr th:if="${pointLogs == null}">
+                    <td>2025-10-12</td>
+                    <td>적립</td>
+                    <td class="left">[주문번호 20251012] 구매 적립</td>
+                    <td class="amount-plus">+800</td>
+                    <td>12,500</td>
+                    <td>2026-10-12</td>
+                </tr>
+                <tr th:if="${pointLogs == null}">
+                    <td>2025-10-05</td>
+                    <td>사용</td>
+                    <td class="left">장바구니 할인 사용</td>
+                    <td class="amount-minus">-500</td>
+                    <td>11,700</td>
+                    <td>-</td>
+                </tr>
+
+                <!-- 실제 데이터 -->
+                <tr th:each="log : ${pointLogs}" th:if="${pointLogs != null}">
+                    <td th:text="${#temporals.format(log.createdAt, 'yyyy-MM-dd')}">2025-10-01</td>
+                    <td th:text="${log.type}">적립</td>
+                    <td class="left" th:text="${log.description}">주문 적립</td>
+                    <td th:classappend="${log.amount > 0} ? ' amount-plus' : ' amount-minus'"
+                        th:text="${log.amount > 0 ? '+' + log.amount : log.amount}">+500</td>
+                    <td th:text="${log.balance}">1000</td>
+                    <td th:text="${log.expireAt != null ? #temporals.format(log.expireAt, 'yyyy-MM-dd') : '-'}">2026-01-01</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="empty-state" th:if="${pointLogs != null and #lists.isEmpty(pointLogs)}">
+                조회된 포인트 내역이 없습니다.
+            </div>
+        </div>
+
+        <!-- 포인트 이용 안내 -->
+        <div class="point-guide">
+            <div class="guide-box">
+                <h3>포인트 적립 안내</h3>
+                <ul>
+                    <li>상품 구매 확정 시 결제금액의 1%가 적립됩니다.</li>
+                    <li>리뷰 작성, 이벤트 참여 시 추가 적립 혜택이 제공됩니다.</li>
+                    <li>포인트 적립은 주문 취소/환불 시 회수될 수 있습니다.</li>
+                </ul>
+            </div>
+            <div class="guide-box">
+                <h3>포인트 사용 안내</h3>
+                <ul>
+                    <li>1,000P 이상 보유 시 100P 단위로 사용이 가능합니다.</li>
+                    <li>일부 프로모션 상품은 포인트 사용이 제한될 수 있습니다.</li>
+                    <li>유효기간이 지난 포인트는 자동으로 소멸됩니다.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 </main>
-
-
-<script>
-    const stars = document.querySelectorAll('#starRating span');
-    let selectedRating = 0;
-
-    stars.forEach((star, index) => {
-        // hover 진입
-        star.addEventListener('mouseenter', () => {
-            console.log("Hover → index:", index, "value:", star.dataset.value);
-            stars.forEach((s, i) => {
-                s.classList.toggle('hovered', i <= index);
-            });
-        });
-
-        // hover 해제
-        star.addEventListener('mouseleave', () => {
-            stars.forEach((s, i) => {
-                s.classList.remove('hovered');
-                s.classList.toggle('selected', i < selectedRating);
-            });
-        });
-
-        // 클릭
-        star.addEventListener('click', () => {
-            selectedRating = parseInt(star.dataset.value);
-            console.log("Click 선택:", selectedRating);
-            stars.forEach((s, i) => {
-                s.classList.toggle('selected', i < selectedRating);
-            });
-        });
-    });
-</script>
 
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
+
 </body>
 </html>

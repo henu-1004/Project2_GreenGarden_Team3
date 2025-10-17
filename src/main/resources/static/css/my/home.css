@@ -1,6 +1,16 @@
 /* =========================
    마이페이지 레이아웃
    ========================= */
+:root {
+    --gg-green-dark: #175a48;
+    --gg-green: #2b6b34;
+    --gg-green-light: #66968c;
+    --gg-border: #e1e5e3;
+    --gg-bg: #f5f8f7;
+    --gg-text: #333;
+    --gg-muted: #888;
+}
+
 .mypage-container {
     display: flex;
     max-width: 1200px;

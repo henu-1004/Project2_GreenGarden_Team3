@@ -114,7 +114,7 @@
                 <div class="actions">
                     <!-- ✅ 구매확정 -->
                     <button th:if="${order.confirmYn == 'N'}"
-                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}')|"
+                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}')|"
                             class="btn-primary">구매확정</button>
 
                     <button th:if="${order.confirmYn == 'Y'}"
@@ -132,7 +132,7 @@
 
                     <!-- ✅ 교환신청 -->
                     <button th:if="${order.exchangeYn == 'N'}"
-                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}')|"
+                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}')|"
                             class="btn-primary">교환신청</button>
 
                     <button th:if="${order.exchangeYn == 'Y'}"
@@ -141,13 +141,13 @@
 
                     <!-- ✅ 반품신청 -->
                     <button th:if="${order.returnYn == 'N'}"
-                            th:attr="onclick=|openModal('returnModal','${order.orderNo}')|"
+                            th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}')|"
                             class="btn-primary">반품신청</button>
 
                     <button th:if="${order.returnYn == 'Y'}"
                             class="btn-secondary done" disabled>반품신청 완료</button>
-
                 </div>
+
 
             </div>
 
@@ -499,6 +499,7 @@
         <!-- 💡 form 추가 -->
         <form th:action="@{/my/confirm}" method="post">
             <input type="hidden" name="orderNo" value="">
+            <input type="hidden" name="proId" value="">
             <div class="modal-body">
                 <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
                 <div class="actions">
@@ -570,6 +571,7 @@
         <!-- 💡 form 추가 -->
         <form th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="orderNo" value="">
+            <input type="hidden" name="proId" value="">
             <div class="modal-body">
                 <h3>반품정보 입력</h3>
                 <div class="form-group">
@@ -609,6 +611,7 @@
         <!-- 💡 form 추가 -->
         <form th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="orderNo" value="">
+            <input type="hidden" name="proId" value="">
             <div class="modal-body">
                 <div class="form-group">
                     <label>교환유형</label>

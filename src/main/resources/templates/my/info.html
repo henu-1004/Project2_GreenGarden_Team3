@@ -2,24 +2,138 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>마이페이지 | Green Garden</title>
+    <title>마이페이지 | 내 정보</title>
+
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
+
+    <!-- my 전용 CSS -->
+    <link rel="stylesheet" th:href="@{/css/my/home.css}">
+    <link rel="stylesheet" th:href="@{/css/my/info.css}">
+    <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
 
-    <!-- 공통 헤더 -->
-    <div th:replace="~{/common/headerNoSearch :: headerNoSearch}"></div>
+<!-- 공통 헤더 -->
+<div th:replace="~{common/headerNoSearch :: headerNoSearch}"></div>
 
-	<main>
-		<div id="main">
+<main class="mypage-container">
+    <!-- 어사이드 -->
+    <div th:replace="~{my/aside :: aside}"></div>
 
-		</div>
-	</main>
+    <!-- 본문 -->
+    <section class="content">
+        <h1>회원 정보 관리</h1>
+        <p class="lead">연락처, 배송지, 보안 설정을 최신 상태로 유지하세요.</p>
 
+        <!-- 프로필 헤더 -->
+        <div class="profile-header">
+            <div class="avatar">GG</div>
+            <div class="info">
+                <h2>그린가든 회원</h2>
+                <span>가입일 2023-05-20 · 최근 로그인 2025-10-12</span>
+            </div>
+            <div class="actions">
+                <button class="btn-outline">프로필 사진 변경</button>
+                <button class="btn-primary">로그아웃</button>
+            </div>
+        </div>
 
-    <!-- 공통 푸터 -->
-    <div th:replace="~{common/footer :: footer}"></div>
+        <!-- 계정 관련 섹션 -->
+        <div class="account-sections">
+
+            <!-- 기본 정보 -->
+            <div class="account-card">
+                <h3>기본 정보</h3>
+                <div class="field-row">
+                    <label>이름</label>
+                    <div class="value">홍길동</div>
+                    <button class="btn-outline">수정</button>
+                </div>
+                <div class="field-row">
+                    <label>이메일</label>
+                    <div class="value">garden@greengarden.com</div>
+                    <button class="btn-outline">변경</button>
+                </div>
+                <div class="field-row">
+                    <label>휴대폰</label>
+                    <div class="value">010-1234-5678</div>
+                    <button class="btn-outline">인증</button>
+                </div>
+            </div>
+
+            <!-- 배송지 정보 -->
+            <div class="account-card">
+                <h3>기본 배송지</h3>
+                <div class="field-row">
+                    <label>대표 주소</label>
+                    <div class="value">부산광역시 부산진구 가야대로 123, 101동 101호</div>
+                    <button class="btn-outline">변경</button>
+                </div>
+                <div class="field-row">
+                    <label>수령인</label>
+                    <div class="value">홍길동 · 010-0000-1111</div>
+                    <button class="btn-outline">수정</button>
+                </div>
+            </div>
+
+            <!-- 보안 설정 -->
+            <div class="account-card">
+                <h3>보안 설정</h3>
+                <div class="security-grid">
+                    <div class="security-item">
+                        <strong>비밀번호</strong>
+                        <span>마지막 변경일 2025-06-01</span>
+                        <div class="actions" style="margin-top:12px;">
+                            <button class="btn-outline">비밀번호 변경</button>
+                        </div>
+                    </div>
+                    <div class="security-item">
+                        <strong>2단계 인증</strong>
+                        <span>SMS 인증 사용 중</span>
+                        <div class="actions" style="margin-top:12px;">
+                            <button class="btn-outline">설정 변경</button>
+                        </div>
+                    </div>
+                    <div class="security-item">
+                        <strong>알림 설정</strong>
+                        <span>주문/배송, 이벤트 알림 ON</span>
+                        <div class="actions" style="margin-top:12px;">
+                            <button class="btn-outline">상세 보기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 마케팅 수신 동의 -->
+            <div class="account-card">
+                <h3>마케팅 수신 동의</h3>
+                <div class="preference-list">
+                    <div class="preference-item">
+                        <strong>이메일</strong>
+                        <span>프로모션, 이벤트 소식 수신</span>
+                        <button class="btn-outline">변경</button>
+                    </div>
+                    <div class="preference-item">
+                        <strong>문자</strong>
+                        <span>배송/주문 알림만 수신</span>
+                        <button class="btn-outline">변경</button>
+                    </div>
+                    <div class="preference-item">
+                        <strong>앱 푸시</strong>
+                        <span>전체 알림 수신</span>
+                        <button class="btn-outline">설정</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+<!-- 공통 푸터 -->
+<div th:replace="~{common/footer :: footer}"></div>
+
 </body>
 </html>
