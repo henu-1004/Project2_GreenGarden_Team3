@@ -37,7 +37,7 @@ body {
     width: 930px;
     flex-shrink: 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
     border-radius: 8px;
     background: white;
     /* aside와 상단선을 맞춤 */
@@ -76,6 +76,15 @@ body {
 
 /* complete css 시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 
+.complete_message {
+    margin: 30px auto;
+    padding: 10px;
+    text-align: center;
+}
+.complete_message h3 {
+    margin: 20px 0 10px 0;
+}
+
 /* 배송정보, 결제정보 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .del_info, .order-info {
     width: 70%;
@@ -84,15 +93,17 @@ body {
     border-top: 2px solid #66968c;
     border-bottom: 2px solid #66968c;
 }
-
 .del_info th, .order-info  th {
     background-color: #f3f7f6;
 }
-
 .del_info th, .order-info  th,
 .del_info td, .order-info td {
     padding: 8px;
     text-align: left;
+}
+
+.order_info_section h2 {
+    margin: 20px 0 10px 0;
 }
 
 /* 주문상품 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
@@ -155,4 +166,56 @@ body {
 .product_info p {
     color: #666;
     font-size: 0.9em;
+}
+
+/* ㅡㅡㅡ 최종 결제 정보 전체 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.order-chek {
+    display: flex;
+    text-align: center;
+    justify-content: right;
+    padding:  10px 30px 0 0;
+    margin: 20px 0;
+}
+
+/* 최종결제정보 스타일 */
+.payment-summary {
+    width: 300px;
+    border: 1px solid #66968c;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+/* 제목 스타일 */
+.payment-summary h2 {
+    font-size: 1.2em; /* 상대적인 크기 */
+    font-weight: bold;
+    margin: 0;
+    padding-bottom: 15px; /* 선과의 간격 */
+    border-bottom: 1px solid #66968c; /* 아래쪽 구분선 */
+}
+
+/* 내용 부분 컨테이너 */
+.summary-details {
+    padding-top: 15px; /* 제목과의 간격 */
+}
+
+/* 개별 항목 스타일 */
+.summary-details .item {
+    display: flex; /* 가로 정렬 */
+    justify-content: space-between; /* 양쪽 끝 정렬 */
+    margin-bottom: 10px; /* 항목별 간격 */
+}
+
+/* 전체주문금액 스타일 */
+.summary-details .total-price {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px; /* 선과의 간격 */
+    font-weight: bold;
+    color: #ff0000; /* 빨간색 */
+}
+
+/* 항목별 값(오른쪽)의 글자 굵기 */
+.summary-details .item span:last-child {
+    font-weight: normal; /* 원래대로 돌려놓기 */
 }

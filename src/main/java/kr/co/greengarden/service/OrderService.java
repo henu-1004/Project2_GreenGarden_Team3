@@ -18,6 +18,7 @@ import kr.co.greengarden.security.MemberDetails;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -86,4 +87,30 @@ public class OrderService {
     public List<AdminOrderListDTO> getOrderList() {
         return orderRepository.findAllAdminOrderList();
     }
+
+    public void getCompleteOrderList(String orderNo) {
+
+        /*
+            1. 주문 정보 조회
+            2. 주문 상품 목록 조회
+            3. 최종 결제 정보 계산/조회
+            4. 주문자 정보 조회(member 서비스?)
+        */
+
+
+
+        // - 주문 정보 가져오기 (Order 테이블) findById
+        Optional<Order> optOrder = orderRepository.findById(orderNo);
+
+        if(optOrder.isPresent()){
+            Order order = optOrder.get();
+            // - OrderNo - OrderItem 테이블 정보 가져오기
+            List<OrderItem> orderItemList = orderItemRepository.findAllByOrder_OrderNo(orderNo);
+
+            System.out.println(order);
+            System.out.println(orderItemList.toString());
+        }
+
+    }
+
 }

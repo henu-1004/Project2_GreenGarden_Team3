@@ -39,4 +39,5 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "LEFT JOIN o.orderItems oi")
     List<AdminOrderListDTO> findAllAdminOrderList();
 
+    String orderNo(String orderNo);
 }

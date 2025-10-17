@@ -7,10 +7,9 @@ package kr.co.greengarden.controller.product;
 */
 
 import kr.co.greengarden.dto.*;
+import kr.co.greengarden.dto.admin.AdminOrderListDTO;
 import kr.co.greengarden.dto.admin.AdminProductListDTO;
-import kr.co.greengarden.entity.Cart;
-import kr.co.greengarden.entity.Order;
-import kr.co.greengarden.entity.Product;
+import kr.co.greengarden.entity.*;
 import kr.co.greengarden.security.MemberDetails;
 import kr.co.greengarden.service.*;
 import lombok.RequiredArgsConstructor;
@@ -91,9 +90,28 @@ public class ProductController {
         return "product/order";
     }
 
+    @PostMapping("/product/action")
+    public String handleProductAction(@AuthenticationPrincipal MemberDetails memberDetails,
+                                      @RequestParam("action") String action,
+                                      CartDTO cartDTO) {
+
+        if ("cart".equals(action)) {
+            cartDTO.setMemId(memberDetails.getUsername());
+            log.info("cartDTO:{}", cartDTO.toString());
+            cartService.register(cartDTO);
+
+            return "redirect:/product/cart";
+
+        } else if ("order".equals(action)) {
+            // 주문 페이지로 이동
+            return "redirect:/product/order";
+        }
+
+        return "product/cart";
+    }
+
     @PostMapping("/product/order2")
-    public String order(@RequestParam("cartIds") List<Integer> cartIds,
-                        Model model) {
+    public String order(@RequestParam("cartIds") List<Integer> cartIds, Model model) {
         List<CartListDTO> cartList = cartService.getCartListBycartIds(cartIds);
 
         OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
@@ -180,13 +198,13 @@ public class ProductController {
     @PostMapping("/product/orderFix")
     public String orderFix(OrderDTO orderDTO, OrderItemListWrapper orderItemList, @AuthenticationPrincipal MemberDetails memberDetails) {
 
-        /*
+        /*  2025/10/16 한탁원
             1. prodId(전체)
             2. 배송정보 (이름 연락처 주소 우편번호 기본주소 상세주소 배송메모
             3. 최종결제
             4. 최종결제방법
         */
-        /*
+        /* 2025/10/16 한탁원
            1. orderDTO를 이용해서 Order 테이블에 데이터 삽입 (Member Security에서 MemberDetail를 통해 ID 가져옴) -> orderNo 가 생김.
            2. orderNo를 통해 orderItem 테이블에 데이터 삽입
            3.
@@ -194,32 +212,33 @@ public class ProductController {
 
         orderService.orderRegister(orderDTO, orderItemList, memberDetails);
 
-        return "redirect:/product/list";
+        return "redirect:/product/complete?orderNo=" + orderDTO.getOrderNo();
     }
 
-
-    @PostMapping("/product/action")
-    public String handleProductAction(@AuthenticationPrincipal MemberDetails memberDetails,
-                                      @RequestParam("action") String action,
-                                      CartDTO cartDTO) {
-
-        if ("cart".equals(action)) {
-            cartDTO.setMemId(memberDetails.getUsername());
-            log.info("cartDTO:{}", cartDTO.toString());
-            cartService.register(cartDTO);
-
-            return "redirect:/product/cart";
-
-        } else if ("order".equals(action)) {
-            // 주문 페이지로 이동
-            return "redirect:/product/order";
-        }
-
-        return "product/cart";
-    }
-
+    /* 2025/10/17 이수연 */
     @GetMapping("/product/complete")
-    public String completePage() {
+    public String completePage(@AuthenticationPrincipal MemberDetails memberDetails, @RequestParam String orderNo, Model model) {
+        /*
+            1. 주문완료된 정보가 그대로 보이도록 하기
+
+            2. 주문완료된 상품은 장바구니에서 지우기
+        */
+
+
+        // - 주문 정보 가져오기 (Order 테이블) findById
+        //Order order = orderRepository.findByID(orderNo);
+        // - OrderNo - OrderItem 테이블 정보 가져오기
+        //List<OrderItem> orderItemList = re.findAllByID(order.orderNo);
+
+        orderService.getCompleteOrderList(orderNo);
+
+        // 1. 현재 로그인된 회원 ID 가져오기
+        //String memberId = memberDetails.getUsername();
+
+
+
+
+
         return "product/complete";
     }
 

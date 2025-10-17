@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class OrderDTO {
     private String orderNo;
 
-    private Member member;
+    private Member member; // memId
     private int totalPrice;
     private String payMethod;
     private String status;

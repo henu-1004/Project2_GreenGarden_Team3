@@ -1,10 +1,7 @@
 package kr.co.greengarden.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /*
  * 날짜 : 2025/09/25
@@ -15,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString (exclude = {"order", "cart"})
 @Entity
 @Table(name = "TB_ORDER_ITEM")
 public class OrderItem {

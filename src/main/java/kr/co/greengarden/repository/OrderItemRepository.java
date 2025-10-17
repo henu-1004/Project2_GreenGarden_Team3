@@ -4,6 +4,8 @@ import kr.co.greengarden.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /*
  * 날짜 : 2025/09/25
  * 이름 : 한탁원
@@ -11,5 +13,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
-
+    List<OrderItem> findAllByOrder_OrderNo(String orderNo);
 }
