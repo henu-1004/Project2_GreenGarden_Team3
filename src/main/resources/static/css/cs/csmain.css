@@ -443,7 +443,6 @@ body {
     background-color: #175a48;
     border-color: #175a48;
     font-weight: bold;
-    pointer-events: none;
 }
 
 /* '이전' 및 '다음' 버튼 */

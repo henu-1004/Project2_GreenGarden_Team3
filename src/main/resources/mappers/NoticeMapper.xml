@@ -77,9 +77,9 @@
     <!--index 5개 가져오기-->
     <select id="selectLatestNotices" resultType="kr.co.greengarden.dto.NoticeDTO">
         SELECT
-        NOTICE_ID,
-        TITLE,
-        CREATED_AT
+        NOTICE_ID AS noticeId,
+        TITLE AS title,
+        CREATED_AT AS createdAt
         FROM TB_NOTICE
         ORDER BY CREATED_AT DESC
         FETCH NEXT #{limit} ROWS ONLY

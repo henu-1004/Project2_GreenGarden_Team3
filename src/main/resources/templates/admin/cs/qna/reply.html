@@ -1,16 +1,66 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>admin CS QNA Reply</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
 <body>
-	<main>
-		<div id="main">
+<div th:replace="~{admin/common/header :: header}"></div>
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{admin/cs/aside :: aside}"></div>
 
-			</div>
-		</div>
-	</main>
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>1:1 문의 답변 작성</h5>
+                <ul class="page_nation">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a th:href="@{/admin/cs/qna/list}">1:1 문의</a></li>
+                </ul>
+            </div>
+
+            <div class="admincs-view-container">
+                <div class="admincs-view-row admincs-view-type">
+                    <span class="admincs-view-label-text">유형</span>
+                    <span class="admincs-view-content" th:text="|${inquiryDTO.category1} - ${inquiryDTO.category2}|">회원 - 가입</span>
+                </div>
+
+                <div class="admincs-view-row admincs-view-title">
+                    <span class="admincs-view-label-text">제목</span>
+                    <span class="admincs-view-content" th:text="${inquiryDTO.title}">문의 제목</span>
+                </div>
+
+                <div class="admincs-view-content-area">
+                    <span class="admincs-view-label-text">문의 내용</span>
+                    <div class="admincs-view-content-text">
+                        <p th:utext="${inquiryDTO.content}">문의 내용입니다.</p>
+                    </div>
+                </div>
+
+                <form th:action="@{/admin/cs/qna/reply}" method="post" class="admin-reply-form">
+                    <input type="hidden" name="inquiryId" th:value="${inquiryDTO.inquiryId}" />
+                    <div class="admincs-view-content-area">
+                        <span class="admincs-view-label-text">답변 작성</span>
+                        <textarea name="answer" rows="8" class="admincs-reply-textarea"
+                                  placeholder="답변을 입력하세요..." required></textarea>
+                    </div>
+
+                    <div class="admincs-view-actions">
+                        <button type="submit" class="btn-submit">답변 등록</button>
+                        <button type="button"
+                                th:onclick="|location.href='@{/admin/cs/qna/list}'|"
+                                class="btn-list">목록</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </section>
+</main>
+<div th:replace="~{admin/common/footer :: footer}"></div>
 </body>
 </html>
