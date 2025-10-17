@@ -180,6 +180,13 @@ function initGeneralValidation(){
     // 이메일 검사
     //////////////////////////////////////////////////////////
 
+    function withCsrf(headers = {}) {
+        const token  = document.querySelector('meta[name="_csrf"]')?.content;
+        const header = document.querySelector('meta[name="_csrf_header"]')?.content;
+        if (token && header) headers[header] = token;
+        return headers;
+    }
+
 
     let preventDblClick = false; // 이중 클릭 방지를 위한 상태 변수
 
@@ -207,7 +214,7 @@ function initGeneralValidation(){
         emailResult.innerText = '이메일로 인증코드 전송 중 입니다.';
         emailResult.style.color = 'green';
 
-        fetch(`/greengarden/member/email/${value}`)
+        fetch(`/greengarden/member/email/${encodeURIComponent(value)}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data);
@@ -238,37 +245,68 @@ function initGeneralValidation(){
             });
     });
 
-        // 이메일 코드 전송 버튼 클릭
-         btnEmailCode.addEventListener('click', async function(e){
+    // 이메일 코드 전송 버튼 클릭
+    btnEmailCode.addEventListener('click', async function (e) {
+        // 중복 클릭 방지(원하면 동일 플래그 재사용)
+        if (btnEmailCode.disabled) return;
+        btnEmailCode.disabled = true;
 
-            const code = form.auth.value;
+        const email = form.email.value.trim();
+        const code  = form.auth.value.trim(); // 문자열 그대로(선행 0 보존)
+        if (!code) {
+            authResult.innerText = '인증코드를 입력하세요.';
+            authResult.style.color = 'red';
+            btnEmailCode.disabled = false;
+            return;
+        }
 
-            // JSON 생성
-            const jsonData = {
-                "code": code
-            };
-
-
+        try {
             const response = await fetch('/greengarden/email/code', {
                 method: 'POST',
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(jsonData)
+                credentials: 'same-origin', // JSESSIONID/remember-me 포함
+                headers: withCsrf({ 'Content-Type': 'application/json' }),
+                body: JSON.stringify({ email, code }) // 서버에서 email+code 함께 검증 권장
             });
 
-            const data = await response.json();
-            console.log(data);
+            // 200/400/410 등 상태별 처리
+            if (response.status === 410) {
+                authResult.innerText = '인증코드가 만료되었습니다. 다시 전송하세요.';
+                authResult.style.color = 'red';
+                isEmailOk = false;
+                return;
+            }
+            if (!response.ok) {
+                // 400 등: 불일치 혹은 기타 서버 에러
+                authResult.innerText = '인증코드가 일치하지 않습니다.';
+                authResult.style.color = 'red';
+                isEmailOk = false;
+                return;
+            }
 
-            if(data.isMatched){
+            const data = await response.json(); // { ok:true } 또는 { isMatched:true } 등
+            const ok = data.ok === true || data.isMatched === true;
+
+            if (ok) {
                 emailResult.innerText = '이메일이 인증되었습니다.';
                 emailResult.style.color = 'green';
+                authResult.innerText = '';
                 isEmailOk = true;
-            }else{
-                emailResult.innerText = '인증코드가 일치 않습니다.';
+            } else {
+                emailResult.innerText = '인증코드가 일치하지 않습니다.';
                 emailResult.style.color = 'red';
                 isEmailOk = false;
             }
+        } catch (err) {
+            console.error(err);
+            emailResult.innerText = '인증 요청 중 오류가 발생했습니다.';
+            emailResult.style.color = 'red';
+            isEmailOk = false;
+        } finally {
+            btnEmailCode.disabled = false;
+        }
+    });
 
-        });
+
 
         //////////////////////////////////////////////////////////
         // 휴대폰 중복 체크
