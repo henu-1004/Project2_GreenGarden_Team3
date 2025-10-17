@@ -74,8 +74,17 @@
                     <td th:text="${inquiry.category1}"></td>
                     <td th:text="${inquiry.category2}"></td>
                     <td>
-                        <a th:href="@{/admin/cs/qna/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
-                           th:text="${inquiry.title}">문의 제목</a>
+                        <!-- 상태가 '대기'면 reply 페이지로 이동 -->
+                        <a th:if="${inquiry.status == '대기'}"
+                           th:href="@{/admin/cs/qna/reply(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
+                           th:text="${inquiry.title}"
+                          >[답변대기] [[${inquiry.title}]]</a>
+
+                        <!-- 상태가 '완료'면 view 페이지로 이동 -->
+                        <a th:if="${inquiry.status == '완료'}"
+                           th:href="@{/admin/cs/qna/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
+                           th:text="${inquiry.title}"
+                          >[답변완료] [[${inquiry.title}]]</a>
                     </td>
                     <td>
     <span class="qna-status"

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /*
@@ -63,6 +64,18 @@ public class AdminQnaController {
         model.addAttribute("inquiryDTO",inquiryDTO);
         model.addAttribute("PageRequestDTO",pageRequestDTO);
         return "admin/cs/qna/view";
+    }
+
+    @GetMapping("/admin/cs/qna/reply")
+    public String reply(Integer inquiryId,PageRequestDTO pageRequestDTO,Model model) {
+        InquiryDTO inquiryDTO = inquiryService.getInquiry(inquiryId);
+        model.addAttribute("inquiryDTO",inquiryDTO);
+        return "admin/cs/qna/reply";
+    }
+    // 답변 등록 처리 POST
+    @PostMapping("/admin/cs/qna/reply")
+    public String saverReply(InquiryDTO inquiryDTO){
+        return "redirect:/admin/cs/qna/list";
     }
 
     // 문의 작성폼
