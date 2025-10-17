@@ -5,18 +5,14 @@ package kr.co.greengarden.controller.product;
     이름 : 이수연 & 한탁원
     내용 : 상품 컨트롤러 & 기능
 */
-import kr.co.greengarden.dto.CartDTO;
-import kr.co.greengarden.dto.CartListDTO;
-import kr.co.greengarden.dto.OrderInfoDTO;
-import kr.co.greengarden.dto.ProductListDTO;
+
+import kr.co.greengarden.dto.*;
 import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.Cart;
 import kr.co.greengarden.entity.Order;
 import kr.co.greengarden.entity.Product;
 import kr.co.greengarden.security.MemberDetails;
-import kr.co.greengarden.service.CartService;
-import kr.co.greengarden.service.MemberService;
-import kr.co.greengarden.service.ProductService;
+import kr.co.greengarden.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,6 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -35,18 +32,20 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-public class    ProductController {
+public class ProductController {
 
     private final ProductService productService;
     private final CartService cartService;
     private final MemberService memberService;
+    private final OrderService orderService;
+    private final OrderItemService orderItemService;
 
     @GetMapping("/product/list")
     public String productListPage(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "proId") String sortBy,
-                                   @RequestParam(defaultValue = "desc") String direction,
-                                   @RequestParam(defaultValue = "plants") String slug,
-                                   Model model) {
+                                  @RequestParam(defaultValue = "proId") String sortBy,
+                                  @RequestParam(defaultValue = "desc") String direction,
+                                  @RequestParam(defaultValue = "plants") String slug,
+                                  Model model) {
 
         Page<ProductListDTO> productList = productService.getProductCards(page, sortBy, direction, slug);
 
@@ -88,7 +87,7 @@ public class    ProductController {
     }
 
     @GetMapping("/product/order")
-    public String orderPage(){
+    public String orderPage() {
         return "product/order";
     }
 
@@ -113,7 +112,7 @@ public class    ProductController {
             count += c.getQuantity();
             originalTotalPrice += original * count;
             discountPrice += (c.getPrice() - original) * count;
-            if(deliveryFee < c.getDeliveryFee()) {
+            if (deliveryFee < c.getDeliveryFee()) {
                 deliveryFee = c.getDeliveryFee();
             }
             totalPoint += c.getPoint() * count;
@@ -155,7 +154,7 @@ public class    ProductController {
             count += c.getQuantity();
             originalTotalPrice += original * count;
             discountPrice += (c.getPrice() - original) * count;
-            if(deliveryFee < c.getDeliveryFee()) {
+            if (deliveryFee < c.getDeliveryFee()) {
                 deliveryFee = c.getDeliveryFee();
             }
             totalPoint += c.getPoint() * count;
@@ -176,6 +175,28 @@ public class    ProductController {
 
         return "product/order2";
     }
+
+
+    @PostMapping("/product/orderFix")
+    public String orderFix(OrderDTO orderDTO, OrderItemListWrapper orderItemList, @AuthenticationPrincipal MemberDetails memberDetails) {
+
+        /*
+            1. prodId(전체)
+            2. 배송정보 (이름 연락처 주소 우편번호 기본주소 상세주소 배송메모
+            3. 최종결제
+            4. 최종결제방법
+        */
+        /*
+           1. orderDTO를 이용해서 Order 테이블에 데이터 삽입 (Member Security에서 MemberDetail를 통해 ID 가져옴) -> orderNo 가 생김.
+           2. orderNo를 통해 orderItem 테이블에 데이터 삽입
+           3.
+         */
+
+        orderService.orderRegister(orderDTO, orderItemList, memberDetails);
+
+        return "redirect:/product/list";
+    }
+
 
     @PostMapping("/product/action")
     public String handleProductAction(@AuthenticationPrincipal MemberDetails memberDetails,

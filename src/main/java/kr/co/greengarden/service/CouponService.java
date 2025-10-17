@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -26,22 +28,16 @@ public class CouponService {
     private final ModelMapper modelMapper;
 
     // --- 쿠폰 종류별 식별 코드 (상수) ---
-    private static final String TYPE_INDIVIDUAL = "1";  // 개별상품할인
-    private static final String TYPE_ORDER = "2";       // 주문상품할인
-    private static final String TYPE_SHIPPING = "3";    // 배송비 무료
+    // private static final String TYPE_INDIVIDUAL = "1";  // 개별상품할인
+    // private static final String TYPE_ORDER = "2";       // 주문상품할인
+    // private static final String TYPE_SHIPPING = "3";    // 배송비 무료
 
     // ----------------------------------------------------------------------
     //  11자리 쿠폰 번호 조합 로직 (타입 + 년월 + 시퀀스)
     // ----------------------------------------------------------------------
     private String generateCouponNo(String couponType) {
 
-        // 1. 타입 코드 (1자리)
-        String typeCode = switch (couponType) {
-            case "개별상품할인" -> TYPE_INDIVIDUAL;
-            case "주문상품할인" -> TYPE_ORDER;
-            case "배송비 무료" -> TYPE_SHIPPING;
-            default -> "0";
-        };
+        // 1. 타입 코드 (1자리) couponType
 
         // 2. 년월 코드 (4자리: YYMM)
         String dateCode = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyMM"));
@@ -52,7 +48,7 @@ public class CouponService {
         String uniqueCode = String.format("%06d", nextVal);
 
         // 4. 11자리 최종 조합
-        return typeCode + dateCode + uniqueCode;
+        return couponType + dateCode + uniqueCode;
     }
 
     // ----------------------------------------------------------------------
@@ -70,7 +66,7 @@ public class CouponService {
         // 3. Entity에 서버 설정 값 주입
         coupon.setCouponNo(newCouponNo);
         coupon.setIssuedAt(LocalDateTime.now());
-        coupon.setStatus("ISSUED"); // 발급 완료 상태로 설정
+        coupon.setStatus("발급 중"); // 발급 완료 상태로 설정
 
         // 4. DB에 저장
         Coupon savedCoupon = couponRepository.save(coupon);
@@ -78,5 +74,17 @@ public class CouponService {
         // 5. 저장된 Entity -> DTO로 변환하여 반환
         return modelMapper.map(savedCoupon, CouponDTO.class);
     }
+
+    public List<CouponDTO> getCouponList() {
+        // 1. Repository 호출: DB Entity 목록을 가져온다.
+        List<Coupon> couponEntities = couponRepository.findAllByOrderByIssuedAtDesc();
+
+        // 2. [핵심] Entity 목록을 DTO 목록으로 변환하여 반환한다.
+        // DTO에 있는 필드(couponNo, name, status 등)만 자동으로 복사된다.
+        return couponEntities.stream()
+                .map(coupon -> modelMapper.map(coupon, CouponDTO.class))
+                .collect(Collectors.toList());
+    }
+
 
 }

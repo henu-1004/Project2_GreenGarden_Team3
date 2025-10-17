@@ -50,6 +50,10 @@
                     <th style="width: 80px">발급일</th>
                     <th>관리</th>
                 </tr>
+                <tr th:each="coupon, stat : ${couponList}">
+                    <td>[[${coupon.couponNo}]]</td>
+                    <td>[[${coupon.type}]]</td>
+                </tr>
                 <tr>
                     <td><span class="coupon-num-link" onclick="openModal('modalCouponInfo')">10121211341</span></td>
                     <td>개별상품 할인</td>

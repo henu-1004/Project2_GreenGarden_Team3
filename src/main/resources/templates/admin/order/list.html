@@ -48,6 +48,17 @@
                     <th>주문일</th>
                     <th>배송</th>
                 </tr>
+                <tr th:each="order, stat : ${orderList}">
+                    <td><span class="order-number-link" onclick="openModal('modalOrderDetail')">[[${order.orderNo}]]</span></td>
+                    <td>[[${order.memId}]]</td>
+                    <td>[[${order.name}]]</td>
+                    <td>[[${order.quantity}]]</td>
+                    <td>[[${order.totalPrice}]]</td>
+                    <td>[[${order.payMethod}]]</td>
+                    <td>[[${order.status}]]</td>
+                    <td>[[${order.orderedAt}]]</td>
+                    <td>배송</td>
+                </tr>
                 <tr>
                     <td><span class="order-number-link" onclick="openModal('modalOrderDetail')">10121211341</span></td>
                     <td>abc123</td>

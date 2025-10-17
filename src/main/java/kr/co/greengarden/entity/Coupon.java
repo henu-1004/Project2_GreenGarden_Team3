@@ -19,13 +19,13 @@ public class Coupon {
 
     private String type; // 쿠폰종류
     private String name; // 쿠폰명
-    private String benefit; // 혜택
+    private String benefit; // 혜택명(어떤 혜택 종류)
 
     @Column(name = "DISCOUNT_VALUE")
-    private int discountValue; // 할인값
+    private int discountValue; // 할인값: 계산용 숫자
 
     @Column(name = "DISCOUNT_TYPE")
-    private String discountType; // 할인단위
+    private String discountType; // 할인 종류 구분자: AMOUNT(정액), PERCENT(정률), SHIPPING배송
 
     @Column(name = "START_DATE")
     private LocalDateTime startDate; // 사용시작일
