@@ -7,6 +7,9 @@
     <link rel="stylesheet" th:href="@{/css/find/userId.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+
     <!--
        날짜 : 2025/09/30
        이름 : 이종봉
@@ -83,11 +86,18 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
+        function csrfHeaders(extra = {}) {
+            const t = document.querySelector('meta[name="_csrf"]')?.content;
+            const h = document.querySelector('meta[name="_csrf_header"]')?.content;
+            return (t && h) ? { ...extra, [h]: t } : extra;
+        }
+
+
         const POST_URL_EMAIL = '/greengarden/find/resultId';
         const POST_URL_PHONE = '/greengarden/find/resultId-phone';
         const VERIFY_PHONE   = '/greengarden/find/userId/verifyPhone';
         const SEND_URL = '/greengarden/find/userId/sendCode';
-        const VERIFY_URL = 'greengarden/find/userId/verifyCode';
+        const VERIFY_URL = '/greengarden/find/userId/verifyCode';
 
         const mainWrap = document.querySelector('main.find-wrap');
 
@@ -168,7 +178,7 @@
                 setMsg(emailMsg, '인증번호 전송 중입니다…');
                 await fetch(SEND_URL, {
                     method:'POST',
-                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    headers: csrfHeaders({'Content-Type':'application/x-www-form-urlencoded'}),
                     body:'email='+encodeURIComponent(email)
                 });
                 setMsg(emailMsg, '인증번호를 전송했습니다.', 'green');
@@ -191,10 +201,11 @@
                 setMsg(codeMsg, '확인 중입니다…');
                 const res = await fetch(VERIFY_URL, {
                     method:'POST',
-                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    headers:csrfHeaders({'Content-Type':'application/x-www-form-urlencoded'}),
                     body:'email='+encodeURIComponent(email)+'&code='+encodeURIComponent(code)
                 });
-                const ok = await res.json(); // boolean 기대
+                const data = await res.json().catch(() =>({}));
+                const ok = (data === true) || (data.ok === true) || (data.isMatched === true);
                 if (ok) {
                     setMsg(emailMsg, '이메일이 인증되었습니다.', 'green');
                     setMsg(codeMsg,  '인증이 완료되었습니다.', 'green');
@@ -225,11 +236,12 @@
                 setMsg(phoneMsg, '확인 중입니다…');
                 const res = await fetch(VERIFY_PHONE, {
                     method:'POST',
-                    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                    headers: csrfHeaders({'Content-Type':'application/x-www-form-urlencoded'}),
                     body:'name='+encodeURIComponent(name)+'&phone='+encodeURIComponent(phone)
                 });
-                const ok = await res.json(); // boolean 기대
-                if (ok === true) {
+                const data = await res.json().catch(() => ({}));
+                const ok = (data === true) || (data.ok === true) || (data.isMatched === true);
+                if (ok) {
                     phoneVerified = true;
                     pName.readOnly = true;
                     pPhone.readOnly = true;
