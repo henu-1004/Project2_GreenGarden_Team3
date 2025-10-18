@@ -4,7 +4,6 @@
     내용 : 쿠폰목록 - 쿠폰등록 모달
 -->
 <div id="modalCouponInsert" th:fragment="modal-CouponInsert">
-    <link rel="stylesheet" th:href="@{/css/admin/coupon/_listCouponInsert.css}">
     <div class="modal-content">
         <button class="close-button" onclick="closeModal('modalCouponInsert')">×</button>
         <div class="modal-header">
@@ -16,13 +15,13 @@
             <table class="coupon-insert-table">
                 <tr>
                     <th>발급처</th>
-                    <td><label><input type="text"  name="issuer" value="(주)Green Garden"></label></td>
+                    <td><label><input type="text" name="issuer" value="(주)Green Garden"></label></td>
                 </tr>
                 <tr>
                     <th>쿠폰종류</th>
                     <td>
                         <label>
-                            <select class="coupon-cat" name="type"> <!-- (명세서)쿠폰 종류는 3종류로 제한 -->
+                            <select class="coupon-cat" name="type"> (명세서)쿠폰 종류는 3종류로 제한
                                 <option value="1">개별상품할인</option>
                                 <option value="2">주문상품할인</option>
                                 <option value="3">배송비 무료</option>
@@ -37,11 +36,16 @@
                 <tr>
                     <th>혜택</th>
                     <td class="radio-group">
-                        <label><input type="radio" name="discountValue" value="1000" data-type="AMOUNT"/>1,000원 할인</label>
-                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>2,000원 할인</label>
-                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>3,000원 할인</label>
-                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>4,000원 할인</label>
-                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>5,000원 할인</label>
+                        <label><input type="radio" name="discountValue" value="1000" data-type="AMOUNT"/>1,000원
+                            할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>2,000원
+                            할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>3,000원
+                            할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>4,000원
+                            할인</label>
+                        <label><input type="radio" name="discountValue" value="2000" data-type="AMOUNT"/>5,000원
+                            할인</label>
 
                         <label><input type="radio" name="discountValue" value="10" data-type="PERCENT"/>10% 할인</label>
                         <label><input type="radio" name="discountValue" value="20" data-type="PERCENT"/>20% 할인</label>
@@ -51,20 +55,23 @@
 
                         <label><input type="radio" name="discountValue" value="0" data-type="SHIPPING"/>배송비 무료</label>
 
-                        <input type="hidden" id="benefitName" name="benefit" />
-                        <input type="hidden" id="discountType" name="discountType" />
+                        <input type="hidden" id="benefitName" name="benefit"/>
+                        <input type="hidden" id="discountType" name="discountType"/>
                     </td>
                 </tr>
                 <tr>
                     <th>사용기간</th>
                     <td>
-                        <input type="datetime-local" id="startDate" name="startDate" /> ~ <input type="datetime-local" id="endDate" name="endDate" />
-                        <!-- <br> <p>또는 발급일로부터 <input type="number"> 이내</p> -->
+                        <input type="datetime-local" id="startDate" name="startDate"/> ~ <input type="datetime-local"
+                                                                                                id="endDate"
+                                                                                                name="endDate"/>
+                        <br>
+                        <p>또는 발급일로부터 <input type="number"> 이내</p>
                     </td>
                 </tr>
                 <tr>
                     <th>유의사항</th>
-                    <td> <textarea id="note" name="note" class="ex-textbox" maxlength="200"></textarea> </td>
+                    <td><textarea id="note" name="note" class="ex-textbox" maxlength="200"></textarea></td>
                 </tr>
             </table>
             <div class="btn-content">
@@ -74,4 +81,3 @@
         </form>
     </div>
 </div>
-

@@ -10,148 +10,141 @@
     <link rel="stylesheet" th:href="@{/css/admin/index.css}">
 </head>
 <!-- 
-	날짜 : 2025/09/16
-	이름 : 한탁원
-	내용 : 관리자 메인 작성
+	날짜 : 2025/09/16 & 2025/10/17
+	이름 : 한탁원 & 이수연
+	내용 : 관리자 메인 작성 & css 작업
  -->
 <body>
 <div th:replace="~{admin/common/header :: header}"></div>
 <main>
-    <div id="main">
-        <div class="content-wrap">
-            <div th:replace="~{admin/common/aside :: aside}"></div>
-            <section id="main-section">
-                <div class="top-nav">
-                    <h3>관리자메인</h3>
-                    <ul class="page-nation">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">관리자메인</a></li>
-                    </ul>
+    <section class="content-wrap">
+        <div th:replace="~{admin/common/aside :: aside}"></div>
+        <section id="main-section">
+            <div class="top-nav">
+                <h3>쿠폰목록</h3>
+                <ul class="page-nation">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">관리자 메인</a></li>
+                </ul>
+            </div>
+
+            <h2>집계현황</h2>
+            <section class="chart-section">
+                <div class="line-chart-container">
+                    <canvas id="barChart" class="chart-canvas"></canvas>
                 </div>
-
-                <div>
-                    <h2>집계현황</h2>
-                    <table border="1">
-                        <tr>
-                            <td>
-                                <img src="" alt="">
-                            </td>
-                            <td>
-
-                                <img src="" alt="">
-                            </td>
-                        </tr>
-                    </table>
+                <div class="pie-chart-container">
+                    <canvas id="pieChart" class="chart-canvas"></canvas>
                 </div>
-
-                <div>
-                    <h2>운영현황</h2>
-                    <table border="1">
-                        <tr>
-                            <td>입금대기</td>
-                            <td>배송준비</td>
-                            <td>취소요청</td>
-                            <td>교환요청</td>
-                            <td>반품요청</td>
-                        </tr>
-                        <tr>
-                            <td>[[${statusCount}]]</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                        </tr>
-                    </table>
-
-                    <table border="1">
-                        <tr>
-                            <td colspan="2">주문건수</td>
-                            <td colspan="2">주문금액</td>
-                            <td colspan="2">회원가입</td>
-                            <td colspan="2">방문자 수</td>
-                            <td colspan="2">문의 게시물</td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">[[${orderCount}]]</td>
-                            <td colspan="2">[[${totalPrice}]]</td>
-                            <td colspan="2">[[${memberCount}]]</td>
-                            <td colspan="2">-</td>
-                            <td colspan="2">[[${qnaCount}]]</td>
-                        </tr>
-                        <tr>
-                            <td>오늘</td>
-                            <td>60</td>
-                            <td>오늘</td>
-                            <td>60</td>
-                            <td>오늘</td>
-                            <td>60</td>
-                            <td>오늘</td>
-                            <td>60</td>
-                            <td>오늘</td>
-                            <td>60</td>
-                        </tr>
-                        <tr>
-                            <td>어제</td>
-                            <td>60</td>
-                            <td>어제</td>
-                            <td>60</td>
-                            <td>어제</td>
-                            <td>60</td>
-                            <td>어제</td>
-                            <td>60</td>
-                            <td>어제</td>
-                            <td>60</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <section id="cs-section">
-                    <div>
-                        <h2>공지사항</h2>
-                        <table class="admincsnotice-table">
-                            <tbody>
-                            <tr th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}">
-                                <td colspan="7" style="text-align: center">등록된 공지사항이 없습니다.</td>
-                            </tr>
-                            <tr th:each="notice, iterStat : ${pageResponseDTO.dtoList}" th:if="${iterStat.index < 5}">
-                                <td th:text="${notice.type}">고양이서비스</td>
-                                <td>
-                                    <a th:href="@{/admin/cs/notice/view(noticeId=${notice.noticeId})}"
-                                       th:text="${notice.title}"></a>
-                                </td>
-                                <td th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                        <h2>고객문의</h2>
-                        <table class="qna-table">
-                            <tbody>
-                            <!-- 목록 데이터 바인딩 -->
-                            <tr th:each="inquiry, iterStat : ${responseDTO.dtoList}" th:if="${iterStat.index < 5}">
-                                <td th:text="${inquiry.category2}">가입</td>
-                                <td class="qna-title">
-                                    <!-- 상세 페이지 링크: inquiryId와 검색/페이징 조건 유지 -->
-                                    <a th:href="@{/cs/inquiry/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
-                                       th:text="${inquiry.title}">가입문의드립니다</a>
-                                </td>
-                                <td th:text="${inquiry.writer}">user***</td>
-                                <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}">23.10.31</td>
-                            </tr>
-                            <!-- 목록이 비어있을 경우 -->
-                            <tr th:if="${responseDTO.dtoList.isEmpty()}">
-                                <td colspan="5" style="text-align: center;">등록된 문의 내역이 없습니다.</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
             </section>
-        </div>
-    </div>
+
+            <h2>운영현황</h2>
+            <section class="status-section">
+                <table border="1" class="status-table order-status">
+                    <tr>
+                        <th>입금대기</th>
+                        <th>배송준비</th>
+                        <th>취소요청</th>
+                        <th>교환요청</th>
+                        <th>반품요청</th>
+                    </tr>
+                    <tr>
+                        <td>[[${statusCount}]]</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td>-</td>
+                    </tr>
+                </table>
+
+                <table border="1" class="status-table total-count">
+                    <tr>
+                        <th colspan="2">주문건수</th>
+                        <th colspan="2">주문금액</th>
+                        <th colspan="2">회원가입</th>
+                        <th colspan="2">방문자 수</th>
+                        <th colspan="2">문의 게시물</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">[[${orderCount}]]</td>
+                        <td colspan="2">[[${totalPrice}]]</td>
+                        <td colspan="2">[[${memberCount}]]</td>
+                        <td colspan="2">-</td>
+                        <td colspan="2">[[${qnaCount}]]</td>
+                    </tr>
+                    <tr>
+                        <td>오늘</td>
+                        <td>60</td>
+                        <td>오늘</td>
+                        <td>60</td>
+                        <td>오늘</td>
+                        <td>60</td>
+                        <td>오늘</td>
+                        <td>60</td>
+                        <td>오늘</td>
+                        <td>60</td>
+                    </tr>
+                    <tr>
+                        <td>어제</td>
+                        <td>60</td>
+                        <td>어제</td>
+                        <td>60</td>
+                        <td>어제</td>
+                        <td>60</td>
+                        <td>어제</td>
+                        <td>60</td>
+                        <td>어제</td>
+                        <td>60</td>
+                    </tr>
+                </table>
+            </section>
+
+            <section id="cs-section" class="cs-section">
+                <div class="admincsnotice-table-wrap">
+                    <h2>공지사항</h2>
+                    <table class="admincsnotice-table">
+                        <tbody>
+                        <tr th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}">
+                            <td colspan="7" style="text-align: center">등록된 공지사항이 없습니다.</td>
+                        </tr>
+                        <tr th:each="notice, iterStat : ${pageResponseDTO.dtoList}" th:if="${iterStat.index < 5}">
+                            <td>&#91;[[${notice.type}]]&#93;</td>
+                            <td>
+                                <a th:href="@{/admin/cs/notice/view(noticeId=${notice.noticeId})}"
+                                   th:text="${notice.title}"></a>
+                            </td>
+                            <td th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="qna-table-wrap">
+                    <h2>고객문의</h2>
+                    <table class="qna-table">
+                        <tbody>
+                        <!-- 목록 데이터 바인딩 -->
+                        <tr th:each="inquiry, iterStat : ${responseDTO.dtoList}" th:if="${iterStat.index < 5}">
+                            <td>&#91;[[${inquiry.category2}]]&#93;</td>
+                            <td class="qna-title">
+                                <!-- 상세 페이지 링크: inquiryId와 검색/페이징 조건 유지 -->
+                                <a th:href="@{/cs/inquiry/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+                                   th:text="${inquiry.title}">가입문의드립니다</a>
+                            </td>
+                            <td th:text="${inquiry.writer}">user***</td>
+                            <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}">23.10.31</td>
+                        </tr>
+                        <!-- 목록이 비어있을 경우 -->
+                        <tr th:if="${responseDTO.dtoList.isEmpty()}">
+                            <td colspan="5" style="text-align: center;">등록된 문의 내역이 없습니다.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+    </section>
 </main>
 <div th:replace="~{admin/common/footer :: footer}"></div>
-
+<script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>
