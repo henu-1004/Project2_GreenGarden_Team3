@@ -102,5 +102,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("update Product p set p.views = p.views + 1 where p.proId = :proId")
     void updateViewByProductId(@Param("proId") int proId);
 
+    @Modifying
+    @Query("update Product p set p.orderCount = p.orderCount + 1 where p.proId = :proId")
+    void updateOrderCountByProductId(@Param("proId") int proId);
 
 }

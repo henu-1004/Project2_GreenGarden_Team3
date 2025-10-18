@@ -34,4 +34,7 @@ public class Cart {
 
     @Column
     private int quantity;
+
+    @Column
+    private String orderNo;
 }

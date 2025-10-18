@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
  * 날짜 : 2025/09/25
@@ -52,4 +53,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     """)
     List<CartListDTO> findCartListByCartIds(@Param("cartIds") List<Integer> cartIds);
 
+    Optional<Cart> findByProduct_ProId(Integer proId);
+
+    void deleteByProduct_ProId(Integer proId);
 }

@@ -1,0 +1,24 @@
+package kr.co.greengarden.repository;
+
+import kr.co.greengarden.dto.CartListDTO;
+import kr.co.greengarden.entity.Cart;
+import kr.co.greengarden.entity.Delivery;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+
+/*
+ * 날짜 : 2025/09/25
+ * 이름 : 한탁원
+ * 내용 : CartRepository 작성
+ */
+@Repository
+public interface DeliveryRepository extends JpaRepository<Delivery, Integer> {
+
+}

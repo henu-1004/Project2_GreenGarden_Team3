@@ -23,6 +23,7 @@ public class CartDTO {
     private String memId;
     private int proId;
     private int quantity;
+    private String orderNo;
 
     // Entity 변환 메서드
     public Cart toEntity(Member member, Product product) {
@@ -30,6 +31,7 @@ public class CartDTO {
                 .member(member)
                 .product(product)
                 .quantity(this.quantity)
+                .orderNo(orderNo)
                 .build();
     }
 }

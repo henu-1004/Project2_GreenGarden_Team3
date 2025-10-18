@@ -94,15 +94,17 @@ public class ProductController {
     public String handleProductAction(@AuthenticationPrincipal MemberDetails memberDetails,
                                       @RequestParam("action") String action,
                                       CartDTO cartDTO) {
-
+        
+        // 장바구니 버튼 클릭 시
         if ("cart".equals(action)) {
             cartDTO.setMemId(memberDetails.getUsername());
-            log.info("cartDTO:{}", cartDTO.toString());
+            // 장바구니에 아무 물품 없을 시, 주문 번호 생성
             cartService.register(cartDTO);
 
             return "redirect:/product/cart";
-
-        } else if ("order".equals(action)) {
+        } 
+        // 주문하기 버튼 클릭 시
+        else if ("order".equals(action)) {
             // 주문 페이지로 이동
             return "redirect:/product/order";
         }
@@ -114,39 +116,8 @@ public class ProductController {
     public String order(@RequestParam("cartIds") List<Integer> cartIds, Model model) {
         List<CartListDTO> cartList = cartService.getCartListBycartIds(cartIds);
 
-        OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
-
-        int count = 0;
-        int originalTotalPrice = 0;
-        int totalPrice = 0;
-        int discountPrice = 0;
-        int deliveryFee = 0;
-        int totalPoint = 0;
-
-        for (CartListDTO c : cartList) {
-            int original = (int) Math.ceil(c.getPrice() / (1 - (c.getDiscountRate() / 100.0)));
-            c.setOriginalPrice(original);
-
-            count += c.getQuantity();
-            originalTotalPrice += original * count;
-            discountPrice += (c.getPrice() - original) * count;
-            if (deliveryFee < c.getDeliveryFee()) {
-                deliveryFee = c.getDeliveryFee();
-            }
-            totalPoint += c.getPoint() * count;
-            totalPrice += c.getPrice() * count;
-        }
-
-        totalPrice += deliveryFee;
-
-        orderInfoDTO.setCount(count);
-        orderInfoDTO.setOriginalTotalPrice(originalTotalPrice);
-        orderInfoDTO.setTotalPrice(totalPrice);
-        orderInfoDTO.setDiscountPrice(discountPrice);
-        orderInfoDTO.setDeliveryFee(deliveryFee);
-        orderInfoDTO.setTotalPoint(totalPoint);
-
-        model.addAttribute("orderInfo", orderInfoDTO);
+        // 삭제, 멤버 주문 번호
+        model.addAttribute("orderInfo", orderService.getOrderInfo(cartList));
         model.addAttribute("cartList", cartList);
 
         return "product/order2";
@@ -156,39 +127,7 @@ public class ProductController {
     public String orderPage(@RequestParam String cartId, Model model) {
         List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
 
-        OrderInfoDTO orderInfoDTO = new OrderInfoDTO();
-
-        int count = 0;
-        int originalTotalPrice = 0;
-        int totalPrice = 0;
-        int discountPrice = 0;
-        int deliveryFee = 0;
-        int totalPoint = 0;
-
-        for (CartListDTO c : cartList) {
-            int original = (int) Math.ceil(c.getPrice() / (1 - (c.getDiscountRate() / 100.0)));
-            c.setOriginalPrice(original);
-
-            count += c.getQuantity();
-            originalTotalPrice += original * count;
-            discountPrice += (c.getPrice() - original) * count;
-            if (deliveryFee < c.getDeliveryFee()) {
-                deliveryFee = c.getDeliveryFee();
-            }
-            totalPoint += c.getPoint() * count;
-            totalPrice += c.getPrice() * count;
-        }
-
-        totalPrice += deliveryFee;
-
-        orderInfoDTO.setCount(count);
-        orderInfoDTO.setOriginalTotalPrice(originalTotalPrice);
-        orderInfoDTO.setTotalPrice(totalPrice);
-        orderInfoDTO.setDiscountPrice(discountPrice);
-        orderInfoDTO.setDeliveryFee(deliveryFee);
-        orderInfoDTO.setTotalPoint(totalPoint);
-
-        model.addAttribute("orderInfo", orderInfoDTO);
+        model.addAttribute("orderInfo", orderService.getOrderInfo(cartList));
         model.addAttribute("cartList", cartList);
 
         return "product/order2";
@@ -197,6 +136,7 @@ public class ProductController {
 
     @PostMapping("/product/orderFix")
     public String orderFix(OrderDTO orderDTO, OrderItemListWrapper orderItemList, @AuthenticationPrincipal MemberDetails memberDetails) {
+        // 결제 대기 -> 결제 완료
 
         /*  2025/10/16 한탁원
             1. prodId(전체)
@@ -209,7 +149,6 @@ public class ProductController {
            2. orderNo를 통해 orderItem 테이블에 데이터 삽입
            3.
          */
-
         orderService.orderRegister(orderDTO, orderItemList, memberDetails);
 
         return "redirect:/product/complete?orderNo=" + orderDTO.getOrderNo();
@@ -234,11 +173,6 @@ public class ProductController {
 
         // 1. 현재 로그인된 회원 ID 가져오기
         //String memberId = memberDetails.getUsername();
-
-
-
-
-
         return "product/complete";
     }
 
