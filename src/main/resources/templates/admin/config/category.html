@@ -17,7 +17,7 @@
 <body>
 <div th:replace="~{admin/common/header :: header}"></div>
 <section class="content-wrap">
-    <div th:replace="~{admin/config/aside :: aside}"></div>
+    <div th:replace="~{admin/common/aside :: aside}"></div>
     <main>
         <div id="main">
             <section id="main-section">
@@ -147,7 +147,7 @@
     </main>
 </section>
 <div th:replace="~{admin/common/footer :: footer}"></div>
-</body>
 <script th:src="@{/js/admin/config/category.js}"></script>
 <script th:src="@{/js/admin/aside.js}"></script>
+</body>
 </html>

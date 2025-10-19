@@ -151,6 +151,8 @@ body {
     width: 80px;
 
     padding: 8px 15px; /* 버튼 내부 여백 */
+    font-size: 12px;
+    font-weight: bold;
     border: none;
     cursor: pointer;
     border-radius: 4px; /* 모서리를 약간 둥글게 */

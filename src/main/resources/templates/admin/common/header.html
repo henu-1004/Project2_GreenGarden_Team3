@@ -1,7 +1,7 @@
 <!--
 	날짜 : 2025/09/28
     이름 : 이수연
-    내용 : manager header & css
+    내용 : admin header & css
 -->
 <header th:fragment="header">
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
@@ -9,7 +9,7 @@
         <div id="header-top">
             <div class="header-util">
                 <th:block th:unless="${member}">
-                    <a th:href="@{/member/home}">HOME</a>
+                    <a th:href="@{/admin/}">HOME</a>
                     <a th:href="@{/member/login}">로그인</a>
                     <a th:href="@{/member/cs}">고객센터</a>
                 </th:block>
