@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>admin list</title>
+    <title>admin coupon list</title>
     <!--
         날짜 : 2025/09/28
         이름 : 이수연
@@ -52,8 +52,17 @@
                     <th>관리</th>
                 </tr>
                 <tr th:each="coupon, stat : ${couponList}">
-                    <td>[[${coupon.couponNo}]]</td>
+                    <td><span class="coupon-num-link" onclick="openModal('modalCouponInfo')">[[${coupon.couponNo}]]</span></td>
                     <td>[[${coupon.type}]]</td>
+                    <td>[[${coupon.name}]]</td>
+                    <td>[[${coupon.benefit}]]</td>
+                    <td>[[${coupon.startDate}]] ~ [[${coupon.endDate}]]</td>
+                    <td>[[${coupon.issuer}]]</td>
+                    <td>?</td>
+                    <td>?</td>
+                    <td style="color: green">?</td>
+                    <td>[[${coupon.issuedAt}]]</td>
+                    <td><input type="button" value="종료"></td>
                 </tr>
                 <tr>
                     <td><span class="coupon-num-link" onclick="openModal('modalCouponInfo')">10121211341</span></td>

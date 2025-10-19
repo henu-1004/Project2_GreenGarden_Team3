@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>관리자 메인</title>
+    <title>admin index</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/admin/index.css">
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}">
     <link rel="stylesheet" th:href="@{/css/admin/common/aside.css}">
@@ -21,14 +21,24 @@
         <div th:replace="~{admin/common/aside :: aside}"></div>
         <section id="main-section">
             <div class="top-nav">
-                <h3>쿠폰목록</h3>
+                <h3>관리자 메인</h3>
                 <ul class="page-nation">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">관리자 메인</a></li>
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/admin/}">관리자 메인</a></li>
                 </ul>
             </div>
-
-            <h2>집계현황</h2>
+            <div class="chart-title-section">
+                <h2>집계현황</h2>
+                <div class="date-navigation">
+                    <input type="hidden" id="weekOffsetInput" th:value="${weekOffset}">
+                    <!-- ✨ 날짜 네비게이션 추가 -->
+                    <a th:href="@{/admin/(weekOffset=${weekOffset - 1})}" id="prevWeekBtn" class="nav-btn">◀ 이전 주</a>
+                    <span class="date-range" id="dateRange">
+                    <!-- JS로 날짜 범위 표시 -->
+                    </span>
+                    <a th:href="@{/admin/(weekOffset=${weekOffset + 1})}" id="nextWeekBtn" class="nav-btn">다음 주 ▶</a>
+                </div>
+            </div>
             <section class="chart-section">
                 <div class="line-chart-container">
                     <canvas id="barChart" class="chart-canvas"></canvas>
@@ -104,9 +114,7 @@
                     <h2>공지사항</h2>
                     <table class="admincsnotice-table">
                         <tbody>
-                        <tr th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}">
-                            <td colspan="7" style="text-align: center">등록된 공지사항이 없습니다.</td>
-                        </tr>
+                        <!-- 목록 데이터 바인딩 -->
                         <tr th:each="notice, iterStat : ${pageResponseDTO.dtoList}" th:if="${iterStat.index < 5}">
                             <td>&#91;[[${notice.type}]]&#93;</td>
                             <td>
@@ -114,6 +122,10 @@
                                    th:text="${notice.title}"></a>
                             </td>
                             <td th:text="${#temporals.format(notice.createdAt, 'yy.MM.dd')}"></td>
+                        </tr>
+                        <!-- 목록이 비어있을 경우 -->
+                        <tr th:if="${#lists.isEmpty(pageResponseDTO.dtoList)}">
+                            <td colspan="7" style="text-align: center">등록된 공지사항이 없습니다.</td>
                         </tr>
                         </tbody>
                     </table>
@@ -125,7 +137,7 @@
                         <!-- 목록 데이터 바인딩 -->
                         <tr th:each="inquiry, iterStat : ${responseDTO.dtoList}" th:if="${iterStat.index < 5}">
                             <td>&#91;[[${inquiry.category2}]]&#93;</td>
-                            <td class="qna-title">
+                            <td>
                                 <!-- 상세 페이지 링크: inquiryId와 검색/페이징 조건 유지 -->
                                 <a th:href="@{/cs/inquiry/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
                                    th:text="${inquiry.title}">가입문의드립니다</a>
@@ -146,5 +158,23 @@
 </main>
 <div th:replace="~{admin/common/footer :: footer}"></div>
 <script th:src="@{/js/admin/aside.js}"></script>
+<!-- 1. Chart.js 라이브러리 먼저 로드 (CDN) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script th:inline="javascript">
+    // 🌟 1. 막대 그래프 데이터
+    const dateLabels = /*[[${chartData.dateLabels}]]*/ [];
+    const orderCounts = /*[[${chartData.orderCounts}]]*/ [];
+    const paymentCounts = /*[[${chartData.paymentCounts}]]*/ [];
+    const cancelCounts = /*[[${chartData.cancelCounts}]]*/ [];
+
+    // 🌟 2. 원 그래프 데이터
+    const categoryNames = /*[[${chartData.categoryNames}]]*/ [];
+    const categoryValues = /*[[${chartData.categoryValues}]]*/ [];
+
+    // 🌟 3. 주차 오프셋 값
+    const currentWeekOffset = /*[[${weekOffset}]]*/ 0;
+</script>
+<!-- 2. 그 다음에 내가 작성한 JS 파일 로드 -->
+<script th:src="@{/js/admin/index.js}"></script>
 </body>
 </html>

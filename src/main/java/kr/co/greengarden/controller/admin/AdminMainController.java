@@ -4,16 +4,15 @@ import kr.co.greengarden.dto.InquiryDTO;
 import kr.co.greengarden.dto.NoticeDTO;
 import kr.co.greengarden.dto.PageRequestDTO;
 import kr.co.greengarden.dto.PageResponseDTO;
+import kr.co.greengarden.dto.admin.AdminIndexChartDTO;
 import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
 import kr.co.greengarden.dto.admin.AdminIndexOrderInfoWrapperDTO;
-import kr.co.greengarden.service.InquiryService;
-import kr.co.greengarden.service.MemberService;
-import kr.co.greengarden.service.NoticeService;
-import kr.co.greengarden.service.OrderService;
+import kr.co.greengarden.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +25,12 @@ public class AdminMainController {
     private final OrderService orderService;
     private final NoticeService noticeService;
     private final InquiryService inquiryService;
+    private final ChartService chartService;
 
     @GetMapping("/admin/")
-    public String adminMainPage(PageRequestDTO pageRequestDTO, Model model) {
+    public String adminMainPage(PageRequestDTO pageRequestDTO,
+                                @RequestParam(defaultValue = "0") int weekOffset,  // ✨ 주차 오프셋 추가
+                                Model model) {
 
         AdminIndexOrderInfoWrapperDTO orderInfo = orderService.getAdminIndexOrderInfo();
 
@@ -56,6 +58,11 @@ public class AdminMainController {
         PageResponseDTO<NoticeDTO> pageResponseDTO = noticeService.getNoticesList(pageRequestDTO);
         PageResponseDTO<InquiryDTO> responseDTO = inquiryService.getInquiryList(pageRequestDTO);
 
+        // admin chart 데이터 (주차 오프셋 전달)
+        AdminIndexChartDTO chartData = chartService.getAdminIndexChartData(weekOffset);
+
+        model.addAttribute("chartData", chartData);
+        model.addAttribute("weekOffset", weekOffset);  // 현재 주차 정보 // admin chart.여기까지
 
         model.addAttribute("statusCount", statusCount);
         model.addAttribute("totalPrice", totalPrice);

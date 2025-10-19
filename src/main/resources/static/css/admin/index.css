@@ -5,6 +5,11 @@
  * 이름 : 한탁원
  * 내용 : index - css 초안 작성
  */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 body {
     min-width: 1200px;
     margin: 0;
@@ -66,6 +71,40 @@ body {
 /* ㅡㅡㅡ 본문시작 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 
 /* 집계현황 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+.chart-title-section {
+    display: flex;
+    justify-content: left;
+    gap: 30px;
+}
+/* 집계현황 날짜 네비 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+.date-navigation {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.nav-btn {
+    padding: 8px 15px;
+    background-color: #66968c;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: #175a48;
+}
+
+.date-range {
+    font-weight: bold;
+    font-size: 10px;
+    color: #333;
+}
+/* 집계현황 차트 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
 .chart-section {
     display: flex;
     align-items: stretch; /* 두 영역의 높이를 동일하게 */
@@ -77,11 +116,9 @@ body {
 
 .line-chart-container {
     width: 60%;
-    border: 1px solid #ddd;
 }
 .pie-chart-container {
     width: 40%;
-    border: 1px solid #ddd;
 }
 
 .chart-canvas {
@@ -130,6 +167,10 @@ body {
     padding: 10px;
 }
 
+.cs-section > a:hover {
+    text-decoration: underline;
+}
+
 .cs-section h2 {
     text-align: left;
     border-bottom: 2px solid #ddd;
@@ -148,12 +189,13 @@ body {
     border-collapse: collapse;
     /* !!! 핵심: TD/TH 너비 비율을 정밀하게 제어할 수 있게 설정 !!! */
     table-layout: fixed;
+    text-decoration: none;
 }
 
 /* 테이블의 셀 공통 스타일 */
 .qna-table td,
 .admincsnotice-table td { /* 공지사항 td도 포함 */
-    padding: 12px 10px;
+    padding: 10px 0;
     border-bottom: 1px solid #eee;
     text-align: center;
     white-space: nowrap; /* 한 줄로 만들어주는 역할 : 내용이 길어도 줄바꿈 방지 */
@@ -162,28 +204,12 @@ body {
 }
 
 /* 공지사항 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
-/* 1열: 유형 - 15% */
-.admincsnotice-table td:nth-child(1) { width: 15%; }
-
-/* 2열: 제목 - 60% */
-.admincsnotice-table td:nth-child(2) {
-    width: 60%;
-    text-align: left; /* 제목은 왼쪽 정렬 */
-    padding-left: 20px;
-}
-
-/* 3열: 날짜 - 25% */
-.admincsnotice-table td:nth-child(3) { width: 25%; }
+.admincsnotice-table td:nth-child(1) { width: 18%; font-size: 0.5em; } /* 카테고리 */
+.admincsnotice-table td:nth-child(2) { width: 70%; font-size: 0.8em; text-align: left; } /* 제목 */
+.admincsnotice-table td:nth-child(3) { width: 12%; font-size: 0.5em; } /* 작성일 */
 
 /* 고객문의 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
-.qna-title {
-    /* 테이블 전체 너비(100%) 중 60%를 문의 제목 셀이 차지하도록 지정 */
-    width: 60%;
-    text-align: left !important; /* 제목은 왼쪽 정렬 */
-    padding-left: 20px !important;
-}
-
-.qna-table td:nth-child(1) { width: 10%; } /* 카테고리 */
-.qna-table td:nth-child(3) { width: 15%; } /* 작성자 */
-.qna-table td:nth-child(4) { width: 15%; } /* 날짜 */
-/* 10% + 60% + 15% + 15% = 100% */
+.qna-table td:nth-child(1) { width: 15%; font-size: 0.5em;} /* 카테고리 */
+.qna-table td:nth-child(2) { width: 65%; font-size: 0.8em; text-align: left; } /* 제목 */
+.qna-table td:nth-child(3) { width: 10%; font-size: 0.5em;} /* 작성자 */
+.qna-table td:nth-child(4) { width: 10%; font-size: 0.5em;} /* 작성일 */
