@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>채용하기 목록</title>
+    <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
+</head>
+<body>
+<div th:replace="~{admin/common/header :: header}"></div>
+
+<main>
+    <section class="content-wrap">
+        <div th:replace="~{admin/cs/aside :: aside}"></div>
+
+        <section id="main-section">
+            <div class="top_nav">
+                <h5>채용하기 목록</h5>
+                <ul class="page_nation">
+                    <li><a href="#">HOME</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a th:href="@{/admin/cs/recruit/list}">채용하기</a></li>
+                </ul>
+            </div>
+
+            <!-- 검색 영역 -->
+            <form th:action="@{/admin/cs/recruit/list}" method="get" class="search-form" id="recruitFilterForm">
+                <select name="searchType" id="searchTypeSelect">
+                    <option value="id" th:selected="${pageRequestDTO.searchType == 'id'}">채용번호</option>
+                    <option value="department" th:selected="${pageRequestDTO.searchType == 'department'}">채용부서</option>
+                    <option value="type" th:selected="${pageRequestDTO.searchType == 'type'}">채용형태</option>
+                    <option value="title" th:selected="${pageRequestDTO.searchType == 'title'}">제목</option>
+                </select>
+
+                <input type="text" name="keyword" th:value="${pageRequestDTO.keyword}" placeholder="검색어 입력" />
+                <button type="submit" class="btn-search">검색</button>
+            </form>
+
+            <!-- 채용 목록 테이블 -->
+            <table class="admincsnotice-table">
+                <thead>
+                <tr>
+                    <th style="width: 30px;"><input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes(this)" /></th>
+                    <th>번호</th>
+                    <th>채용부서</th>
+                    <th>경력사항</th>
+                    <th>채용형태</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>상태</th>
+                    <th>모집기간</th>
+                    <th>작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${responseDTO.dtoList == null or #lists.isEmpty(responseDTO.dtoList)}">
+                    <td colspan="10" style="text-align: center;">등록된 채용공고가 없습니다.</td>
+                </tr>
+
+                <tr th:each="recruit : ${responseDTO.dtoList}">
+                    <td><input type="checkbox" name="recruitCheck" th:value="${recruit.recruitId}" /></td>
+                    <td th:text="${recruit.recruitId}">1</td>
+                    <td th:text="${recruit.department}">IT</td>
+                    <td th:text="${recruit.career}">신입</td>
+                    <td th:text="${recruit.type}">정규직</td>
+                    <td>
+                        <a th:href="@{/admin/cs/recruit/view(recruitId=${recruit.recruitId})}"
+                           th:text="${recruit.title}">채용 제목</a>
+                    </td>
+                    <td th:text="${recruit.writer}">관리자</td>
+                    <td>
+                        <span th:classappend="${recruit.status == '모집중'} ? 'status-open' : 'status-close'"
+                              th:text="${recruit.status}">모집중</span>
+                    </td>
+                    <td th:text="${recruit.period}">2025-01-01 ~ 2025-02-01</td>
+                    <td th:text="${#temporals.format(recruit.createdAt, 'yy.MM.dd')}">25.01.05</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- ✅ 모달 (채용 등록 폼) -->
+            <div id="recruitModal" class="modal" style="display:none;">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2>채용 등록</h2>
+
+                    <form id="recruitForm" th:action="@{/admin/cs/recruit/register}" method="post">
+                        <div class="form-group">
+                            <label>채용부서</label>
+                            <input type="text" name="department" required />
+                        </div>
+                        <div class="form-group">
+                            <label>경력사항</label>
+                            <input type="text" name="career" placeholder="예: 신입, 경력 2~5년" />
+                        </div>
+                        <div class="form-group">
+                            <label>채용형태</label>
+                            <select name="type">
+                                <option value="정규직">정규직</option>
+                                <option value="계약직">계약직</option>
+                                <option value="인턴">인턴</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>제목</label>
+                            <input type="text" name="title" required />
+                        </div>
+                        <div class="form-group">
+                            <label>모집기간</label>
+                            <input type="text" name="period" placeholder="YYYY-MM-DD ~ YYYY-MM-DD" />
+                        </div>
+                        <div class="form-group">
+                            <label>비고</label>
+                            <textarea name="note" rows="4"></textarea>
+                        </div>
+
+                        <div class="modal-buttons">
+                            <button type="submit" class="btn-submit">등록</button>
+                            <button type="button" class="btn-cancel" onclick="closeModal()">취소</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ✅ 하단 버튼 -->
+            <div class="action-buttons">
+                <button type="button" onclick="deleteSelected()" class="btn-delete-all">선택삭제</button>
+                <button type="button" class="btn-register" onclick="openModal()">채용등록</button>
+            </div>
+
+            <!-- 페이징 -->
+            <div class="cs-pagination" th:if="${!responseDTO.dtoList.isEmpty()}">
+                <a th:if="${responseDTO.prev}"
+                   th:href="@{/admin/cs/recruit/list(pg=${responseDTO.start - 1}, size=${pageRequestDTO.size}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+                   class="prev">&lt; 이전</a>
+                <span th:unless="${responseDTO.prev}" class="prev disabled">&lt; 이전</span>
+
+                <th:block th:each="pageNum : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                    <a th:href="@{/admin/cs/recruit/list(pg=${pageNum}, size=${pageRequestDTO.size}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+                       th:classappend="${pageNum == pageRequestDTO.pg ? 'active' : ''}"
+                       th:text="${pageNum}">1</a>
+                </th:block>
+
+                <a th:if="${responseDTO.next}"
+                   th:href="@{/admin/cs/recruit/list(pg=${responseDTO.end + 1}, size=${pageRequestDTO.size}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
+                   class="next">다음 &gt;</a>
+                <span th:unless="${responseDTO.next}" class="next disabled">다음 &gt;</span>
+            </div>
+
+        </section>
+    </section>
+</main>
+
+<div th:replace="~{admin/common/footer :: footer}"></div>
+
+<!-- ✅ JS -->
+<script>
+    // 체크박스 전체선택
+    function toggleAllCheckboxes(source) {
+        const checkboxes = document.getElementsByName('recruitCheck');
+        checkboxes.forEach(cb => cb.checked = source.checked);
+    }
+
+    // 선택삭제
+    function deleteSelected() {
+        const checkedBoxes = [...document.getElementsByName('recruitCheck')].filter(cb => cb.checked);
+        if (checkedBoxes.length === 0) {
+            alert('삭제할 항목을 선택해주세요.');
+            return;
+        }
+        if (confirm(`${checkedBoxes.length}개 항목을 삭제하시겠습니까?`)) {
+            alert('삭제처리 완료 (로직 추가 필요)');
+        }
+    }
+
+    // ✅ 모달 열기 / 닫기
+    const modal = document.getElementById("recruitModal");
+    function openModal() {
+        modal.style.display = "block";
+    }
+    function closeModal() {
+        modal.style.display = "none";
+    }
+    window.onclick = function(event) {
+        if (event.target === modal) closeModal();
+    }
+</script>
+
+</body>
+</html>
