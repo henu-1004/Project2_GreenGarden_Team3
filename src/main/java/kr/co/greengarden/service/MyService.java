@@ -1,6 +1,8 @@
 package kr.co.greengarden.service;
 
 import jakarta.transaction.Transactional;
+import kr.co.greengarden.dto.my.OrderHistoryCriteria;
+import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
 import kr.co.greengarden.entity.Order;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,6 +47,65 @@ public class MyService {
         }
 
         return orders;
+    }
+
+    public OrderHistoryPageDTO getOrderHistory(OrderHistoryCriteria criteria) {
+        int requestedPage = Math.max(criteria.getPage(), 1);
+        int pageSize = criteria.getSize() > 0 ? criteria.getSize() : 10;
+        criteria.setPage(requestedPage);
+        criteria.setSize(pageSize);
+
+        long totalCount = myMapper.countOrderHistory(criteria);
+        if (totalCount == 0) {
+            return OrderHistoryPageDTO.builder()
+                    .orders(Collections.emptyList())
+                    .currentPage(requestedPage)
+                    .pageSize(pageSize)
+                    .totalCount(0)
+                    .totalPages(0)
+                    .startPage(0)
+                    .endPage(0)
+                    .hasPrev(false)
+                    .hasNext(false)
+                    .prevPage(0)
+                    .nextPage(0)
+                    .build();
+        }
+
+        int totalPages = (int) Math.ceil(totalCount / (double) pageSize);
+        int currentPage = Math.min(requestedPage, totalPages);
+        int startRow = (currentPage - 1) * pageSize + 1;
+        int endRow = startRow + pageSize - 1;
+        criteria.setPage(currentPage);
+        criteria.setStartRow(startRow);
+        criteria.setEndRow(endRow);
+
+        List<OrderSummaryDTO> orders = myMapper.selectOrderHistory(criteria);
+        orders.forEach(this::applyOrderActionFlags);
+
+        int blockSize = 5;
+        int currentBlock = (currentPage - 1) / blockSize;
+        int startPage = currentBlock * blockSize + 1;
+        int endPage = Math.min(startPage + blockSize - 1, totalPages);
+
+        boolean hasPrev = startPage > 1;
+        boolean hasNext = endPage < totalPages;
+        int prevPage = hasPrev ? startPage - 1 : 1;
+        int nextPage = hasNext ? endPage + 1 : totalPages;
+
+        return OrderHistoryPageDTO.builder()
+                .orders(orders)
+                .currentPage(currentPage)
+                .pageSize(pageSize)
+                .totalCount(totalCount)
+                .totalPages(totalPages)
+                .startPage(startPage)
+                .endPage(endPage)
+                .hasPrev(hasPrev)
+                .hasNext(hasNext)
+                .prevPage(prevPage)
+                .nextPage(nextPage)
+                .build();
     }
 
     // 🔹 [JPA] 전체 주문 내역 (나중에 상세 페이지용)
@@ -111,6 +173,25 @@ public class MyService {
 
         // 브라우저 접근 경로로 반환
         return "/uploads/review/" + fileName;
+    }
+
+    private void applyOrderActionFlags(OrderSummaryDTO order) {
+        String confirmYn = valueOrDefault(order.getConfirmYn());
+        String reviewYn = valueOrDefault(order.getReviewYn());
+        String exchangeYn = valueOrDefault(order.getExchangeYn());
+        String returnYn = valueOrDefault(order.getReturnYn());
+        String status = order.getStatus() == null ? "" : order.getStatus();
+
+        boolean isDelivered = status.contains("배송완료") || status.contains("구매확정");
+
+        order.setCanConfirm(isDelivered && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanReview("Y".equalsIgnoreCase(confirmYn) && !"Y".equalsIgnoreCase(reviewYn));
+        order.setCanExchange(!"Y".equalsIgnoreCase(exchangeYn) && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanReturn(!"Y".equalsIgnoreCase(returnYn) && !"Y".equalsIgnoreCase(confirmYn));
+    }
+
+    private String valueOrDefault(String value) {
+        return value == null ? "N" : value;
     }
 
 

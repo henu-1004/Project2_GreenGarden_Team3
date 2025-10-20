@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class OrderSummaryDTO {
 
     private String orderNo;         // 주문번호
-    private String proId;           // ✅ 상품 ID (추가)
+    private Long proId;             // ✅ 상품 ID (추가)
     private String productName;     // 상품명
     private String productImg;      // 대표 이미지
     private int price;              // 상품 가격
@@ -29,4 +29,10 @@ public class OrderSummaryDTO {
     private String reviewYn;        // 리뷰작성 여부
     private String exchangeYn;      // 교환신청 여부
     private String returnYn;        // 반품신청 여부
+
+    // ✅ 화면 제어용 플래그
+    private boolean canConfirm;     // 구매확정 버튼 활성화 여부
+    private boolean canReview;      // 리뷰작성 버튼 활성화 여부
+    private boolean canExchange;    // 교환신청 버튼 활성화 여부
+    private boolean canReturn;      // 반품신청 버튼 활성화 여부
 }
