@@ -110,8 +110,17 @@ public class CartService {
     }
 
     public Page<CartListDTO> getCartPage(String memId, int page, int size){
+
         Pageable pageable = PageRequest.of(page, size);
-        return cartRepository.findCartByMember_MemId(memId, pageable);
+
+        Page<CartListDTO> cartList = cartRepository.findCartByMember_MemId(memId, pageable);
+
+        for (CartListDTO c : cartList) {
+            int original = (int) Math.ceil(c.getPrice() * (100 - c.getDiscountRate()) / 100.0);
+            c.setOriginalPrice(original);
+        }
+
+        return cartList;
     }
 
     public List<Cart> getAllCartsByMemberId(String memId){

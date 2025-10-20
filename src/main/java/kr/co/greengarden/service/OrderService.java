@@ -155,17 +155,17 @@ public class OrderService {
         int totalPoint = 0;
 
         for (CartListDTO c : cartList) {
-            int original = (int) Math.ceil(c.getPrice() / (1 - (c.getDiscountRate() / 100.0)));
-            c.setOriginalPrice(original);
+            int price = (int) Math.ceil(c.getPrice() * (100 - c.getDiscountRate()) / 100.0);
+            c.setOriginalPrice(price);
 
             count += c.getQuantity();
-            originalTotalPrice += original * count;
-            discountPrice += (c.getPrice() - original) * count;
+            originalTotalPrice += c.getPrice() * count;
+            discountPrice += (c.getPrice() - price) * count;
             if (deliveryFee < c.getDeliveryFee()) {
                 deliveryFee = c.getDeliveryFee();
             }
             totalPoint += c.getPoint() * count;
-            totalPrice += c.getPrice() * count;
+            totalPrice += price * count;
         }
 
         totalPrice += deliveryFee;

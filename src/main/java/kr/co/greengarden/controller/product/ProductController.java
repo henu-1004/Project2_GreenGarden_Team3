@@ -49,7 +49,7 @@ public class ProductController {
         Page<ProductListDTO> productList = productService.getProductCards(page, sortBy, direction, slug);
 
         for (ProductListDTO p : productList) {
-            int original = (int) Math.ceil(p.getPrice() / (1 - (p.getDiscountRate() / 100.0)));
+            int original = (int) Math.ceil(p.getPrice() * (100 - p.getDiscountRate()) / 100);
             p.setOriginalPrice(original);
         }
 
@@ -63,7 +63,8 @@ public class ProductController {
 
     @GetMapping("/product/view")
     public String productViewPage(@RequestParam String proId, Model model) {
-        Product product = productService.getProduct(Integer.parseInt(proId));
+        Product product = productService.getViewProduct(Integer.parseInt(proId));
+
         productService.updateViewProduct(Integer.parseInt(proId));
 
         model.addAttribute("product", product);
@@ -74,11 +75,6 @@ public class ProductController {
     @GetMapping("/product/cart")
     public String cartPage2(@RequestParam(defaultValue = "0") int page, @AuthenticationPrincipal MemberDetails memberDetails, Model model, RedirectAttributes ra) {
         Page<CartListDTO> cartList = cartService.getCartPage(memberDetails.getUsername(), page, 5);
-
-        for (CartListDTO c : cartList) {
-            int original = (int) Math.ceil(c.getPrice() / (1 - (c.getDiscountRate() / 100.0)));
-            c.setOriginalPrice(original);
-        }
 
         model.addAttribute("cartList", cartList);
 

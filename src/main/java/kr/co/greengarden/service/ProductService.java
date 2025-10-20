@@ -50,9 +50,24 @@ public class ProductService {
     };
 
     public Product getProduct(int proId) {
-        Optional<Product> product = productRepository.findById(proId);
-        if(product.isPresent()){
-            return product.get();
+
+        Optional<Product> optProduct = productRepository.findById(proId);
+        if (optProduct.isPresent()) {
+            return optProduct.get();
+        }
+        return null;
+    }
+
+    public Product getViewProduct(int proId) {
+        Optional<Product> optProduct = productRepository.findById(proId);
+        if(optProduct.isPresent()){
+            Product product = optProduct.get();
+
+            Product updated = product.toBuilder()
+                    .price((int) Math.ceil(product.getPrice() * (100 - product.getDiscountRate()) / 100.0))
+                    .build();
+
+            return updated;
         }
         return null;
     };
