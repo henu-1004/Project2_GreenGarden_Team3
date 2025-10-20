@@ -13,7 +13,7 @@
 
 <main>
     <section class="content-wrap">
-        <div th:replace="~{admin/cs/aside :: aside}"></div>
+        <div th:replace="~{admin/common/aside :: aside}"></div>
 
         <section id="main-section">
             <div class="top_nav">
@@ -36,6 +36,11 @@
 
                 <input type="text" name="keyword" th:value="${pageRequestDTO.keyword}" placeholder="검색어 입력" />
                 <button type="submit" class="btn-search">검색</button>
+            </form>
+
+            <!-- ✅ 선택삭제용 숨겨진 폼 -->
+            <form id="deleteForm" th:action="@{/admin/cs/recruit/deleteSelected}" method="post">
+                <input type="hidden" name="recruitIds" id="recruitIdsInput">
             </form>
 
             <!-- 채용 목록 테이블 -->
@@ -62,7 +67,7 @@
                 <tr th:each="recruit : ${responseDTO.dtoList}">
                     <td><input type="checkbox" name="recruitCheck" th:value="${recruit.recruitId}" /></td>
                     <td th:text="${recruit.recruitId}">1</td>
-                    <td th:text="${recruit.department}">IT</td>
+                    <td th:text="${recruit.department}">개발팀</td>
                     <td th:text="${recruit.career}">신입</td>
                     <td th:text="${recruit.type}">정규직</td>
                     <td>
@@ -130,7 +135,7 @@
                 <button type="button" class="btn-register" onclick="openModal()">채용등록</button>
             </div>
 
-            <!-- 페이징 -->
+            <!-- ✅ 페이징 -->
             <div class="cs-pagination" th:if="${!responseDTO.dtoList.isEmpty()}">
                 <a th:if="${responseDTO.prev}"
                    th:href="@{/admin/cs/recruit/list(pg=${responseDTO.start - 1}, size=${pageRequestDTO.size}, searchType=${pageRequestDTO.searchType}, keyword=${pageRequestDTO.keyword})}"
@@ -157,36 +162,36 @@
 
 <!-- ✅ JS -->
 <script>
-    // 체크박스 전체선택
+    // 전체선택
     function toggleAllCheckboxes(source) {
         const checkboxes = document.getElementsByName('recruitCheck');
         checkboxes.forEach(cb => cb.checked = source.checked);
     }
 
-    // 선택삭제
+    // ✅ 선택삭제 (JPA delete 연동)
     function deleteSelected() {
         const checkedBoxes = [...document.getElementsByName('recruitCheck')].filter(cb => cb.checked);
         if (checkedBoxes.length === 0) {
             alert('삭제할 항목을 선택해주세요.');
             return;
         }
+
         if (confirm(`${checkedBoxes.length}개 항목을 삭제하시겠습니까?`)) {
-            alert('삭제처리 완료 (로직 추가 필요)');
+            const ids = checkedBoxes.map(cb => cb.value);
+            document.getElementById('recruitIdsInput').value = ids.join(',');
+            document.getElementById('deleteForm').submit(); // ✅ 실제 삭제 요청
         }
     }
 
-    // ✅ 모달 열기 / 닫기
+    // 모달 열기 / 닫기
     const modal = document.getElementById("recruitModal");
-    function openModal() {
-        modal.style.display = "block";
-    }
-    function closeModal() {
-        modal.style.display = "none";
-    }
+    function openModal() { modal.style.display = "block"; }
+    function closeModal() { modal.style.display = "none"; }
     window.onclick = function(event) {
         if (event.target === modal) closeModal();
     }
 </script>
 
+<script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>

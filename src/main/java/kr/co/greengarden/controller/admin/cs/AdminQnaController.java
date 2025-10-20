@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * 날짜 : 2025/09/26
  * 이름 : 박효빈
@@ -102,9 +105,22 @@ public class AdminQnaController {
         return "redirect:/admin/cs/qna/view?inquiryId="+newId;
     }
 
+
     @PostMapping("/admin/cs/qna/delete")
-    public String adminCsDelete(int noticeId) {
-        inquiryService.delete(noticeId);
+    public String adminCsDelete(int inquiryId) {
+        inquiryService.delete(inquiryId);
+        return "redirect:/admin/cs/qna/list";
+    }
+
+    // 선택삭제
+    @PostMapping("/admin/cs/qna/deleteMultiple")
+    public String deleteMultiple(String qnaIds) {
+        log.info("qnaIds:{}", qnaIds);
+        List<Integer> ids = Arrays.stream(qnaIds.split(","))
+                .map(Integer::parseInt)
+                .toList();
+
+        inquiryService.deleteMultiple(ids);
         return "redirect:/admin/cs/qna/list";
     }
 }

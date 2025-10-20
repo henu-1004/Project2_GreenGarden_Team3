@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 /**
  * 이름 : 박효빈
  * 날짜 : 2025/10/13
@@ -107,6 +109,12 @@ public class FaqService {
     // FAQ 삭제
     public void delete(int faqId) {
         faqRepository.deleteById(faqId);
+    }
+    // FAQ 다중 삭제
+    public void deleteMultiple(List<Integer> faqIds) {
+        faqIds.forEach(id -> faqRepository.deleteById(id));
+        log.info("FAQ {} 삭제 완료", id);
+
     }
 
     // 로그인 사용자 id 가져오기 (일단 공란)

@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
+import java.util.List;
+
 /*
  * 이름 : 박효빈
  * 날짜 : 2025/10/19
@@ -81,6 +84,15 @@ public class AdminRecruitController {
     public String delete(@RequestParam("recruitId") Integer recruitId, RedirectAttributes rttr) {
         recruitService.deleteRecruit(recruitId);
         rttr.addFlashAttribute("msg", "채용공고가 삭제되었습니다.");
+        return "redirect:/admin/cs/recruit/list";
+    }
+
+    @PostMapping("/admin/cs/recruit/deleteSelected")
+    public String deleteSelected(@RequestParam("recruitIds") String recruitIds) {
+        List<Integer> ids = Arrays.stream(recruitIds.split(","))
+                .map(Integer::parseInt)
+                .toList();
+        recruitService.deleteSelectedRecruits(ids);
         return "redirect:/admin/cs/recruit/list";
     }
 }

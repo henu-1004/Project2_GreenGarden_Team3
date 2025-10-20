@@ -100,6 +100,9 @@
                 <button type="button" class="btn-write"
                         th:onclick="|location.href='@{/admin/cs/notice/write}'|">작성하기</button>
             </div>
+            <form id="deleteForm" th:action="@{/admin/cs/notice/deleteMultiple}" method="post">
+                <input type="hidden" id="noticeIdsInput" name="noticeIds">
+            </form>
         </section>
     </section>
 </main>
@@ -112,7 +115,7 @@
         checkboxes.forEach(cb => cb.checked = source.checked);
     }
 
-    // 전체삭제 클릭 시 체크된 항목 없으면 경고
+    // 전체삭제 클릭 시 체크된 항목 없으면 경고(JPA delete 연동 JS)
     function deleteSelected() {
         const checkedBoxes = [...document.getElementsByName('admincscheck')].filter(cb => cb.checked);
         if (checkedBoxes.length === 0) {
@@ -120,8 +123,10 @@
             return;
         }
         if (confirm(`${checkedBoxes.length}개 항목을 삭제하시겠습니까?`)) {
-            // TODO: 삭제 처리 로직
-            alert('삭제처리 완료 (예시)');
+            const ids = checkedBoxes.map(cb => cb.value);
+            document.getElementById('noticeIdsInput').value = ids.join(',');
+            document.getElementById('deleteForm').submit();
+            alert('삭제처리 완료');
         }
     }
 </script>

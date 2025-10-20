@@ -102,4 +102,10 @@ public class RecruitService {
         recruit.closeRecruit(); // 엔티티 도메인 메서드 호출
         log.info("채용 상태 변경 완료: ID={} → 상태={}", recruitId, recruit.getStatus());
     }
+
+    @Transactional
+    public void deleteSelectedRecruits(List<Integer> recruitIds) {
+        recruitRepository.deleteAllByIdInBatch(recruitIds);
+        log.info("✅ 선택삭제 완료: {}", recruitIds);
+    }
 }
