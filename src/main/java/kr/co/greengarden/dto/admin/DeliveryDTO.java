@@ -3,6 +3,7 @@ package kr.co.greengarden.dto.admin;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +15,6 @@ public class DeliveryDTO {
     private String orderNo;
     private String invoiceNo;
     private String status;
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
     private String note;
 }

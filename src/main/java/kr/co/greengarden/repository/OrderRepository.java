@@ -1,8 +1,6 @@
 package kr.co.greengarden.repository;
 
-import kr.co.greengarden.dto.admin.DeliveryDTO;
-import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
-import kr.co.greengarden.dto.admin.AdminOrderListDTO;
+import kr.co.greengarden.dto.admin.*;
 import kr.co.greengarden.entity.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /*
@@ -34,31 +33,37 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "JOIN FETCH m.general g " +
             "LEFT JOIN FETCH o.orderItems oi")
      */
-    @Query("SELECT new kr.co.greengarden.dto.admin.AdminOrderListDTO(" +
-            "o.orderNo, m.memId, g.name, COALESCE(oi.quantity, 0), o.totalPrice, o.payMethod, o.status, o.orderedAt) " +
-            "FROM Order o " +
-            "JOIN o.member m " +
-            "JOIN m.general g " +
-            "LEFT JOIN o.orderItems oi")
-    List<AdminOrderListDTO> findAllAdminOrderList();
+    @Query("""
+                select new kr.co.greengarden.dto.admin.AdminProductListDTO(
+                         p.proId, p.img1, p.proNo, p.name, p.price, p.discountRate, p.point, p.stock, s.company, p.views
+                      )
+                from Product p
+                join p.seller s
+            """)
+    List<AdminOrderListDTO> findAllAdminOrderDetailList();
 
     String orderNo(String orderNo);
 
 
     // 관리자 인덱스용
     @Query("SELECT new kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO(" +
-           "COALESCE(o.status, '미지정'), o.totalPrice) " +
-           "FROM Order o")
+            "COALESCE(o.status, '미지정'), o.totalPrice) " +
+            "FROM Order o")
     List<AdminIndexOrderInfoDTO> findAdminIndexOrderInfo();
 
     @Query(
             value = """
                       SELECT new kr.co.greengarden.dto.admin.AdminOrderListDTO(
-                        o.orderNo, m.memId, g.name, COALESCE(oi.quantity, 0), o.totalPrice, o.payMethod, o.status, o.orderedAt
+                        o.orderNo, m.memId, g.name, COALESCE(SUM(oi.quantity), 0L), o.totalPrice, o.payMethod,
+                    o.status, o.orderedAt, COALESCE((SELECT d.status FROM Delivery d
+                                                     WHERE d.order = o
+                                                     ORDER BY d.createdAt DESC
+                                                     LIMIT 1), '')
                       )
                       from Order o
                       join o.member m
                       join m.general g 
+                      left join Delivery d ON d.order = o
                       left join o.orderItems oi
                       where
                         (:keyword is null or :keyword = '')
@@ -72,6 +77,8 @@ public interface OrderRepository extends JpaRepository<Order, String> {
                         or (:searchType = 'orderNo'    and lower(o.orderNo)    like lower(concat('%', :keyword, '%')))
                         or (:searchType = 'memId'  and lower(m.memId)  like lower(concat('%', :keyword, '%')))
                         or (:searchType = 'name' and lower(g.name) like lower(concat('%', :keyword, '%')))
+                      GROUP BY
+                        o.orderNo, m.memId, g.name, o.totalPrice, o.payMethod, o.status, o.orderedAt, d.status
                     """
     )
     Page<AdminOrderListDTO> findAllOrderBySearch(
@@ -82,7 +89,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query(
             value = """
                       SELECT new kr.co.greengarden.dto.admin.DeliveryDTO(
-                        d.deliveryId, d.order.orderNo, d.invoiceNo, d.status, d.cratedAt, d.note
+                        d.deliveryId, d.order.orderNo, d.invoiceNo, d.status, d.createdAt, d.note
                       )
                       from Delivery d
                       where
@@ -103,4 +110,32 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             @Param("searchType") String searchType,
             @Param("keyword") String keyword,
             Pageable pageable);
+
+    @Query("""
+              SELECT new kr.co.greengarden.dto.admin.DeliveryInputDTO(
+                o.orderNo, o.recName, o.recZipCode, o.recAddressBasic, o.recAddressDetail,
+                COALESCE(d.company, ''), COALESCE(d.invoiceNo, ''), COALESCE(d.note, '')
+              )
+              FROM Order o
+              LEFT JOIN Delivery d ON d.order = o
+              WHERE o.orderNo = :orderNo
+            """)
+    DeliveryInputDTO findDeliveryInfo(@Param("orderNo") String orderNo);
+
+
+    @Query("""
+            SELECT new kr.co.greengarden.dto.admin.AdminOrderDetailListDTO(
+                p.img1, p.proNo, p.name, s.company, p.price, p.discountRate, oi.quantity, p.deliveryFee, p.point,
+                o.orderedAt, o.orderNo, g.name, m.zipCode, m.addressBasic, m.addressDetail, g.phone,
+                o.recName, o.recZipCode, o.recAddressBasic, o.recAddressDetail, o.recPhone
+            )
+                FROM OrderItem oi
+                JOIN oi.order   o
+                JOIN oi.product p
+                JOIN p.seller   s
+                JOIN o.member   m
+                JOIN m.general  g
+                WHERE o.orderNo = :orderNo
+            """)
+    List<AdminOrderDetailListDTO> findOrderDetailList(String orderNo);
 }

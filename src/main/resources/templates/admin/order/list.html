@@ -49,7 +49,7 @@
                     <th>배송</th>
                 </tr>
                 <tr th:each="order, stat : ${orderList}">
-                    <td><span class="order-number-link" onclick="openModal('modalOrderDetail')">[[${order.orderNo}]]</span></td>
+                    <td><span class="order-number-link" th:attr="data-orderno=${order.orderNo}" onclick="openModal('modalOrderDetail', this.dataset.orderno) ">[[${order.orderNo}]]</span></td>
                     <td>[[${order.memId}]]</td>
                     <td>[[${order.name}]]</td>
                     <td>[[${order.quantity}]]</td>
@@ -57,8 +57,13 @@
                     <td>[[${order.payMethod}]]</td>
                     <td>[[${order.status}]]</td>
                     <td>[[${order.orderedAt}]]</td>
-                    <td class="del-btn">
-                        <input type="button" value="배송하기" onclick="openModal('modalDeliveryInput')">
+                    <td class="del-btn" th:switch="${order.deliveryStatus}">
+                        <input type="button" value="배송하기"
+                               th:if="${order.deliveryStatus == '배송 대기'}"
+                               th:attr="data-orderno=${order.orderNo}"
+                               onclick="openModal('modalDeliveryInput', this.dataset.orderno)">
+                        <span th:case="'배송 중'">배송 중</span>
+                        <span th:case="'배송 완료'">배송 완료</span>
                     </td>
                 </tr>
             </table>
@@ -102,6 +107,9 @@
 <div th:replace="~{common/footer :: footer}"></div>
 <div th:replace="~{admin/order/_orderDetail :: modal-order-detail}"></div>
 <div th:replace="~{admin/order/_deliveryInput :: modal-delivery-input}"></div>
+<script th:inline="javascript">
+    window.BASE_URL = /*[[@{/}]]*/ "/greengarden/";  // 반드시 "/"로 fallback
+</script>
 <script th:src="@{/js/admin/order/order.js}"></script>
 </body>
 </html>
