@@ -1,0 +1,79 @@
+@charset "UTF-8";
+/*
+ * 날짜 : 2025/10/20
+ * 이름 : 이수연
+ * 내용 : 회사소개 footer - css
+ */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.footer-container {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 30px 20px;
+
+    display: flex;
+    align-items: flex-start;
+}
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ위치 잡기ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+.footer-logo {
+    flex-shrink: 0; /* 크기 유지 */
+    width: 60px; /* 로고의 고정 너비 (정사각형 기준) */
+    height: 60px; /* 로고의 고정 높이 (정사각형 기준) */
+    margin-right: 15px;
+}
+
+.footer-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.footer-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    height: 60px;
+}
+
+/* ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ 디테일 잡기 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* 🌟 네비게이션 링크들 (HOME, 기업문화 등) */
+.company-nav a {
+    font-size: 13px;
+    color: #333; /* 텍스트 색상 */
+    margin-right: 15px; /* 링크 간 간격 */
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.company-nav a:hover {
+    opacity: 1;
+    color: #175a48; /* 호버 색상 */
+}
+
+.footer-container p {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.footer-container h6 {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.company-name { /* 회사소개 - 회사 이름 꾸미기 */
+    font-weight: bold;
+    color: #66968c; /* Green Garden */
+    margin-right: 5px;
+}
+
+/* copyright 위치 및 스타일 */
+.copyright {
+    text-align: left;
+    font-size: 12px;
+    color: #999;
+    margin-top: 0;
+}
