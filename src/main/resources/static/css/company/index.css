@@ -11,175 +11,280 @@ body {
 .content-wrap {
     margin: 0 auto;
     max-width: 1200px;
-    display: flex;
-    gap: 20px;
-    /* 상단 정렬 */
-    align-items: flex-start;
-    padding-top: 20px;
 }
 
 /* 메인 섹션 */
 #main-section {
     width: 1200px;
     flex-shrink: 0;
-    padding: 20px;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     background: white;
-    /* aside와 상단선을 맞춤 */
-    box-sizing: border-box;
 }
 
+.section-title {
+    font-size: 30px;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #4CAF50;
+    letter-spacing: 2px;
+}
 /* ㅡㅡㅡ company index css ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
-/* ㅡㅡㅡ 1. 랜딩 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
-#intro {
-    /* 🖼️ 배경 이미지 설정: Green Garden 아이덴티티 강조 */
-    background: url('../img/intro_bg_clean.jpg') no-repeat center center/cover;
-    color: white;
-}
-
-.intro-content {
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.2); /* 텍스트가 잘 보이도록 반투명 배경 */
-    border-radius: 10px;
-}
-
-/* 💫 Text Appear 효과를 위한 초기 상태 */
-.appear-text {
-    font-size: 4em;
-    font-weight: 700;
-    line-height: 1.3;
-    opacity: 0; /* 초기 투명 */
-    transform: translateY(30px); /* 초기 위치 아래 */
-    transition: opacity 1.5s ease-out, transform 1.5s ease-out; /* 부드럽게 나타나도록 */
-}
-
-/* JS로 .active 클래스가 추가되었을 때 */
-#intro.active .appear-text {
-    opacity: 1; /* 나타남 */
-    transform: translateY(0); /* 원래 위치로 */
-}
-
-/* 스크롤 다운 인디케이터 (애니메이션 추가 예정) */
-.scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-10px);
-    }
-    60% {
-        transform: translateY(-5px);
-    }
-}
-/* ㅡㅡㅡ 2. 슬로건/경쟁력 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
-#slogan {
-    background-color: #f9f9f5; /* 연한 베이지색 */
-    padding-top: 50px;
-}
-
-.slogan-header h2 {
-    font-size: 2.5em;
-    margin-bottom: 40px;
-    color: #333;
-}
-
-/* 1️⃣ 슬라이드 컨테이너: 보이는 영역만 설정 */
-.slider-container {
-    width: 80%;
-    max-width: 1000px;
-    height: 400px;
-    overflow: hidden; /* **핵심!** 넘치는 슬라이드는 숨김 */
+/* --- 1. hero-section --- */
+#hero-section {
     position: relative;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+    padding-top: 150px; /* 상단 여백 */
+    padding-bottom: 100px;
+    overflow: hidden; /* 영역 밖으로 나가는 이미지 처리 */
 }
 
-/* 2️⃣ 슬라이드 래퍼: 모든 슬라이드가 나열되는 공간 (JS로 이 요소를 X축 이동) */
-.slider-wrapper {
-    display: flex; /* 슬라이드들을 가로로 나열 */
+.hero-header {
+    text-align: center;
+    z-index: 10;
+    position: relative; /* z-index 적용을 위해 position 추가 */
+}
+
+.logo-text {
+    display: block;
+    font-size: 56px; /* 폰트 크기 키움 */
+    font-weight: 300;
+    letter-spacing: 8px; /* 간격 늘림 */
+    margin-bottom: 5px;
+}
+
+.sub-text {
+    display: block;
+    font-size: 16px;
+    letter-spacing: 6px;
+    color: #666;
+}
+
+/* 메인 이미지 - 나뭇잎처럼 우측 상단 배치 */
+.header-image-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
     height: 100%;
-    /* JS 이동 시 부드럽게 움직이도록 transition 설정 */
-    transition: transform 0.5s ease-in-out;
+    background-size: cover;
+    background-position: center bottom;
+    z-index: 0;
+    opacity: 0.9;
+}
+.header-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
 }
 
-/* 3️⃣ 개별 슬라이드 */
-.slide {
-    min-width: 100%; /* 슬라이드가 컨테이너 너비 100%를 차지 */
-    flex-shrink: 0; /* 슬라이드가 줄어들지 않도록 설정 */
+/* --- 2. about-us --- */
+#about-us {
+    padding: 100px 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
-    padding: 30px;
-    text-align: left;
-    background-color: white;
 }
 
-.slide-image {
-    width: 45%;
+.about-content {
+    display: flex; /* 이미지와 텍스트를 가로로 배치 */
+    gap: 80px;
+    align-items: flex-start;
+    max-width: 900px;
+}
+
+.about-image-wrap {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%; /* 원형 이미지 */
+    /* background-image: url('https://placehold.co/300x300/F1F8E9/388E3C?text=Plant+Focus');*/
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+.about-image-wrap img {
+    width: 100%;
     height: 100%;
-    background-color: #eee; /* 이미지 자리 표시 */
+    object-fit: cover;
+    border-radius: 50%;
+
+}
+
+.about-text-wrap {
+    flex-grow: 1;
+    padding-top: 30px;
+}
+
+.summary-text {
+    font-size: 18px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.detail-text {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.read-more-btn {
+    display: inline-block;
+    color: #4CAF50;
+    text-decoration: none;
+    border-bottom: 1px solid #4CAF50;
+    padding-bottom: 2px;
+    transition: all 0.3s;
+}
+.read-more-btn:hover {
+    color: #388E3C;
+    border-bottom-color: #388E3C;
+}
+
+/* --- 3. gallery ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+#gallery {
+    display: flex;
+    padding: 100px 0;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+/* Gallery Styles for Slider */
+.gallery-sub-text {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #666;
+    font-size: 16px;
+}
+
+.slider-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 60px; /* 버튼 공간 확보 */
+}
+
+.gallery-viewport {
+    overflow: hidden; /* 3개 아이템만 보이게 */
+
+    /* ************* [핵심 수정: 페이드 아웃 효과 추가] ************* */
+    /* to right: 왼쪽에서 오른쪽으로 마스크를 씌움. */
+    /* 0%와 100%는 투명(rgba(0,0,0,0)), 10%와 90%는 불투명(rgba(0,0,0,1))으로 설정 */
+    -webkit-mask-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0) 0%,   /* 왼쪽 끝: 투명 */
+            rgba(0, 0, 0, 1) 10%,  /* 왼쪽 페이드 시작: 불투명 */
+            rgba(0, 0, 0, 1) 90%,  /* 오른쪽 페이드 시작: 불투명 */
+            rgba(0, 0, 0, 0) 100%  /* 오른쪽 끝: 투명 */
+    );
+    mask-image: linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, 1) 10%,
+            rgba(0, 0, 0, 1) 90%,
+            rgba(0, 0, 0, 0) 100%
+    );
+    /* ************************************************************ */
+}
+
+.gallery-track {
+    display: flex;
+    width: fit-content;
+    /* 스크롤 제어를 위해 flex 사용 */
+
+    /* ************* [핵심 수정: 부드러운 이동 효과 추가] ************* */
+    transition: transform 0.5s ease-in-out;
+    /* ************************************************************ */
+}
+
+/* 갤러리 아이템 (3개씩 보이도록 너비 계산) */
+.gallery-item {
+    /* (전체 폭 / 3) - 아이템 간격 */
+    /* width: calc(1000px / 3 - 20px); <---- 이 부분을 */
+
+    /* ************* [핵심 수정: 너비를 %로 변경] ************* */
+    /* 3개 아이템이 보이도록 (100% / 3) - 여백을 반영한 % */
+    /* 슬라이드 뷰포트(slider-container)가 1000px이니, 아이템 너비를 px 대신 %로 처리 */
+    /* 총 여백이 30px (margin-right)인데, 뷰포트 내에서는 100% 기준 계산이 복잡하니, */
+    /* 일단 전체 트랙 너비 계산이 쉽도록 아래와 같이 단순하게 바꿔볼게. */
+
+    flex-basis: 33.333%; /* 아이템 너비를 트랙 너비의 1/3로 설정 */
+    width: 33.333%; /* 명시적 너비도 %로 설정 */
+
+    flex-shrink: 0;
+    padding: 0 10px; /* 좌우 여백을 padding으로 대체 (아이템 사이 간격 조절) */
+    box-sizing: border-box; /* 패딩이 너비를 초과하지 않도록 설정 */
+    /* margin-right: 30px; <---- 이 마진은 제거해야 JS 계산이 깔끔해져 */
+
+    text-align: center;
+    background-color: #ffffff;
     border-radius: 8px;
+    transition: transform 0.3s;
 }
 
-.slide-text {
-    width: 45%;
+/* **팁:** `.slider-container`의 `padding: 0 60px;`와 버튼의 `left/right: 0`은 이미 잘 되어 있어서 괜찮아. */
+
+/* 이미지 영역: 정사각형 유지 (핵심) */
+.image-wrapper {
+    padding-top: 100%; /* 정사각형 비율 유지 */
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px 8px 0 0;
 }
 
-.slide-text h3 {
-    color: #4CAF50; /* Green Primary */
-    margin-bottom: 10px;
+.gallery-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 잘리더라도 비율 유지하며 컨테이너 채움 */
+    transition: transform 0.3s ease-in-out;
 }
 
-/* 4️⃣ 버튼 및 페이지네이션 */
-.slider-prev, .slider-next {
+.slogan-text {
+    padding: 15px 10px;
+    font-size: 14px;
+    color: #555;
+    font-weight: 400;
+}
+
+/* 네비게이션 버튼 스타일 */
+.nav-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.4);
+    background: #66968c;
     color: white;
     border: none;
-    padding: 10px;
+    padding: 12px 18px;
     cursor: pointer;
-    z-index: 10;
+    z-index: 20;
+    font-size: 18px;
     border-radius: 50%;
-    font-size: 1.5em;
-    width: 40px;
-    height: 40px;
+    transition: background 0.3s, opacity 0.3s;
     line-height: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.slider-prev { left: 10px; }
-.slider-next { right: 10px; }
-
-.slider-dots {
-    position: absolute;
-    bottom: 15px;
-    left: 50%;
-    transform: translateX(-50%);
+.nav-button:hover {
+    background: #388E3C;
 }
 
-.dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 5px;
-    background-color: #bbb;
-    border-radius: 50%;
-    cursor: pointer;
+.nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
-.dot.active {
-    background-color: #4CAF50;
-}
+.prev-btn { left: 0; }
+.next-btn { right: 0; }
 /* ㅡㅡㅡ 3. 최신글 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
 #latest-story {
     background-color: white;
+    padding: 120px 0 100px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .story-content {
@@ -225,6 +330,46 @@ body {
     font-size: 0.9em;
     color: #999;
 }
+/* --- 4. join-us --- */
+#join-us {
+    padding-bottom: 120px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#join-us p {
+    margin-bottom: 30px;
+    color: #777;
+}
+
+.join-form {
+    display: flex;
+    justify-content: center;
+}
+
+.join-form input {
+    padding: 12px;
+    width: 70%;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+.join-form button {
+    padding: 12px 25px;
+    background-color: #175a48;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+.join-form button:hover {
+    background-color: #388E3C;
+}
 /* ㅡㅡㅡ 4. 히스토리 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 /* 4. 회사 이력 히스토리 섹션 (#history) */
 .full-page-section{
@@ -232,13 +377,15 @@ body {
 }
 
 .history-content {
-    width: 70%;
-    max-width: 900px;
+    width: 80%;
+    margin: 0 auto; /* 중앙 절렬 */
+    position: relative;
 }
 
 .history-content h2 {
     font-size: 2em;
-    margin-bottom: 50px;
+    text-align: center;
+    padding-bottom: 30px;
 }
 
 .timeline-item h3::after {
@@ -254,9 +401,10 @@ body {
 /* 1️⃣ 타임라인 컨테이너 */
 .timeline {
     position: relative;
-    max-width: 1000px;
-    margin: 100px auto;
-    padding-top: 40px;
+    padding: 40px 0;
+    border-top: 2px solid #175a48;
+    border-bottom: 2px solid #175a48;
+    margin-bottom: 100px;
 }
 
 /* 2️⃣ 세로선 (::before 가상 요소를 사용) */
@@ -275,7 +423,7 @@ body {
 /* 3️⃣ 타임라인 항목 */
 .timeline-item {
     position: relative;
-    padding: 60px 30px;
+    padding: 60px 0;
     width: 50%; /* 컨테이너 절반 너비 */
 }
 
@@ -293,13 +441,23 @@ body {
 
 
 /* 원형 포인트 위치 조정 */
-.circle {
+.circle-right {
     position: absolute;
-    top: 0;
-    left: 50%;
+    left: 0;
     width: 20px;
     height: 20px;
-    background: #a3c49b;
+    background: #175a48;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+.circle-left {
+    position: absolute;
+    right: -27px;
+    width: 20px;
+    height: 20px;
+    background: #175a48;
     border-radius: 50%;
     border: 4px solid #fff;
     transform: translate(-50%, -50%);
@@ -310,7 +468,7 @@ body {
     background: #fff;
     border-radius: 16px;
     padding: 25px 30px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px #b3c3af;
     color: #333;
     max-width: 420px;
     display: inline-block;
@@ -334,6 +492,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    white-space: nowrap;
     margin-bottom: 8px;
     color: #555;
     font-size: 0.95rem;
@@ -349,7 +508,7 @@ body {
 
 /* 왼쪽은 evt-month 순서 */
 .timeline-item.left .timeline-content li {
-    flex-direction: row-reverse;
+    flex-direction: row;
     justify-content: flex-end;
 }
 
@@ -375,34 +534,4 @@ body {
 }
 .timeline-item.right .timeline-content {
     margin-left: 40px;
-}
-
-/* 반응형 */
-@media (max-width: 768px) {
-    .timeline::before {
-        left: 10px;
-    }
-
-    .timeline-item {
-        width: 100%;
-        left: 0;
-        padding-left: 40px;
-        text-align: left;
-    }
-
-    .timeline-content {
-        margin: 0 0 40px;
-    }
-
-    .circle {
-        left: 10px;
-    }
-
-    .timeline-content li {
-        justify-content: flex-start;
-    }
-
-    .timeline-content .evt {
-        text-align: left;
-    }
 }
