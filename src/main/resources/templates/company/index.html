@@ -16,132 +16,155 @@
 <main>
     <div class="content-wrap">
         <section id="main-section">
-            <section id="intro" class="full-page-section">
-                <div class="intro-content">
-                    <h1 class="appear-text">
-                        <span class="main-slogan">당신의 공간을 푸르게,</span><br>
-                        <span class="sub-slogan">Green Garden이 만듭니다.</span>
-                    </h1>
-                    <div class="scroll-indicator">
-                        <img th:src="@{/images/company/company_comcept.jpg}" alt="가을 배너">
+            <!-- 1. 메인 섹션: Estoril PLANT HOUSE 스타일 -->
+            <section id="hero-section">
+                <div class="hero-header">
+                    <span class="logo-text">Green Garden</span>
+                    <span class="sub-text">PLANT HOUSE</span>
+                </div>
+                <div class="header-image-container">
+                    <!-- 나뭇잎 이미지 플레이스홀더 -->
+                    <img th:src="@{/images/company/company_back.jpg}" alt="brand concept">
+                </div>
+            </section>
+
+            <!-- 2. About us 섹션 -->
+            <section id="about-us">
+                <h2 class="section-title">About us</h2>
+                <div class="about-content">
+                    <div class="about-image-wrap">
+                        <!-- 둥근 이미지 들어갈 자리 -->
+                        <img th:src="@{/images/company/company_image02.jpg}" alt="About Image">
+                    </div>
+                    <div class="about-text-wrap">
+                        <p class="summary-text">
+                            **Green Garden**은 당신의 일상에 **푸르른 활력**을 불어넣습니다.
+                            복잡한 관리법 대신, **초보자도 쉽게** 시작할 수 있도록 **맞춤 키트**와 **전문적인 케어 시스템**을 제공합니다.
+                        </p>
+                        <p class="detail-text">
+                            우리는 까다로운 3단계 **Green Check**를 통과한 **건강한 식물**만을 선별하며,
+                            식물이 주는 하루의 쉼을 모든 이가 누릴 수 있도록 노력합니다.
+                        </p>
+                        <a href="#" class="read-more-btn">Read More</a>
                     </div>
                 </div>
             </section>
 
-            <section id="slogan" class="full-page-section">
-                <div class="slogan-header">
-                    <h2>삶에 건강한 활력을 더합니다.</h2>
-                </div>
-                <div class="slider-container">
-                    <div class="slider-wrapper">
+            <!-- 3. Gallery 섹션 (슬라이더 적용) -->
+            <section id="gallery">
+                <div class="content-wrap">
+                    <h2 class="section-title">Gallery</h2>
+                    <p class="gallery-sub-text">
+                        우리가 전하는 평온함과 아름다움을 만나보세요.
+                    </p>
 
-                        <div class="slide">
-                            <div class="slide-image">
-                            </div>
-                            <div class="slide-text">
-                                <h3>[전문성] 홈쇼핑 최초, 3단계 Green Check 시스템</h3>
-                                <p>까다로운 3단계 검수 과정을 거쳐 건강한 식물만을 선별합니다.</p>
-                                <button class="learn-more-btn">자세히 보기</button>
+                    <div class="slider-container">
+                        <!-- 이전 버튼 -->
+                        <button class="nav-button prev-btn" aria-label="이전 갤러리 보기" onclick="scrollGallery(-1)">&#10094;</button>
+
+                        <div class="gallery-viewport">
+                            <!-- 갤러리 이미지 트랙 (가로 배열) -->
+                            <div class="gallery-track" id="galleryTrack">
+
+                                <!-- 갤러리 아이템 1 -->
+                                <div class="gallery-item item-1" aria-label="Plant Photo 1">
+                                    <div class="image-wrapper">
+                                        <img th:src="@{/images/company/company_gallery01.jpg}" alt="갤러리1">
+                                    </div>
+                                    <p class="slogan-text">작은 숨결이 만드는 큰 변화.</p>
+                                </div>
+
+                                <!-- 갤러리 아이템 2 -->
+                                <div class="gallery-item item-2" aria-label="Plant Photo 2">
+                                    <div class="image-wrapper">
+                                        <img th:src="@{/images/company/company_gallery02.jpg}" alt="갤러리2">
+                                    </div>
+                                    <p class="slogan-text">자연에서 온 가장 완벽한 디자인.</p>
+                                </div>
+
+                                <!-- 갤러리 아이템 3 -->
+                                <div class="gallery-item item-3" aria-label="Plant Photo 3">
+                                    <div class="image-wrapper">
+                                        <img th:src="@{/images/company/company_gallery03.jpg}" alt="갤러리3">
+                                    </div>
+                                    <p class="slogan-text">당신의 일상에 푸른 활력을 더하다.</p>
+                                </div>
+
+                                <!-- 갤러리 아이템 4 -->
+                                <div class="gallery-item item-4" aria-label="Plant Photo 4">
+                                    <div class="image-wrapper">
+                                        <img th:src="@{/images/company/company_gallery04.jpg}" alt="갤러리4">
+                                    </div>
+                                    <p class="slogan-text">쉼이 필요할 때, Green Garden.</p>
+                                </div>
+
+                                <!-- 갤러리 아이템 5 -->
+                                <div class="gallery-item item-5" aria-label="Plant Photo 5">
+                                    <div class="image-wrapper">
+                                        <img th:src="@{/images/company/company_gallery05.jpg}" alt="갤러리5">
+                                    </div>
+                                    <p class="slogan-text">느린 삶의 행복, 지금 시작하세요.</p>
+                                </div>
+
+                                <!-- 갤러리 아이템 6 -->
+                                <div class="gallery-item item-6" aria-label="Plant Photo 6">
+                                    <div class="image-wrapper">
+                                        <img th:src="@{/images/company/company_gallery06.jpg}" alt="갤러리6">
+                                    </div>
+                                    <p class="slogan-text">건강한 삶을 위한 작은 습관.</p>
+                                </div>
+
                             </div>
                         </div>
 
-                        <div class="slide">
-                            <div class="slide-image">
-                            </div>
-                            <div class="slide-text">
-                                <h3>[편의성] 초보자도 쉽게, 맞춤 가드닝 키트 제공</h3>
-                                <p>복잡한 관리법 대신, 맞춤 키트와 가이드를 함께 제공하여 누구나 쉽게 시작할 수 있습니다.</p>
-                                <button class="learn-more-btn">자세히 보기</button>
-                            </div>
-                        </div>
-
-                    </div>
-                    <button class="slider-prev">&lt;</button>
-                    <button class="slider-next">&gt;</button>
-                    <div class="slider-dots">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
+                        <!-- 다음 버튼 -->
+                        <button class="nav-button next-btn" aria-label="다음 갤러리 보기" onclick="scrollGallery(1)">&#10095;</button>
                     </div>
                 </div>
             </section>
+
+            <!-- 4. Join us 섹션 -->
 
             <section id="latest-story" class="full-page-section">
                 <div class="story-content">
-                    <h2>소식과 이야기 최신글 📝</h2>
+                    <h2>소식과 이야기 최신글</h2>
                     <ul class="latest-post-list">
                         <li>
                             <a href="/company/story/1">
                                 <span class="post-title">'월간 Green Garden' 11월호: 실내 습도 관리 팁!</span>
                                 <span class="post-date">2025.11.01</span>
-                                <span class="post-link-icon">&gt;</span>
                             </a>
                         </li>
                         <li>
                             <a href="/company/story/2">
                                 <span class="post-title">공기 정화 끝판왕! 신상 '에어리 플랜트' 런칭 이벤트</span>
                                 <span class="post-date">2025.10.25</span>
-                                <span class="post-link-icon">&gt;</span>
                             </a>
                         </li>
                     </ul>
                     <a href="/company/story" class="more-btn">더 많은 이야기 보러가기</a>
                 </div>
             </section>
+            <section id="join-us">
+                <h2 class="section-title">Join us</h2>
+                <p>
+                    새로운 소식과 특별한 이벤트를 놓치지 마세요.
+                </p>
+                <div class="join-form">
+                    <button type="submit">LOGIN</button>
+                </div>
+            </section>
 
+            <!-- 연혁 -->
             <section id="history" class="full-page-section">
                 <div class="history-content">
-                    <h2>Green Garden의 성장 스토리 ⏳</h2>
+                    <h2>Green Garden의 성장 스토리</h2>
 
                     <div class="timeline">
 
-                        <!-- 2022년 -->
-                        <div class="timeline-item left">
-                            <div class="circle"></div>
-                            <div class="timeline-content">
-                                <h3>2022년</h3>
-                                <ul>
-                                    <li><span class="evt">GreenGarden 브랜드 아이디어 구상</span><span class="month">03</span></li>
-                                    <li><span class="evt">첫 시그니처 식물 컬렉션 출시</span><span class="month">05</span></li>
-                                    <li><span class="evt">“식물이 주는 하루의 쉼” 캠페인 시작</span><span class="month">06</span></li>
-                                    <li><span class="evt">공식 브랜드 론칭 및 온라인 스토어 오픈</span><span class="month">09</span></li>
-                                    <li><span class="evt">SNS 팔로워 1만 명 달성</span><span class="month">12</span></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 2023년 -->
-                        <div class="timeline-item right">
-                            <div class="circle"></div>
-                            <div class="timeline-content">
-                                <h3>2023년</h3>
-                                <ul>
-                                    <li><span class="month">02</span><span class="evt">‘Green at Home’ 홈가드닝 라인 확장</span></li>
-                                    <li><span class="month">04</span><span class="evt">첫 오프라인 팝업스토어 개최 (부산 서면)</span></li>
-                                    <li><span class="month">07</span><span class="evt">자체 제작 화분 브랜드 ‘Rooted’ 런칭</span></li>
-                                    <li><span class="month">09</span><span class="evt">브랜드 매거진 《Grow》 창간</span></li>
-                                    <li><span class="month">12</span><span class="evt">전국 10개 편집숍 입점</span></li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- 2024년 -->
-                        <div class="timeline-item left">
-                            <div class="circle"></div>
-                            <div class="timeline-content">
-                                <h3>2024년</h3>
-                                <ul>
-                                    <li><span class="evt">‘Plant with Purpose’ 지속가능 캠페인 전개</span><span class="month">03</span></li>
-                                    <li><span class="evt">그린가든 플래그십 스토어 오픈 (서울 성수)</span><span class="month">05</span></li>
-                                    <li><span class="evt">향 제품·리빙 라인 출시</span><span class="month">07</span></li>
-                                    <li><span class="evt">아티스트 협업 시리즈 ‘Botanical Days’ 전시 개최</span><span class="month">09</span></li>
-                                    <li><span class="evt">환경부 주관 친환경 브랜드 어워드 수상</span><span class="month">11</span></li>
-                                </ul>
-                            </div>
-                        </div>
-
                         <!-- 2025년 -->
                         <div class="timeline-item right">
-                            <div class="circle"></div>
+                            <div class="circle-right"></div>
                             <div class="timeline-content">
                                 <h3>2025년</h3>
                                 <ul>
@@ -154,6 +177,51 @@
                             </div>
                         </div>
 
+                        <!-- 2024년 -->
+                        <div class="timeline-item left">
+                            <div class="circle-left"></div>
+                            <div class="timeline-content">
+                                <h3>2024년</h3>
+                                <ul>
+                                    <li><span class="evt">‘Plant with Purpose’ 지속가능 캠페인 전개</span><span class="month">03</span></li>
+                                    <li><span class="evt">그린가든 플래그십 스토어 오픈 (서울 성수)</span><span class="month">05</span></li>
+                                    <li><span class="evt">향 제품·리빙 라인 출시</span><span class="month">07</span></li>
+                                    <li><span class="evt">아티스트 협업 시리즈 ‘Botanical Days’ 전시 개최</span><span class="month">09</span></li>
+                                    <li><span class="evt">환경부 주관 친환경 브랜드 어워드 수상</span><span class="month">11</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2023년 -->
+                        <div class="timeline-item right">
+                            <div class="circle-right"></div>
+                            <div class="timeline-content">
+                                <h3>2023년</h3>
+                                <ul>
+                                    <li><span class="month">02</span><span class="evt">‘Green at Home’ 홈가드닝 라인 확장</span></li>
+                                    <li><span class="month">04</span><span class="evt">첫 오프라인 팝업스토어 개최 (부산 서면)</span></li>
+                                    <li><span class="month">07</span><span class="evt">자체 제작 화분 브랜드 ‘Rooted’ 런칭</span></li>
+                                    <li><span class="month">09</span><span class="evt">브랜드 매거진 《Grow》 창간</span></li>
+                                    <li><span class="month">12</span><span class="evt">전국 10개 편집숍 입점</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2022년 -->
+                        <div class="timeline-item left">
+                            <div class="circle-left"></div>
+                            <div class="timeline-content">
+                                <h3>2022년</h3>
+                                <ul>
+                                    <li><span class="evt">GreenGarden 브랜드 아이디어 구상</span><span class="month">03</span></li>
+                                    <li><span class="evt">첫 시그니처 식물 컬렉션 출시</span><span class="month">05</span></li>
+                                    <li><span class="evt">“식물이 주는 하루의 쉼” 캠페인 시작</span><span class="month">06</span></li>
+                                    <li><span class="evt">공식 브랜드 론칭 및 온라인 스토어 오픈</span><span class="month">09</span></li>
+                                    <li><span class="evt">SNS 팔로워 1만 명 달성</span><span class="month">12</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
@@ -162,5 +230,6 @@
     </div>
 </main>
 <div th:replace="~{common/footerCompany :: footerCompany}"></div>
+<script th:src="@{/js/companyIndex.js}"></script>
 </body>
 </html>
