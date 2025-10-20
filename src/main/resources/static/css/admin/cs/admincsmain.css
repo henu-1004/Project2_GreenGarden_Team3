@@ -82,16 +82,7 @@ body {
 .search-form select {
     margin-right: 10px;
 }
-.search-form button {
-    position: absolute;
-    top: 50%;
-    right: 4px;
-    transform: translateY(-45%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-}
+
 .search-form button img {
     width: 30px;
     height: 30px;
@@ -171,64 +162,6 @@ body {
     border-color: transparent;
 }
 
-/* --- 사이드바 --- */
-#aside {
-    width: 150px;
-    flex-shrink: 0;
-    padding: 0;
-    box-sizing: border-box;
-    position: relative;
-    border-radius: 8px;
-    background-color: white;
-    border: 1px solid #e0e0e0;
-}
-#aside ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-#aside > ul > li > a {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 10px 8px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #175a48;
-    text-decoration: none;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-#aside > ul > li > a:hover {
-    color: #A8C6C4;
-    font-weight: bolder;
-}
-#aside > ul .submenu {
-    display: none;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid #e0e0e0;
-}
-#aside > ul > li.open > .submenu {
-    display: block;
-}
-#aside > ul > li > ul > li > a {
-    display: block;
-    padding: 12px 10px 12px 20px;
-    font-size: 13px;
-    font-weight: bold;
-    color: #000;
-    text-decoration: none;
-    box-sizing: border-box;
-}
-#aside > ul > li > ul > li:last-child > a {
-    border-bottom: none;
-}
-#aside > ul > li > ul > li > a:hover {
-    background-color: #f5f5f5;
-    color: #0f4033;
-}
 
 /* --- 공지사항 리스트 스타일 --- */
 .notice-list {
@@ -303,14 +236,7 @@ body {
     background-color: #ddd;
 }
 
-/* 검색 select/input */
-.search-form select,
-.search-form input[type="text"] {
-    padding: 6px 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+
 
 /* 리스트 하단 버튼 */
 .action-buttons {
@@ -547,3 +473,219 @@ body {
     background-color: #fff3e0;
     color: #f57c00;
 }
+/* ====== 검색창 영역 ====== */
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-form select,
+.search-form input[type="text"] {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search-form .btn-search {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.search-form .btn-search:hover {
+    background-color: #43a047;
+}
+
+/* ====== 모달 창 ====== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 80px auto;
+    padding: 30px 40px;
+    border-radius: 10px;
+    width: 500px;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-content .close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #555;
+}
+
+.modal-content .close:hover {
+    color: #000;
+}
+
+.modal-content .form-group {
+    margin-bottom: 15px;
+}
+
+.modal-content label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-buttons .btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-buttons .btn-cancel {
+    background-color: #999;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* ====== 관리자 QNA 답변 폼 ====== */
+
+/* 전체 폼 컨테이너 */
+.admin-reply-form {
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 25px 30px;
+    margin-top: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+.admin-reply-form:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* 라벨 + 텍스트영역 */
+.admincs-view-content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.admincs-view-label-text {
+    font-size: 1.05em;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* 답변 textarea */
+.admincs-reply-textarea {
+    width: 100%;
+    padding: 15px;
+    font-size: 15px;
+    line-height: 1.6;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 180px;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admincs-reply-textarea:focus {
+    border-color: #2d6a4f;
+    box-shadow: 0 0 5px rgba(45, 106, 79, 0.3);
+    outline: none;
+}
+
+/* 버튼 영역 */
+.admincs-view-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* 등록 버튼 */
+.admincs-view-actions .btn-submit {
+    background-color: #2d6a4f;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+}
+
+.admincs-view-actions .btn-submit:hover {
+    background-color: #1b4332;
+}
+
+/* 목록 버튼 */
+.admincs-view-actions .btn-list {
+    background-color: #e0e0e0;
+    color: #333;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 22px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.25s;
+}
+
+.admincs-view-actions .btn-list:hover {
+    background-color: #ccc;
+}
+
+
+
+
+.btn-submit:hover { background-color: #43a047; }
+.btn-cancel:hover { background-color: #777; }
