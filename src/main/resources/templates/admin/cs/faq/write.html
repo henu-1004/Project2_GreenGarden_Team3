@@ -12,13 +12,13 @@
 <div th:replace="~{admin/common/header :: header}"></div>
 <main>
     <section class="content-wrap">
-        <div th:replace="~{admin/cs/aside :: aside}"></div>
+        <div th:replace="~{admin/common/aside :: aside}"></div>
 
         <section id="main-section">
             <div class="top_nav">
                 <h5>FAQ 작성</h5>
                 <ul class="page_nation">
-                    <li><a href="#">HOME</a></li>
+                    <li><a th:href="@{admin/}">HOME</a></li>
                     <li><a href="#">고객센터</a></li>
                     <li><a th:href="@{/admin/cs/faq/list}">FAQ</a></li>
                 </ul>

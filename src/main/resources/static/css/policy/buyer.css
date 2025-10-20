@@ -122,3 +122,63 @@
     margin-top:8px;
     white-space:pre-line;
 }
+/* 약관 출력 */
+@media print{
+    @page{ size:A4; margin:15mm; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+    /* 화면용 UI 숨김 */
+    header, footer, #aside, .policy-tabs, .policy-print,
+    .breadcrumbs, .gnb, .lnb, nav, button, svg{
+        display:none !important;
+    }
+
+    /* 본문만 꽉 차게 */
+    body, .policy-wrap{ background:#fff !important; }
+    .policy-wrap{ max-width:none; margin:0; padding:0; }
+    .policy-layout{ display:block; }
+    .policy-main{ border:0; padding:0; box-shadow:none; }
+
+    .policy-title{ display:block; margin:0 0 8mm 0; font-size:18pt; color:#000; }
+    .policy-text{ font-size:12pt; color:#000; line-height:1.6; }
+
+    /* 페이지 나눔 제어 */
+    .article-title{ page-break-after:avoid; break-after:avoid-page; }
+    .policy-text p, .policy-text ul, .policy-text ol{ page-break-inside:avoid; }
+}
+
+/* 제목만 위로 살짝 이동 (CSS 한 블록만 유지) */
+@media screen {
+    .policy-main .policy-head > h2.policy-title{
+        position: relative !important;
+        top: -45px !important;
+        margin: 0 !important;
+        line-height: 1;
+        display: inline-block;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

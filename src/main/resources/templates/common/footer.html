@@ -11,7 +11,7 @@
             <div class="company-info">
                 <div class="company-info-title">
                     <h6 class="company-name">Green Garden</h6>
-                    <h6><a href="#">회사소개</a></h6>
+                    <h6><a th:href="@{/company/}">회사소개</a></h6>
                 </div>
                 <p>123-45-12345 :사업자등록번호<br>
                     example@kmarket.net  홍길동 :대표이사<br>
@@ -19,15 +19,17 @@
             </div>
             <!-- 로고 -->
             <div class="footer-logo">
-                <img th:src="@{/images/LogoMark.png}" alt="logo mark">
+                <a th:href="@{/}">
+                    <img th:src="@{/images/LogoMark.png}" alt="logo mark">
+                </a>
             </div>
             <!-- 고객센터 및 약관 -->
             <div class="cs-info">
-                <h6><a href="#">고객센터</a></h6>
+                <h6><a th:href="@{/cs/cs_index}">고객센터</a></h6>
                 <div class="terms-info">
-                    <a href="#">서비스이용약관</a>
-                    <a href="#">개인정보처리방침</a>
-                    <a href="#">전자금융거래약관</a>
+                    <a th:href="@{/policy/buyer}">서비스이용약관</a>
+                    <a th:href="@{/policy/privacy}">개인정보처리방침</a>
+                    <a th:href="@{/policy/finance}">전자금융거래약관</a>
                 </div>
                 <p>고객센터: 1234-5678 (평일 09:00~18:00)<br>
                    전자금융거래 분쟁 담당: 1234:1234 (365일 09:00~18:00)</p>

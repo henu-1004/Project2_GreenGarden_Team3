@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface TermsRepository extends JpaRepository<Terms, Integer> {
 
     Terms findByMemberType(String memberType);
+
+    Terms findFirstByTermsFinIsNotNullOrderByTermsIdDesc();
+    Terms findFirstByTermsLocIsNotNullOrderByTermsIdDesc();
+    Terms findFirstByTermsPrivIsNotNullOrderByTermsIdDesc();
 }
