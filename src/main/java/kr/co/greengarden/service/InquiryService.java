@@ -122,6 +122,14 @@ public class InquiryService {
     public void delete(int inquiryId) {
         inquiryRepository.deleteById(inquiryId);
     }
+    @Transactional
+    public void deleteMultiple(List<Integer> inquiryIds) {
+        inquiryIds.forEach(id -> {
+            inquiryRepository.deleteById(id);
+            log.info("QNA {} 삭제 완료",id);
+
+        });
+    }
 
     // 6. 관리자 Qna 답변 등록 Service
     @Transactional

@@ -135,6 +135,22 @@ public class NoticeService {
         return noticeMapper.selectLatestNotices(limit);
     }
 
+    // 1개 삭제
+    @Transactional
+    public void deleteNotice(Integer noticeId){
+        noticeRepository.deleteById(noticeId);
+        log.info("공지사항 {} 삭제 완료",noticeId);
+    }
+
+    // 선택 삭제 구현
+    @Transactional
+    public void deleteMultiple(List<Integer> noticeIds){
+        noticeIds.forEach(id -> {
+            noticeRepository.deleteById(id);
+            log.info("공지사항 {} 삭제 완료",id);
+        });
+    }
+
     // 아이디 호출
     private String getLoggedInUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

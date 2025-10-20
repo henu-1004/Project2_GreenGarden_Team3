@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +98,19 @@ public class AdminFaqController {
     @PostMapping("/admin/cs/faq/delete")
     public String delete(int faqId) {
         faqService.delete(faqId);
+        return "redirect:/admin/cs/faq/list";
+    }
+
+    /*다중 선택 삭제 */
+    @PostMapping("/admin/cs/faq/deleteMultiple")
+    public String deleteMultiple(String faqIds) {
+        log.info("선택삭제 요청 ID 목록: {}", faqIds);
+
+        List<Integer> ids = Arrays.stream(faqIds.split(","))
+                .map(Integer::parseInt)
+                .toList();
+
+        faqService.deleteMultiple(ids);
         return "redirect:/admin/cs/faq/list";
     }
 }

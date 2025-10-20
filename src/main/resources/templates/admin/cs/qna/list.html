@@ -4,28 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>admin CS QNA list</title>
+    <!-- 날짜 : 2025/10/20
+    이름 : 박효빈
+    내용 : 관리자 1:1 문의 목록 페이지 -->
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
+
 <body>
+<!-- ✅ 헤더 -->
 <div th:replace="~{admin/common/header :: header}"></div>
+
 <main>
     <section class="content-wrap">
+        <!-- ✅ 사이드바 -->
         <div th:replace="~{admin/common/aside :: aside}"></div>
 
         <section id="main-section">
             <div class="top_nav">
                 <h5>1:1 문의 목록</h5>
                 <ul class="page_nation">
-                    <li><a href="#">Home</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
                     <li><a href="#">고객센터</a></li>
                     <li><a th:href="@{/admin/cs/qna/list}">1:1 문의</a></li>
                 </ul>
             </div>
 
+            <!-- ✅ 검색/필터 -->
             <form th:action="@{/admin/cs/qna/list}" method="get" class="search-form" id="qnaFilterForm">
-
                 <input type="hidden" name="pg" th:value="${pageRequestDTO.pg}" />
                 <input type="hidden" name="size" th:value="${pageRequestDTO.size}" />
                 <input type="hidden" name="searchType" th:value="${pageRequestDTO.searchType}" />
@@ -48,12 +55,11 @@
                 </select>
             </form>
 
+            <!-- ✅ QNA 목록 테이블 -->
             <table class="admincsnotice-table">
                 <thead>
                 <tr>
-                    <th style="width: 30px;">
-                        <input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes(this)" />
-                    </th>
+                    <th style="width: 30px;"><input type="checkbox" id="selectAll" onclick="toggleAllCheckboxes(this)" /></th>
                     <th>번호</th>
                     <th>1차 유형</th>
                     <th>2차 유형</th>
@@ -74,23 +80,18 @@
                     <td th:text="${inquiry.category1}"></td>
                     <td th:text="${inquiry.category2}"></td>
                     <td>
-                        <!-- 상태가 '대기'면 reply 페이지로 이동 -->
                         <a th:if="${inquiry.status == '대기'}"
-                           th:href="@{/admin/cs/qna/reply(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
-                           th:text="${inquiry.title}"
-                          >[답변대기] [[${inquiry.title}]]</a>
-
-                        <!-- 상태가 '완료'면 view 페이지로 이동 -->
+                           th:href="@{/admin/cs/qna/reply(inquiryId=${inquiry.inquiryId})}"
+                           th:text="${inquiry.title}">[답변대기]</a>
                         <a th:if="${inquiry.status == '완료'}"
-                           th:href="@{/admin/cs/qna/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
-                           th:text="${inquiry.title}"
-                          >[답변완료] [[${inquiry.title}]]</a>
+                           th:href="@{/admin/cs/qna/view(inquiryId=${inquiry.inquiryId})}"
+                           th:text="${inquiry.title}">[답변완료]</a>
                     </td>
                     <td>
-    <span class="qna-status"
-          th:classappend="${inquiry.status == '대기'} ? 'waiting' :
-                          (${inquiry.status == '완료'} ? 'completed' : '')"
-          th:text="${inquiry.status}">답변대기</span>
+                        <span class="qna-status"
+                              th:classappend="${inquiry.status == '대기'} ? 'waiting' :
+                                              (${inquiry.status == '완료'} ? 'completed' : '')"
+                              th:text="${inquiry.status}">대기</span>
                     </td>
                     <td>
                         <th:block th:with="writerId=${inquiry.writer}">
@@ -103,16 +104,18 @@
                     <td th:text="${#temporals.format(inquiry.createdAt, 'yy.MM.dd')}"></td>
                     <td>
                         <button type="button"
-                                th:onclick="|location.href='@{/admin/cs/qna/view(inquiryId=${inquiry.inquiryId}, pg=${pageRequestDTO.pg}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}'|"
+                                th:onclick="|location.href='@{/admin/cs/qna/view(inquiryId=${inquiry.inquiryId})}'|"
                                 class="btn-modify">보기/답변</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
 
+            <!-- ✅ 페이징 -->
             <div class="cs-pagination" th:if="${!responseDTO.dtoList.isEmpty()}">
-                <a th:href="@{/admin/cs/qna/list(pg=${responseDTO.start - 1}, size=${pageRequestDTO.size}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
-                   th:if="${responseDTO.prev}" class="prev">&lt; 이전</a>
+                <a th:if="${responseDTO.prev}"
+                   th:href="@{/admin/cs/qna/list(pg=${responseDTO.start - 1}, size=${pageRequestDTO.size}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
+                   class="prev">&lt; 이전</a>
                 <span th:unless="${responseDTO.prev}" class="prev disabled">&lt; 이전</span>
 
                 <th:block th:each="pageNum : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
@@ -121,21 +124,30 @@
                        th:text="${pageNum}">1</a>
                 </th:block>
 
-                <a th:href="@{/admin/cs/qna/list(pg=${responseDTO.end + 1}, size=${pageRequestDTO.size}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
-                   th:if="${responseDTO.next}" class="next">다음 &gt;</a>
+                <a th:if="${responseDTO.next}"
+                   th:href="@{/admin/cs/qna/list(pg=${responseDTO.end + 1}, size=${pageRequestDTO.size}, category1=${pageRequestDTO.category1}, category2=${pageRequestDTO.category2})}"
+                   class="next">다음 &gt;</a>
                 <span th:unless="${responseDTO.next}" class="next disabled">다음 &gt;</span>
             </div>
 
+            <!-- ✅ 하단 버튼 -->
             <div class="action-buttons">
                 <button type="button" onclick="deleteSelected()" class="btn-delete-all">선택 삭제</button>
             </div>
+
+            <!-- ✅ 숨겨진 폼 (선택삭제용) -->
+            <form id="deleteForm" th:action="@{/admin/cs/qna/deleteMultiple}" method="post">
+                <input type="hidden" id="qnaIdsInput" name="qnaIds">
+            </form>
         </section>
     </section>
 </main>
+
+<!-- ✅ Footer -->
 <div th:replace="~{admin/common/footer :: footer}"></div>
 
+<!-- ✅ JS -->
 <script th:inline="javascript">
-    // 💡 사용자 페이지의 논리적 맵핑을 그대로 사용
     const category2Options = {
         "회원": ["가입", "탈퇴", "회원정보"],
         "쿠폰/이벤트": ["쿠폰", "이벤트", "적립금"],
@@ -144,69 +156,56 @@
         "취소/반품/교환": ["주문취소", "반품", "교환"],
         "여행/숙박/항공": ["여행", "숙박", "항공"],
         "안전거래": ["안전거래", "사기신고", "분쟁조정"],
+        "기타": ["기타문의"]
     };
 
     const category1Select = document.getElementById('category1Select');
     const category2Select = document.getElementById('category2Select');
+    const currentCategory1 = /*[[${pageRequestDTO.category1}]]*/ '';
+    const currentCategory2 = /*[[${pageRequestDTO.category2}]]*/ '';
 
-    // 현재 선택된 카테고리 값 (Thymeleaf에서 JavaScript로 전달)
-    const currentCategory1 = [[${pageRequestDTO.category1}]] || '';
-    const currentCategory2 = [[${pageRequestDTO.category2}]] || '';
+    // ✅ 페이지 로드 시 즉시 실행
+    (function initCategoryOptions() {
+        if (currentCategory1 && category2Options[currentCategory1]) {
+            const options = category2Options[currentCategory1];
+            category2Select.innerHTML = '<option value="">2차 유형 (전체)</option>';
+            options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                if (opt === currentCategory2) option.selected = true;
+                category2Select.appendChild(option);
+            });
+            category2Select.disabled = false;
+        }
+    })();
 
-    // 1차 카테고리 변경 시 2차 카테고리 옵션 업데이트 및 제출
+    // ✅ 1차 선택 시 2차 갱신
     function updateCategory2Options() {
         const category1 = category1Select.value;
-
-        // 1. 2차 카테고리 초기화
         category2Select.innerHTML = '<option value="">2차 유형 (전체)</option>';
         category2Select.disabled = true;
 
-        if (category1 && category1 !== '') {
-            const options = category2Options[category1] || [];
-
-            // 2. 동적 옵션 추가
-            options.forEach(option => {
-                const optElement = document.createElement('option');
-                optElement.value = option;
-                optElement.textContent = option;
-                category2Select.appendChild(optElement);
+        if (category1 && category2Options[category1]) {
+            const options = category2Options[category1];
+            options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                category2Select.appendChild(option);
             });
-            category2Select.disabled = false; // 1차 선택 시 2차 활성화
+            category2Select.disabled = false;
         }
-
-        // 3. 1차 카테고리가 변경되면, 2차 카테고리 필터는 초기화된 상태로 서버에 전송 (category2 파라미터가 null/''로 전송됨)
         document.getElementById('qnaFilterForm').submit();
     }
 
-    // 페이지 로드 시 기존 값에 따라 2차 카테고리 옵션 로드 및 선택
-    document.addEventListener('DOMContentLoaded', function() {
-        // 1차 카테고리가 선택되어 있고, 맵핑된 2차 옵션이 있을 때
-        if (currentCategory1 && category2Options[currentCategory1]) {
-            const options = category2Options[currentCategory1];
-
-            // 2차 옵션 초기화 (전체 옵션을 먼저 넣음)
-            category2Select.innerHTML = '<option value="">2차 유형 (전체)</option>';
-
-            // 동적 옵션 추가
-            options.forEach(option => {
-                const optElement = document.createElement('option');
-                optElement.value = option;
-                optElement.textContent = option;
-                // 기존 2차 카테고리 값과 일치하면 선택 처리
-                if (option === currentCategory2) {
-                    optElement.selected = true;
-                }
-                category2Select.appendChild(optElement);
-            });
-            category2Select.disabled = false; // 1차 선택 상태이므로 2차 활성화
-        }
-    });
-
-    // 기타 함수 (이전과 동일)
+    // ✅ 전체 선택
     function toggleAllCheckboxes(source) {
         const checkboxes = document.getElementsByName('admincscheck');
         checkboxes.forEach(cb => cb.checked = source.checked);
     }
+
+    // ✅ 선택삭제
     function deleteSelected() {
         const checkedBoxes = [...document.getElementsByName('admincscheck')].filter(cb => cb.checked);
         if (checkedBoxes.length === 0) {
@@ -214,11 +213,13 @@
             return;
         }
         if (confirm(`${checkedBoxes.length}개 항목을 삭제하시겠습니까?`)) {
-            // TODO: AJAX를 이용한 일괄 삭제 로직 구현
-            alert('삭제처리 완료 (로직 구현 필요)');
+            const ids = checkedBoxes.map(cb => cb.value);
+            document.getElementById('qnaIdsInput').value = ids.join(',');
+            document.getElementById('deleteForm').submit();
         }
     }
 </script>
+
 <script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>
