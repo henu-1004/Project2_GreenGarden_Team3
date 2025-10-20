@@ -30,18 +30,24 @@
                 </div>
                 <div class="product-view-main">
                         <div class="product-image-area">
-                            <img id="main-product-image" src="https://placehold.co/600x600/e0e0e0/000000?text=상품 이미지" alt="Main Product Image" onerror="this.src='https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지';" >
-                            <div class="product-thumbnails-container">
+                            <img id="main-product-image"
+                                 th:src="@{${product.img1 != null ? product.img1 : 'https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지'}}"
+                                 alt="Main Product Image"
+                                 onerror="this.src='https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지';">                            <div class="product-thumbnails-container">
                                 <button class="thumb-button prev" onclick="scrollThumbs(-1)">&#10094;</button>
-                                <div class="product-thumbnails">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+1" alt="Thumbnail 1" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+2" alt="Thumbnail 2" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+3" alt="Thumbnail 3" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+4" alt="Thumbnail 4" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+5" alt="Thumbnail 5" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+6" alt="Thumbnail 6" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+7" alt="Thumbnail 7" onclick="changeMainImage(this)">
-                                </div>
+                            <div class="product-thumbnails">
+                                <img th:if="${product.img1 != null and product.img1 != ''}"
+                                     th:src="@{${product.img1}}"
+                                     alt="Thumb 1" onclick="changeMainImage(this)">
+
+                                <img th:if="${product.img2 != null and product.img2 != ''}"
+                                     th:src="@{${product.img2}}"
+                                     alt="Thumb 2" onclick="changeMainImage(this)">
+
+                                <img th:if="${product.img3 != null and product.img3 != ''}"
+                                     th:src="@{${product.img3}}"
+                                     alt="Thumb 3" onclick="changeMainImage(this)">
+                            </div>
                                 <button class="thumb-button next" onclick="scrollThumbs(1)">&#10095;</button>
                             </div>
                         </div>
@@ -95,7 +101,7 @@
                         <tbody>
                         <tr>
                             <th>상품번호</th>
-                            <td>10010118412</td>
+                            <td th:text="${product.proId}">10010118412</td>
                         </tr>
                         <tr>
                             <th>상품상태</th>
