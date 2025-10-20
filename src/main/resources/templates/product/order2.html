@@ -41,12 +41,13 @@
                                 <label><span>연락처</span><input type="text" name="recPhone"></label>
                             </div>
                             <div class="form-group address">
-                                     <input type="text" id="zip_code" name="recZipCode" placeholder="우편번호" readonly>
+                                <label><span>우편번호</span>
+                                    <input type="text" id="zip_code" name="recZipCode" placeholder="우편번호" readonly>
                                     <button type="button" class="subbtn" onclick="postcode()">우편번호 검색</button>
                                 </label>
-                                <label><span>&nbsp;</span><input type="text" id="address_basic" name="recAddressBasic"
+                                <label><span>기본주소</span><input type="text" id="address_basic" name="recAddressBasic"
                                                                  placeholder="기본주소" readonly></label>
-                                <label><span>&nbsp;</span><input type="text" id="address_detail" name="recAddressDetail"
+                                <label><span>상세주소</span><input type="text" id="address_detail" name="recAddressDetail"
                                                                  placeholder="상세주소" ></label>
                             </div>
                             <div class="form-group">
@@ -97,7 +98,7 @@
                                     <td>
                                         <p class="shopping_fee">배송비 [[${cart.deliveryFee}]]원</p>
                                     </td>
-                                    <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
+                                    <td>[[${cart.originalPrice * cart.quantity + cart.deliveryFee}]]</td>
 
                                     <input type="hidden" th:name="|items[${stat.index}].proId|" th:value="${cart.proId}">
                                     <input type="hidden" th:name="|items[${stat.index}].quantity|" th:value="${cart.quantity}">

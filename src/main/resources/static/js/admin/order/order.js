@@ -161,14 +161,15 @@ async function fillOrderDetailModal(modal, orderNo) {
         shippingFeeSum += deliveryFee;
         earnedPointsSum += Number(it.point ?? 0) * qty;
 
+
         // 행 렌더
         const tr = document.createElement('tr');
         tr.innerHTML = `
         <td class="col-item-info">
           <div class="product-image">
-            <img src="${safe(it.img1) || 'https://placehold.co/150x150/e0e0e0/000000?text=Product+Image'}"
-                 alt="${safe(it.proName)}"
-                 onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+            <img src="${window.BASE_URL}${safe(it.img1).startsWith('/') ? safe(it.img1).substring(1) : safe(it.img1)}"
+             alt="${safe(it.proName)}"
+             onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
           </div>
         </td>
         <td>${safe(it.proNo)}</td>
@@ -205,7 +206,7 @@ async function fillOrderDetailModal(modal, orderNo) {
     // 결제정보
     setText('#pay-orderedAt', (first.orderedAt ?? '').toString().replace('T', ' ').replace('Z', ''));
     setText('#pay-orderNo', first.orderNo ?? '');
-    setText('#pay-buyerName', first.buyerName ?? '');
+    setText('#pay-buyerName', first.name ?? '');
     setText('#pay-buyerAddress', `${safe(first.addressBasic)} ${safe(first.addressDetail)}`.trim());
     setText('#pay-buyerPhone', first.phone ?? '');
 

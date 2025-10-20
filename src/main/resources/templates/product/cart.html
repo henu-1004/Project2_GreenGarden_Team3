@@ -61,11 +61,11 @@
                             </td>
                             <td>[[${cart.quantity}]]개</td>
                             <td>
-                                <p class="price">[[${cart.price}]]원</p>
+                                <p class="price">[[${cart.originalPrice}]]원</p>
                             </td>
                             <td>
                                 <div class="price-after">
-                                    <p class="original-price">[[${cart.originalPrice}]]원</p>
+                                    <p class="original-price">[[${cart.price}]]원</p>
                                     <p class="discount-rate">[[${cart.discountRate}]]% ↓</p>
                                 </div>
                             </td>
@@ -73,7 +73,7 @@
                             <td>
                                 <p class="shopping-fee">[[${cart.deliveryFee}]]원</p>
                             </td>
-                            <td>[[${cart.price * cart.quantity + cart.deliveryFee}]]</td>
+                            <td>[[${cart.originalPrice * cart.quantity + cart.deliveryFee}]]</td>
                             <td class="col-del-info">
                                 <a th:href="@{/product/order(cartId=${cart.cartId})}"> 바로 주문 </a> <br>
                                 <a th:href="@{#}"> 삭제 </a>

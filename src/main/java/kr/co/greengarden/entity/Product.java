@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "TB_PRODUCT")
 public class Product {

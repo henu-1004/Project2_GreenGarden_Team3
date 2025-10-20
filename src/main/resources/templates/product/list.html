@@ -43,9 +43,9 @@
                             <p th:text="${product.description}">간단한 상품 설명</p>
                         </div>
                         <div class="product_price_info">
-                            <p class="price">[[${product.price}]]원</p>
+                            <p class="price">[[${product.originalPrice}]]원</p>
                             <div class="price_after">
-                                <p class="original_price">[[${product.originalPrice}]] 원</p>
+                                <p class="original_price">[[${product.price}]] 원</p>
                                 <span class="discount_rate">[[${product.discountRate}]]% ↓</span>
                             </div>
                             <p class="shopping_fee">배송비 [[${product.deliveryFee}]]원</p>

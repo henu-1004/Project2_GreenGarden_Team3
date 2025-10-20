@@ -55,7 +55,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             value = """
                       SELECT new kr.co.greengarden.dto.admin.AdminOrderListDTO(
                         o.orderNo, m.memId, g.name, COALESCE(SUM(oi.quantity), 0L), o.totalPrice, o.payMethod,
-                    o.status, o.orderedAt, COALESCE((SELECT d.status FROM Delivery d
+                        o.status, o.orderedAt, COALESCE((SELECT d.status FROM Delivery d
                                                      WHERE d.order = o
                                                      ORDER BY d.createdAt DESC
                                                      LIMIT 1), '')
@@ -125,7 +125,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     @Query("""
             SELECT new kr.co.greengarden.dto.admin.AdminOrderDetailListDTO(
-                p.img1, p.proNo, p.name, s.company, p.price, p.discountRate, oi.quantity, p.deliveryFee, p.point,
+                p.img1, p.proNo, p.name, s.company, oi.price, oi.discountRate, oi.quantity, oi.deliveryFee, p.point,
                 o.orderedAt, o.orderNo, g.name, m.zipCode, m.addressBasic, m.addressDetail, g.phone,
                 o.recName, o.recZipCode, o.recAddressBasic, o.recAddressDetail, o.recPhone
             )
