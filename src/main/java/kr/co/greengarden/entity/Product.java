@@ -82,6 +82,14 @@ public class Product {
     @Column
     private int orderCount;
 
+    // ✅ 새로 추가한 컬럼들
+    @Column private String status;       // 상품상태
+    @Column private String tax;          // 과세여부
+    @Column private String receipt;      // 영수증발행여부
+    @Column(name = "SELLER_TYPE")
+    private String sellerType;           // 사업자구분
+    @Column private String origin;       // 원산지
+
     public ProductDTO toDTO() {
         return ProductDTO.builder()
                 .proId(this.proId)
@@ -101,7 +109,12 @@ public class Product {
                 .img3(this.img3)
                 .imgDetail(this.imgDetail)
                 .views(this.views)
-                .orderCount(this.views)
+                .orderCount(this.orderCount)
+                .status(this.status)
+                .tax(this.tax)
+                .receipt(this.receipt)
+                .sellerType(this.sellerType)
+                .origin(this.origin)
                 .build();
     }
 

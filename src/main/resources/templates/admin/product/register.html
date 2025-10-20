@@ -7,14 +7,15 @@
 </head>
 <!--
     날짜 : 2025/09/24
-    이름 : 한탁원
-    내용 : 관리자 상품 등록 작성
+    이름 : 한탁원 / 수정 : 박효빈
+    내용 : 관리자 상품 등록 (엔티티 확장 대응)
 -->
 <body>
 <th:block th:replace="~{admin/common/header :: header}"></th:block>
 <main>
     <section class="content-wrap">
         <div th:replace="~{admin/common/aside :: aside}"></div>
+
         <section id="main-section">
             <div class="top-nav">
                 <h3>상품등록</h3>
@@ -24,7 +25,9 @@
                     <li><a th:href="@{/admin/product/register}">상품등록</a></li>
                 </ul>
             </div>
+
             <form method="post" th:action="@{/admin/product/register}" enctype="multipart/form-data">
+                <!-- 상품분류 -->
                 <h3>상품분류</h3>
                 <p class="guide-text">1차, 2차 카테고리 기본분류는 반드시 선택하셔야 합니다.</p>
                 <table>
@@ -35,8 +38,7 @@
                                 <option value="" disabled selected hidden>1차 분류 선택 ▼</option>
                                 <option th:each="slug : ${parentSlugList}"
                                         th:value="${slug.cateId}"
-                                        th:text="${slug.name}">
-                                </option>
+                                        th:text="${slug.name}"></option>
                             </select>
                         </td>
                     </tr>
@@ -48,134 +50,75 @@
                             </select>
                         </td>
                     </tr>
-
                     <input type="hidden" name="categorySlug" id="categorySlug">
                 </table>
 
+                <!-- 기본정보 -->
                 <h3>기본정보</h3>
                 <p class="guide-text">기본정보는 반드시 입력하셔야 합니다.</p>
                 <table>
-                    <tr>
-                        <th>상품명</th>
-                        <td><input type="text" name="name" required></td>
-                    </tr>
-                    <tr>
-                        <th>기본설명</th>
-                        <td><input type="text" name="description"></td>
-                    </tr>
-
-                    <tr>
-                        <th>제조사</th>
-                        <td><input type="text" name="manufacturer"></td>
-                    </tr>
-
-                    <tr>
-                        <th>상품금액</th>
-                        <td><input type="number" name="price" min="0" step="1" required> 원</td>
-                    </tr>
-                    <tr>
-                        <th>할인율</th>
-                        <td><input type="number" name="discountRate" min="0" max="100" step="1"> %</td>
-                    </tr>
-                    <tr>
-                        <th>포인트</th>
-                        <td><input type="number" name="point" min="0" step="1"> 원</td>
-                    </tr>
-                    <tr>
-                        <th>재고수량</th>
-                        <td><input type="number" name="stock" min="0" step="1" required> 개</td>
-                    </tr>
-                    <tr>
-                        <th>배송비</th>
-                        <td><input type="number" name="deliveryFee" min="0" step="1"> 원</td>
-                    </tr>
-
-                    <tr>
-                        <th rowspan="3">상품이미지</th>
-                        <td><input type="file" name="imgFile1" accept="image/*"></td>
-                        <td>크기 190x190, 상품 목록에 출력 될 이미지 입니다.</td>
-                    </tr>
-                    <tr>
-                        <td><input type="file" name="imgFile2" accept="image/*"></td>
-                        <td>크기 230x230, 상품 메인에 출력 될 이미지 입니다.</td>
-                    </tr>
-                    <tr>
-                        <td><input type="file" name="imgFile3" accept="image/*"></td>
-                        <td>크기 456x456, 상품 상세에 출력될 이미지 입니다.</td>
-                    </tr>
-                    <tr>
-                        <th>상품 상세정보</th>
-                        <td><input type="file" name="imgFileDetail" accept="image/*"></td>
-                        <td>크기 가로 940px, 높이 제약없음, 크기 최대 최대 1MB</td>
-                    </tr>
+                    <tr><th>상품명</th><td><input type="text" name="name" required></td></tr>
+                    <tr><th>기본설명</th><td><input type="text" name="description"></td></tr>
+                    <tr><th>제조사</th><td><input type="text" name="manufacturer"></td></tr>
+                    <tr><th>상품금액</th><td><input type="number" name="price" min="0" step="1" required> 원</td></tr>
+                    <tr><th>할인율</th><td><input type="number" name="discountRate" min="0" max="100" step="1" value="0"> %</td></tr>
+                    <tr><th>포인트</th><td><input type="number" name="point" min="0" step="1" value="0"> 원</td></tr>
+                    <tr><th>재고수량</th><td><input type="number" name="stock" min="0" step="1" required> 개</td></tr>
+                    <tr><th>배송비</th><td><input type="number" name="deliveryFee" min="0" step="1" value="0"> 원</td></tr>
                 </table>
 
-                <h3>상품 선택정보</h3>
-                <p class="guide-text">
-                    상품별 선택정보(옵션) 입력입니다. <br>
-                    예시) 옵션1: 사이즈, 오셥1 항목: XXL, XL, L, M, S (, 콤마로 구분)
-                </p>
+                <!-- 이미지 업로드 -->
+                <h3>상품이미지</h3>
                 <table>
-                    <tr>
-                        <th>옵션1</th>
-                        <td><label><input type="text"/></label></td>
-                        <th>옵션1 항목</th>
-                        <td><label><input type="text"/></label></td>
-                    </tr>
-                    <tr>
-                        <th>옵션2</th>
-                        <td><label><input type="text"/></label></td>
-                        <th>옵션2 항목</th>
-                        <td><label><input type="text"/></label></td>
-                    </tr>
-                    <tr>
-                        <th>옵션3</th>
-                        <td><label><input type="text"/></label></td>
-                        <th>옵션3 항목</th>
-                        <td><label><input type="text"/></label></td>
-                    </tr>
+                    <tr><th>목록 이미지</th><td><input type="file" name="imgFile1" accept="image/*"></td></tr>
+                    <tr><th>메인 이미지</th><td><input type="file" name="imgFile2" accept="image/*"></td></tr>
+                    <tr><th>상세 이미지</th><td><input type="file" name="imgFile3" accept="image/*"></td></tr>
+                    <tr><th>상품 상세정보</th><td><input type="file" name="imgFileDetail" accept="image/*"></td></tr>
                 </table>
-                <button type="button" class="btn-insert">옵션추가</button>
 
+                <!-- 상품정보 제공고시 -->
                 <h3>상품정보 제공고시</h3>
                 <p class="guide-text">[전자상거래에 관한 상품정보 제공에 관한 고시] 항목에 의거 등록하는 정보입니다.</p>
                 <table>
                     <tr>
                         <th>상품상태</th>
-                        <td><label><input type="text" value="새상품"/></label></td>
+                        <td><input type="text" name="status" value="새상품" required></td>
                     </tr>
                     <tr>
                         <th>부가세 면세여부</th>
-                        <td><label><input type="text" value="과세상품"/></label></td>
+                        <td><input type="text" name="tax" value="과세상품" required></td>
                     </tr>
                     <tr>
                         <th>영수증 발행</th>
-                        <td><label><input type="text" value="발행가능 -신용카드전표, 온라인현금영수증" class="long-textbox"/></label></td>
+                        <td><input type="text" name="receipt" value="발행가능 - 신용카드전표, 온라인현금영수증" class="long-textbox" required></td>
                     </tr>
                     <tr>
                         <th>사업자구분</th>
-                        <td><label><input type="text" value="사업자판매자" class="long-textbox" /></label></td>
+                        <td><input type="text" name="sellerType" value="사업자판매자" class="long-textbox" required></td>
                     </tr>
                     <tr>
                         <th>원산지</th>
-                        <td><label><input type="text" value="국내산"/></label></td>
+                        <td><input type="text" name="origin" value="국내산" required></td>
                     </tr>
                 </table>
 
-                <p class="final-guide-text">전자상거래 등에서의 상품 정보 제공 고시에 따라, 총 35개 상품군별로 요구되는 상품 특성 정보를 양식에 맞춰 입력할 수 있습니다.</p>
+                <p class="final-guide-text">
+                    전자상거래 등에서의 상품 정보 제공 고시에 따라, 총 35개 상품군별로 요구되는 상품 특성 정보를 양식에 맞춰 입력할 수 있습니다.
+                </p>
 
-                <button type="submit" class="btn-insert">등록하기</button>
+                <div class="button-group">
+                    <button type="submit" class="btn-insert">등록하기</button>
+                </div>
             </form>
 
+            <!-- 2차 카테고리 동적 불러오기 -->
             <script th:inline="javascript">
                 const c1 = document.getElementById('classification1');
                 const c2 = document.getElementById('classification2');
-
-                // 컨텍스트패스 안전하게
                 const base = /*[[@{/admin/product/register/category/}]]*/ '/admin/product/register/category/';
 
                 c1.addEventListener('change', async () => {
-                    const parentId = c1.value;    // 숫자 ID
+                    const parentId = c1.value;
                     if (!parentId) return;
 
                     c2.innerHTML = '<option value="" disabled selected>불러오는 중...</option>';
@@ -183,12 +126,11 @@
                     try {
                         const res = await fetch(base + parentId);
                         if (!res.ok) throw new Error();
-
-                        const items = await res.json(); // [{id, slug, name}]
+                        const items = await res.json();
                         c2.innerHTML = '<option value="" disabled selected hidden>2차 분류 선택 ▼</option>';
                         items.forEach(it => {
                             const opt = document.createElement('option');
-                            opt.value = it.slug;        // 여기: slug 저장
+                            opt.value = it.slug;
                             opt.textContent = it.name;
                             c2.appendChild(opt);
                         });
@@ -200,7 +142,6 @@
         </section>
     </section>
 </main>
-<div th:replace="~{admin/common/footer :: footer}"></div>
 <script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>
