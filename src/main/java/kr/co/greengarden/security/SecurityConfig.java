@@ -47,14 +47,23 @@ public class SecurityConfig {
                 .tokenValiditySeconds(60 * 60 * 24 * 7)
                 .alwaysRemember(false)
         );
-
+      
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/member/**", "/css/**", "/js/**", "/images/**", "/favicon.ico")
-                .permitAll()
+                // ✅ 정적 리소스 및 공용 페이지는 모두 허용
+                .requestMatchers("/", "/member/**", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+
+                // ✅ 마이페이지는 로그인 사용자만 접근 가능
+                .requestMatchers("/my/**").authenticated()
+
+                // ✅ 관리자 페이지는 ADMIN 권한만 접근 가능
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
+
+                // ✅ 그 외 요청은 기본적으로 접근 허용
+                .anyRequest().permitAll()
         );
+
+
 
         //http.csrf(CsrfConfigurer::disable);
 
