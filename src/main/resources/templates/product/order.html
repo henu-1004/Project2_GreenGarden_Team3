@@ -20,7 +20,7 @@
     <div class="content-wrap">
         <div th:replace="~{common/aside :: aside}"></div>
         <section id="main-section">
-            <form th:action="@{#}" method="post">
+            <form th:action="@{/product/orderFix}" method="post">
                 <div class="top-nav">
                     <h1>주문하기</h1>
                     <ul class="page-nation">
@@ -74,21 +74,21 @@
                                 <tr>
                                     <td class="col-item-info">
                                         <div class="product-image">
-                                            <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image"
+                                            <img th:src="@{${product.img1}}"
                                                  alt="상품명"
                                                  onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
                                         </div>
                                         <div class="product-info">
-                                            <h6>상품명</h6>
-                                            <p>간단한 상품 설명</p>
+                                            <h6 th:text="${product.name}">상품명</h6>
+                                            <p th:text="${product.description}">간단한 상품 설명</p>
                                         </div>
                                     </td>
-                                    <td>1개</td>
-                                    <td>30,000원</td>
-                                    <td>10%</td>
-                                    <td>270</td>
+                                    <td th:text="${quantity} + '개'">1개</td>
+                                    <td th:text="${product.price} + '원'">30,000원</td>
+                                    <td th:text="${product.discountRate} + '%'">10%</td>
+                                    <td th:text="${product.point}">270</td>
                                     <td>무료배송</td>
-                                    <td style="color: red">29,500원</td>
+                                    <td th:text="${product.price * (1 - product.discountRate / 100)} + '원'" style="color: red">29,500원</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -100,7 +100,7 @@
                             <div class="payment-discount">
                                 <h2>할인정보</h2>
                                 <div class="discount-group">
-                                    <label>현재 포인트 : <span>7200</span>점 <input type="number"></label>
+                                    <label>현재 포인트 : <span th:text="${product.point}">7200</span>점 <input type="number"></label>
                                     <p>포인트 5,000점 이상이면 현금처럼 사용가능</p>
                                     <label>쿠폰 적용 :
                                         <select>
@@ -130,32 +130,35 @@
                             <div class="summary-details">
                                 <div class="item">
                                     <span>상품수</span>
-                                    <span id="product-count">1</span>
+                                    <span id="product-count" th:text="${quantity}">1</span>
                                 </div>
                                 <div class="item">
                                     <span>상품금액</span>
-                                    <span id="product-price">27,000</span>
+                                    <span id="product-price" th:text="${product.price}">27,000</span>
                                 </div>
                                 <div class="item">
                                     <span>할인금액</span>
-                                    <span id="discount-price">-1,350</span>
+                                    <span id="discount-price" th:text="${product.discountRate}+'%'">-1,350</span>
                                 </div>
                                 <div class="item">
                                     <span>배송비</span>
-                                    <span id="shipping-fee">0</span>
+                                    <span id="shipping-fee" th:text="${product.deliveryFee}">0</span>
                                 </div>
                                 <div class="item">
-                                    <span>할인</span>
+                                    <span>할인(쿠폰)</span>
                                     <span id="coupon-discount">-1,000</span>
                                 </div>
                                 <hr>
                                 <div class="total-price">
                                     <span>전체주문금액</span>
-                                    <span id="total-order-price">24,650</span>
+                                    <span id="total-order-price"
+                                          th:text="${#numbers.formatInteger(((product.price - (product.price * product.discountRate / 100)) * quantity) + product.deliveryFee, 0)}">
+                                            24,650
+                                        </span>
                                 </div>
                                 <div class="item">
                                     <span>적립 포인트</span>
-                                    <span id="earned-points">270</span>
+                                    <span id="earned-points" th:text="${product.point}">270</span>
                                 </div>
                             </div>
                         </div>
@@ -165,8 +168,14 @@
                         <h2>주문 동의</h2>
                         <label><input type="checkbox">구매조건 확인 및 결제진행 동의합니다.</label>
                         <div class="btn-wrap">
-                            <button class="btn btn-primary">주문하기</button>
-                            <button class="btn btn-secondary">주문취소</button>
+                            <button type="button" class="btn btn-primary"
+                                    th:onclick="|location.href='/greengarden/product/complete?orderNo=' + ${product.proId}|">
+                                주문하기
+                            </button>
+                            <button type="button" class="btn btn-secondary"
+                                    onclick="history.back()">
+                                주문취소
+                            </button>
                         </div>
                     </div>
                 </div>
