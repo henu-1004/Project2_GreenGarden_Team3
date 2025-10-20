@@ -20,9 +20,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 날짜 : 2025/10/20
+ * 이름 : 박효빈
+ * 내용 : ProductController ProNo 자동 생성 기능 구현
+ * */
 @Controller
 @RequiredArgsConstructor
 public class AdminProductController {
@@ -59,6 +66,7 @@ public class AdminProductController {
         return categoryService.getCategoryChildrenSlug(parentId);
     }
 
+    /** ✅ 상품 등록 처리 */
     @PostMapping("/admin/product/register")
     public String register(@AuthenticationPrincipal MemberDetails memberDetails,
                            @ModelAttribute ProductDTO productDTO,
@@ -77,16 +85,26 @@ public class AdminProductController {
             throw new RuntimeException(e);
         }
 
-        String memId = memberDetails.getUsername();
-        Optional<MemberSeller> optionalMember = memberSellerService.getUser(memId);
+        // ✅ 로그인한 관리자 정보 (없으면 임시 "admin_test"로 설정)
+        String memId = (memberDetails != null) ? memberDetails.getUsername() : "admin_test";
+
+        // ✅ 날짜 + 순번 상품코드 자동 생성 (예: P202510200001)
+        String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        long count = productService.getAllProducts().size() + 1; // 총 상품 수 기반
+        String productNo = String.format("P%s%04d", today, count);
+        productDTO.setProNo(productNo);
+
+        // ✅ 판매자, 카테고리 정보 세팅
+        Category category = categoryService.getCategoryBySlug(slug);
         MemberSeller seller = memberSellerService.getUser(memId)
                 .orElseThrow(() -> new IllegalStateException("판매자 계정을 찾을 수 없습니다."));
 
-        Category category = categoryService.getCategoryBySlug(slug);
-
+        // ✅ 저장
         productService.register(productDTO.toEntity(seller, category));
+
         return "redirect:/admin/product/list";
     }
+
 
     @PostMapping("/admin/product/deleteSelected")
     public String deleteSelected(@RequestParam("proIds") List<Integer> proIds,

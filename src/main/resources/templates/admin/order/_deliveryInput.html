@@ -17,45 +17,45 @@
             <table class="modal-delivery-info">
                 <tr>
                     <th>주문번호</th>
-                    <td><input type="text" name="order-num" value="10121211341" readonly></td>
+                    <td><input type="text" name="orderNo" readonly></td>
                 </tr>
                 <tr>
                     <th>수령인</th>
-                    <td><input type="text" name="order-name" value="김유신" readonly></td>
+                    <td><input type="text" name="recName" value="김유신" readonly></td>
                 </tr>
                 <tr>
                     <th>우편번호</th>
-                    <td><input type="text" name="order-add-num" value="12345" readonly></td>
+                    <td><input type="text" name="recZipCode" value="12345" readonly></td>
                 </tr>
                 <tr>
                     <th>기본주소</th>
-                    <td><input type="text" name="order-add" value="부산광역시 부산진구 부전동 123" readonly></td>
+                    <td><input type="text" name="recAddressBasic" value="부산광역시 부산진구 부전동 123" readonly></td>
                 </tr>
                 <tr>
                     <th>상세주소</th>
-                    <td><input type="text" name="order-add-detail" value="범향빌딩 4층 415호" readonly></td>
+                    <td><input type="text" name="recAddressDetail" value="범향빌딩 4층 415호" readonly></td>
                 </tr>
                 <tr>
                     <th>택배사</th>
                     <td>
-                        <select>
-                            <option>택배사선택</option>
-                            <option>롯데택배</option>
-                            <option>한진택배</option>
-                            <option>CJ대한택배</option>
-                            <option>우체국</option>
+                        <select name="company">
+                            <option value="">택배사선택</option>
+                            <option value="롯데택배">롯데택배</option>
+                            <option value="한진택배">한진택배</option>
+                            <option value="CJ대한택배">CJ대한택배</option>
+                            <option value="우체국">우체국</option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <th>운송장번호</th>
                     <td>
-                        <input type="text" placeholder="발급 받은 택배사 송장번호 입력">
+                        <input type="text" name="invoiceNo" placeholder="발급 받은 택배사 송장번호 입력">
                     </td>
                 </tr>
                 <tr>
                     <th>기타</th>
-                    <td><textarea class="ex-textbox" maxlength="200" placeholder="기타정보입력"></textarea>
+                    <td><textarea class="ex-textbox" name="note" maxlength="200" placeholder="기타정보입력"></textarea>
                 </tr>
             </table>
             <!-- 등록하기 버튼 -->

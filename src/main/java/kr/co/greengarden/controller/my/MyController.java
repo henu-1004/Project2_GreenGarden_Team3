@@ -1,10 +1,13 @@
 package kr.co.greengarden.controller.my;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.greengarden.dto.my.OrderHistoryCriteria;
+import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.service.MyService;
 import kr.co.greengarden.service.PointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -55,8 +60,85 @@ public class MyController {
 
 
     @GetMapping("/order")
-    public String order(HttpServletRequest request, Model model) {
+    public String order(HttpServletRequest request,
+                       Model model,
+                       @AuthenticationPrincipal UserDetails userDetails,
+                       @RequestParam(value = "period", required = false) String period,
+                       @RequestParam(value = "startDate", required = false)
+                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                       @RequestParam(value = "endDate", required = false)
+                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                       @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("currentUri", request.getRequestURI());
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        String memId = userDetails.getUsername();
+
+        LocalDate today = LocalDate.now();
+        LocalDate resolvedEnd = (endDate != null) ? endDate : today;
+        if (resolvedEnd.isAfter(today)) {
+            resolvedEnd = today;
+        }
+
+        LocalDate resolvedStart;
+        String selectedPeriod;
+        if (period != null && !period.isBlank()) {
+            switch (period) {
+                case "1w":
+                    resolvedStart = resolvedEnd.minusDays(6);
+                    break;
+                case "15d":
+                    resolvedStart = resolvedEnd.minusDays(14);
+                    break;
+                case "1m":
+                default:
+                    resolvedStart = resolvedEnd.minusMonths(1).plusDays(1);
+                    period = "1m";
+                    break;
+            }
+            selectedPeriod = period;
+        } else if (startDate != null && endDate != null) {
+            resolvedStart = startDate;
+            selectedPeriod = "custom";
+        } else {
+            resolvedStart = resolvedEnd.minusMonths(1).plusDays(1);
+            selectedPeriod = "1m";
+        }
+
+        if (resolvedStart.isAfter(resolvedEnd)) {
+            resolvedStart = resolvedEnd;
+        }
+
+        LocalDate minStart = resolvedEnd.minusMonths(5);
+        boolean limited = false;
+        if (resolvedStart.isBefore(minStart)) {
+            resolvedStart = minStart;
+            limited = true;
+        }
+
+        OrderHistoryCriteria criteria = OrderHistoryCriteria.builder()
+                .memId(memId)
+                .startDate(resolvedStart)
+                .endDate(resolvedEnd)
+                .startDateTime(resolvedStart.atStartOfDay())
+                .endDateTime(resolvedEnd.atTime(LocalTime.of(23, 59, 59)))
+                .page(page)
+                .size(10)
+                .build();
+
+        OrderHistoryPageDTO pageDTO = myService.getOrderHistory(criteria);
+
+        model.addAttribute("orders", pageDTO.getOrders());
+        model.addAttribute("pageInfo", pageDTO);
+        model.addAttribute("startDate", resolvedStart);
+        model.addAttribute("endDate", resolvedEnd);
+        model.addAttribute("selectedPeriod", selectedPeriod);
+        model.addAttribute("periodParam", "custom".equals(selectedPeriod) ? null : selectedPeriod);
+        model.addAttribute("limited", limited);
+        model.addAttribute("totalCount", pageDTO.getTotalCount());
+
         return "my/order";
     }
 

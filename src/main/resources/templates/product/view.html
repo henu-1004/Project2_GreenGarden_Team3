@@ -30,18 +30,24 @@
                 </div>
                 <div class="product-view-main">
                         <div class="product-image-area">
-                            <img id="main-product-image" src="https://placehold.co/600x600/e0e0e0/000000?text=상품 이미지" alt="Main Product Image" onerror="this.src='https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지';" >
-                            <div class="product-thumbnails-container">
+                            <img id="main-product-image"
+                                 th:src="@{${product.img1 != null ? product.img1 : 'https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지'}}"
+                                 alt="Main Product Image"
+                                 onerror="this.src='https://placehold.co/600x600/e0e0e0/000000?text=상품+이미지';">                            <div class="product-thumbnails-container">
                                 <button class="thumb-button prev" onclick="scrollThumbs(-1)">&#10094;</button>
-                                <div class="product-thumbnails">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+1" alt="Thumbnail 1" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+2" alt="Thumbnail 2" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+3" alt="Thumbnail 3" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+4" alt="Thumbnail 4" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+5" alt="Thumbnail 5" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+6" alt="Thumbnail 6" onclick="changeMainImage(this)">
-                                    <img src="https://placehold.co/80x80/e0e0e0/000000?text=Thumb+7" alt="Thumbnail 7" onclick="changeMainImage(this)">
-                                </div>
+                            <div class="product-thumbnails">
+                                <img th:if="${product.img1 != null and product.img1 != ''}"
+                                     th:src="@{${product.img1}}"
+                                     alt="Thumb 1" onclick="changeMainImage(this)">
+
+                                <img th:if="${product.img2 != null and product.img2 != ''}"
+                                     th:src="@{${product.img2}}"
+                                     alt="Thumb 2" onclick="changeMainImage(this)">
+
+                                <img th:if="${product.img3 != null and product.img3 != ''}"
+                                     th:src="@{${product.img3}}"
+                                     alt="Thumb 3" onclick="changeMainImage(this)">
+                            </div>
                                 <button class="thumb-button next" onclick="scrollThumbs(1)">&#10095;</button>
                             </div>
                         </div>
@@ -49,8 +55,9 @@
                             <input type="hidden" id="product-price" th:value="${product.price}" value="5000">
                             <input type="hidden" id="delivery-fee" th:value="${product.deliveryFee}" value="3000">
 
-                            <h2 class="product-price">[[${product.price}]]원</h2>
-                            <p th:text="${product.name}">상품명</p>
+                            
+                            <h2 th:text="${product.name}">상품명</h2>
+                            <p class="product-price">[[${product.price}]]원</p>
                             <p th:text="${product.description}">간단한 설명</p>
 
                             <form th:action="@{/product/action}" method="post">
@@ -95,59 +102,59 @@
                         <tbody>
                         <tr>
                             <th>상품번호</th>
-                            <td>10010118412</td>
+                            <td th:text="${product.proId}">10010118412</td>
+                        </tr>
+                        <tr>
+                            <th>상품명</th>
+                            <td th:text="${product.name}">db연동 x</td>
                         </tr>
                         <tr>
                             <th>상품상태</th>
-                            <td>새상품</td>
+                            <td th:text="${product.status != null ? product.status : 'db연동 x'}">db연동 x</td>
                         </tr>
                         <tr>
                             <th>부가가치세면세여부</th>
-                            <td>과세상품</td>
+                            <td th:text="${product.tax != null ? product.tax : 'db연동 x'}">db연동 x</td>
                         </tr>
                         <tr>
                             <th>영수증발행</th>
-                            <td>발행가능(신용카드전표)</td>
+                            <td th:text="${product.receipt != null ? product.receipt : 'db연동 x'}">db연동 x</td>
                         </tr>
                         <tr>
                             <th>사업자구분</th>
-                            <td>통신판매업자</td>
+                            <td th:text="${product.sellerType != null ? product.sellerType : 'db연동 x'}">db연동 x</td>
                         </tr>
                         <tr>
-                            <th>브랜드</th>
-                            <td>블루포스</td>
+                            <th>제조사</th>
+                            <td th:text="${product.manufacturer}">db연동 x</td>
                         </tr>
                         <tr>
                             <th>원산지</th>
-                            <td>국내생산</td>
+                            <td th:text="${product.origin != null ? product.origin : 'db연동 x'}">db연동 x</td>
                         </tr>
                         <tr>
-                            <th>제조자/수입국</th>
-                            <td>상세정보 직접 입력</td>
+                            <th>가격</th>
+                            <td>
+                                <span th:text="${#numbers.formatInteger(product.price, 0)}">db연동 x</span> 원
+                            </td>
                         </tr>
                         <tr>
-                            <th>제조국</th>
-                            <td>상세정보 직접 입력</td>
+                            <th>배송비</th>
+                            <td>
+                                <span th:text="${#numbers.formatInteger(product.deliveryFee, 0)}">db연동 x</span> 원
+                            </td>
                         </tr>
                         <tr>
-                            <th>취급시주의사항</th>
-                            <td>상세정보 직접 입력</td>
-                        </tr>
-                        <tr>
-                            <th>제조연월</th>
-                            <td>상세정보 직접 입력</td>
+                            <th>등록일</th>
+                            <td th:text="${#temporals.format(product.createdAt, 'yyyy-MM-dd HH:mm')}">db연동 x</td>
                         </tr>
                         <tr>
                             <th>품질보증기준</th>
-                            <td>상세정보 직접 입력</td>
+                            <td>db연동 x</td>
                         </tr>
                         <tr>
-                            <th>A/S 책임자</th>
-                            <td>상세정보 직접 입력</td>
-                        </tr>
-                        <tr>
-                            <th>전화번호</th>
-                            <td>상세정보 직접 입력</td>
+                            <th>A/S 책임자 및 전화번호</th>
+                            <td>db연동 x</td>
                         </tr>
                         </tbody>
                     </table>

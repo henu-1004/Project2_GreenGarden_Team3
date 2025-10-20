@@ -20,7 +20,14 @@ public class SecurityConfig {
         http.formLogin(form -> form
                 .loginPage("/member/login")
                 .loginProcessingUrl("/member/login")
-                .defaultSuccessUrl("/", true)
+                //.defaultSuccessUrl("/", true)
+                .successHandler((req, res, auth) -> {
+                    boolean isAdmin = auth.getAuthorities()
+                            .stream()
+                            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                    String ctx = req.getContextPath();
+                    res.sendRedirect(ctx + (isAdmin ? "/admin/" : "/"));
+                })
                 .failureUrl("/member/login?error=true")
                 .usernameParameter("memId")
                 .passwordParameter("password")
@@ -40,13 +47,23 @@ public class SecurityConfig {
                 .tokenValiditySeconds(60 * 60 * 24 * 7)
                 .alwaysRemember(false)
         );
-
+      
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
+                // ✅ 정적 리소스 및 공용 페이지는 모두 허용
+                .requestMatchers("/", "/member/**", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+
+                // ✅ 마이페이지는 로그인 사용자만 접근 가능
                 .requestMatchers("/my/**").authenticated()
-                .requestMatchers("/admin/**").authenticated()
+
+                // ✅ 관리자 페이지는 ADMIN 권한만 접근 가능
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                // ✅ 그 외 요청은 기본적으로 접근 허용
                 .anyRequest().permitAll()
         );
+
+
 
         //http.csrf(CsrfConfigurer::disable);
 
