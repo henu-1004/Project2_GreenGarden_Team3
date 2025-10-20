@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>채용하기 목록</title>
+    <!-- 날짜 : 2025/10/20
+    이름 : 박효빈
+    내용 : 관리자 채용하기 페이지 -->
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
@@ -19,7 +22,7 @@
             <div class="top_nav">
                 <h5>채용하기 목록</h5>
                 <ul class="page_nation">
-                    <li><a href="#">HOME</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
                     <li><a href="#">고객센터</a></li>
                     <li><a th:href="@{/admin/cs/recruit/list}">채용하기</a></li>
                 </ul>

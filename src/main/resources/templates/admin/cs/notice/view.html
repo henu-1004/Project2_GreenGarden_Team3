@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>admin Cs Notice View</title>
+    <!-- 날짜 : 2025/10/20
+    이름 : 박효빈
+    내용 : 관리자 공지사항 view 페이지 -->
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
@@ -18,9 +21,9 @@
             <div class="top_nav">
                 <h5>공지사항 보기</h5>
                 <ul class="page_nation">
-                    <li><a href="#">HOME</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
                     <li><a href="#">고객센터</a></li>
-                    <li><a href="#">공지사항</a></li>
+                    <li><a th:href="@{/admin/cs/notice/list}">공지사항</a></li>
                 </ul>
             </div>
 
