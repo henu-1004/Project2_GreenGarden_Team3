@@ -13,21 +13,4 @@ document.addEventListener('DOMContentLoaded', function() {
             li1.classList.add('active'); // 1차 메뉴 활성화
         }
     });
-
-    // 1차 메뉴 클릭 시 (기존 코드 유지 가능)
-    const mainMenus = document.querySelectorAll('#aside > ul > li > span');
-    mainMenus.forEach(menu => {
-        menu.addEventListener('click', function(e) {
-            e.preventDefault();
-            const subMenu = this.nextElementSibling;
-            if (subMenu && subMenu.classList.contains('submenu')) {
-                // 토글 기능
-                if (subMenu.style.display === 'block') {
-                    subMenu.style.display = 'none';
-                } else {
-                    subMenu.style.display = 'block';
-                }
-            }
-        });
-    });
 });

@@ -395,9 +395,10 @@ td img {
 .version-box {
     border: 1px solid #ccc;
     padding: 8px;
-    text-align: center; /* 가로 중앙정렬 */
-    vertical-align: middle; /* 세로 중앙 정렬 */
-}*/
+    text-align: center; /* 가로 중앙정렬
+    vertical-align: middle; /* 세로 중앙 정렬
+}
+*/
 
 
 .version-box .btn {
@@ -421,19 +422,15 @@ td img {
     background: #175a48;
 }
 
-    .version-box input[type="file"],
-    .version-box input[type="text"],
-    .version-box input[type="date"],
-    .version-box input[type="time"]    {
+.version-box input[type="file"],
+.version-box input[type="text"],
+.version-box input[type="date"],
+.version-box input[type="time"] {
     flex: 0;
     padding: 2px;
     border: 1px solid #ccc;
-    background: #f3f7f6;  /* 배경색 변경 */
-    color: #666;           /* 글자색 변경 */
+    background: #f3f7f6; /* 배경색 변경 */
+    color: #666; /* 글자색 변경 */
     box-sizing: border-box;
     width: 200px;
-    }
-
-/* 모달 끝 ㅡㅡㅡㅡㅡ */
-
->>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
+}
