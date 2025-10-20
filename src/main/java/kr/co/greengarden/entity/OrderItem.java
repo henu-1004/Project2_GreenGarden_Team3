@@ -26,8 +26,8 @@ public class OrderItem {
     private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="cartId")
-    private Cart cart;
+    @JoinColumn(name="proId")
+    private Product product;
 
     @Column
     private int quantity;
@@ -40,9 +40,6 @@ public class OrderItem {
 
     @Column
     private int pointUsed;
-
-    @Column
-    private int proId;
 
     /* admin chart에 필요해서 추가 */
     @Column(name = "CANCEL_YN")

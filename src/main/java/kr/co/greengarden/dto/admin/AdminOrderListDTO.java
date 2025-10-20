@@ -16,9 +16,10 @@ public class AdminOrderListDTO {
     private String orderNo;
     private String memId;
     private String name;
-    private int quantity;  // null 가능하도록 Integer 사용
-    private int totalPrice;
+    private Long quantity;  // null 가능하도록 Integer 사용
+    private Integer totalPrice;
     private String payMethod;
     private String status;
     private LocalDateTime orderedAt;
+    private String deliveryStatus;
 }

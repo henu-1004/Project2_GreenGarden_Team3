@@ -30,11 +30,14 @@ public class Delivery {
     private String invoiceNo;
 
     @Column
+    private String company;
+
+    @Column
     private String status;
 
     @CreationTimestamp
     @Column
-    private LocalDate cratedAt;
+    private LocalDateTime createdAt;
 
     @Column
     private String note;

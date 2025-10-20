@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /*
@@ -29,6 +31,7 @@ public class OrderService {
     private final MemberGeneralRepository memberGeneralRepository;
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final DeliveryRepository deliveryRepository;
     private final ModelMapper modelMapper;
 
     @Transactional
@@ -59,7 +62,7 @@ public class OrderService {
 
             OrderItem orderItem = OrderItem.builder()
                     .order(updatedOrder)
-                    .proId(proId)
+                    .product(productRepository.findById(proId).get())
                     .quantity(quantity)
                     .price(price)
                     .discountRate(discountRate)
@@ -72,15 +75,25 @@ public class OrderService {
             cartRepository.deleteByProduct_ProId(proId);
 
             orderItemRepository.save(orderItem);
+
+            Delivery delivery = Delivery.builder()
+                                .order(updatedOrder)
+                                .status("배송 대기")
+                                .createdAt(LocalDateTime.now())
+                                .build();
+
+            deliveryRepository.save(delivery);
         }
 
     }
 
+    /*
     @Transactional
     public List<AdminOrderListDTO> getOrderList() {
         return orderRepository.findAllAdminOrderList();
     }
-    
+    */
+
     public void getCompleteOrderList(String orderNo) {
 
         /*
@@ -167,6 +180,7 @@ public class OrderService {
         return orderInfoDTO;
     }
 
+
     public Page<AdminOrderListDTO> findAllOrderBySearch(String searchType, String keyword, int page, int size){
         String st = (searchType == null) ? "" : searchType.trim();
         String kw = (keyword == null) ? "" : keyword.trim();
@@ -174,11 +188,17 @@ public class OrderService {
         return orderRepository.findAllOrderBySearch(st, kw, pageable);
     }
 
+
     public Page<DeliveryDTO> findAllDeliveryBySearch(String searchType, String keyword, int page, int size){
         String st = (searchType == null) ? "" : searchType.trim();
         String kw = (keyword == null) ? "" : keyword.trim();
         Pageable pageable = PageRequest.of(page, size);
         return orderRepository.findAllDeliveryBySearch(st, kw, pageable);
+    }
+
+    // 배송창 입력
+    public DeliveryInputDTO findDeliveryInfo(String orderNo) {
+        return orderRepository.findDeliveryInfo(orderNo);
     }
 
     // 관리자 인덱스용
@@ -200,4 +220,7 @@ public class OrderService {
         return new AdminIndexOrderInfoWrapperDTO(statusCount, totalPrice, count);
     }
 
+    public List<AdminOrderDetailListDTO> findOrderDetailList(String orderNo) {
+        return orderRepository.findOrderDetailList(orderNo);
+    }
 }
