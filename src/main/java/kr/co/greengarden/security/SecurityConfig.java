@@ -20,7 +20,14 @@ public class SecurityConfig {
         http.formLogin(form -> form
                 .loginPage("/member/login")
                 .loginProcessingUrl("/member/login")
-                .defaultSuccessUrl("/", true)
+                //.defaultSuccessUrl("/", true)
+                .successHandler((req, res, auth) -> {
+                    boolean isAdmin = auth.getAuthorities()
+                            .stream()
+                            .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                    String ctx = req.getContextPath();
+                    res.sendRedirect(ctx + (isAdmin ? "/admin/" : "/"));
+                })
                 .failureUrl("/member/login?error=true")
                 .usernameParameter("memId")
                 .passwordParameter("password")
@@ -43,8 +50,10 @@ public class SecurityConfig {
 
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/admin/**").authenticated()
-                .anyRequest().permitAll()
+                .requestMatchers("/", "/member/**", "/css/**", "/js/**", "/images/**", "/favicon.ico")
+                .permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
         );
 
         //http.csrf(CsrfConfigurer::disable);
