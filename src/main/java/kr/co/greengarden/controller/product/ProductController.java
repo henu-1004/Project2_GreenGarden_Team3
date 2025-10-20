@@ -86,7 +86,11 @@ public class ProductController {
     }
 
     @GetMapping("/product/order")
-    public String orderPage() {
+    public String orderPage(int productId, Integer quantity, Model model) {
+        Product product = productService.getProduct(productId);
+        model.addAttribute("product", product);
+        model.addAttribute("quantity", quantity); // 선택한 수량 전달
+
         return "product/order";
     }
 
