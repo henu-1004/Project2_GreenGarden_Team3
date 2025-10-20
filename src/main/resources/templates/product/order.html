@@ -20,7 +20,7 @@
     <div class="content-wrap">
         <div th:replace="~{common/aside :: aside}"></div>
         <section id="main-section">
-            <form th:action="@{#}" method="post">
+            <form th:action="@{/product/orderFix}" method="post">
                 <div class="top-nav">
                     <h1>주문하기</h1>
                     <ul class="page-nation">
@@ -168,8 +168,14 @@
                         <h2>주문 동의</h2>
                         <label><input type="checkbox">구매조건 확인 및 결제진행 동의합니다.</label>
                         <div class="btn-wrap">
-                            <button class="btn btn-primary">주문하기</button>
-                            <button class="btn btn-secondary">주문취소</button>
+                            <button type="button" class="btn btn-primary"
+                                    th:onclick="|location.href='/greengarden/product/complete?orderNo=' + ${product.proId}|">
+                                주문하기
+                            </button>
+                            <button type="button" class="btn btn-secondary"
+                                    onclick="history.back()">
+                                주문취소
+                            </button>
                         </div>
                     </div>
                 </div>
