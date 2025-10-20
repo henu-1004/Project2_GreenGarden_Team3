@@ -2,61 +2,161 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>회사 소개</title>
+    <title>>Green Garden - 푸르른 일상이 시작되는 곳</title>
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
-    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
     <link rel="stylesheet" th:href="@{/css/company/index.css}">
 </head>
 <!--
-	날짜 : 2025/09/16
-    이름 : 한탁원
-    내용 : header 초안 작성
+	날짜 : 2025/09/16 & 2025/10/20
+    이름 : 한탁원 & 이수연
+    내용 : 초안 작성 & 내용 채우기
 -->
 <body>
 <div th:replace="~{common/header_company :: header_company}"></div>
 <main>
     <div class="content-wrap">
         <section id="main-section">
-            <div id="banner">
-                <img src="" alt="이미지1">
-                <h1>취향을, 브랜드를, 혜택을 발견하는 즐거움</h1>
-                <h1>지금 케이마켓에서 만나요</h1>
-            </div>
+            <section id="intro" class="full-page-section">
+                <div class="intro-content">
+                    <h1 class="appear-text">
+                        <span class="main-slogan">당신의 공간을 푸르게,</span><br>
+                        <span class="sub-slogan">Green Garden이 만듭니다.</span>
+                    </h1>
+                    <div class="scroll-indicator">
+                        <img th:src="@{/images/company/company_comcept.jpg}" alt="가을 배너">
+                    </div>
+                </div>
+            </section>
 
-            <div>
-                <p>쇼핑 좀 해본사람들이 만든 플랫폼,
-                    케이마켓은 풍부한 오프라인 쇼핑인프라, 온라인 쇼핑 노하우,
-                    IT기술로 세상에 없던 새로운 쇼핑경험을 제공하고
-                    꼭 이용하고 싶은 온라인 쇼핑 플랫폼으로 발전하고 있어요.
-                </p>
-            </div>
-            <h1>쇼핑을 새롭게, 세상을 이롭게 만들어나가요.</h1>
+            <section id="slogan" class="full-page-section">
+                <div class="slogan-header">
+                    <h2>삶에 건강한 활력을 더합니다.</h2>
+                </div>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
 
-            <div>
-                <table border="1">
-                    <tr>
-                        <td><img src="" alt="이미지2"></td>
-                        <td><img src="" alt="이미지2"></td>
-                    </tr>
-                    <tr>
-                        <td>고객이 원하고 만족하는 서비스를 만들어요</td>
-                        <td>고객이 원하고 만족하는 서비스를 만들어요</td>
-                    </tr>
-                    <tr>
-                        <td>케이마켓은 단순히 상품을 판매하는 플랫폼이 아니라 상품에 대한 경험을 함께 제공할 수 있는 플랫폼을 목표로하고 있어요. 해외직구, 뷰티, 그로서리,</td>
-                        <td>케이마켓은 단순히 상품을 판매하는 플랫폼이 아니라 상품에 대한 경험을 함께 제공할 수 있는 플랫폼을 목표로하고 있어요. 해외직구, 뷰티, 그로서리,</td>
-                    </tr>
-                </table>
-            </div>
+                        <div class="slide">
+                            <div class="slide-image">
+                            </div>
+                            <div class="slide-text">
+                                <h3>[전문성] 홈쇼핑 최초, 3단계 Green Check 시스템</h3>
+                                <p>까다로운 3단계 검수 과정을 거쳐 건강한 식물만을 선별합니다.</p>
+                                <button class="learn-more-btn">자세히 보기</button>
+                            </div>
+                        </div>
 
-            <h1>케이마켓은 이렇게 성장하고 있어요</h1>
+                        <div class="slide">
+                            <div class="slide-image">
+                            </div>
+                            <div class="slide-text">
+                                <h3>[편의성] 초보자도 쉽게, 맞춤 가드닝 키트 제공</h3>
+                                <p>복잡한 관리법 대신, 맞춤 키트와 가이드를 함께 제공하여 누구나 쉽게 시작할 수 있습니다.</p>
+                                <button class="learn-more-btn">자세히 보기</button>
+                            </div>
+                        </div>
 
-            <div>
-                <table>
-                </table>
-            </div>
+                    </div>
+                    <button class="slider-prev">&lt;</button>
+                    <button class="slider-next">&gt;</button>
+                    <div class="slider-dots">
+                        <span class="dot active"></span>
+                        <span class="dot"></span>
+                    </div>
+                </div>
+            </section>
 
-            <h1>국내최초의 온라인 종합 쇼핑몰로 출발해</h1>
+            <section id="latest-story" class="full-page-section">
+                <div class="story-content">
+                    <h2>소식과 이야기 최신글 📝</h2>
+                    <ul class="latest-post-list">
+                        <li>
+                            <a href="/company/story/1">
+                                <span class="post-title">'월간 Green Garden' 11월호: 실내 습도 관리 팁!</span>
+                                <span class="post-date">2025.11.01</span>
+                                <span class="post-link-icon">&gt;</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/company/story/2">
+                                <span class="post-title">공기 정화 끝판왕! 신상 '에어리 플랜트' 런칭 이벤트</span>
+                                <span class="post-date">2025.10.25</span>
+                                <span class="post-link-icon">&gt;</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <a href="/company/story" class="more-btn">더 많은 이야기 보러가기</a>
+                </div>
+            </section>
+
+            <section id="history" class="full-page-section">
+                <div class="history-content">
+                    <h2>Green Garden의 성장 스토리 ⏳</h2>
+
+                    <div class="timeline">
+
+                        <!-- 2022년 -->
+                        <div class="timeline-item left">
+                            <div class="circle"></div>
+                            <div class="timeline-content">
+                                <h3>2022년</h3>
+                                <ul>
+                                    <li><span class="evt">GreenGarden 브랜드 아이디어 구상</span><span class="month">03</span></li>
+                                    <li><span class="evt">첫 시그니처 식물 컬렉션 출시</span><span class="month">05</span></li>
+                                    <li><span class="evt">“식물이 주는 하루의 쉼” 캠페인 시작</span><span class="month">06</span></li>
+                                    <li><span class="evt">공식 브랜드 론칭 및 온라인 스토어 오픈</span><span class="month">09</span></li>
+                                    <li><span class="evt">SNS 팔로워 1만 명 달성</span><span class="month">12</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2023년 -->
+                        <div class="timeline-item right">
+                            <div class="circle"></div>
+                            <div class="timeline-content">
+                                <h3>2023년</h3>
+                                <ul>
+                                    <li><span class="month">02</span><span class="evt">‘Green at Home’ 홈가드닝 라인 확장</span></li>
+                                    <li><span class="month">04</span><span class="evt">첫 오프라인 팝업스토어 개최 (부산 서면)</span></li>
+                                    <li><span class="month">07</span><span class="evt">자체 제작 화분 브랜드 ‘Rooted’ 런칭</span></li>
+                                    <li><span class="month">09</span><span class="evt">브랜드 매거진 《Grow》 창간</span></li>
+                                    <li><span class="month">12</span><span class="evt">전국 10개 편집숍 입점</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2024년 -->
+                        <div class="timeline-item left">
+                            <div class="circle"></div>
+                            <div class="timeline-content">
+                                <h3>2024년</h3>
+                                <ul>
+                                    <li><span class="evt">‘Plant with Purpose’ 지속가능 캠페인 전개</span><span class="month">03</span></li>
+                                    <li><span class="evt">그린가든 플래그십 스토어 오픈 (서울 성수)</span><span class="month">05</span></li>
+                                    <li><span class="evt">향 제품·리빙 라인 출시</span><span class="month">07</span></li>
+                                    <li><span class="evt">아티스트 협업 시리즈 ‘Botanical Days’ 전시 개최</span><span class="month">09</span></li>
+                                    <li><span class="evt">환경부 주관 친환경 브랜드 어워드 수상</span><span class="month">11</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2025년 -->
+                        <div class="timeline-item right">
+                            <div class="circle"></div>
+                            <div class="timeline-content">
+                                <h3>2025년</h3>
+                                <ul>
+                                    <li><span class="month">02</span><span class="evt">‘GreenGarden Signature’ 3주년 리뉴얼 컬렉션 공개</span></li>
+                                    <li><span class="month">04</span><span class="evt">국내외 감성 브랜드와 협업 프로젝트 진행</span></li>
+                                    <li><span class="month">06</span><span class="evt">지속가능 소재 기반 패키지 전면 교체</span></li>
+                                    <li><span class="month">09</span><span class="evt">해외 첫 전시 참여 (도쿄 디자인 위크)</span></li>
+                                    <li><span class="month">12</span><span class="evt">4주년 기념 전시 ‘The Garden Grows On’ 개최</span></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
 
         </section>
     </div>

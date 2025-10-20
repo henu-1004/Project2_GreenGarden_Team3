@@ -1,4 +1,4 @@
-package kr.co.greengarden.controller.admin.company;
+package kr.co.greengarden.controller.company;
 
 import kr.co.greengarden.dto.NoticeDTO;
 import kr.co.greengarden.dto.PageRequestDTO;

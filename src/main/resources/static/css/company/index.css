@@ -1,9 +1,9 @@
 @charset "UTF-8";
 
 /*
- * 날짜 : 2025/10/16
- * 이름 : 한탁원
- * 내용 : index - css 초안 작성
+ * 날짜 : 2025/10/16 & 2025/10/20
+ * 이름 : 한탁원 & 이수연
+ * 내용 : index - css 초안 작성 & 마무리~
  */
 body {
     min-width: 1200px;
@@ -28,4 +28,381 @@ body {
     background: white;
     /* aside와 상단선을 맞춤 */
     box-sizing: border-box;
+}
+
+/* ㅡㅡㅡ company index css ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+/* ㅡㅡㅡ 1. 랜딩 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+#intro {
+    /* 🖼️ 배경 이미지 설정: Green Garden 아이덴티티 강조 */
+    background: url('../img/intro_bg_clean.jpg') no-repeat center center/cover;
+    color: white;
+}
+
+.intro-content {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2); /* 텍스트가 잘 보이도록 반투명 배경 */
+    border-radius: 10px;
+}
+
+/* 💫 Text Appear 효과를 위한 초기 상태 */
+.appear-text {
+    font-size: 4em;
+    font-weight: 700;
+    line-height: 1.3;
+    opacity: 0; /* 초기 투명 */
+    transform: translateY(30px); /* 초기 위치 아래 */
+    transition: opacity 1.5s ease-out, transform 1.5s ease-out; /* 부드럽게 나타나도록 */
+}
+
+/* JS로 .active 클래스가 추가되었을 때 */
+#intro.active .appear-text {
+    opacity: 1; /* 나타남 */
+    transform: translateY(0); /* 원래 위치로 */
+}
+
+/* 스크롤 다운 인디케이터 (애니메이션 추가 예정) */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+/* ㅡㅡㅡ 2. 슬로건/경쟁력 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+#slogan {
+    background-color: #f9f9f5; /* 연한 베이지색 */
+    padding-top: 50px;
+}
+
+.slogan-header h2 {
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+/* 1️⃣ 슬라이드 컨테이너: 보이는 영역만 설정 */
+.slider-container {
+    width: 80%;
+    max-width: 1000px;
+    height: 400px;
+    overflow: hidden; /* **핵심!** 넘치는 슬라이드는 숨김 */
+    position: relative;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* 2️⃣ 슬라이드 래퍼: 모든 슬라이드가 나열되는 공간 (JS로 이 요소를 X축 이동) */
+.slider-wrapper {
+    display: flex; /* 슬라이드들을 가로로 나열 */
+    height: 100%;
+    /* JS 이동 시 부드럽게 움직이도록 transition 설정 */
+    transition: transform 0.5s ease-in-out;
+}
+
+/* 3️⃣ 개별 슬라이드 */
+.slide {
+    min-width: 100%; /* 슬라이드가 컨테이너 너비 100%를 차지 */
+    flex-shrink: 0; /* 슬라이드가 줄어들지 않도록 설정 */
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 30px;
+    text-align: left;
+    background-color: white;
+}
+
+.slide-image {
+    width: 45%;
+    height: 100%;
+    background-color: #eee; /* 이미지 자리 표시 */
+    border-radius: 8px;
+}
+
+.slide-text {
+    width: 45%;
+}
+
+.slide-text h3 {
+    color: #4CAF50; /* Green Primary */
+    margin-bottom: 10px;
+}
+
+/* 4️⃣ 버튼 및 페이지네이션 */
+.slider-prev, .slider-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    font-size: 1.5em;
+    width: 40px;
+    height: 40px;
+    line-height: 1;
+}
+
+.slider-prev { left: 10px; }
+.slider-next { right: 10px; }
+
+.slider-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: #4CAF50;
+}
+/* ㅡㅡㅡ 3. 최신글 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
+#latest-story {
+    background-color: white;
+}
+
+.story-content {
+    width: 60%;
+    max-width: 800px;
+}
+
+.story-content h2 {
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+/* 2. 최신글 리스트 스타일 */
+.latest-post-list {
+    list-style: none;
+    text-align: left;
+    border-top: 2px solid #4CAF50;
+}
+
+.latest-post-list li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    text-decoration: none;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+}
+
+.latest-post-list li a:hover {
+    background-color: #e8f5e9;
+}
+
+.post-title {
+    flex-grow: 1;
+    font-weight: 500;
+}
+
+.post-date {
+    width: 100px;
+    text-align: right;
+    font-size: 0.9em;
+    color: #999;
+}
+/* ㅡㅡㅡ 4. 히스토리 섹션 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* 4. 회사 이력 히스토리 섹션 (#history) */
+.full-page-section{
+
+}
+
+.history-content {
+    width: 70%;
+    max-width: 900px;
+}
+
+.history-content h2 {
+    font-size: 2em;
+    margin-bottom: 50px;
+}
+
+.timeline-item h3::after {
+    content: attr(data-label);
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #8fa5c0;
+    letter-spacing: 0.3px;
+    margin-top: 4px;
+}
+
+/* 1️⃣ 타임라인 컨테이너 */
+.timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 100px auto;
+    padding-top: 40px;
+}
+
+/* 2️⃣ 세로선 (::before 가상 요소를 사용) */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: #175a48;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+/* 3️⃣ 타임라인 항목 */
+.timeline-item {
+    position: relative;
+    padding: 60px 30px;
+    width: 50%; /* 컨테이너 절반 너비 */
+}
+
+/* 4️⃣ 홀수 번째 항목 (왼쪽 배치) */
+.timeline-item.left {
+    left: 0;
+    text-align: right;
+}
+
+/* 5️⃣ 짝수 번째 항목 (오른쪽 배치) */
+.timeline-item.right {
+    left: 50%;
+}
+
+
+
+/* 원형 포인트 위치 조정 */
+.circle {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: #a3c49b;
+    border-radius: 50%;
+    border: 4px solid #fff;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+.timeline-content {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    color: #333;
+    max-width: 420px;
+    display: inline-block;
+    position: relative;
+    z-index: 3;
+}
+
+.timeline-content h3 {
+    color: #5b7f4d;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.timeline-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.timeline-content li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+.timeline-content .month {
+    color: #a3c49b;
+    font-weight: 600;
+    flex-shrink: 0;
+    width: 40px;
+    text-align: center;
+}
+
+/* 왼쪽은 evt-month 순서 */
+.timeline-item.left .timeline-content li {
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.timeline-item.left .timeline-content .evt {
+    text-align: right;
+    margin-left: 10px;
+}
+
+/* 오른쪽은 month-evt 순서 (기본) */
+.timeline-item.right .timeline-content li {
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.timeline-item.right .timeline-content .evt {
+    text-align: left;
+    margin-left: 10px;
+}
+
+/* 선과 카드가 겹치지 않도록 */
+.timeline-item.left .timeline-content {
+    margin-right: 40px;
+}
+.timeline-item.right .timeline-content {
+    margin-left: 40px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .timeline::before {
+        left: 10px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        left: 0;
+        padding-left: 40px;
+        text-align: left;
+    }
+
+    .timeline-content {
+        margin: 0 0 40px;
+    }
+
+    .circle {
+        left: 10px;
+    }
+
+    .timeline-content li {
+        justify-content: flex-start;
+    }
+
+    .timeline-content .evt {
+        text-align: left;
+    }
 }
