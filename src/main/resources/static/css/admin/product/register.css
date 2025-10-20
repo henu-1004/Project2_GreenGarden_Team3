@@ -53,7 +53,7 @@ a {
     margin-bottom: 20px;
 }
 
-.top-nav h5 {
+.top-nav h3 {
     font-size: 1.2em;
     font-weight: bold;
 }
@@ -72,112 +72,124 @@ a {
     margin-left: 5px;
     color: #999;
 }
-/* admin list css ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
-/* 검색  ㅡㅡㅡㅡㅡ */
-.search-form {
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+/* admin product register css ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+.guide-text, .final-guide-text {
+    /* 텍스트와 배경 사이 여백 */
+    padding: 10px 15px;
 
-    position: relative; /* input 내부 버튼 위치를 위한 기준점 */
-    display: flex;
-    align-items: center;
-    max-width: 400px;
+    /* 글씨 크기 및 색상 조정 */
+    font-size: 14px;
+    color: #555;
+
+    /* 필요하다면 위/아래 여백 추가 */
+    margin-top: 10px;
+    margin-bottom: 15px;
 }
 
-.search-info {
-    display: flex;
-    align-items: center;
+.guide-text {
+    /* 배경색을 영역 전체에 칠한다 */
+    background-color: #f7f7f7; /* 원하는 배경색 (예시) */
+
+}
+.final-guide-text {
+    /* 배경색을 영역 전체에 칠한다 */
+    background-color: #fcfdc8; /* 원하는 배경색 (예시) */
+
 }
 
-.search-form select,
-.search-form input {
-    height: 40px;
-    padding: 10px;
+/* 🌟 폼 테이블 공통 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 셀 간의 간격 제거 */
+    border-top: 2px solid #5a5a5a; /* 상단 두꺼운 선 */
+    margin-bottom: 30px; /* 테이블 아래 여백 */
+}
+
+table tr {
+    border-bottom: 1px solid #e0e0e0; /* 행 구분선 */
+}
+
+/* 🌟 제목 컬럼 (<th>) 스타일 */
+table th {
+    width: 120px; /* <th> 영역 너비 고정 (제목과 입력 영역 구분) */
+    background-color: #f7f7f7; /* 왼쪽 배경색 */
+    color: #333;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    padding: 12px 15px;
+    vertical-align: middle; /* 중앙 정렬 */
+}
+
+/* 🌟 입력 컬럼 (<td>) 스타일 */
+table td {
+    padding: 12px 15px;
+    font-size: 14px;
+    color: #555;
+    text-align: left;
+    /* 이미지 파일 설명을 위한 줄바꿈 방지 */
+    white-space: normal;
+}
+
+/* 🌟 테이블 내 모든 입력 요소 (input, select) 스타일 통일 */
+table input[type="text"],
+table input[type="number"],
+table input[type="file"],
+table select {
+    padding: 8px 10px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 4px;
+    font-size: 13px;
     box-sizing: border-box;
+    /* 일부 입력 필드 너비 조절 (필요하다면) */
+    width: 250px;
+    transition: border-color 0.2s;
 }
 
-.search-form select {
-    margin-right: 10px;
-    width: 100px;
-}
-
-.search-form input {
-    width: 300px;
-}
-
-.search-form button {
-    position: absolute;
-    top: 45%;
-    right: 4px;
-    transform: translateY(-50%);
-    background: none;
+table input[type="file"] {
+    width: auto; /* 파일 선택 버튼 너비 자동 조절 */
     border: none;
-    cursor: pointer;
     padding: 0;
 }
 
-.search-form button img {
-    width: 30px;
-    height: 30px;
+table input[type="text"]:focus,
+table input[type="number"]:focus,
+table select:focus {
+    border-color: #555; /* 포커스 시 테두리 색상 변경 */
+    outline: none;
 }
 
-/* 주문현황 테이블 디자인 ㅡㅡㅡㅡㅡㅡ */
-.product-table {
-    border-collapse: collapse;
-    width: 100%;
-    text-align: center;
+.long-textbox {
+    width: 400px;
 }
 
-.product-table th {
-    padding: 10px;
-    border-top: 3px solid #ddd;
-    border-bottom: 3px solid #ddd;
-    font-size: 15px;
+/* 🌟 상품 이미지 설명 텍스트 (마지막 <td>에만 적용) */
+table tr td:last-child {
+    font-size: 12px;
+    color: #888;
+    line-height: 1.4;
 }
 
-.product-table td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    font-size: 10px;
-}
 
-/* 등록하기 버튼 ㅡㅡㅡㅡㅡㅡ */
-
-#button-section {
-    display: flex;
-    justify-content: space-between;
-}
-
-#productBulkDeleteBtn {
-    display: block;
-    margin-top: 20px;
-    width: 80px;
-
-    padding: 8px 15px; /* 버튼 내부 여백 */
-    border: none;
-    cursor: pointer;
-    border-radius: 4px; /* 모서리를 약간 둥글게 */
-    transition: background-color 0.2s;
-
-    background-color: #175a48;
-    color: #ffffff; /* 흰색 글자 */
-    font-weight: bold;
-}
-
+/* ㅡㅡㅡ 등록하기 버튼 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .btn-insert {
-    font-size: 14px;
-    text-align: center;
     display: block;
     margin-left: auto;
     margin-top: 20px;
     width: 80px;
 
     padding: 8px 15px; /* 버튼 내부 여백 */
+    font-size: 12px;
+    font-weight: bold;
     border: none;
     cursor: pointer;
-    border-radius: 4px; /* 모서리를 약간 둥글게 */
     transition: background-color 0.2s;
 
     background-color: #175a48;
@@ -188,34 +200,3 @@ a {
 .btn-insert:hover {
     background-color: #3e8e41;
 }
-
-
-/* 페이지 네이션 ㅡㅡㅡㅡㅡ */
-.pagination {
-    display: flex;
-    justify-content: center; /* 가로 중앙 정렬 */
-    align-items: center; /* 세로 중앙 정렬 */
-    margin-top: 30px;
-    gap: 5px; /* 페이지 번호 사이 간격 */
-}
-
-.pagination a {
-    border: 1px solid #ccc; /* 테두리 */
-    padding: 8px 12px; /* 내부 여백 */
-    border-radius: 4px; /* 둥근 모서리 */
-    transition: background-color 0.2s; /* 부드러운 색 변화 */
-    color: #333;
-    text-decoration: none; /* 밑줄 제거 */
-}
-
-.pagination a:hover {
-    background-color: #f0f0f0;
-}
-
-.pagination a.active {
-    background-color: #333;
-    color: white;
-    border-color: #333;
-    font-weight: bold;
-}
-
