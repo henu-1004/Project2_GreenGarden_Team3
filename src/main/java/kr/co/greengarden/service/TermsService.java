@@ -1,10 +1,14 @@
 package kr.co.greengarden.service;
 
+import kr.co.greengarden.dto.admin.TermsModifyDTO;
 import kr.co.greengarden.entity.Terms;
 import kr.co.greengarden.repository.TermsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -12,6 +16,9 @@ import org.springframework.stereotype.Service;
 public class TermsService {
 
     private final TermsRepository termsRepository;
+
+    private static final Set<String> ALLOWED =
+            Set.of("BUYER", "SELLER", "FINANCE", "LOCATION", "PRIVACY");
 
     private boolean isBlank(String s){
         return s == null || s.trim().isEmpty();
@@ -36,6 +43,24 @@ public class TermsService {
         return (t == null || isBlank(t.getTermsPriv())) ? null : t.getTermsPriv();
     }
 
+    // 약관 수정
+    @Transactional
+    public void update(TermsModifyDTO dto){
+        final String type = dto.getType();
+        final String content = dto.getContent() == null ? "" : dto.getContent();
 
 
-}
+        switch (type) {
+            case "BUYER" -> termsRepository.updateTermsUseByMemberType("USER", content);
+            case "SELLER" -> termsRepository.updateTermsUseByMemberType("SELLER", content);
+            case "FINANCE" -> termsRepository.updateTermsFinForAll(content);
+            case "LOCATION" -> termsRepository.updateTermsLocForAll(content);
+            case "PRIVACY" -> termsRepository.updateTermsPrivForAll(content);
+            default -> throw new IllegalArgumentException("Invalid type" + type);
+            }
+        }
+
+    }
+
+
+
