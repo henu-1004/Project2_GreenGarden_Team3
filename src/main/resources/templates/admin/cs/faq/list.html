@@ -4,21 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>admin CS FAQ list</title>
+    <!-- 날짜 : 2025/10/20
+    이름 : 박효빈
+    내용 : 관리자 FAQ 목록 페이지 -->
     <link rel="stylesheet" th:href="@{/css/admin/common/header.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/cs/admincsmain.css}" />
     <link rel="stylesheet" th:href="@{/css/admin/common/footer.css}" />
 </head>
+
 <body>
+<!-- ✅ 공통 헤더 -->
 <div th:replace="~{admin/common/header :: header}"></div>
+
 <main>
     <section class="content-wrap">
-        <div th:replace="~{admin/cs/aside :: aside}"></div>
+        <!-- ✅ 공통 사이드바 -->
+        <div th:replace="~{admin/common/aside :: aside}"></div>
 
         <section id="main-section">
+            <!-- 상단 네비 -->
             <div class="top_nav">
                 <h5>FAQ 목록</h5>
+                <ul class="page_nation">
+                    <li><a th:href="@{/admin/}">Home</a></li>
+                    <li><a href="#">고객센터</a></li>
+                    <li><a th:href="@{/admin/cs/faq/list}">FAQ</a></li>
+                </ul>
             </div>
 
+            <!-- ✅ 카테고리 검색 -->
             <div class="search-form">
                 <select id="category1Select" onchange="updateCategory2Options()">
                     <option value="">1차 카테고리 선택</option>
@@ -36,6 +50,7 @@
                 </select>
             </div>
 
+            <!-- ✅ FAQ 목록 테이블 -->
             <table class="admincsnotice-table">
                 <thead>
                 <tr>
@@ -47,19 +62,21 @@
                     <th>2차 카테고리</th>
                     <th>제목</th>
                     <th>조회</th>
-                    <th>날짜</th>
+                    <th>등록일</th>
                     <th style="width: 80px;">관리</th>
                 </tr>
                 </thead>
+
                 <tbody id="faqTableBody">
                 <tr id="selectCategoryMessage">
-                    <td colspan="8" style="text-align: center">카테고리를 선택해 주세요.</td>
+                    <td colspan="8" style="text-align: center;">카테고리를 선택해 주세요.</td>
                 </tr>
 
                 <tr id="noDataMessage" style="display: none;">
-                    <td colspan="8" style="text-align: center">등록된 FAQ가 없습니다.</td>
+                    <td colspan="8" style="text-align: center;">등록된 FAQ가 없습니다.</td>
                 </tr>
 
+                <!-- FAQ 데이터 -->
                 <th:block th:each="entry : ${faqMap}">
                     <tr class="category-header"
                         th:attr="data-category1=${entry.value[0].category1}, data-category2=${entry.key}"
@@ -81,30 +98,41 @@
                                th:text="${faq.title}"></a>
                         </td>
                         <td th:text="${faq.views}">0</td>
-                        <td th:text="${#temporals.format(faq.getCreatedAt(), 'yyyy.MM.dd')}">23.10.31</td>                        <td>
+                        <td th:text="${#temporals.format(faq.createdAt, 'yyyy.MM.dd')}">25.10.20</td>
+                        <td>
                             <button type="button"
                                     th:onclick="|location.href='@{/admin/cs/faq/modify(faqId=${faq.faqId})}'|"
                                     class="btn-modify">수정</button>
-                            <button type="button" class="btn-delete"
-                                    th:onclick="deleteFaq('${faq.faqId}')">삭제</button>
+                            <button type="button"
+                                    class="btn-delete"
+                                    th:onclick="deleteFaq(${faq.faqId})">삭제</button>
                         </td>
                     </tr>
                 </th:block>
                 </tbody>
             </table>
 
+            <!-- ✅ 하단 버튼 -->
             <div class="action-buttons">
                 <button type="button" onclick="deleteSelected()" class="btn-delete-all">선택삭제</button>
                 <button type="button" class="btn-write"
                         th:onclick="|location.href='@{/admin/cs/faq/write}'|">작성하기</button>
             </div>
+
+            <!-- ✅ 숨겨진 폼 (선택삭제용) -->
+            <form id="deleteForm" th:action="@{/admin/cs/faq/deleteMultiple}" method="post">
+                <input type="hidden" id="faqIdsInput" name="faqIds">
+            </form>
         </section>
     </section>
 </main>
+
+<!-- ✅ 공통 footer -->
 <div th:replace="~{admin/common/footer :: footer}"></div>
 
+<!-- ✅ JS -->
 <script>
-    // 1차 카테고리에 따른 2차 카테고리 옵션
+    // 1차 카테고리별 2차 카테고리 목록
     const category2Options = {
         '회원': ['가입', '탈퇴', '회원정보'],
         '쿠폰/이벤트': ['쿠폰', '이벤트/할인'],
@@ -112,133 +140,95 @@
         '배송': ['배송 일반', '택배/수령'],
         '취소/반품/교환': ['취소/변경', '반품/교환'],
         '여행/숙박/항공': ['예약/구매', '취소/변경'],
-        '안전거래': ['이용규정', '피해예방'],
+        '안전거래': ['이용규정', '피해예방']
     };
 
-    // 1차 카테고리 변경 시 2차 카테고리 옵션 업데이트
+    // ✅ 1차 선택 시 2차 옵션 갱신
     function updateCategory2Options() {
         const category1Select = document.getElementById('category1Select');
         const category2Select = document.getElementById('category2Select');
         const category1 = category1Select.value;
 
-        // 2차 카테고리 초기화
         category2Select.innerHTML = '<option value="">2차 카테고리 선택</option>';
 
-        if (category1) {
-            const options = category2Options[category1] || [];
-            options.forEach(option => {
-                const optElement = document.createElement('option');
-                optElement.value = option;
-                optElement.textContent = option;
-                category2Select.appendChild(optElement);
+        if (category1 && category2Options[category1]) {
+            category2Options[category1].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                category2Select.appendChild(opt);
             });
         }
-
-        // FAQ 목록 필터링
         filterFaqList();
     }
 
-    // FAQ 목록 필터링
+    // ✅ 카테고리 필터링
     function filterFaqList() {
-        const category1 = document.getElementById('category1Select').value;
-        const category2 = document.getElementById('category2Select').value;
+        const c1 = document.getElementById('category1Select').value;
+        const c2 = document.getElementById('category2Select').value;
 
-        const selectMessage = document.getElementById('selectCategoryMessage');
-        const noDataMessage = document.getElementById('noDataMessage');
-        const categoryHeaders = document.querySelectorAll('.category-header');
-        const faqRows = document.querySelectorAll('.faq-row');
+        const selectMsg = document.getElementById('selectCategoryMessage');
+        const noDataMsg = document.getElementById('noDataMessage');
+        const headers = document.querySelectorAll('.category-header');
+        const rows = document.querySelectorAll('.faq-row');
 
-        // 모든 행 숨기기
-        categoryHeaders.forEach(header => header.style.display = 'none');
-        faqRows.forEach(row => row.style.display = 'none');
+        headers.forEach(h => h.style.display = 'none');
+        rows.forEach(r => r.style.display = 'none');
 
-        // 카테고리 선택 안 됨
-        if (!category1 || !category2) {
-            selectMessage.style.display = '';
-            noDataMessage.style.display = 'none';
+        if (!c1 || !c2) {
+            selectMsg.style.display = '';
+            noDataMsg.style.display = 'none';
             return;
         }
 
-        selectMessage.style.display = 'none';
-
-        // 해당 카테고리의 헤더와 데이터 찾기
+        selectMsg.style.display = 'none';
         let hasData = false;
-        let displayCount = 0;
+        let count = 0;
 
-        // 카테고리 헤더 표시
-        categoryHeaders.forEach(header => {
-            if (header.dataset.category1 === category1 && header.dataset.category2 === category2) {
-                header.style.display = '';
-            }
+        headers.forEach(h => {
+            if (h.dataset.category1 === c1 && h.dataset.category2 === c2) h.style.display = '';
         });
 
-        // FAQ 행 표시 (최대 10개)
-        faqRows.forEach(row => {
-            if (row.dataset.category1 === category1 && row.dataset.category2 === category2) {
-                if (displayCount < 10) {
-                    row.style.display = '';
+        rows.forEach(r => {
+            if (r.dataset.category1 === c1 && r.dataset.category2 === c2) {
+                if (count < 10) {
+                    r.style.display = '';
                     hasData = true;
-                    displayCount++;
+                    count++;
                 }
             }
         });
 
-        // 데이터 없음 메시지
-        if (!hasData) {
-            noDataMessage.style.display = '';
-        } else {
-            noDataMessage.style.display = 'none';
-        }
+        noDataMsg.style.display = hasData ? 'none' : '';
     }
 
+    // ✅ 전체선택 체크박스
     function toggleAllCheckboxes(source) {
-        const checkboxes = document.querySelectorAll('input[name="admincscheck"]');
+        const checkboxes = document.getElementsByName('admincscheck');
         checkboxes.forEach(cb => {
-            // 보이는 행의 체크박스만 선택
-            if (cb.closest('tr').style.display !== 'none') {
-                cb.checked = source.checked;
-            }
+            if (cb.closest('tr').style.display !== 'none') cb.checked = source.checked;
         });
     }
 
+    // ✅ 선택삭제 (폼 전송 방식)
     function deleteSelected() {
-        const checkboxes = document.querySelectorAll('input[name="admincscheck"]:checked');
-        const checkedBoxes = Array.from(checkboxes).filter(cb =>
-            cb.closest('tr').style.display !== 'none'
-        );
+        const checked = [...document.getElementsByName('admincscheck')].filter(cb => cb.checked && cb.closest('tr').style.display !== 'none');
 
-        if (checkedBoxes.length === 0) {
+        if (checked.length === 0) {
             alert('삭제할 항목을 선택해 주세요.');
             return;
         }
 
-        if (confirm(`${checkedBoxes.length}개 항목을 삭제하시겠습니까?`)) {
-            const faqIds = checkedBoxes.map(cb => cb.value);
-
-            fetch('/admin/cs/faq/deleteMultiple', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ faqIds: faqIds })
-            })
-                .then(response => {
-                    if(response.ok) {
-                        alert('삭제가 완료되었습니다.');
-                        location.reload();
-                    } else {
-                        alert('삭제 중 오류가 발생했습니다.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('삭제 중 오류가 발생했습니다.');
-                });
+        if (confirm(`${checked.length}개 항목을 삭제하시겠습니까?`)) {
+            const ids = checked.map(cb => cb.value);
+            document.getElementById('faqIdsInput').value = ids.join(',');
+            document.getElementById('deleteForm').submit();
         }
     }
 
+    // ✅ 단일 삭제
     function deleteFaq(faqId) {
-        if(confirm(`FAQ ${faqId}를 삭제하시겠습니까?`)) {
+        if (confirm(`FAQ ${faqId}를 삭제하시겠습니까?`)) {
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '/admin/cs/faq/delete';
@@ -254,10 +244,8 @@
         }
     }
 
-    // 페이지 로드 시 초기화
-    document.addEventListener('DOMContentLoaded', function() {
-        filterFaqList();
-    });
+    document.addEventListener('DOMContentLoaded', filterFaqList);
 </script>
+<script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>

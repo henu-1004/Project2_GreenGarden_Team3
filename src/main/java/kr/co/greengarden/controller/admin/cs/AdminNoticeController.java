@@ -12,6 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -84,6 +87,17 @@ public class AdminNoticeController {
     @PostMapping("/admin/cs/notice/delete")
     public String adminCsDelete(int noticeId) {
         noticeService.delete(noticeId);
+        return "redirect:/admin/cs/notice/list";
+    }
+
+    // 선택처리 (POST)
+    @PostMapping("/admin/cs/notice/deleteMultiple")
+    public String deleteMultiple(String noticeIds) {
+        List<Integer> ids = Arrays.stream(noticeIds.split(","))
+                .map(Integer::parseInt)
+                .toList();
+
+        noticeService.deleteMultiple(ids);
         return "redirect:/admin/cs/notice/list";
     }
 

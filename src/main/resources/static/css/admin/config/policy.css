@@ -115,6 +115,9 @@ th, td {
 }
 
 .btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
     margin-bottom: 50px;
 }
 
@@ -126,7 +129,7 @@ th, td {
     padding: 8px 15px ;
     border: none;
     cursor: pointer;
-    float: right;
+    float: none;
 }
 
 .form-row {
@@ -175,13 +178,23 @@ th, td {
 
 .terms-box {
     width: 100%;
-    height: 150px;
+    max-height: 320px;
     border: 1px solid #ccc;
     padding: 10px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: #f9f9f9;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.6;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.terms-content{
+    white-space: pre-line;
+    word-break: break-word;
+    line-height: 1.6;
+    overflow: visible;
 }
 
 .version-box {
@@ -193,6 +206,7 @@ th, td {
     width: 100%;
     border-collapse: collapse;
     font-size: 14px;
+    table-layout: fixed;
 }
 
 .version-box th,
@@ -205,6 +219,11 @@ th, td {
     background: #f3f7f6;
     font-weight: normal;
     width: 120px;
+    vertical-align: top;
+}
+
+.version-box td{
+    width: auto;
 }
 
 .version-box td strong {
@@ -249,3 +268,50 @@ th, td {
 .pagination a.active {
     background-color: #333;
     color: white;
+}
+
+/* 보기 모드에서만 스크롤 */
+/*.terms-content.view{*/
+/*    max-height: 320px;*/
+/*    overflow: auto;*/
+/*}*/
+
+/* 편집 폼 기본 */
+.edit-form{ margin-top: 8px; }
+.edit-textarea{
+    width: 100%;
+    min-height: 320px;       /* ← 캡처처럼 작게 나오던 거 해결 */
+    box-sizing: border-box;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: vertical;        /* 높이 드래그 허용 */
+}
+.edit-actions{
+    display:flex;
+    gap:8px;
+    justify-content:flex-end;
+    margin-top:8px;
+}
+
+/* 버튼 전역 (btn-wrap 안이 아닌 곳에서도 적용되도록) */
+.btn{
+    background:#175a48;
+    color:#fff;
+    border:none;
+    padding:8px 14px;
+    border-radius:4px;
+    cursor:pointer;
+}
+.btn.gray{ background:#6f7b79; }
+
+/* 편집 모드일 땐 박스 높이 제한/스크롤 해제 */
+.terms-box.editing{
+    max-height:none;
+    overflow:visible;
+}
+
+
+

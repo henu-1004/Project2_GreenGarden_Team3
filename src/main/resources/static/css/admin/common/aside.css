@@ -38,7 +38,8 @@
 
 /* 1차 메뉴 hover */
 #aside > ul > li:hover > span {
-    color: #175a48;
+    color: white;
+    background-color: #175a48;
 }
 
 /* 1차 메뉴 active (클릭한 상태 유지) */

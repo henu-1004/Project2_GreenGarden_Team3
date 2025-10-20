@@ -15,16 +15,16 @@
 <div th:replace="~{admin/common/header :: header}"></div>
 <main>
     <section class="content-wrap">
-        <div th:replace="~{admin/cs/aside :: aside}"></div>
+        <div th:replace="~{admin/common/aside :: aside}"></div>
 
         <!-- 메인 섹션: 공지사항 작성 -->
         <section id="main-section">
             <div class="top_nav">
                 <h5>공지사항 작성</h5>
                 <ul class="page_nation">
-                    <li><a href="#">HOME</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
                     <li><a href="#">고객센터</a></li>
-                    <li><a href="#">공지사항</a></li>
+                    <li><a th:href="@{/admin/cs/notice/list}">공지사항</a></li>
                 </ul>
             </div>
 
@@ -73,5 +73,6 @@
     </section>
 </main>
 <div th:replace="~{admin/common/footer :: footer}"></div>
+<script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>
