@@ -31,7 +31,6 @@ public class MainController {
 
     private final ProductService productService;
     private final NoticeService noticeService;
-    private final FaqService faqService;
     private final InquiryService inquiryService;
 
     @GetMapping(value = {"/", "/index"})

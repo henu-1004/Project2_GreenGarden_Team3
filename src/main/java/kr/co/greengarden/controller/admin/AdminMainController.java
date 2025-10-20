@@ -58,7 +58,7 @@ public class AdminMainController {
         PageResponseDTO<NoticeDTO> pageResponseDTO = noticeService.getNoticesList(pageRequestDTO);
         PageResponseDTO<InquiryDTO> responseDTO = inquiryService.getInquiryList(pageRequestDTO);
 
-        // admin chart 데이터 (주차 오프셋 전달)
+        // admin chart 데이터 (주차 오프셋 전달) // 25/10/19 이수연
         AdminIndexChartDTO chartData = chartService.getAdminIndexChartData(weekOffset);
 
         model.addAttribute("chartData", chartData);
