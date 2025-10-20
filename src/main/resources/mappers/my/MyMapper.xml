@@ -37,6 +37,47 @@
             FETCH FIRST 5 ROWS ONLY
     </select>
 
+    <select id="selectOrderHistory" parameterType="kr.co.greengarden.dto.my.OrderHistoryCriteria"
+            resultType="kr.co.greengarden.dto.my.OrderSummaryDTO">
+        SELECT *
+        FROM (
+            SELECT inner_query.*, ROWNUM AS rn
+            FROM (
+                     SELECT
+                         o.ORDERNO                   AS orderNo,
+                         oi.PROID                    AS proId,
+                         p.NAME                      AS productName,
+                         p.IMG1                      AS productImg,
+                         oi.PRICE                    AS price,
+                         oi.QUANTITY                 AS quantity,
+                         (oi.PRICE * oi.QUANTITY)    AS totalPrice,
+                         o.STATUS                    AS status,
+                         o.ORDEREDAT                 AS orderedAt,
+                         oi.CONFIRM_YN               AS confirmYn,
+                         oi.REVIEW_YN                AS reviewYn,
+                         oi.EXCHANGE_YN              AS exchangeYn,
+                         oi.RETURN_YN                AS returnYn
+                     FROM TB_ORDER o
+                              JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                              JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+                     WHERE o.MEMID = #{memId}
+                       AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
+                     ORDER BY o.ORDEREDAT DESC, oi.ORDERITEMID DESC
+                 ) inner_query
+            WHERE ROWNUM &lt;= #{endRow}
+        )
+        WHERE rn &gt;= #{startRow}
+        ORDER BY rn
+    </select>
+
+    <select id="countOrderHistory" parameterType="kr.co.greengarden.dto.my.OrderHistoryCriteria" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_ORDER o
+                 JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+        WHERE o.MEMID = #{memId}
+          AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
+    </select>
+
 
 
     <update id="updateConfirmYn">

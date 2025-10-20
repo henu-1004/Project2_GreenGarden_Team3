@@ -1,5 +1,6 @@
 package kr.co.greengarden.mapper.my;
 
+import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -10,6 +11,10 @@ import java.util.List;
 @Mapper
 public interface MyMapper {
     List<OrderSummaryDTO> selectRecentOrders(@Param("memId") String memId);
+
+    List<OrderSummaryDTO> selectOrderHistory(OrderHistoryCriteria criteria);
+
+    long countOrderHistory(OrderHistoryCriteria criteria);
 
     // ✅ 상태 업데이트 쿼리 4종 (모두 상품단위로)
     void updateConfirmYn(@Param("orderNo") String orderNo,

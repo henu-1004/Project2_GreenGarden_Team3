@@ -27,152 +27,115 @@
         <h1>전체 주문 내역</h1>
         <p class="lead">최근 주문 현황과 배송 진행 상황을 한눈에 확인해 보세요.</p>
 
-        <!-- 주문 요약 -->
-        <div class="order-hero">
-            <div class="status-overview">
-                <div class="status-pill">
-                    <span>최근 3개월 주문</span>
-                    <strong>5건</strong>
-                </div>
-                <div class="status-pill">
-                    <span>배송중</span>
-                    <strong>2건</strong>
-                </div>
-                <div class="status-pill">
-                    <span>구매확정 대기</span>
-                    <strong>1건</strong>
-                </div>
-            </div>
-            <div class="actions hero-actions">
-                <button class="btn-outline">주문내역 엑셀 다운로드</button>
-                <button class="btn-primary">교환/반품 안내 보기</button>
-            </div>
+        <!-- 상단 배너 -->
+        <div class="order-banner">
+            <img th:src="@{/img/my/order_banner.png}" alt="주문 배너" width="810" height="86"
+                 onerror="this.src='https://dummyimage.com/810x86/d9ede6/175a48.png&text=GreenGarden+MY+Order';">
         </div>
 
-        <!-- 필터 바 -->
-        <div class="filter-bar">
-            <label>기간검색</label>
-            <div class="quick-range">
-                <button class="active">1개월</button>
-                <button>3개월</button>
-                <button>6개월</button>
-                <button>1년</button>
-            </div>
-            <input type="date">
-            <span>~</span>
-            <input type="date">
-            <select>
-                <option>전체 주문상태</option>
-                <option>입금대기</option>
-                <option>배송중</option>
-                <option>배송완료</option>
-            </select>
-            <button class="btn-primary">조회하기</button>
+        <!-- 기간별 조회 -->
+        <div class="order-filter">
+            <form class="quick-range" th:action="@{/my/order}" method="get">
+                <input type="hidden" name="page" value="1"/>
+                <button type="submit" name="period" value="1w"
+                        th:classappend="${selectedPeriod == '1w'} ? ' active'">1주일</button>
+                <button type="submit" name="period" value="15d"
+                        th:classappend="${selectedPeriod == '15d'} ? ' active'">15일</button>
+                <button type="submit" name="period" value="1m"
+                        th:classappend="${selectedPeriod == '1m'} ? ' active'">1개월</button>
+            </form>
+
+            <form class="custom-range" th:action="@{/my/order}" method="get">
+                <input type="hidden" name="page" value="1"/>
+                <label for="startDate">기간 직접 입력</label>
+                <input type="date" id="startDate" name="startDate" th:value="${startDate}" required>
+                <span>~</span>
+                <input type="date" id="endDate" name="endDate" th:value="${endDate}" required>
+                <button type="submit" class="btn-primary">조회</button>
+            </form>
         </div>
 
-        <!-- 샘플 카드 (데이터 없을 경우) -->
-        <div class="order-card sample-card" th:if="${orderList == null}">
-            <div class="card-header">
-                <div class="left">
-                    <span class="order-id">주문번호 202212341</span>
-                    <time datetime="2022-12-13">2022-12-13</time>
-                </div>
-                <span class="status-badge">배송완료</span>
-            </div>
-            <div class="meta">
-                <div class="thumb">
-                    <img th:src="@{/img/sample.png}" alt="상품 이미지">
-                </div>
-                <div class="info">
-                    <strong>[㈜그린가든] 그린 플랜트 화분</strong>
-                    <p class="options">옵션 : 중형 / 포장 포함 · 수량 1개</p>
-                    <p class="price">34,000원</p>
-                </div>
-                <div class="status-area">
-                    <p class="helper-text">구매확정을 진행해주세요.</p>
-                </div>
-            </div>
-            <div class="timeline">
-                <div class="step">
-                    <strong>주문접수</strong>
-                    <span>2022-12-13 12:30</span>
-                </div>
-                <div class="step">
-                    <strong>배송중</strong>
-                    <span>2022-12-14 09:10</span>
-                </div>
-                <div class="step">
-                    <strong>배송완료</strong>
-                    <span>2022-12-15 16:40</span>
-                </div>
-            </div>
-            <div class="actions">
-                <button class="btn-primary">구매확정</button>
-                <button class="btn-outline">리뷰 작성</button>
-                <button class="btn-outline">교환 신청</button>
-                <button class="btn-outline">반품 신청</button>
-            </div>
+        <div class="filter-caption">
+            <span>총 <strong th:text="${totalCount}">0</strong>건의 주문이 조회되었습니다.</span>
+            <span th:if="${limited}" class="limit-text">※ 조회 기간은 최대 5개월까지 가능합니다.</span>
         </div>
 
         <!-- 주문 내역이 없을 경우 -->
-        <div class="empty-state" th:if="${orderList != null and #lists.isEmpty(orderList)}">
-            조회된 주문 내역이 없습니다.
+        <div class="empty-state" th:if="${orders == null or #lists.isEmpty(orders)}">
+            주문내역이 없습니다.
         </div>
 
-        <!-- 주문 내역 리스트 -->
-        <div class="order-card"
-             th:each="order : ${orderList}"
-             th:if="${orderList != null and !#lists.isEmpty(orderList)}">
-            <div class="card-header">
-                <div class="left">
-                    <span class="order-id">주문번호 <span th:text="${order.orderNo}">O20231012001</span></span>
-                    <time th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2023-10-12</time>
-                </div>
-                <span class="status-badge" th:text="${order.status}">배송중</span>
-            </div>
+        <!-- 주문 내역 -->
+        <div th:if="${orders != null and !#lists.isEmpty(orders)}">
+            <table class="order-table">
+                <thead>
+                <tr>
+                    <th>주문일자</th>
+                    <th>주문번호</th>
+                    <th>상품정보</th>
+                    <th>수량</th>
+                    <th>결제금액</th>
+                    <th>주문상태</th>
+                    <th>신청</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order : ${orders}">
+                    <td data-label="주문일자" th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2023-01-01</td>
+                    <td data-label="주문번호" class="order-number">
+                        <span th:text="${order.orderNo}">O20230101001</span>
+                    </td>
+                    <td data-label="상품정보">
+                        <div class="product-info">
+                            <div class="thumb">
+                                <img th:if="${order.productImg != null}" th:src="@{${order.productImg}}" alt="상품 이미지">
+                                <img th:unless="${order.productImg != null}" th:src="@{/img/sample.png}" alt="상품 이미지">
+                            </div>
+                            <div class="details">
+                                <p class="name" th:text="${order.productName}">상품명</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-label="수량" th:text="${order.quantity}">1</td>
+                    <td data-label="결제금액" th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'">0원</td>
+                    <td data-label="주문상태" th:text="${order.status}">배송중</td>
+                    <td data-label="신청">
+                        <div class="order-actions">
+                            <form th:if="${order.canConfirm}" th:action="@{/my/confirm}" method="post">
+                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
+                                <input type="hidden" name="proId" th:value="${order.proId}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit" class="btn-primary">구매확정</button>
+                            </form>
+                            <form th:if="${order.canExchange}" th:action="@{/my/exchange/complete}" method="post">
+                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
+                                <input type="hidden" name="proId" th:value="${order.proId}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit" class="btn-outline">교환신청</button>
+                            </form>
+                            <form th:if="${order.canReturn}" th:action="@{/my/return/complete}" method="post">
+                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
+                                <input type="hidden" name="proId" th:value="${order.proId}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <button type="submit" class="btn-outline">반품신청</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-            <div class="meta">
-                <div class="thumb">
-                    <img th:if="${order.productImg != null}" th:src="@{${order.productImg}}" alt="상품 이미지">
-                    <img th:unless="${order.productImg != null}" th:src="@{/img/sample.png}" alt="상품 이미지">
-                </div>
-                <div class="info">
-                    <strong th:text="${order.productName}">상품명</strong>
-                    <p class="options">
-                        수량 <span th:text="${order.quantity}">1</span>개 · 금액
-                        <span th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')}">0</span>원
-                    </p>
-                    <p class="price" th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'">0원</p>
-                </div>
-                <div class="status-area">
-                    <p class="helper-text">
-                        <span th:text="${order.statusDetail}">택배사 : 한진택배 (송장번호 1234-5678)</span>
-                    </p>
-                </div>
+            <!-- 페이징 -->
+            <div class="pagination" th:if="${pageInfo.totalPages > 1}">
+                <a th:classappend="${!pageInfo.hasPrev}? ' disabled'"
+                   th:href="@{/my/order(page=${pageInfo.prevPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})}">이전</a>
+                <a th:each="p : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
+                   th:classappend="${p == pageInfo.currentPage}? ' active'"
+                   th:href="@{/my/order(page=${p}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})}"
+                   th:text="${p}">1</a>
+                <a th:classappend="${!pageInfo.hasNext}? ' disabled'"
+                   th:href="@{/my/order(page=${pageInfo.nextPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})}">다음</a>
             </div>
-
-            <div class="timeline" th:if="${order.progressSteps != null}">
-                <div class="step" th:each="step : ${order.progressSteps}">
-                    <strong th:text="${step.title}">배송중</strong>
-                    <span th:text="${step.timestamp}">2023-10-13 10:00</span>
-                </div>
-            </div>
-
-            <div class="actions">
-                <button class="btn-primary" th:if="${order.canConfirm}" th:attr="data-order=${order.orderNo}">구매확정</button>
-                <button class="btn-outline" th:if="${order.canReview}" th:attr="data-order=${order.orderNo}">리뷰 작성</button>
-                <button class="btn-outline" th:if="${order.canExchange}" th:attr="data-order=${order.orderNo}">교환 신청</button>
-                <button class="btn-outline" th:if="${order.canReturn}" th:attr="data-order=${order.orderNo}">반품 신청</button>
-            </div>
-        </div>
-
-        <!-- 페이지네이션 -->
-        <div class="pagination">
-            <a href="#" class="prev">〈</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#" class="next">〉</a>
         </div>
 
         <!-- 안내 문구 -->
@@ -181,8 +144,7 @@
             <div>
                 <strong>주문/배송 안내</strong>
                 <p class="helper-text">
-                    입금 확인 후 주문상태가 "배송중"으로 변경되며,
-                    배송완료 후 7일 이내에 구매확정을 진행해주세요.
+                    배송완료 후 7일 이내에 구매확정을 진행하시면 교환/반품 신청이 제한됩니다.
                 </p>
             </div>
         </div>

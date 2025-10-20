@@ -38,26 +38,38 @@ public class ProductDTO {
     private int views;
     private int orderCount;
 
+    // ✅ 새로 추가된 컬럼들
+    private String status;      // 상품상태
+    private String tax;         // 과세여부
+    private String receipt;     // 영수증 발행여부
+    private String sellerType;  // 사업자구분
+    private String origin;      // 원산지
+
     public Product toEntity(MemberSeller seller, Category category) {
         return Product.builder()
-                .proId(proId)
+                .proId(this.proId)
                 .seller(seller)
-                .proNo(proNo)
+                .proNo(this.proNo)
                 .category(category)
-                .name(name)
-                .description(description)
-                .manufacturer(manufacturer)
-                .price(price)
-                .discountRate(discountRate)
-                .point(point)
-                .stock(stock)
-                .deliveryFee(deliveryFee)
-                .img1(img1)
-                .img2(img2)
-                .img3(img3)
-                .imgDetail(imgDetail)
-                .views(views)
-                .orderCount(orderCount)
+                .name(this.name)
+                .description(this.description)
+                .manufacturer(this.manufacturer)
+                .price(this.price)
+                .discountRate(this.discountRate)
+                .point(this.point)
+                .stock(this.stock)
+                .deliveryFee(this.deliveryFee)
+                .img1(this.img1)
+                .img2(this.img2)
+                .img3(this.img3)
+                .imgDetail(this.imgDetail)
+                .views(this.views)
+                .orderCount(this.orderCount)
+                .status(this.status)
+                .tax(this.tax)
+                .receipt(this.receipt)
+                .sellerType(this.sellerType)
+                .origin(this.origin)
                 .build();
     }
 }
