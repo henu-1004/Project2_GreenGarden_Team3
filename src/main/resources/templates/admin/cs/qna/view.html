@@ -13,7 +13,7 @@
 <div th:replace="~{admin/common/header :: header}"></div>
 <main>
     <section class="content-wrap">
-        <div th:replace="~{admin/cs/aside :: aside}"></div>
+        <div th:replace="~{admin/common/aside :: aside}"></div>
 
         <section id="main-section">
             <div class="top_nav">
@@ -71,5 +71,6 @@
     </section>
 </main>
 <div th:replace="~{admin/common/footer :: footer}"></div>
+<script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>
