@@ -2,11 +2,15 @@ package kr.co.greengarden.controller.my;
 
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.greengarden.dto.my.CouponPageDTO;
+import kr.co.greengarden.dto.my.MyInquiryDTO;
+import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.dto.my.PointLedgerCriteria;
 import kr.co.greengarden.dto.my.PointLedgerPageDTO;
 import kr.co.greengarden.dto.my.PointSummaryDTO;
+import kr.co.greengarden.dto.my.ProductReviewDTO;
+import kr.co.greengarden.dto.my.ReviewSummaryDTO;
 import kr.co.greengarden.service.MyService;
 import kr.co.greengarden.service.MyCouponService;
 import kr.co.greengarden.service.PointService;
@@ -273,14 +277,48 @@ public class MyController {
     }
 
     @GetMapping("/review")
-    public String review(HttpServletRequest request, Model model) {
+    public String review(HttpServletRequest request,
+                         Model model,
+                         @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("currentUri", request.getRequestURI());
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        String memId = userDetails.getUsername();
+        List<ProductReviewDTO> reviewList = myService.getMyReviews(memId);
+        if (reviewList == null) {
+            reviewList = List.of();
+        }
+
+        ReviewSummaryDTO summary = myService.buildReviewSummary(reviewList);
+
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("reviewSummary", summary);
+
         return "my/review";
     }
 
     @GetMapping("/qna")
-    public String qna(HttpServletRequest request, Model model) {
+    public String qna(HttpServletRequest request,
+                      Model model,
+                      @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("currentUri", request.getRequestURI());
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        String memId = userDetails.getUsername();
+        List<MyInquiryDTO> qnaList = myService.getMyInquiries(memId);
+        if (qnaList == null) {
+            qnaList = List.of();
+        }
+
+        MyInquirySummaryDTO summary = myService.buildInquirySummary(qnaList);
+
+        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("qnaSummary", summary);
+
         return "my/qna";
     }
 
