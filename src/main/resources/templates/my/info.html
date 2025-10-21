@@ -134,7 +134,7 @@
                         <label for="zipCode">우편번호</label>
                         <div class="zip-field">
                             <input type="text" id="zipCode" name="zipCode" th:value="*{zipCode}" readonly>
-                            <button type="button" class="btn-outline">주소 찾기</button>
+                            <button type="button" class="btn-outline" id="findAddressBtn">주소 찾기</button>
                         </div>
                     </div>
                     <div class="form-row">
@@ -156,6 +156,9 @@
 
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script th:src="@{/js/my/info.js}"></script>
 
 </body>
 </html>
