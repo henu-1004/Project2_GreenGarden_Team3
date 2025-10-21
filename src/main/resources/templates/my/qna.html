@@ -55,19 +55,19 @@
                 </button>
                 <button class="chip">
                     배송 <span class="count"
-                               th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('배송')}">0</span>
+                             th:text="${qnaSummary == null ? 0 : qnaSummary.getTypeCount('배송')}">0</span>
                 </button>
                 <button class="chip">
                     교환/반품 <span class="count"
-                                   th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('교환/반품')}">0</span>
+                                th:text="${qnaSummary == null ? 0 : qnaSummary.getTypeCount('교환/반품')}">0</span>
                 </button>
                 <button class="chip">
                     상품 <span class="count"
-                               th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('상품')}">0</span>
+                             th:text="${qnaSummary == null ? 0 : qnaSummary.getTypeCount('상품')}">0</span>
                 </button>
                 <button class="chip">
                     기타 <span class="count"
-                               th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('기타')}">0</span>
+                             th:text="${qnaSummary == null ? 0 : qnaSummary.getTypeCount('기타')}">0</span>
                 </button>
             </div>
             <div class="actions">

@@ -46,17 +46,6 @@
             </div>
         </div>
 
-        <!-- 필터 -->
-        <div class="review-filters">
-            <div class="chip-group">
-                <button class="chip active">전체</button>
-                <button class="chip">포토 리뷰</button>
-                <button class="chip">구매확정</button>
-                <button class="chip">답변 요청</button>
-            </div>
-            <button class="btn-outline">리뷰 작성 가이드</button>
-        </div>
-
         <!-- 실제 데이터 -->
         <article class="review-item" th:each="review : ${reviewList}">
             <div class="item-header">
@@ -69,10 +58,6 @@
             </div>
             <div class="item-body" th:text="${review.content}">
                 리뷰 내용이 표시됩니다.
-            </div>
-            <div class="item-actions">
-                <button class="btn-outline" th:attr="data-review=${review.id}">수정</button>
-                <button class="btn-outline" th:attr="data-review=${review.id}">삭제</button>
             </div>
         </article>
 

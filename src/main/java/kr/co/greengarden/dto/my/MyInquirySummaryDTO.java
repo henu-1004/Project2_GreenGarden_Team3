@@ -13,13 +13,16 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MyInquirySummaryDTO {
+
     private long totalCount;
     private long waitingCount;
     private long completedCount;
+
     @Builder.Default
     private Map<String, Long> typeCounts = new HashMap<>();
 
-    public long getTypeCount(String type) {
+    /** ✅ Thymeleaf EL이 확실히 인식하도록 public + Long 타입으로 */
+    public Long getTypeCount(String type) {
         return typeCounts.getOrDefault(type, 0L);
     }
 }

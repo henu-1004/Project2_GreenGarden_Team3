@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class MyInquiryDTO {
-    private Long inquiryId;
+    private Integer inquiryId;
     private String type;
     private String title;
     private String status;
