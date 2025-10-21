@@ -28,10 +28,7 @@
         <p class="lead">최근 주문 현황과 배송 진행 상황을 한눈에 확인해 보세요.</p>
 
         <!-- 상단 배너 -->
-        <div class="order-banner">
-            <img th:src="@{/img/my/order_banner.png}" alt="주문 배너" width="810" height="86"
-                 onerror="this.src='https://dummyimage.com/810x86/d9ede6/175a48.png&text=GreenGarden+MY+Order';">
-        </div>
+        <div class="order-banner" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
 
         <div th:if="${msg}" class="alert success" th:text="${msg}"></div>
         <div th:if="${errorMsg}" class="alert error" th:text="${errorMsg}"></div>
@@ -86,7 +83,9 @@
                 <tr th:each="order : ${orders}">
                     <td data-label="주문일자" th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2023-01-01</td>
                     <td data-label="주문번호" class="order-number">
-                        <span th:text="${order.orderNo}">O20230101001</span>
+                        <a href="javascript:void(0)"
+                           th:text="${order.orderNo}"
+                           th:attr="onclick=|openModal('orderModal','${order.orderNo}', null, null, null, 'order')|">O20230101001</a>
                     </td>
                     <td data-label="상품정보">
                         <div class="product-info">
@@ -95,7 +94,12 @@
                                 <img th:unless="${order.productImg != null}" th:src="@{/img/sample.png}" alt="상품 이미지">
                             </div>
                             <div class="details">
-                                <p class="name" th:text="${order.productName}">상품명</p>
+                                <p class="name">
+                                    [<a href="javascript:void(0)"
+                                        th:text="${order.sellerCompany}"
+                                        th:attr="onclick=|openModal('sellerModal', null, null, '${order.sellerId}', null, 'order')|">㈜그린가든</a>]
+                                    <span th:text="${order.productName}">상품명</span>
+                                </p>
                             </div>
                         </div>
                     </td>
@@ -104,31 +108,42 @@
                     <td data-label="주문상태" th:text="${order.status}">배송중</td>
                     <td data-label="신청">
                         <div class="order-actions">
-                            <form th:if="${order.canConfirm}" th:action="@{/my/confirm}" method="post">
-                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
-                                <input type="hidden" name="proId" th:value="${order.proId}">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <input type="hidden" name="redirect" value="order">
-                                <button type="submit" class="btn-primary">구매확정</button>
-                            </form>
-                            <form th:if="${order.canExchange}" th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
-                                <input type="hidden" name="proId" th:value="${order.proId}">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <input type="hidden" name="redirect" value="order">
-                                <input type="hidden" name="type" value="주문내역">
-                                <input type="hidden" name="detail" value="주문내역 페이지에서 신청">
-                                <button type="submit" class="btn-outline">교환신청</button>
-                            </form>
-                            <form th:if="${order.canReturn}" th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
-                                <input type="hidden" name="proId" th:value="${order.proId}">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <input type="hidden" name="redirect" value="order">
-                                <input type="hidden" name="type" value="주문내역">
-                                <input type="hidden" name="detail" value="주문내역 페이지에서 신청">
-                                <button type="submit" class="btn-outline">반품신청</button>
-                            </form>
+                            <button type="button"
+                                    th:if="${order.canConfirm}"
+                                    th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'order', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                    class="btn-primary">구매확정</button>
+                            <button type="button"
+                                    th:if="${!order.canConfirm and order.confirmYn == 'Y'}"
+                                    class="btn-secondary done" disabled>구매확정 완료</button>
+                            <span th:if="${!order.canConfirm and order.confirmYn != 'Y'}" class="status-label muted">배송 진행 중</span>
+
+                            <button type="button"
+                                    th:if="${order.canReview}"
+                                    th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'order', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                    class="btn-primary">상품평작성</button>
+                            <button type="button"
+                                    th:if="${!order.canReview and order.reviewYn == 'Y'}"
+                                    class="btn-secondary done" disabled>상품평 작성완료</button>
+                            <span th:if="${!order.canReview and order.reviewYn != 'Y'}" class="status-label muted">구매확정 후 작성 가능</span>
+
+                            <button type="button"
+                                    th:if="${order.canExchange}"
+                                    th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'order', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                    class="btn-outline">교환신청</button>
+                            <button type="button"
+                                    th:if="${!order.canExchange and order.exchangeYn == 'Y'}"
+                                    class="btn-secondary done" disabled>교환신청 완료</button>
+                            <span th:if="${!order.canExchange and order.exchangeYn != 'Y'}" class="status-label muted">교환신청 불가</span>
+
+                            <button type="button"
+                                    th:if="${order.canReturn}"
+                                    th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'order', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                    class="btn-outline">반품신청</button>
+                            <button type="button"
+                                    th:if="${!order.canReturn and order.returnYn == 'Y'}"
+                                    class="btn-secondary done" disabled>반품신청 완료</button>
+                            <span th:if="${!order.canReturn and order.returnYn != 'Y'}" class="status-label muted">반품신청 불가</span>
+
                             <form th:if="${order.canCancel}" th:action="@{/my/order/cancel}" method="post">
                                 <input type="hidden" name="orderNo" th:value="${order.orderNo}">
                                 <input type="hidden" name="proId" th:value="${order.proId}">
@@ -147,13 +162,15 @@
             <!-- 페이징 -->
             <div class="pagination" th:if="${pageInfo.totalPages > 1}">
                 <a th:classappend="${!pageInfo.hasPrev}? ' disabled'"
-                   th:href="@{/my/order(page=${pageInfo.prevPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})}">이전</a>
+                   th:href="${pageInfo.hasPrev} ? @{/my/order(page=${pageInfo.prevPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})} : '#'"
+                   th:attr="aria-disabled=${!pageInfo.hasPrev}, tabindex=${!pageInfo.hasPrev}? -1 : null">이전</a>
                 <a th:each="p : ${#numbers.sequence(pageInfo.startPage, pageInfo.endPage)}"
                    th:classappend="${p == pageInfo.currentPage}? ' active'"
                    th:href="@{/my/order(page=${p}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})}"
                    th:text="${p}">1</a>
                 <a th:classappend="${!pageInfo.hasNext}? ' disabled'"
-                   th:href="@{/my/order(page=${pageInfo.nextPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})}">다음</a>
+                   th:href="${pageInfo.hasNext} ? @{/my/order(page=${pageInfo.nextPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null})} : '#'"
+                   th:attr="aria-disabled=${!pageInfo.hasNext}, tabindex=${!pageInfo.hasNext}? -1 : null">다음</a>
             </div>
         </div>
 
@@ -172,6 +189,9 @@
 
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
+
+<th:block th:replace="~{my/fragments/order-modals :: orderModals('order')}"></th:block>
+<script th:src="@{/js/my/mypage.js}"></script>
 
 </body>
 </html>

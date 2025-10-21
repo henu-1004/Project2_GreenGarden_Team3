@@ -222,6 +222,7 @@ public class MyController {
         OrderHistoryPageDTO pageDTO = myService.getOrderHistory(criteria);
 
         model.addAttribute("orders", pageDTO.getOrders());
+        model.addAttribute("myInfo", myService.getMyInfo(memId));
         model.addAttribute("pageInfo", pageDTO);
         model.addAttribute("startDate", resolvedStart);
         model.addAttribute("endDate", resolvedEnd);
@@ -528,6 +529,7 @@ public class MyController {
 
     @PostMapping("/review/complete")
     public String completeReview(@ModelAttribute kr.co.greengarden.dto.my.ProductReviewDTO reviewDTO,
+                                 @RequestParam(value = "redirect", required = false) String redirectTarget,
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  RedirectAttributes redirect) {
 
@@ -540,7 +542,7 @@ public class MyController {
         myService.writeProductReview(reviewDTO);
 
         redirect.addFlashAttribute("msg", "상품평이 등록되었습니다!");
-        return "redirect:/my/home";
+        return resolveRedirect(redirectTarget);
     }
 
     @PostMapping("/exchange/complete")
