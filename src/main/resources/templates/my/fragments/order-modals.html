@@ -1,0 +1,284 @@
+<th:block xmlns:th="http://www.thymeleaf.org" th:fragment="orderModals(redirectTarget)">
+    <!-- 주문상세 모달 -->
+    <div id="orderModal" class="modal modal-order">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h2>주문상세</h2>
+                    <p class="order-meta">
+                        <span id="orderModalOrderNo">-</span>
+                        <span class="date" id="orderModalDate">-</span>
+                    </p>
+                </div>
+                <span class="close" onclick="closeModal('orderModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="orderDetailError" class="modal-error" style="display:none;"></p>
+                <div class="section">
+                    <h3>주문정보</h3>
+                    <table>
+                        <tbody>
+                        <tr><td>주문번호</td><td id="orderDetailOrderNo">-</td></tr>
+                        <tr><td>주문일자</td><td id="orderDetailOrderedAt">-</td></tr>
+                        <tr><td>주문상태</td><td id="orderDetailStatus">-</td></tr>
+                        <tr><td>결제수단</td><td id="orderDetailPayMethod">-</td></tr>
+                        <tr>
+                            <td>상품정보</td>
+                            <td>
+                                <div id="orderDetailProductList" class="product-list"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>결제금액</td>
+                            <td>
+                                <div>상품 합계: <span id="orderDetailItemsTotal">0</span>원</div>
+                                <div>할인: <span id="orderDetailDiscount">0</span>원</div>
+                                <div>배송비: <span id="orderDetailDeliveryTotal">0</span>원</div>
+                                <div><strong>총 결제금액: <span id="orderDetailPayment">0</span>원</strong></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3>배송정보</h3>
+                    <table>
+                        <tbody>
+                        <tr><td>이름</td><td id="orderDetailRecName">-</td></tr>
+                        <tr><td>연락처</td><td id="orderDetailRecPhone">-</td></tr>
+                        <tr><td>주소</td><td id="orderDetailRecAddress">-</td></tr>
+                        <tr><td>배송메시지</td><td id="orderDetailMessage">-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 판매자정보 모달 -->
+    <div id="sellerModal" class="modal modal-seller">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>판매자정보</h2>
+                <span class="close" onclick="closeModal('sellerModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="sellerInfoError" class="modal-error" style="display:none;"></p>
+                <table>
+                    <tbody>
+                    <tr><td>판매자 등급</td><td id="sellerInfoGrade">-</td></tr>
+                    <tr><td>상호</td><td id="sellerInfoCompany">-</td></tr>
+                    <tr><td>대표자</td><td id="sellerInfoRepresentative">-</td></tr>
+                    <tr><td>연락처</td><td id="sellerInfoTel">-</td></tr>
+                    <tr><td>FAX</td><td id="sellerInfoFax">-</td></tr>
+                    <tr><td>Email</td><td id="sellerInfoEmail">-</td></tr>
+                    <tr><td>사업자번호</td><td id="sellerInfoBusinessNumber">-</td></tr>
+                    <tr><td>영업소재지</td><td id="sellerInfoAddress">-</td></tr>
+                    </tbody>
+                </table>
+                <div class="notice">
+                    ※ 전자상거래법 제20조 제2항 및 동법 시행령 제25조 제2항에 의거하여<br>
+                    소비자에게 고지할 의무가 있습니다.
+                </div>
+                <button class="btn-primary"
+                        th:attr="onclick=|openInquiry('${redirectTarget}')|">문의하기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 문의하기 모달 -->
+    <div id="inquiryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>문의하기</h2>
+                <span class="close" onclick="closeModal('inquiryModal')">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/my/inquiry}" method="post">
+                    <input type="hidden" name="redirect" th:value="${redirectTarget}">
+                    <input type="hidden" name="category2" value="MY_PAGE">
+
+                    <div class="form-group">
+                        <label>문의유형</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="category1" value="상품" checked> 상품</label>
+                            <label><input type="radio" name="category1" value="배송"> 배송</label>
+                            <label><input type="radio" name="category1" value="반품/취소"> 반품/취소</label>
+                            <label><input type="radio" name="category1" value="교환"> 교환</label>
+                            <label><input type="radio" name="category1" value="기타"> 기타</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email"
+                               th:value="${(myInfo != null && myInfo.email != null) ? myInfo.email : ''}"
+                               placeholder="이메일 미등록"
+                               readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>제목</label>
+                        <input type="text" name="title" maxlength="255" required placeholder="문의 제목을 입력해주세요.">
+                    </div>
+                    <div class="form-group">
+                        <label>내용</label>
+                        <textarea name="content" rows="5" required placeholder="문의 내용을 입력해주세요."></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">등록하기</button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('inquiryModal')">취소</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 구매확정 모달 -->
+    <div id="confirmModal" class="modal modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>구매확정</h2>
+                <span class="close" onclick="closeModal('confirmModal')">&times;</span>
+            </div>
+            <form th:action="@{/my/confirm}" method="post">
+                <input type="hidden" name="orderNo" value="">
+                <input type="hidden" name="proId" value="">
+                <input type="hidden" name="redirect" th:value="${redirectTarget}">
+                <div class="modal-body">
+                    <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
+                    <div class="actions">
+                        <button type="submit" class="btn-primary">확정하기</button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('confirmModal')">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 상품평작성 모달 -->
+    <div id="reviewModal" class="modal">
+        <div class="modal-content modal-review">
+            <div class="modal-header">
+                <h2>상품평작성</h2>
+                <span class="close" onclick="closeModal('reviewModal')">&times;</span>
+            </div>
+            <form th:action="@{/my/review/complete}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="orderNo" value="">
+                <input type="hidden" name="proId" value="">
+                <input type="hidden" name="redirect" th:value="${redirectTarget}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>상품명</label>
+                        <p id="reviewProductName">선택된 상품 정보가 없습니다.</p>
+                    </div>
+                    <div class="form-group">
+                        <label>별점</label>
+                        <div id="starRating" class="star-rating">
+                            <span data-value="1">★</span>
+                            <span data-value="2">★</span>
+                            <span data-value="3">★</span>
+                            <span data-value="4">★</span>
+                            <span data-value="5">★</span>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="rating" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>내용</label>
+                        <textarea name="content" placeholder="최소 10자 이상, 200자 이내 작성해주세요."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>사진</label>
+                        <div class="upload-area">
+                            <input type="file" id="reviewFile1" name="reviewFile1" accept="image/*">
+                            <input type="file" id="reviewFile2" name="reviewFile2" accept="image/*">
+                            <input type="file" id="reviewFile3" name="reviewFile3" accept="image/*">
+                            <small>최대 3장까지 업로드 가능합니다.</small>
+                            <div id="previewArea" class="preview-area"></div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">작성완료</button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('reviewModal')">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 반품신청 모달 -->
+    <div id="returnModal" class="modal modal-return">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>반품신청</h2>
+                <span class="close" onclick="closeModal('returnModal')">&times;</span>
+            </div>
+            <form th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="orderNo" value="">
+                <input type="hidden" name="proId" value="">
+                <input type="hidden" name="redirect" th:value="${redirectTarget}">
+                <div class="modal-body">
+                    <h3>반품정보 입력</h3>
+                    <div class="form-group">
+                        <label>반품유형</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="type" value="단순변심" checked> 단순변심</label>
+                            <label><input type="radio" name="type" value="불량"> 파손 및 불량</label>
+                            <label><input type="radio" name="type" value="주문실수"> 주문 실수</label>
+                            <label><input type="radio" name="type" value="기타"> 기타</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>상세사유</label>
+                        <textarea name="detail" placeholder="반품 사유를 입력해주세요."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>사진첨부</label>
+                        <input type="file" name="proof" accept="image/*">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">반품신청</button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('returnModal')">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 교환신청 모달 -->
+    <div id="exchangeModal" class="modal modal-exchange">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>교환신청</h2>
+                <span class="close" onclick="closeModal('exchangeModal')">&times;</span>
+            </div>
+            <form th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="orderNo" value="">
+                <input type="hidden" name="proId" value="">
+                <input type="hidden" name="redirect" th:value="${redirectTarget}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>교환유형</label>
+                        <select name="type">
+                            <option>사이즈 문제</option>
+                            <option>색상 문제</option>
+                            <option>상품하자</option>
+                            <option>기타</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>사유입력</label>
+                        <textarea name="detail" rows="4" placeholder="교환 사유를 입력해주세요."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>사진첨부</label>
+                        <input type="file" name="proof" accept="image/*">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">교환신청</button>
+                        <button type="button" class="btn-secondary" onclick="closeModal('exchangeModal')">취소</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</th:block>

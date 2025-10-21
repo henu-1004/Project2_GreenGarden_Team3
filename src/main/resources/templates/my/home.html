@@ -26,133 +26,133 @@
             <a th:href="@{/member/login}" class="btn-primary">로그인 하러가기</a>
         </div>
 
-        <div class="banner">810 × 86 배너 광고</div>
+        <div th:if="${loginStatus}" class="home-sections">
+            <div th:if="${msg}" class="alert success" th:text="${msg}"></div>
+            <div th:if="${errorMsg}" class="alert error" th:text="${errorMsg}"></div>
 
-        <div th:if="${msg}" class="alert success" th:text="${msg}"></div>
-        <div th:if="${errorMsg}" class="alert error" th:text="${errorMsg}"></div>
+            <div class="banner-area" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
 
-        <div class="section-header">
-            <h2>최근주문내역</h2>
-            <a th:href="@{/my/order}" class="more">더보기 ></a>
-        </div>
-
-        <div class="order-list">
-
-            <!-- ==========================
-                 🧱 [1] 기존 하드코딩 블록
-                 ========================== -->
-            <div class="order-item">
-                <div class="thumb"><img th:src="@{/img/sample.png}" alt="상품"></div>
-                <div class="info">
-                    <p class="date">2022-12-13</p>
-                    <p class="order-num">
-                        주문번호 : <a href="javascript:void(0)" onclick="openModal('orderModal','202212341')">202212341</a>
-                    </p>
-                    <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal', null, null, 'sellerSample', null)">㈜그린샵</a>] 샘플 상품 (1개)</p>
-                    <p class="price">34,000원</p>
+            <section class="my-summary">
+                <div class="summary-header">
+                    <h2>마이페이지 요약 정보</h2>
+                    <p>최근 활동 현황을 한눈에 확인해 보세요.</p>
                 </div>
-                <div class="item">
-                    <span>쿠폰</span>
-                    <strong th:text="${homeSummary.availableCouponCount}">0</strong>
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <span class="summary-label">주문</span>
+                        <strong class="summary-value" th:text="${homeSummary.orderCount}">0</strong>
+                        <span class="summary-desc">수취확인 안 한 주문건수</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="summary-label">쿠폰</span>
+                        <strong class="summary-value" th:text="${homeSummary.availableCouponCount}">0</strong>
+                        <span class="summary-desc">현재 보유중인 쿠폰 수</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="summary-label">포인트</span>
+                        <strong class="summary-value" th:text="${#numbers.formatInteger(homeSummary.totalPoint, 3, 'COMMA')}">0</strong>
+                        <span class="summary-desc">현재 보유중인 포인트 합</span>
+                    </div>
+                    <div class="summary-card">
+                        <span class="summary-label">문의</span>
+                        <strong class="summary-value" th:text="${homeSummary.inquiryCount}">0</strong>
+                        <span class="summary-desc">현재 검토중인 문의 개수</span>
+                    </div>
                 </div>
-                <div class="item">
-                    <span>포인트</span>
-                    <strong th:text="${#numbers.formatInteger(homeSummary.totalPoint, 3, 'COMMA')}">0</strong>
-                </div>
-                <div class="item">
-                    <span>문의</span>
-                    <strong th:text="${homeSummary.inquiryCount}">0</strong>
-                </div>
-            </div>
-            <!-- ==========================
-     🧩 [2] 실제 데이터 바인딩 블록
-     ========================== -->
-            <!-- 주문 없음 -->
-            <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
-                <p>최근 주문 내역이 없습니다.</p>
-            </div>
+                <ul class="summary-guide">
+                    <li>주문 : 수취확인 안 한 주문건수</li>
+                    <li>쿠폰 : 현재 보유중인 쿠폰 수</li>
+                    <li>포인트 : 현재 보유중인 포인트 합</li>
+                    <li>문의 : 현재 검토중인 문의 개수</li>
+                </ul>
+            </section>
 
-            <!-- 주문 있음 -->
-            <div th:each="order : ${recentOrders}" class="order-item">
-                <!-- 썸네일 -->
-                <div class="thumb">
-                    <img th:src="@{${order.productImg}}" alt="상품 이미지" onerror="this.src='/img/sample.png'">
-                </div>
-
-                <!-- 주문 정보 -->
-                <div class="info">
-                    <p class="date" th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2025-10-14</p>
-                    <p class="order-num">
-                        주문번호 :
-                        <a href="javascript:void(0)"
-                           th:text="${order.orderNo}"
-                           th:attr="onclick=|openModal('orderModal','${order.orderNo}')|">O20251014001</a>
-                    </p>
-                    <p class="product">
-                        [<a href="javascript:void(0)"
-                            th:text="${order.sellerCompany}"
-                            th:attr="onclick=|openModal('sellerModal', null, null, '${order.sellerId}')|">㈜그린가든</a>]
-                        <span th:text="${order.productName}"></span>
-                        (<span th:text="${order.quantity}"></span>개)
-                    </p>
-
-                    <p class="price">
-                        <span th:text="${order.totalPrice}">34000</span>원
-                    </p>
-                </div>
-
-                <!-- 상태 -->
-                <div class="status" th:text="${order.status}">배송완료</div>
-
-                <!-- 버튼 영역 -->
-                <div class="actions">
-                    <!-- ✅ 구매확정 -->
-                    <button th:if="${order.confirmYn == 'N'}"
-                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
-                            class="btn-primary">구매확정</button>
-
-                    <button th:if="${order.confirmYn == 'Y'}"
-                            class="btn-secondary done" disabled>구매확정 완료</button>
-
-
-                    <!-- ✅ 상품평작성 -->
-                    <button th:if="${order.reviewYn == 'N'}"
-                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
-                            class="btn-primary">상품평작성</button>
-
-                    <button th:if="${order.reviewYn == 'Y'}"
-                            class="btn-secondary done" disabled>상품평 작성완료</button>
-
-
-                    <!-- ✅ 교환신청 -->
-                    <button th:if="${order.exchangeYn == 'N'}"
-                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
-                            class="btn-primary">교환신청</button>
-
-                    <button th:if="${order.exchangeYn == 'Y'}"
-                            class="btn-secondary done" disabled>교환신청 완료</button>
-
-
-                    <!-- ✅ 반품신청 -->
-                    <button th:if="${order.returnYn == 'N'}"
-                            th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
-                            class="btn-primary">반품신청</button>
-
-                    <button th:if="${order.returnYn == 'Y'}"
-                            class="btn-secondary done" disabled>반품신청 완료</button>
-
-                    <form th:if="${order.canCancel}" th:action="@{/my/order/cancel}" method="post" class="inline-form">
-                        <input type="hidden" name="orderNo" th:value="${order.orderNo}">
-                        <input type="hidden" name="proId" th:value="${order.proId}">
-                        <input type="hidden" name="redirect" value="home">
-                        <button type="submit" class="btn-secondary danger">주문취소</button>
-                    </form>
-
-                    <button th:if="${order.cancelYn == 'Y'}" class="btn-secondary done" disabled>취소완료</button>
-                    <button th:if="${!order.canCancel and order.cancelYn != 'Y'}" class="btn-secondary" disabled>취소불가</button>
-                </div>
+            <div class="section-header">
+                <h2>최근주문내역</h2>
+                <a th:href="@{/my/order}" class="more">더보기 ></a>
             </div>
 
+            <div class="order-list">
+                <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
+                    <p>최근 주문 내역이 없습니다.</p>
+                </div>
+
+                <div th:each="order : ${recentOrders}" class="order-item">
+                    <div class="thumb">
+                        <img th:src="@{${order.productImg}}" alt="상품 이미지" onerror="this.src='/img/sample.png'">
+                    </div>
+
+                    <div class="info">
+                        <p class="date" th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2025-10-14</p>
+                        <p class="order-num">
+                            주문번호 :
+                            <a href="javascript:void(0)"
+                               th:text="${order.orderNo}"
+                               th:attr="onclick=|openModal('orderModal','${order.orderNo}', null, null, null, 'home')|">O20251014001</a>
+                        </p>
+                        <p class="product">
+                            [<a href="javascript:void(0)"
+                                th:text="${order.sellerCompany}"
+                                th:attr="onclick=|openModal('sellerModal', null, null, '${order.sellerId}', null, 'home')|">㈜그린가든</a>]
+                            <span th:text="${order.productName}"></span>
+                            (<span th:text="${order.quantity}"></span>개)
+                        </p>
+
+                        <p class="price">
+                            <span th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')}">34,000</span>원
+                        </p>
+                    </div>
+
+                    <div class="status" th:text="${order.status}">배송완료</div>
+
+                    <div class="actions">
+                        <button type="button"
+                                th:if="${order.canConfirm}"
+                                th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'home', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                class="btn-primary">구매확정</button>
+                        <button type="button"
+                                th:if="${!order.canConfirm and order.confirmYn == 'Y'}"
+                                class="btn-secondary done" disabled>구매확정 완료</button>
+                        <span th:if="${!order.canConfirm and order.confirmYn != 'Y'}" class="status-label muted">배송 진행 중</span>
+
+                        <button type="button"
+                                th:if="${order.canReview}"
+                                th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'home', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                class="btn-primary">상품평작성</button>
+                        <button type="button"
+                                th:if="${!order.canReview and order.reviewYn == 'Y'}"
+                                class="btn-secondary done" disabled>상품평 작성완료</button>
+                        <span th:if="${!order.canReview and order.reviewYn != 'Y'}" class="status-label muted">구매확정 후 작성 가능</span>
+
+                        <button type="button"
+                                th:if="${order.canExchange}"
+                                th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'home', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                class="btn-primary">교환신청</button>
+                        <button type="button"
+                                th:if="${!order.canExchange and order.exchangeYn == 'Y'}"
+                                class="btn-secondary done" disabled>교환신청 완료</button>
+                        <span th:if="${!order.canExchange and order.exchangeYn != 'Y'}" class="status-label muted">교환신청 불가</span>
+
+                        <button type="button"
+                                th:if="${order.canReturn}"
+                                th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}', 'home', '${order.productName != null ? #strings.escapeJavaScript(order.productName) : ''}')|"
+                                class="btn-primary">반품신청</button>
+                        <button type="button"
+                                th:if="${!order.canReturn and order.returnYn == 'Y'}"
+                                class="btn-secondary done" disabled>반품신청 완료</button>
+                        <span th:if="${!order.canReturn and order.returnYn != 'Y'}" class="status-label muted">반품신청 불가</span>
+
+                        <form th:if="${order.canCancel}" th:action="@{/my/order/cancel}" method="post" class="inline-form">
+                            <input type="hidden" name="orderNo" th:value="${order.orderNo}">
+                            <input type="hidden" name="proId" th:value="${order.proId}">
+                            <input type="hidden" name="redirect" value="home">
+                            <button type="submit" class="btn-secondary danger">주문취소</button>
+                        </form>
+                        <span th:if="${order.cancelYn == 'Y'}" class="status-label">취소완료</span>
+                        <span th:if="${!order.canCancel and order.cancelYn != 'Y'}" class="status-label muted">취소불가</span>
+                    </div>
+                </div>
+            </div>
             <div class="section-header">
                 <h2>포인트 적립 내역</h2>
                 <a th:href="@{/my/point}" class="more">더보기 ></a>
@@ -293,675 +293,8 @@
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
 
-<!-- ===== 주문상세 모달 ===== -->
-<div id="orderModal" class="modal modal-order">
-    <div class="modal-content">
-        <div class="modal-header">
-            <div>
-                <h2>주문상세</h2>
-                <p class="order-meta">
-                    <span id="orderModalOrderNo">-</span>
-                    <span class="date" id="orderModalDate">-</span>
-                </p>
-            </div>
-            <span class="close" onclick="closeModal('orderModal')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <p id="orderDetailError" class="modal-error" style="display:none;"></p>
-            <!-- 주문정보 -->
-            <div class="section">
-                <h3>주문정보</h3>
-                <table>
-                    <tbody>
-                    <tr><td>주문번호</td><td id="orderDetailOrderNo">-</td></tr>
-                    <tr><td>주문일자</td><td id="orderDetailOrderedAt">-</td></tr>
-                    <tr><td>주문상태</td><td id="orderDetailStatus">-</td></tr>
-                    <tr><td>결제수단</td><td id="orderDetailPayMethod">-</td></tr>
-                    <tr>
-                        <td>상품정보</td>
-                        <td>
-                            <div id="orderDetailProductList" class="product-list"></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>결제금액</td>
-                        <td>
-                            <div>상품가: <span id="orderDetailItemsTotal">0</span>원</div>
-                            <div>할인: <span id="orderDetailDiscount">0</span>원</div>
-                            <div>배송비: <span id="orderDetailDeliveryTotal">0</span>원</div>
-                            <div><strong>총 결제금액: <span id="orderDetailPayment">0</span>원</strong></div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- 배송정보 -->
-            <div class="section">
-                <h3>배송정보</h3>
-                <table>
-                    <tbody>
-                    <tr><td>이름</td><td id="orderDetailRecName">-</td></tr>
-                    <tr><td>연락처</td><td id="orderDetailRecPhone">-</td></tr>
-                    <tr><td>주소</td><td id="orderDetailRecAddress">-</td></tr>
-                    <tr><td>배송메시지</td><td id="orderDetailMessage">-</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ===== 판매자정보 모달 ===== -->
-<div id="sellerModal" class="modal modal-seller">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>판매자정보</h2>
-            <span class="close" onclick="closeModal('sellerModal')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <p id="sellerInfoError" class="modal-error" style="display:none;"></p>
-            <table>
-                <tbody>
-                <tr><td>판매자 등급</td><td id="sellerInfoGrade">-</td></tr>
-                <tr><td>상호</td><td id="sellerInfoCompany">-</td></tr>
-                <tr><td>대표자</td><td id="sellerInfoRepresentative">-</td></tr>
-                <tr><td>연락처</td><td id="sellerInfoTel">-</td></tr>
-                <tr><td>FAX</td><td id="sellerInfoFax">-</td></tr>
-                <tr><td>Email</td><td id="sellerInfoEmail">-</td></tr>
-                <tr><td>사업자번호</td><td id="sellerInfoBusinessNumber">-</td></tr>
-                <tr><td>영업소재지</td><td id="sellerInfoAddress">-</td></tr>
-                </tbody>
-            </table>
-            <div class="notice">
-                ※ 전자상거래법 제20조 제2항 및 동법 시행령 제25조 제2항에 의거하여<br>
-                소비자에게 고지할 의무가 있습니다.
-            </div>
-            <button class="btn-primary" onclick="openInquiry()">문의하기</button>
-        </div>
-    </div>
-</div>
-
-<!-- ===== 문의하기 모달 ===== -->
-<div id="inquiryModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>문의하기</h2>
-            <span class="close" onclick="closeModal('inquiryModal')">&times;</span>
-        </div>
-        <div class="modal-body">
-            <form th:action="@{/my/inquiry}" method="post">
-                <input type="hidden" name="redirect" value="home">
-                <input type="hidden" name="category2" value="MY_PAGE">
-
-                <div class="form-group">
-                    <label>문의유형</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="category1" value="상품" checked> 상품</label>
-                        <label><input type="radio" name="category1" value="배송"> 배송</label>
-                        <label><input type="radio" name="category1" value="반품/취소"> 반품/취소</label>
-                        <label><input type="radio" name="category1" value="교환"> 교환</label>
-                        <label><input type="radio" name="category1" value="기타"> 기타</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" name="email"
-                           th:value="${myInfo != null && myInfo.email != null ? myInfo.email : ''}"
-                           placeholder="이메일 미등록"
-                           readonly>
-                </div>
-                <div class="form-group">
-                    <label>제목</label>
-                    <input type="text" name="title" maxlength="255" required placeholder="문의 제목을 입력해주세요.">
-                </div>
-                <div class="form-group">
-                    <label>내용</label>
-                    <textarea name="content" rows="5" required placeholder="문의 내용을 입력해주세요."></textarea>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary">등록하기</button>
-                    <button type="button" class="btn-secondary" onclick="closeModal('inquiryModal')">취소</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- ===== 구매확정 모달 ===== -->
-<div id="confirmModal" class="modal modal-confirm">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>구매확정</h2>
-            <span class="close" onclick="closeModal('confirmModal')">&times;</span>
-        </div>
-        <!-- 💡 form 추가 -->
-        <form th:action="@{/my/confirm}" method="post">
-            <input type="hidden" name="orderNo" value="">
-            <input type="hidden" name="proId" value="">
-            <input type="hidden" name="redirect" value="home">
-            <div class="modal-body">
-                <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
-                <div class="actions">
-                    <button type="submit" class="btn-primary">확정하기</button>
-                    <button type="button" class="btn-secondary" onclick="closeModal('confirmModal')">취소</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- ===== 상품평작성 모달 ===== -->
-<div id="reviewModal" class="modal">
-    <div class="modal-content modal-review">
-        <div class="modal-header">
-            <h2>상품평작성</h2>
-            <span class="close" onclick="closeModal('reviewModal')">&times;</span>
-        </div>
-        <!-- 💡 form 추가 -->
-        <form th:action="@{/my/review/complete}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="orderNo" value="">
-            <input type="hidden" name="proId" value="">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>상품명</label>
-                    <p>[㈜그린샵] 샘플 상품</p>
-                </div>
-                <div class="form-group">
-                    <label>별점</label>
-                    <div id="starRating" class="star-rating">
-                        <span data-value="1">★</span>
-                        <span data-value="2">★</span>
-                        <span data-value="3">★</span>
-                        <span data-value="4">★</span>
-                        <span data-value="5">★</span>
-                    </div>
-                    <input type="hidden" id="ratingValue" name="rating" value="0">
-                </div>
-                <div class="form-group">
-                    <label>내용</label>
-                    <textarea name="content" placeholder="최소 10자 이상, 200자 이내 작성해주세요."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>사진</label>
-                    <div class="upload-area">
-                        <input type="file" id="reviewFile1" name="reviewFile1" accept="image/*">
-                        <input type="file" id="reviewFile2" name="reviewFile2" accept="image/*">
-                        <input type="file" id="reviewFile3" name="reviewFile3" accept="image/*">
-                        <small>최대 3장까지 업로드 가능합니다.</small>
-                        <div id="previewArea" class="preview-area"></div>
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary">작성완료</button>
-                    <button type="button" class="btn-secondary" onclick="closeModal('reviewModal')">취소</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<!-- ===== 반품신청 모달 ===== -->
-<div id="returnModal" class="modal modal-return">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>반품신청</h2>
-            <span class="close" onclick="closeModal('returnModal')">&times;</span>
-        </div>
-        <!-- 💡 form 추가 -->
-        <form th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="orderNo" value="">
-            <input type="hidden" name="proId" value="">
-            <input type="hidden" name="redirect" value="home">
-            <div class="modal-body">
-                <h3>반품정보 입력</h3>
-                <div class="form-group">
-                    <label>반품유형</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="type" value="단순변심" checked> 단순변심</label>
-                        <label><input type="radio" name="type" value="불량"> 파손 및 불량</label>
-                        <label><input type="radio" name="type" value="주문실수"> 주문 실수</label>
-                        <label><input type="radio" name="type" value="기타"> 기타</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>상세사유</label>
-                    <textarea name="detail" placeholder="반품 사유를 입력해주세요."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>사진첨부</label>
-                    <input type="file" name="proof" accept="image/*">
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary">반품신청</button>
-                    <button type="button" class="btn-secondary" onclick="closeModal('returnModal')">취소</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<!-- ===== 교환신청 모달 ===== -->
-<div id="exchangeModal" class="modal modal-exchange">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>교환신청</h2>
-            <span class="close" onclick="closeModal('exchangeModal')">&times;</span>
-        </div>
-        <!-- 💡 form 추가 -->
-        <form th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="orderNo" value="">
-            <input type="hidden" name="proId" value="">
-            <input type="hidden" name="redirect" value="home">
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>교환유형</label>
-                    <select name="type">
-                        <option>사이즈 문제</option>
-                        <option>색상 문제</option>
-                        <option>상품하자</option>
-                        <option>기타</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>사유입력</label>
-                    <textarea name="detail" rows="4" placeholder="교환 사유를 입력해주세요."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>사진첨부</label>
-                    <input type="file" name="proof" accept="image/*">
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary">교환신청</button>
-                    <button type="button" class="btn-secondary" onclick="closeModal('exchangeModal')">취소</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-<!-- ===== JS ===== -->
-<script>
-    const currencyFormatter = new Intl.NumberFormat('ko-KR');
-
-    function formatCurrency(value) {
-        if (value === null || value === undefined || isNaN(Number(value))) {
-            return '0';
-        }
-        return currencyFormatter.format(Number(value));
-    }
-
-    function formatDiscount(value) {
-        if (value === null || value === undefined) {
-            return '0';
-        }
-        const numeric = Number(value);
-        if (Number.isNaN(numeric) || numeric <= 0) {
-            return '0';
-        }
-        return '-' + formatCurrency(numeric);
-    }
-
-    function parseDate(value) {
-        if (!value) return null;
-        const date = new Date(value);
-        if (!Number.isNaN(date.getTime())) {
-            return date;
-        }
-        return null;
-    }
-
-    function formatDateTime(value) {
-        const date = parseDate(value);
-        if (!date) {
-            return value ? String(value).replace('T', ' ') : '-';
-        }
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        return `${year}-${month}-${day} ${hours}:${minutes}`;
-    }
-
-    function setOrderProductListMessage(message) {
-        const list = document.getElementById('orderDetailProductList');
-        if (list) {
-            list.innerHTML = `<p class="empty">${message}</p>`;
-        }
-    }
-
-    function resetOrderModal() {
-        const defaults = {
-            orderModalOrderNo: '-',
-            orderModalDate: '-',
-            orderDetailOrderNo: '-',
-            orderDetailOrderedAt: '-',
-            orderDetailStatus: '-',
-            orderDetailPayMethod: '-',
-            orderDetailItemsTotal: '0',
-            orderDetailDiscount: '0',
-            orderDetailDeliveryTotal: '0',
-            orderDetailPayment: '0',
-            orderDetailRecName: '-',
-            orderDetailRecPhone: '-',
-            orderDetailRecAddress: '-',
-            orderDetailMessage: '-'
-        };
-        Object.entries(defaults).forEach(([id, value]) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value;
-        });
-        setOrderProductListMessage('주문 상품 정보가 없습니다.');
-        const errorEl = document.getElementById('orderDetailError');
-        if (errorEl) {
-            errorEl.style.display = 'none';
-            errorEl.textContent = '';
-        }
-    }
-
-    function updateOrderModal(data) {
-        if (!data) return;
-
-        const fields = [
-            ['orderModalOrderNo', data.orderNo ?? '-'],
-            ['orderDetailOrderNo', data.orderNo ?? '-'],
-            ['orderModalDate', formatDateTime(data.orderedAt)],
-            ['orderDetailOrderedAt', formatDateTime(data.orderedAt)],
-            ['orderDetailStatus', data.status ?? '-'],
-            ['orderDetailPayMethod', data.payMethod ?? '-'],
-            ['orderDetailItemsTotal', formatCurrency(data.itemsTotal ?? data.totalPrice ?? 0)],
-            ['orderDetailDiscount', formatDiscount(data.discountTotal)],
-            ['orderDetailDeliveryTotal', formatCurrency(data.deliveryTotal ?? 0)],
-            ['orderDetailPayment', formatCurrency(data.paymentTotal ?? data.totalPrice ?? 0)],
-            ['orderDetailRecName', data.recName ?? '-'],
-            ['orderDetailRecPhone', data.recPhone ?? '-'],
-            ['orderDetailRecAddress', data.fullAddress ?? '-'],
-            ['orderDetailMessage', data.deliveryMessage ?? '-']
-        ];
-
-        fields.forEach(([id, value]) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value;
-        });
-
-        const list = document.getElementById('orderDetailProductList');
-        if (!list) return;
-
-        list.innerHTML = '';
-        if (Array.isArray(data.items) && data.items.length > 0) {
-            data.items.forEach(item => {
-                const line = document.createElement('div');
-                line.className = 'product-line';
-
-                const thumb = document.createElement('div');
-                thumb.className = 'thumb';
-                const img = document.createElement('img');
-                const path = item.productImg || '';
-                if (path.startsWith('/uploads/')) {
-                    img.src = `/greengarden${path}`;
-                } else {
-                    img.src = path || '/greengarden/img/sample.png';
-                }
-
-                img.alt = '상품';
-                img.onerror = () => { img.src = '/img/sample.png'; };
-                thumb.appendChild(img);
-
-                const info = document.createElement('div');
-                info.className = 'info';
-
-                const name = document.createElement('strong');
-                name.textContent = item.productName || '-';
-                info.appendChild(name);
-
-                const quantity = item.quantity ?? 0;
-                const price = item.price ?? 0;
-
-                const option = document.createElement('span');
-                option.className = 'option';
-                option.textContent = `수량 ${quantity}개 / 단가 ${formatCurrency(price)}원`;
-                info.appendChild(option);
-
-                if (item.discountRate && item.discountRate > 0) {
-                    const discount = document.createElement('span');
-                    discount.className = 'option';
-                    const amount = item.discountAmount ?? 0;
-                    discount.textContent = `할인율 ${item.discountRate}% (할인 ${formatCurrency(amount)}원)`;
-                    info.appendChild(discount);
-                }
-
-                const lineTotal = document.createElement('div');
-                lineTotal.className = 'price';
-                lineTotal.textContent = `합계 ${formatCurrency(price * quantity)}원`;
-                info.appendChild(lineTotal);
-
-                line.appendChild(thumb);
-                line.appendChild(info);
-                list.appendChild(line);
-            });
-        } else {
-            setOrderProductListMessage('주문 상품 정보가 없습니다.');
-        }
-    }
-
-    async function loadOrderDetail(orderNo) {
-        const errorEl = document.getElementById('orderDetailError');
-        setOrderProductListMessage('주문 상품 정보를 불러오는 중입니다...');
-        try {
-            const response = await fetch(`/greengarden/my/home/order/${orderNo}`);
-            if (!response.ok) {
-                let message = '주문 정보를 불러오는 중 오류가 발생했습니다.';
-                if (response.status === 401) {
-                    message = '로그인이 필요합니다.';
-                } else if (response.status === 404) {
-                    message = '주문 정보를 찾을 수 없습니다.';
-                }
-                throw new Error(message);
-            }
-            const data = await response.json();
-            updateOrderModal(data);
-        } catch (err) {
-            resetOrderModal();
-            if (errorEl) {
-                errorEl.textContent = err.message;
-                errorEl.style.display = 'block';
-            }
-        }
-    }
-
-    function resetSellerModal() {
-        const defaults = {
-            sellerInfoGrade: '-',
-            sellerInfoCompany: '-',
-            sellerInfoRepresentative: '-',
-            sellerInfoTel: '-',
-            sellerInfoFax: '-',
-            sellerInfoEmail: '-',
-            sellerInfoBusinessNumber: '-',
-            sellerInfoAddress: '-'
-        };
-        Object.entries(defaults).forEach(([id, value]) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value;
-        });
-        const errorEl = document.getElementById('sellerInfoError');
-        if (errorEl) {
-            errorEl.style.display = 'none';
-            errorEl.textContent = '';
-        }
-    }
-
-    function updateSellerModal(data) {
-        if (!data) return;
-        const mapping = {
-            sellerInfoGrade: data.gradeName ?? '-',
-            sellerInfoCompany: data.company ?? '-',
-            sellerInfoRepresentative: data.representative ?? '-',
-            sellerInfoTel: data.tel ?? '-',
-            sellerInfoFax: data.fax ?? '-',
-            sellerInfoEmail: data.email ?? '-',
-            sellerInfoBusinessNumber: data.businessNumber ?? '-',
-            sellerInfoAddress: data.fullAddress ?? '-'
-        };
-        Object.entries(mapping).forEach(([id, value]) => {
-            const el = document.getElementById(id);
-            if (el) el.textContent = value;
-        });
-    }
-
-    async function loadSellerInfo(sellerId) {
-        const errorEl = document.getElementById('sellerInfoError');
-        try {
-            const response = await fetch(`/greengarden/my/home/seller/${sellerId}`);
-            if (!response.ok) {
-                let message = '판매자 정보를 불러오는 중 오류가 발생했습니다.';
-                if (response.status === 401) {
-                    message = '로그인이 필요합니다.';
-                } else if (response.status === 404) {
-                    message = '판매자 정보를 찾을 수 없습니다.';
-                }
-                throw new Error(message);
-            }
-            const data = await response.json();
-            updateSellerModal(data);
-        } catch (err) {
-            resetSellerModal();
-            if (errorEl) {
-                errorEl.textContent = err.message;
-                errorEl.style.display = 'block';
-            }
-        }
-    }
-
-    function openModal(id, orderNo, proId, sellerId, orderItemId) {
-        const modal = document.getElementById(id);
-        if (!modal) return;
-
-        modal.style.display = 'flex';
-
-        const orderInput = modal.querySelector("input[name='orderNo']");
-        if (orderInput) {
-            orderInput.value = orderNo || '';
-        }
-
-        const proInput = modal.querySelector("input[name='proId']");
-        if (proInput) {
-            proInput.value = proId || '';
-        }
-
-        const orderItemInput = modal.querySelector("input[name='orderItemId']");
-        if (orderItemInput) {
-            orderItemInput.value = orderItemId || '';
-        }
-
-        if (id === 'orderModal') {
-            resetOrderModal();
-            if (orderNo) {
-                loadOrderDetail(orderNo);
-            }
-        }
-
-        if (id === 'sellerModal') {
-            resetSellerModal();
-            if (sellerId) {
-                loadSellerInfo(sellerId);
-            }
-        }
-
-        if (id === 'reviewModal') {
-            resetStars();
-        }
-    }
-
-    function closeModal(id) {
-        const modal = document.getElementById(id);
-        if (modal) modal.style.display = 'none';
-    }
-
-    function openInquiry() {
-        closeModal('sellerModal');
-        openModal('inquiryModal');
-    }
-
-    function resetStars() {
-        const stars = document.querySelectorAll('#starRating span');
-        const ratingInput = document.getElementById('ratingValue');
-        if (!stars.length || !ratingInput) return;
-
-        ratingInput.value = 0;
-        stars.forEach(s => {
-            s.classList.remove('selected', 'hovered');
-        });
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const stars = document.querySelectorAll('#starRating span');
-        const ratingInput = document.getElementById('ratingValue');
-        let selectedRating = 0;
-
-        if (stars.length && ratingInput) {
-            stars.forEach((star, index) => {
-                const value = index + 1;
-
-                star.addEventListener('mouseenter', () => {
-                    stars.forEach((s, i) => s.classList.toggle('hovered', i < value));
-                });
-
-                star.addEventListener('mouseleave', () => {
-                    stars.forEach((s, i) => {
-                        s.classList.remove('hovered');
-                        s.classList.toggle('selected', i < selectedRating);
-                    });
-                });
-
-                star.addEventListener('click', () => {
-                    selectedRating = value;
-                    ratingInput.value = selectedRating;
-                    stars.forEach((s, i) => s.classList.toggle('selected', i < selectedRating));
-                });
-            });
-        }
-
-        const previewArea = document.getElementById('previewArea');
-        const inputs = [
-            document.getElementById('reviewFile1'),
-            document.getElementById('reviewFile2'),
-            document.getElementById('reviewFile3')
-        ];
-
-        if (previewArea) {
-            inputs.forEach((input, idx) => {
-                if (!input) return;
-
-                input.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-
-                    const oldImg = previewArea.querySelector(`img[data-slot="${idx}"]`);
-                    if (oldImg) oldImg.remove();
-
-                    const reader = new FileReader();
-                    reader.onload = ev => {
-                        const img = document.createElement('img');
-                        img.src = ev.target.result;
-                        img.dataset.slot = idx;
-                        img.style.width = '80px';
-                        img.style.height = '80px';
-                        img.style.objectFit = 'cover';
-                        img.style.border = '1px solid #ccc';
-                        img.style.borderRadius = '4px';
-                        img.style.marginRight = '5px';
-                        previewArea.appendChild(img);
-                    };
-                    reader.readAsDataURL(file);
-                });
-            });
-        }
-    });
-</script>
+<th:block th:replace="~{my/fragments/order-modals :: orderModals('home')}"></th:block>
+<script th:src="@{/js/my/mypage.js}"></script>
 
 </body>
 </html>

@@ -94,13 +94,15 @@
 
         <div class="pagination" th:if="${couponPage != null and couponPage.totalPages > 1}">
             <a th:classappend="${!couponPage.hasPrev}? ' disabled'"
-               th:href="@{/my/coupon(tab=${activeTab}, page=${couponPage.prevPage})}">이전</a>
+               th:href="${couponPage.hasPrev} ? @{/my/coupon(tab=${activeTab}, page=${couponPage.prevPage})} : '#'"
+               th:attr="aria-disabled=${!couponPage.hasPrev}, tabindex=${!couponPage.hasPrev}? -1 : null">이전</a>
             <a th:each="p : ${#numbers.sequence(couponPage.startPage, couponPage.endPage)}"
                th:classappend="${p == couponPage.currentPage}? ' active'"
                th:href="@{/my/coupon(tab=${activeTab}, page=${p})}"
                th:text="${p}">1</a>
             <a th:classappend="${!couponPage.hasNext}? ' disabled'"
-               th:href="@{/my/coupon(tab=${activeTab}, page=${couponPage.nextPage})}">다음</a>
+               th:href="${couponPage.hasNext} ? @{/my/coupon(tab=${activeTab}, page=${couponPage.nextPage})} : '#'"
+               th:attr="aria-disabled=${!couponPage.hasNext}, tabindex=${!couponPage.hasNext}? -1 : null">다음</a>
         </div>
 
         <!-- 이용 안내 -->
