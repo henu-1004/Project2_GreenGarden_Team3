@@ -1,11 +1,17 @@
 package kr.co.greengarden.controller.my;
 
 import jakarta.servlet.http.HttpServletRequest;
-import kr.co.greengarden.dto.my.CouponPageDTO;
+import kr.co.greengarden.dto.my.CouponSummaryDTO;
+import kr.co.greengarden.dto.my.CouponTabPageDTO;
+import kr.co.greengarden.dto.my.MyInfoDTO;
+import kr.co.greengarden.dto.my.MyInfoForm;
+import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
+import kr.co.greengarden.dto.my.PagedResult;
+import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.PointLedgerCriteria;
 import kr.co.greengarden.dto.my.PointLedgerPageDTO;
 import kr.co.greengarden.dto.my.PointSummaryDTO;
@@ -252,26 +258,20 @@ public class MyController {
     public String coupon(HttpServletRequest request,
                          Model model,
                          @AuthenticationPrincipal UserDetails userDetails,
-                         @RequestParam(value = "tab", defaultValue = "available") String tab) {
+                         @RequestParam(value = "tab", defaultValue = "available") String tab,
+                         @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {
             return "redirect:/member/login";
         }
 
         String memId = userDetails.getUsername();
-        CouponPageDTO couponPage = myCouponService.getCouponPage(memId);
-
-        String activeTab = switch (tab == null ? "available" : tab.toLowerCase()) {
-            case "used" -> "used";
-            case "expired" -> "expired";
-            default -> "available";
-        };
+        CouponTabPageDTO couponPage = myCouponService.getCouponTabPage(memId, tab, page, 6);
 
         model.addAttribute("couponSummary", couponPage.getSummary());
-        model.addAttribute("availableCoupons", couponPage.getAvailableCoupons());
-        model.addAttribute("usedCoupons", couponPage.getUsedCoupons());
-        model.addAttribute("expiredCoupons", couponPage.getExpiredCoupons());
-        model.addAttribute("activeTab", activeTab);
+        model.addAttribute("coupons", couponPage.getPage().getItems());
+        model.addAttribute("couponPage", couponPage.getPage().getPagination());
+        model.addAttribute("activeTab", couponPage.getActiveTab());
 
         return "my/coupon";
     }
@@ -279,22 +279,25 @@ public class MyController {
     @GetMapping("/review")
     public String review(HttpServletRequest request,
                          Model model,
-                         @AuthenticationPrincipal UserDetails userDetails) {
+                         @AuthenticationPrincipal UserDetails userDetails,
+                         @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {
             return "redirect:/member/login";
         }
 
         String memId = userDetails.getUsername();
-        List<ProductReviewDTO> reviewList = myService.getMyReviews(memId);
-        if (reviewList == null) {
-            reviewList = List.of();
+        List<ProductReviewDTO> allReviews = myService.getMyReviews(memId);
+        if (allReviews == null) {
+            allReviews = List.of();
         }
 
-        ReviewSummaryDTO summary = myService.buildReviewSummary(reviewList);
+        ReviewSummaryDTO summary = myService.buildReviewSummary(allReviews);
+        PagedResult<ProductReviewDTO> reviewPage = myService.getMyReviewsPage(memId, page, 5);
 
-        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("reviewList", reviewPage.getItems());
         model.addAttribute("reviewSummary", summary);
+        model.addAttribute("reviewPage", reviewPage.getPagination());
 
         return "my/review";
     }
@@ -302,30 +305,96 @@ public class MyController {
     @GetMapping("/qna")
     public String qna(HttpServletRequest request,
                       Model model,
-                      @AuthenticationPrincipal UserDetails userDetails) {
+                      @AuthenticationPrincipal UserDetails userDetails,
+                      @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {
             return "redirect:/member/login";
         }
 
         String memId = userDetails.getUsername();
-        List<MyInquiryDTO> qnaList = myService.getMyInquiries(memId);
-        if (qnaList == null) {
-            qnaList = List.of();
+        List<MyInquiryDTO> allInquiries = myService.getMyInquiries(memId);
+        if (allInquiries == null) {
+            allInquiries = List.of();
         }
 
-        MyInquirySummaryDTO summary = myService.buildInquirySummary(qnaList);
+        MyInquirySummaryDTO summary = myService.buildInquirySummary(allInquiries);
+        PagedResult<MyInquiryDTO> qnaPage = myService.getMyInquiryPage(memId, page, 10);
 
-        model.addAttribute("qnaList", qnaList);
+        model.addAttribute("qnaList", qnaPage.getItems());
         model.addAttribute("qnaSummary", summary);
+        model.addAttribute("qnaPage", qnaPage.getPagination());
 
         return "my/qna";
     }
 
     @GetMapping("/info")
-    public String info(HttpServletRequest request, Model model) {
+    public String info(HttpServletRequest request,
+                       Model model,
+                       @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("currentUri", request.getRequestURI());
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        String memId = userDetails.getUsername();
+        MyInfoDTO info = myService.getMyInfo(memId);
+        if (info == null) {
+            info = new MyInfoDTO();
+            info.setMemId(memId);
+        }
+
+        int totalPoint = pointService.getTotalPoint(memId);
+        info.setTotalPoint(totalPoint);
+        CouponSummaryDTO couponSummary = myCouponService.getCouponSummary(memId);
+        info.setAvailableCouponCount(couponSummary.getAvailableCount());
+
+        model.addAttribute("info", info);
+        model.addAttribute("couponSummary", couponSummary);
+        model.addAttribute("infoForm", MyInfoForm.from(info));
+
         return "my/info";
+    }
+
+    @PostMapping("/info")
+    public String updateInfo(@AuthenticationPrincipal UserDetails userDetails,
+                             @ModelAttribute("infoForm") MyInfoForm form,
+                             RedirectAttributes redirect) {
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        if (form.getName() == null || form.getName().isBlank()) {
+            redirect.addFlashAttribute("infoErrorMessage", "이름을 입력해주세요.");
+            return "redirect:/my/info";
+        }
+
+        if (form.getBirth() != null && form.getBirth().isAfter(LocalDate.now())) {
+            redirect.addFlashAttribute("infoErrorMessage", "생년월일은 오늘 이후로 설정할 수 없습니다.");
+            return "redirect:/my/info";
+        }
+
+        String memId = userDetails.getUsername();
+        MyInfoUpdateDTO updateDTO = MyInfoUpdateDTO.builder()
+                .memId(memId)
+                .name(form.getName())
+                .birth(form.getBirth())
+                .gender(form.getGender())
+                .email(form.getEmail())
+                .phone(form.getPhone())
+                .zipCode(form.getZipCode())
+                .addressBasic(form.getAddressBasic())
+                .addressDetail(form.getAddressDetail())
+                .build();
+
+        try {
+            myService.updateMyInfo(updateDTO);
+            redirect.addFlashAttribute("infoSuccessMessage", "회원 정보가 업데이트되었습니다.");
+        } catch (IllegalArgumentException ex) {
+            redirect.addFlashAttribute("infoErrorMessage", ex.getMessage());
+        }
+
+        return "redirect:/my/info";
     }
 
 

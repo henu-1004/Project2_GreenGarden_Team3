@@ -149,6 +149,32 @@
         ORDER BY r.CREATED_AT DESC
     </select>
 
+    <select id="countMyReviews" parameterType="string" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_PRODUCT_REVIEW r
+        WHERE r.MEMID = #{memId}
+    </select>
+
+    <select id="getMyReviewsPage" resultType="kr.co.greengarden.dto.my.ProductReviewDTO">
+        SELECT
+            r.REVIEW_ID AS reviewId,
+            r.PROID AS proId,
+            r.MEMID AS memId,
+            r.RATING AS rating,
+            r.CONTENT AS content,
+            r.CREATED_AT AS createdAt,
+            r.IMG1 AS img1,
+            r.IMG2 AS img2,
+            r.IMG3 AS img3,
+            r.ORDERNO AS orderNo,
+            p.NAME AS productName
+        FROM TB_PRODUCT_REVIEW r
+                 JOIN TB_PRODUCT p ON r.PROID = p.PROID
+        WHERE r.MEMID = #{memId}
+        ORDER BY r.CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
     <select id="getMyInquiries" parameterType="string" resultType="kr.co.greengarden.dto.my.MyInquiryDTO">
         SELECT
             i.INQUIRY_ID AS inquiryId,
@@ -161,6 +187,67 @@
         WHERE i.WRITER = #{memId}
         ORDER BY i.CREATED_AT DESC
     </select>
+
+    <select id="countMyInquiries" parameterType="string" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_INQUIRY i
+        WHERE i.WRITER = #{memId}
+    </select>
+
+    <select id="getMyInquiriesPage" resultType="kr.co.greengarden.dto.my.MyInquiryDTO">
+        SELECT
+            i.INQUIRY_ID AS inquiryId,
+            i.CATEGORY1  AS type,
+            i.TITLE      AS title,
+            i.STATUS     AS status,
+            i.ANSWER     AS answer,
+            i.CREATED_AT AS createdAt
+        FROM TB_INQUIRY i
+        WHERE i.WRITER = #{memId}
+        ORDER BY i.CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+    <select id="getMyInfo" parameterType="string" resultType="kr.co.greengarden.dto.my.MyInfoDTO">
+        SELECT
+            m.MEMID          AS memId,
+            g.NAME           AS name,
+            g.BIRTH          AS birth,
+            g.GENDER         AS gender,
+            g.EMAIL          AS email,
+            g.PHONE          AS phone,
+            g.STATUS         AS status,
+            g.NOTE           AS note,
+            g.LASTLOGIN      AS lastLogin,
+            m.JOINDATE       AS joinDate,
+            gr.GRADE         AS grade,
+            gr.DISCOUNTRATE  AS discountRate,
+            m.ZIPCODE        AS zipCode,
+            m.ADDRESSBASIC   AS addressBasic,
+            m.ADDRESSDETAIL  AS addressDetail
+        FROM TB_MEMBER m
+                 LEFT JOIN TB_MEMBER_GENERAL g ON m.MEMID = g.MEMID
+                 LEFT JOIN TB_GRADE gr ON m.MEMID = gr.MEMID
+        WHERE m.MEMID = #{memId}
+    </select>
+
+    <update id="updateMyGeneralInfo" parameterType="kr.co.greengarden.dto.my.MyInfoUpdateDTO">
+        UPDATE TB_MEMBER_GENERAL
+        SET NAME = #{name},
+            BIRTH = #{birth, jdbcType=DATE},
+            GENDER = #{gender},
+            EMAIL = #{email},
+            PHONE = #{phone}
+        WHERE MEMID = #{memId}
+    </update>
+
+    <update id="updateMyMemberInfo" parameterType="kr.co.greengarden.dto.my.MyInfoUpdateDTO">
+        UPDATE TB_MEMBER
+        SET ZIPCODE = #{zipCode},
+            ADDRESSBASIC = #{addressBasic},
+            ADDRESSDETAIL = #{addressDetail}
+        WHERE MEMID = #{memId}
+    </update>
 
 
 </mapper>

@@ -107,6 +107,17 @@
             등록된 문의가 없습니다. 궁금한 사항을 남겨주세요.
         </div>
 
+        <div class="pagination" th:if="${qnaPage != null and qnaPage.totalPages > 1}">
+            <a th:classappend="${!qnaPage.hasPrev}? ' disabled'"
+               th:href="@{/my/qna(page=${qnaPage.prevPage})}">이전</a>
+            <a th:each="p : ${#numbers.sequence(qnaPage.startPage, qnaPage.endPage)}"
+               th:classappend="${p == qnaPage.currentPage}? ' active'"
+               th:href="@{/my/qna(page=${p})}"
+               th:text="${p}">1</a>
+            <a th:classappend="${!qnaPage.hasNext}? ' disabled'"
+               th:href="@{/my/qna(page=${qnaPage.nextPage})}">다음</a>
+        </div>
+
         <!-- 추가 액션 -->
         <div class="qna-actions">
             <button class="btn-outline">이전 문의 불러오기</button>
