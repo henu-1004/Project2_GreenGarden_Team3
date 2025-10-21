@@ -10,6 +10,7 @@
         내용 : 관리자 쿠폰발급현황 페이지
     -->
     <link rel="stylesheet" th:href="@{/css/admin/coupon/list.css}">
+
 </head>
 <body>
 <div th:replace="~{admin/common/header :: header}"></div>
@@ -18,11 +19,11 @@
         <div th:replace="~{admin/common/aside :: aside}"></div>
         <section id="main-section">
             <div class="top-nav">
-                <h3>쿠폰목록</h3>
+                <h3>쿠폰발급현황</h3>
                 <ul class="page-nation">
                     <li><a href="#">Home</a></li>
                     <li><a href="#">쿠폰관리</a></li>
-                    <li><a href="#">쿠폰목록</a></li>
+                    <li><a href="#">쿠폰발급현황</a></li>
                 </ul>
             </div>
             <form th:action="@{#}" method="get" class="search-form">
@@ -37,6 +38,8 @@
                     <img th:src="@{/images/magnifier.png}" alt="돋보기" />
                 </button>
             </form>
+            <input type="hidden" id="csrfToken" th:value="${_csrf.token}">
+            <input type="hidden" id="csrfHeader" th:value="${_csrf.headerName}">
             <table class="coupon-table">
                 <tr>
                     <th>발급번호</th>
@@ -48,32 +51,34 @@
                     <th>사용일</th>
                     <th>관리</th>
                 </tr>
-                <tr>
-                    <td><span class="coupon-num-link" onclick="openModal('modalIssueInfo')">10121211341</span></td>
-                    <td>10121211341</td>
-                    <td>개별상품 할인</td>
-                    <td>회원가입 축하 쿠폭</td>
-                    <td>a102</td>
-                    <td style="color: green">사용</td>
-                    <td>2025-10-24 13:45:55</td>
+
+                <tr th:each="row : ${issuedList}">
                     <td>
-                        <input type="button" value="종료">
+                        <span class="coupon-num-link"
+                              onclick="openModal('modalIssueInfo')"
+                              th:text="${row.issueId}"></span>
+                    </td>
+                    <td th:text="${row.couponNo}"></td>
+                    <td th:text="${row.type}"></td>
+                    <td th:text="${row.name}"></td>
+                    <td th:text="${row.userId}"></td>
+                    <td th:text="${row.viewStatus}" style="color: red"></td>
+                    <td th:text="${#temporals.format(row.usedAt, 'yyyy-MM-dd HH:mm:SS')}"></td>
+                    <td>
+                        <form th:if="${row.canStop == 1}"
+                              th:action="@{'/admin/coupon/issued/' + ${row.issueId} + '/stop'}"
+                              method="post">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                            <button type="submit">중단</button>
+                        </form>
                     </td>
                 </tr>
-                <tr>
-                    <td><span class="coupon-num-link" onclick="openModal('modalIssueInfo')">10121211341</span></td>
-                    <td>10121211341</td>
-                    <td>개별상품 할인</td>
-                    <td>회원가입 축하 쿠폭</td>
-                    <td>a102</td>
-                    <td style="color: red">미사용</td>
-                    <td>2025-10-24 13:45:55</td>
-                    <td>
-                        <input type="button" value="종료">
-                    </td>
+
+                <tr th:if="${#lists.isEmpty(issuedList)}">
+                    <td colspan="8" style="text-align: center; color: gray;">발급 내역이 없습니다.</td>
                 </tr>
             </table>
-            <button type="button" onclick="openModal()">등록하기</button>
+
             <section class="pagination">
                 <!-- 이전 페이지 버튼 -->
                 <a href="#" class="prev">&lt; 이전</a>
@@ -95,5 +100,6 @@
 <div th:replace="~{admin/coupon/_issuedCouponInfo :: modal-coupon-issued}"></div>
 <script th:src="@{/js/admin/aside.js}"></script>
 <script th:src="@{/js/admin/coupon/couponModal.js}"></script>
+<script th:src="@{/js/admin/coupon/issued.js}"></script>
 </body>
 </html>
