@@ -226,15 +226,30 @@
           AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
     </select>
 
+    <!-- 교환 신청 -->
     <insert id="insertExchangeRequest" parameterType="kr.co.greengarden.dto.my.ExchangeRequestDTO">
         INSERT INTO TB_EXCHANGE (ORDERNO, TYPE, REASON, IMG_PATH, ORDERITEMID)
-        VALUES (#{orderNo}, #{type}, #{detail}, #{imgPath}, #{orderItemId})
+        VALUES (
+                   #{orderNo, jdbcType=VARCHAR},
+                   #{type, jdbcType=VARCHAR},
+                   #{detail, jdbcType=VARCHAR},
+                   #{imgPath, jdbcType=VARCHAR},
+                   #{orderItemId, jdbcType=NUMERIC}
+               )
     </insert>
 
+    <!-- 반품 신청 -->
     <insert id="insertReturnRequest" parameterType="kr.co.greengarden.dto.my.ReturnRequestDTO">
         INSERT INTO TB_RETURN (ORDERNO, TYPE, REASON, IMG_PATH, ORDERITEMID)
-        VALUES (#{orderNo}, #{type}, #{detail}, #{imgPath}, #{orderItemId})
+        VALUES (
+                   #{orderNo, jdbcType=VARCHAR},
+                   #{type, jdbcType=VARCHAR},
+                   #{detail, jdbcType=VARCHAR},
+                   #{imgPath, jdbcType=VARCHAR},
+                   #{orderItemId, jdbcType=NUMERIC}
+               )
     </insert>
+
 
     <!--리뷰 등록 쿼리 추가 👇-->
     <insert id="insertProductReview" parameterType="kr.co.greengarden.dto.my.ProductReviewDTO">
