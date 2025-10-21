@@ -3,6 +3,7 @@ package kr.co.greengarden.controller.my;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.greengarden.dto.my.CouponSummaryDTO;
 import kr.co.greengarden.dto.my.CouponTabPageDTO;
+import kr.co.greengarden.dto.my.MyHomeSummaryDTO;
 import kr.co.greengarden.dto.my.MyInfoDTO;
 import kr.co.greengarden.dto.my.MyInfoForm;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
@@ -11,9 +12,11 @@ import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
 import kr.co.greengarden.dto.my.OrderDetailDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
+import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.PagedResult;
 import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.PointLedgerCriteria;
+import kr.co.greengarden.dto.my.PointLedgerDTO;
 import kr.co.greengarden.dto.my.PointLedgerPageDTO;
 import kr.co.greengarden.dto.my.PointSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
@@ -37,6 +40,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Slf4j
@@ -56,23 +60,51 @@ public class MyController {
         model.addAttribute("currentUri", request.getRequestURI());
 
         if (userDetails == null) {
-            System.out.println("❌ 로그인 정보 없음 (userDetails == null)");
+            log.debug("❌ 로그인 정보 없음 (userDetails == null)");
             model.addAttribute("recentOrders", List.of());
+            model.addAttribute("recentPoints", List.of());
+            model.addAttribute("myReviews", List.of());
+            model.addAttribute("recentInquiries", List.of());
+            model.addAttribute("homeSummary", MyHomeSummaryDTO.empty());
+            model.addAttribute("couponSummary", CouponSummaryDTO.builder().build());
+            model.addAttribute("totalPoint", 0);
+            model.addAttribute("myInfo", null);
             model.addAttribute("loginStatus", false);
         } else {
             String memId = userDetails.getUsername();
-            System.out.println("✅ 로그인된 사용자 ID: " + memId);
+            log.debug("✅ 로그인된 사용자 ID: {}", memId);
 
-            // ✅ MyBatis 기반 최근 주문내역 조회 (상품명, 이미지 포함)
-            model.addAttribute("recentOrders", myService.getRecentOrderSummary(memId));
+            List<OrderSummaryDTO> recentOrders = myService.getRecentOrderSummary(memId);
+            List<ProductReviewDTO> myReviews = myService.getMyReviews(memId).stream()
+                    .limit(5)
+                    .collect(Collectors.toList());
+            List<PointLedgerDTO> recentPoints = pointService.getRecentLedger(memId);
+            List<MyInquiryDTO> recentInquiries = myService.getMyInquiries(memId).stream()
+                    .limit(5)
+                    .collect(Collectors.toList());
+            MyInfoDTO myInfo = myService.getMyInfo(memId);
+            CouponSummaryDTO couponSummary = myCouponService.getCouponSummary(memId);
+            int totalPoint = pointService.getTotalPoint(memId);
 
-            // ✅ 내가 작성한 상품평 내역 조회
-            model.addAttribute("myReviews", myService.getMyReviews(memId));
+            long orderCount = myService.countMyOrders(memId);
+            long inquiryCount = myService.countMyInquiries(memId);
+            int availableCouponCount = couponSummary != null ? couponSummary.getAvailableCount() : 0;
 
-            // ✅ 포인트 내역 (최근 5건 + 총 포인트)
-            model.addAttribute("recentPoints", pointService.getRecentLedger(memId));
-            model.addAttribute("totalPoint", pointService.getTotalPoint(memId));
+            MyHomeSummaryDTO summary = MyHomeSummaryDTO.builder()
+                    .orderCount(orderCount)
+                    .availableCouponCount(availableCouponCount)
+                    .totalPoint(totalPoint)
+                    .inquiryCount(inquiryCount)
+                    .build();
 
+            model.addAttribute("recentOrders", recentOrders);
+            model.addAttribute("myReviews", myReviews);
+            model.addAttribute("recentPoints", recentPoints);
+            model.addAttribute("recentInquiries", recentInquiries);
+            model.addAttribute("myInfo", myInfo);
+            model.addAttribute("couponSummary", couponSummary != null ? couponSummary : CouponSummaryDTO.builder().build());
+            model.addAttribute("homeSummary", summary);
+            model.addAttribute("totalPoint", totalPoint);
             model.addAttribute("loginStatus", true);
         }
 
@@ -116,14 +148,14 @@ public class MyController {
 
     @GetMapping("/order")
     public String order(HttpServletRequest request,
-                       Model model,
-                       @AuthenticationPrincipal UserDetails userDetails,
-                       @RequestParam(value = "period", required = false) String period,
-                       @RequestParam(value = "startDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                       @RequestParam(value = "endDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                       @RequestParam(value = "page", defaultValue = "1") int page) {
+                        Model model,
+                        @AuthenticationPrincipal UserDetails userDetails,
+                        @RequestParam(value = "period", required = false) String period,
+                        @RequestParam(value = "startDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                        @RequestParam(value = "endDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                        @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {
             return "redirect:/member/login";
@@ -199,15 +231,15 @@ public class MyController {
 
     @GetMapping("/point")
     public String point(HttpServletRequest request,
-                       Model model,
-                       @AuthenticationPrincipal UserDetails userDetails,
-                       @RequestParam(value = "period", required = false) String period,
-                       @RequestParam(value = "startDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                       @RequestParam(value = "endDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                       @RequestParam(value = "type", defaultValue = "ALL") String type,
-                       @RequestParam(value = "page", defaultValue = "1") int page) {
+                        Model model,
+                        @AuthenticationPrincipal UserDetails userDetails,
+                        @RequestParam(value = "period", required = false) String period,
+                        @RequestParam(value = "startDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                        @RequestParam(value = "endDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                        @RequestParam(value = "type", defaultValue = "ALL") String type,
+                        @RequestParam(value = "page", defaultValue = "1") int page) {
 
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {

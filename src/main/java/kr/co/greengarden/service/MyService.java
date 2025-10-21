@@ -66,6 +66,8 @@ public class MyService {
                     o.getOrderNo(), o.getOrderedAt(), o.getStatus());
         }
 
+        orders.forEach(this::applyOrderActionFlags);
+
         return orders;
     }
 
@@ -297,6 +299,20 @@ public class MyService {
 
     public List<MyInquiryDTO> getMyInquiries(String memId) {
         return myMapper.getMyInquiries(memId);
+    }
+
+    public long countMyOrders(String memId) {
+        if (memId == null || memId.isBlank()) {
+            return 0;
+        }
+        return myMapper.countMyOrders(memId);
+    }
+
+    public long countMyInquiries(String memId) {
+        if (memId == null || memId.isBlank()) {
+            return 0;
+        }
+        return myMapper.countMyInquiries(memId);
     }
 
     public PagedResult<MyInquiryDTO> getMyInquiryPage(String memId, int page, int size) {

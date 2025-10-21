@@ -39,6 +39,20 @@
     font-size: 14px;
 }
 
+.empty-box {
+    border: 1px dashed #ddd;
+    background: #fafafa;
+    padding: 25px 20px;
+    text-align: center;
+    color: #666;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.login-required .btn-primary {
+    margin-top: 12px;
+}
+
 .content h2 {
     margin-bottom: 15px;
     font-size: 20px;
@@ -217,7 +231,7 @@
 .inquiry-table td.status {
     font-weight: bold;
 }
-.inquiry-table td.status.complete { color: #175a48; }
+.inquiry-table td.status.completed { color: #175a48; }
 .inquiry-table td.status.waiting { color: #d9534f; }
 
 /* =========================
