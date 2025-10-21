@@ -8,7 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -21,7 +24,8 @@ public class CouponController {
     @GetMapping("/list")
     public String couponListPage(Model model) {
 
-        List<CouponDTO> couponList = couponService.getCouponList();
+        //List<CouponDTO> couponList = couponService.getCouponList();
+        List<CouponDTO> couponList = couponService.getCouponListWithCounts();
 
         model.addAttribute("couponList", couponList);
 
@@ -29,7 +33,8 @@ public class CouponController {
     }
 
     @GetMapping("/issued")
-    public String couponIssuedPage() {
+    public String couponIssuedPage(Model model) {
+        model.addAttribute("issuedList", couponService.getIssuedListSimple());
         return "admin/coupon/issued";
     }
 
@@ -40,6 +45,15 @@ public class CouponController {
 
         return "redirect:/admin/coupon/list";
     }
+
+    @PostMapping("/issued/{issueId}/stop")
+    public String stopIssuedByForm(@PathVariable String issueId) {
+
+        couponService.stopIssued(issueId);
+        return "redirect:/admin/coupon/issued";
+    }
+
+
 
 
 }

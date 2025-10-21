@@ -20,5 +20,5 @@ import java.util.Optional;
  */
 @Repository
 public interface DeliveryRepository extends JpaRepository<Delivery, Integer> {
-
+    public Delivery findByOrder_OrderNo(String orderNo);
 }

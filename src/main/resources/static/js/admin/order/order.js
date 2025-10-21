@@ -21,6 +21,8 @@ async function openModal(modalId, orderNo) {
         await fillDeliveryModal(modal, orderNo);
     } else if (modalId === 'modalOrderDetail') {
         await fillOrderDetailModal(modal, orderNo);
+    } else if (modalId === 'modalDeliveryDetail') {
+
     }
 }
 

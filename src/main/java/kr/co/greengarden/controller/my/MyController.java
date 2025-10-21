@@ -9,6 +9,7 @@ import kr.co.greengarden.dto.my.MyInfoForm;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
+import kr.co.greengarden.dto.my.OrderDetailDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
@@ -20,12 +21,15 @@ import kr.co.greengarden.dto.my.PointLedgerPageDTO;
 import kr.co.greengarden.dto.my.PointSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
 import kr.co.greengarden.dto.my.ReviewSummaryDTO;
+import kr.co.greengarden.dto.my.SellerInfoDTO;
 import kr.co.greengarden.service.MyService;
 import kr.co.greengarden.service.MyCouponService;
 import kr.co.greengarden.service.PointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -37,6 +41,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -106,17 +111,51 @@ public class MyController {
         return "my/home";
     }
 
+    @GetMapping("/home/order/{orderNo}")
+    @ResponseBody
+    public ResponseEntity<?> orderDetail(@PathVariable String orderNo,
+                                         @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        String memId = userDetails.getUsername();
+        log.info("📦 [ORDER DETAIL] memId={}, orderNo={}", memId, orderNo);
+
+        Optional<OrderDetailDTO> detail = myService.getOrderDetail(memId, orderNo);
+        log.info("📦 결과: {}", detail.isPresent() ? "✅ 데이터 있음" : "❌ 데이터 없음");
+        return detail.map(d -> ResponseEntity.ok((Object)d))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("주문 정보를 찾을 수 없습니다."));
+    }
+
+
+    @GetMapping("/home/seller/{sellerId}")
+    @ResponseBody
+    public ResponseEntity<?> sellerInfo(@PathVariable String sellerId,
+                                        @AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        log.info("🛍 [SELLER INFO] sellerId={}", sellerId);
+        Optional<SellerInfoDTO> sellerInfo = myService.getSellerInfo(sellerId);
+        log.info("🛍 결과: {}", sellerInfo.isPresent() ? "✅ 데이터 있음" : "❌ 데이터 없음");
+        return sellerInfo.map(s -> ResponseEntity.ok((Object)s))
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("판매자 정보를 찾을 수 없습니다."));
+    }
+
+
 
     @GetMapping("/order")
     public String order(HttpServletRequest request,
-                       Model model,
-                       @AuthenticationPrincipal UserDetails userDetails,
-                       @RequestParam(value = "period", required = false) String period,
-                       @RequestParam(value = "startDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                       @RequestParam(value = "endDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                       @RequestParam(value = "page", defaultValue = "1") int page) {
+                        Model model,
+                        @AuthenticationPrincipal UserDetails userDetails,
+                        @RequestParam(value = "period", required = false) String period,
+                        @RequestParam(value = "startDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                        @RequestParam(value = "endDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                        @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {
             return "redirect:/member/login";
@@ -192,15 +231,15 @@ public class MyController {
 
     @GetMapping("/point")
     public String point(HttpServletRequest request,
-                       Model model,
-                       @AuthenticationPrincipal UserDetails userDetails,
-                       @RequestParam(value = "period", required = false) String period,
-                       @RequestParam(value = "startDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                       @RequestParam(value = "endDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                       @RequestParam(value = "type", defaultValue = "ALL") String type,
-                       @RequestParam(value = "page", defaultValue = "1") int page) {
+                        Model model,
+                        @AuthenticationPrincipal UserDetails userDetails,
+                        @RequestParam(value = "period", required = false) String period,
+                        @RequestParam(value = "startDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                        @RequestParam(value = "endDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                        @RequestParam(value = "type", defaultValue = "ALL") String type,
+                        @RequestParam(value = "page", defaultValue = "1") int page) {
 
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {

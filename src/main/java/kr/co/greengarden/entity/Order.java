@@ -27,7 +27,7 @@ public class Order {
     private String orderNo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="memId")
+    @JoinColumn(name = "memId")
     private Member member;
 
     @Column
@@ -61,4 +61,8 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
 }

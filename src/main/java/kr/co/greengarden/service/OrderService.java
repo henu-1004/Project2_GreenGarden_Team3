@@ -36,6 +36,9 @@ public class OrderService {
 
     @Transactional
     public void orderRegister(OrderDTO orderDTO, OrderItemListWrapper orderItemList, MemberDetails memberDetails){
+        
+        System.out.println("서비스주문 : " + orderDTO.toString());
+        System.out.println("서비스주문상세 : " + orderItemList.toString());
 
         // 1. 필요한 정보 가져오기
         Cart cart = cartRepository.findAll(PageRequest.of(0, 1))
@@ -43,44 +46,67 @@ public class OrderService {
                 .stream()
                 .findFirst()
                 .orElse(null);
-        
-        orderDTO.setOrderNo(cart.getOrderNo());
-        orderDTO.setMember(cart.getMember());
-        orderDTO.setStatus("결제 완료");
+        /*
+        //orderDTO.setOrderNo(cart.getOrderNo());
+       // orderDTO.setMember(cart.getMember());
+        //orderDTO.setStatus("결제 완료");
+        // ✅ 로그인한 회원 정보 가져오기
+        MemberGeneral memberGeneral = memberGeneralRepository.findById(memberDetails.getMember().getMemId())
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
+        // 내부 Member 엔티티 추출
+        Member member = memberGeneral.getMember();
+
+        // 주문 번호 생성
+        String orderNo = (cart == null)
+                ? UUID.randomUUID().toString().substring(0,12)
+                : cart.getOrderNo();
+        orderDTO.setOrderNo(orderNo);
+        orderDTO.setStatus("결재완료");
+
+        // DTO -> Entity  변환
         Order order = modelMapper.map(orderDTO, Order.class);
+        */
+        Order order = Order.builder()
+                .orderNo(cart.getOrderNo())
+                .member(cart.getMember())  // Member 엔티티 직접 설정
+                .totalPrice(orderDTO.getTotalPrice())
+                .payMethod(orderDTO.getPayMethod())
+                .status("결제 완료")
+                .recName(orderDTO.getRecName())
+                .recPhone(orderDTO.getRecPhone())
+                .recZipCode(orderDTO.getRecZipCode())
+                .recAddressBasic(orderDTO.getRecAddressBasic())
+                .recAddressDetail(orderDTO.getRecAddressDetail())
+                .orderedAt(LocalDateTime.now())  // 주문 시간 설정
+                .build();
 
-        // 2. 주문 테이블 업데이트
+        // 바로 주입
+        // order.setMember(member);  // 여기 이제 완전히 정상
         Order updatedOrder = orderRepository.save(order);
 
-        // 3. 위에서 추출한 아이디를 통해 OrderItem 테이블에 데이터를 삽입
+        // 상품, 배송 처리 동일
         for (OrderItemDTO item : orderItemList.getItems()) {
-            int proId = item.getProId();
-            int quantity = item.getQuantity();
-            int price = item.getPrice();
-            int discountRate = item.getDiscountRate();
+            Product product = productRepository.findById(item.getProId())
+                    .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
 
             OrderItem orderItem = OrderItem.builder()
                     .order(updatedOrder)
-                    .product(productRepository.findById(proId).get())
-                    .quantity(quantity)
-                    .price(price)
-                    .discountRate(discountRate)
+                    .product(product)
+                    .quantity(item.getQuantity())
+                    .price(item.getPrice())
+                    .discountRate(item.getDiscountRate())
                     .build();
-
-            // (물품 주문 수 DB 추가) 주문했으니까 주문 수 상승
-            productRepository.updateViewByProductId(proId);
-
-            // 장바구니 삭제
-            cartRepository.deleteByProduct_ProId(proId);
 
             orderItemRepository.save(orderItem);
 
+            if (cart != null) cartRepository.deleteByProduct_ProId(product.getProId());
+
             Delivery delivery = Delivery.builder()
-                                .order(updatedOrder)
-                                .status("배송 대기")
-                                .createdAt(LocalDateTime.now())
-                                .build();
+                    .order(updatedOrder)
+                    .status("배송 대기")
+                    .createdAt(LocalDateTime.now())
+                    .build();
 
             deliveryRepository.save(delivery);
         }
@@ -189,7 +215,7 @@ public class OrderService {
     }
 
 
-    public Page<DeliveryDTO> findAllDeliveryBySearch(String searchType, String keyword, int page, int size){
+    public Page<DeliveryListDTO> findAllDeliveryBySearch(String searchType, String keyword, int page, int size){
         String st = (searchType == null) ? "" : searchType.trim();
         String kw = (keyword == null) ? "" : keyword.trim();
         Pageable pageable = PageRequest.of(page, size);
