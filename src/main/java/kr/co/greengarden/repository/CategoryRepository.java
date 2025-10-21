@@ -34,4 +34,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     List<CategorySlugDTO> getChilderSlug(int parentId);
 
     List<Category> findByParent_Slug(String parentSlug);  // 상위 slug로 직계 자식 찾기
+
 }

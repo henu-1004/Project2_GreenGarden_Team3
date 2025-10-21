@@ -71,14 +71,14 @@
 }
 
 .best_top_product img {
-    width: 580px;
+    width: 567px;
     height: 380px;
     object-fit: cover;
     margin-bottom: 10px;
 }
 .best_bottom_product img,
 .products_item img {
-    width: 360px;
+    width: 364px;
     height: 280px;
     object-fit: cover;
     margin-bottom: 10px;

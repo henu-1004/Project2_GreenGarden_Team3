@@ -72,6 +72,14 @@ public class ProductService {
         return null;
     };
 
+    public Category getCategoryNameBySlug(String slug) {
+        Optional<Category> optCategory = categoryRepository.findBySlug(slug);
+        if (optCategory.isPresent()) {
+            return optCategory.get();
+        }
+        return null;
+    }
+
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     };

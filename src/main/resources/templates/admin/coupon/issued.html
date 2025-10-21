@@ -21,9 +21,9 @@
             <div class="top-nav">
                 <h3>쿠폰발급현황</h3>
                 <ul class="page-nation">
-                    <li><a href="#">Home</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
                     <li><a href="#">쿠폰관리</a></li>
-                    <li><a href="#">쿠폰발급현황</a></li>
+                    <li><a th:href="@{/admin/coupon/issued}">쿠폰발급현황</a></li>
                 </ul>
             </div>
             <form th:action="@{#}" method="get" class="search-form">
