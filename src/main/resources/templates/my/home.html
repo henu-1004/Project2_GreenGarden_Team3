@@ -21,181 +21,113 @@
 
     <!-- 본문 -->
     <section class="content">
-        <div class="summary-box">
-            <div class="item"><span>주문</span><strong>2</strong></div>
-            <div class="item"><span>쿠폰</span><strong>1</strong></div>
-            <div class="item"><span>포인트</span><strong>1000</strong></div>
-            <div class="item"><span>문의</span><strong>1</strong></div>
+        <div th:if="${!loginStatus}" class="empty-box login-required">
+            <p>로그인 후 마이페이지를 이용하실 수 있습니다.</p>
+            <a th:href="@{/member/login}" class="btn-primary">로그인 하러가기</a>
         </div>
 
-        <div class="banner">810 × 86 배너 광고</div>
-
-        <div class="section-header">
-            <h2>최근주문내역</h2>
-            <a th:href="@{/my/order}" class="more">더보기 ></a>
-        </div>
-
-        <div class="order-list">
-
-            <!-- ==========================
-                 🧱 [1] 기존 하드코딩 블록
-                 ========================== -->
-            <div class="order-item">
-                <div class="thumb"><img th:src="@{/img/sample.png}" alt="상품"></div>
-                <div class="info">
-                    <p class="date">2022-12-13</p>
-                    <p class="order-num">
-                        주문번호 : <a href="javascript:void(0)" onclick="openModal('orderModal')">202212341</a>
-                    </p>
-                    <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal')">㈜그린샵</a>] 샘플 상품 (1개)</p>
-                    <p class="price">34,000원</p>
+        <div th:if="${loginStatus}">
+            <div class="summary-box">
+                <div class="item">
+                    <span>주문</span>
+                    <strong th:text="${homeSummary.orderCount}">0</strong>
                 </div>
-                <div class="status">배송완료</div>
-                <div class="actions">
-                    <button onclick="openModal('confirmModal')">구매확정</button>
-                    <button onclick="openModal('reviewModal')">상품평작성</button>
-                    <button onclick="openModal('exchangeModal')">교환신청</button>
-                    <button onclick="openModal('returnModal')">반품신청</button>
+                <div class="item">
+                    <span>쿠폰</span>
+                    <strong th:text="${homeSummary.availableCouponCount}">0</strong>
+                </div>
+                <div class="item">
+                    <span>포인트</span>
+                    <strong th:text="${#numbers.formatInteger(homeSummary.totalPoint, 3, 'COMMA')}">0</strong>
+                </div>
+                <div class="item">
+                    <span>문의</span>
+                    <strong th:text="${homeSummary.inquiryCount}">0</strong>
                 </div>
             </div>
 
-            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
-            <h4 style="margin-bottom:10px; color:#555;">🧩 아래는 실제 DB 기반 recentOrders 출력 테스트</h4>
+            <div class="banner">810 × 86 배너 광고</div>
 
-            <!-- ==========================
-     🧩 [2] 실제 데이터 바인딩 블록
-     ========================== -->
+            <div class="section-header">
+                <h2>최근주문내역</h2>
+                <a th:href="@{/my/order}" class="more">더보기 ></a>
+            </div>
+            <div class="order-list">
+                <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
+                    <p>최근 주문 내역이 없습니다.</p>
+                </div>
+                <div th:each="order : ${recentOrders}" class="order-item">
+                    <div class="thumb">
+                        <img th:if="${order.productImg != null}"
+                             th:src="@{${order.productImg}}"
+                             alt="상품 이미지">
+                        <img th:unless="${order.productImg != null}"
+                             th:src="@{/img/noimg.png}"
+                             alt="기본 이미지">
+                    </div>
+                    <div class="info">
+                        <p class="date"
+                           th:text="${order.orderedAt != null ? #temporals.format(order.orderedAt, 'yyyy-MM-dd') : '-'}">-</p>
+                        <p class="order-num">
+                            주문번호 :
+                            <a href="javascript:void(0)"
+                               th:text="${order.orderNo}"
+                               th:attr="onclick=|openModal('orderModal','${order.orderNo}','${order.proId}')|">-</a>
+                        </p>
+                        <p class="product">
+                            [
+                            <a href="javascript:void(0)"
+                               onclick="openModal('sellerModal')"
+                               th:text="${order.sellerName != null ? order.sellerName : order.sellerId}">판매자</a>
+                            ]
+                            <span th:text="${order.productName}">상품명</span>
+                            (<span th:text="${order.quantity}">0</span>개)
+                        </p>
+                        <p class="price">
+                            <span th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')}">0</span>원
+                        </p>
+                    </div>
+                    <div class="status" th:text="${order.status != null ? order.status : '-'}">-</div>
+                    <div class="actions">
+                        <button th:if="${order.canConfirm}"
+                                th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}')|"
+                                class="btn-primary">구매확정</button>
+                        <button th:unless="${order.canConfirm}"
+                                class="btn-secondary done"
+                                disabled
+                                th:text="${order.confirmYn == 'Y'} ? '구매확정 완료' : '구매확정 불가'">구매확정 완료</button>
 
-            <!-- 주문 없음 -->
-            <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
-                <p>최근 주문 내역이 없습니다.</p>
+                        <button th:if="${order.canReview}"
+                                th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}')|"
+                                class="btn-primary">상품평작성</button>
+                        <button th:unless="${order.canReview}"
+                                class="btn-secondary done"
+                                disabled
+                                th:text="${order.reviewYn == 'Y'} ? '상품평 작성완료' : '상품평 작성불가'">상품평 작성불가</button>
+
+                        <button th:if="${order.canExchange}"
+                                th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}')|"
+                                class="btn-primary">교환신청</button>
+                        <button th:unless="${order.canExchange}"
+                                class="btn-secondary done"
+                                disabled
+                                th:text="${order.exchangeYn == 'Y'} ? '교환신청 완료' : '교환신청 불가'">교환신청 불가</button>
+
+                        <button th:if="${order.canReturn}"
+                                th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}')|"
+                                class="btn-primary">반품신청</button>
+                        <button th:unless="${order.canReturn}"
+                                class="btn-secondary done"
+                                disabled
+                                th:text="${order.returnYn == 'Y'} ? '반품신청 완료' : '반품신청 불가'">반품신청 불가</button>
+                    </div>
+                </div>
             </div>
 
-            <!-- 주문 있음 -->
-            <div th:each="order : ${recentOrders}" class="order-item">
-                <!-- 썸네일 -->
-                <div class="thumb">
-                    <img th:src="@{${order.productImg}}" alt="상품 이미지" onerror="this.src='/img/sample.png'">
-                </div>
-
-                <!-- 주문 정보 -->
-                <div class="info">
-                    <p class="date" th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2025-10-14</p>
-                    <p class="order-num">
-                        주문번호 :
-                        <a href="javascript:void(0)"
-                           th:text="${order.orderNo}"
-                           onclick="openModal('orderModal')">O20251014001</a>
-                    </p>
-                    <p class="product">
-                        [<a href="javascript:void(0)"
-                            th:text="${order.sellerId}"
-                            onclick="openModal('sellerModal')">㈜그린샵</a>]
-                        <span th:text="${order.productName}">샘플 상품</span>
-                        (<span th:text="${order.quantity}">1</span>개)
-                    </p>
-                    <p class="price">
-                        <span th:text="${order.totalPrice}">34000</span>원
-                    </p>
-                </div>
-
-                <!-- 상태 -->
-                <div class="status" th:text="${order.status}">배송완료</div>
-
-                <!-- 상태 확인용 -->
-                <p class="yn-check">
-                    confirmYn: <span th:text="${order.confirmYn}"></span>,
-                    reviewYn: <span th:text="${order.reviewYn}"></span>,
-                    exchangeYn: <span th:text="${order.exchangeYn}"></span>,
-                    returnYn: <span th:text="${order.returnYn}"></span>
-                </p>
-
-                <!-- 버튼 영역 -->
-                <div class="actions">
-                    <!-- ✅ 구매확정 -->
-                    <button th:if="${order.confirmYn == 'N'}"
-                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}')|"
-                            class="btn-primary">구매확정</button>
-
-                    <button th:if="${order.confirmYn == 'Y'}"
-                            class="btn-secondary done" disabled>구매확정 완료</button>
-
-
-                    <!-- ✅ 상품평작성 -->
-                    <button th:if="${order.reviewYn == 'N'}"
-                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}')|"
-                            class="btn-primary">상품평작성</button>
-
-                    <button th:if="${order.reviewYn == 'Y'}"
-                            class="btn-secondary done" disabled>상품평 작성완료</button>
-
-
-                    <!-- ✅ 교환신청 -->
-                    <button th:if="${order.exchangeYn == 'N'}"
-                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}')|"
-                            class="btn-primary">교환신청</button>
-
-                    <button th:if="${order.exchangeYn == 'Y'}"
-                            class="btn-secondary done" disabled>교환신청 완료</button>
-
-
-                    <!-- ✅ 반품신청 -->
-                    <button th:if="${order.returnYn == 'N'}"
-                            th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}')|"
-                            class="btn-primary">반품신청</button>
-
-                    <button th:if="${order.returnYn == 'Y'}"
-                            class="btn-secondary done" disabled>반품신청 완료</button>
-                </div>
-
-
-            </div>
-
-            <!-- ✅ 포인트 적립 내역 -->
             <div class="section-header">
                 <h2>포인트 적립 내역</h2>
                 <a th:href="@{/my/point}" class="more">더보기 ></a>
             </div>
-
-            <!-- 1️⃣ 기존 하드코딩 영역 (샘플 유지) -->
-            <table class="point-table">
-                <thead>
-                <tr>
-                    <th>날짜</th>
-                    <th>적립내역</th>
-                    <th>주문번호</th>
-                    <th>포인트</th>
-                    <th>비고</th>
-                    <th>유효기간</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>2025-10-01</td>
-                    <td>구매적립</td>
-                    <td>20251001</td>
-                    <td class="plus">+500</td>
-                    <td>상품 구매적립</td>
-                    <td>2026-10-01</td>
-                </tr>
-                <tr>
-                    <td>2025-09-20</td>
-                    <td>리뷰작성</td>
-                    <td>-</td>
-                    <td class="plus">+100</td>
-                    <td>리뷰 이벤트</td>
-                    <td>2026-09-20</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
-
-            <!-- 2️⃣ 실제 DB 기반 출력 -->
-            <hr style="margin:25px 0; border:1px dashed #ddd;">
-
-            <!-- DB 기반 출력 -->
-            <h4 style="margin-bottom:10px; color:#555;">🧩 실제 DB 기반 recentPoints 출력</h4>
             <table class="point-table">
                 <thead>
                 <tr>
@@ -211,20 +143,18 @@
                 <tr th:if="${#lists.isEmpty(recentPoints)}">
                     <td colspan="6">포인트 내역이 없습니다.</td>
                 </tr>
-                <tr th:each="p : ${recentPoints}">
-                    <td th:text="${#temporals.format(p.earnedAt, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${p.note}"></td>
-                    <td th:text="${p.type}"></td>
-                    <td th:text="${p.amount > 0 ? '+' + p.amount : p.amount}"
-                        th:classappend="${p.amount > 0} ? 'plus' : 'minus'"></td>
-                    <td th:text="${p.orderNo ?: '-'}"></td>
-                    <td th:text="${#temporals.format(p.expiredAt, 'yyyy-MM-dd')}"></td>
+                <tr th:each="point : ${recentPoints}">
+                    <td th:text="${point.earnedAt != null ? #temporals.format(point.earnedAt, 'yyyy-MM-dd') : '-'}"></td>
+                    <td th:text="${!#strings.isEmpty(point.note) ? point.note : '-'}"></td>
+                    <td th:text="${point.amount > 0 ? '적립' : '사용'}"></td>
+                    <td th:text="${point.amount > 0 ? '+' + #numbers.formatInteger(point.amount, 3, 'COMMA') : #numbers.formatInteger(point.amount, 3, 'COMMA')}"
+                        th:classappend="${point.amount > 0} ? ' plus' : ' minus'"></td>
+                    <td th:text="${point.orderNo != null ? point.orderNo : '-'}"></td>
+                    <td th:text="${point.expiredAt != null ? #temporals.format(point.expiredAt, 'yyyy-MM-dd') : '-'}"></td>
                 </tr>
                 </tbody>
             </table>
 
-
-            <!-- ✅ 상품평 내역 (하드코딩 샘플) -->
             <div class="section-header">
                 <h2>상품평 내역</h2>
                 <a th:href="@{/my/review}" class="more">더보기 ></a>
@@ -240,66 +170,19 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>[㈜그린샵] 샘플 상품</td>
-                    <td class="left">배송이 빨라요</td>
-                    <td>★★★★☆</td>
-                    <td>2025-09-20</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <hr style="margin:25px 0;border:1px dashed #ccc;">
-
-            <!-- ✅ 상품평 내역 (DB 기반 출력) -->
-            <div class="section-header">
-                <h2>상품평 내역(DB)</h2>
-                <a th:href="@{/my/review}" class="more">더보기 ></a>
-            </div>
-
-            <table class="review-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>상품명</th>
-                    <th>내용</th>
-                    <th>평점</th>
-                    <th>작성일</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- 리뷰 없음 -->
                 <tr th:if="${#lists.isEmpty(myReviews)}">
                     <td colspan="5">작성한 상품평이 없습니다.</td>
                 </tr>
-
-                <!-- 리뷰 있음 -->
                 <tr th:each="review, iterStat : ${myReviews}">
                     <td th:text="${iterStat.index + 1}">1</td>
-                    <td th:text="${review.productName}">샘플 상품</td>
-                    <td class="left" th:text="${review.content}">내용 예시</td>
-                    <td>
-                        <!-- rating이 존재할 때만 별 표시 -->
-                        <div th:if="${review.rating != null and review.rating > 0}">
-                            <span th:each="i : ${#numbers.sequence(1, T(java.lang.Math).round(review.rating))}">★</span>
-                            <span th:each="i : ${#numbers.sequence(T(java.lang.Math).round(review.rating) + 1, 5)}" style="color:#ccc;">★</span>
-                        </div>
-                        <!-- rating이 없거나 0이면 표시 안 함 -->
-                        <div th:unless="${review.rating != null and review.rating > 0}">
-                            <span style="color:#ccc;">★★★★★</span>
-                        </div>
-                    </td>
-
-                    <td th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">2025-10-17</td>
+                    <td th:text="${review.productName}">상품명</td>
+                    <td class="left" th:text="${review.content}">내용</td>
+                    <td th:text="${review.ratingStars}">★★★★★</td>
+                    <td th:text="${review.createdAt != null ? #temporals.format(review.createdAt, 'yyyy-MM-dd') : '-'}">-</td>
                 </tr>
-
                 </tbody>
             </table>
 
-
-
-            <!-- ✅ 문의 내역 -->
             <div class="section-header">
                 <h2>문의 내역</h2>
                 <a th:href="@{/my/inquiry}" class="more">더보기 ></a>
@@ -315,100 +198,64 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>배송문의</td>
-                    <td class="left">배송 언제 오나요?</td>
-                    <td><span class="status done">답변완료</span></td>
-                    <td>2025-09-18</td>
+                <tr th:if="${#lists.isEmpty(recentInquiries)}">
+                    <td colspan="5">문의 내역이 없습니다.</td>
+                </tr>
+                <tr th:each="inquiry, iterStat : ${recentInquiries}">
+                    <td th:text="${iterStat.index + 1}">1</td>
+                    <td th:text="${inquiry.displayType}">문의유형</td>
+                    <td class="left">
+                        <a th:href="@{/cs/qna/view(inquiryId=${inquiry.inquiryId})}"
+                           th:text="${inquiry.title}">문의 제목</a>
+                    </td>
+                    <td class="status"
+                        th:classappend="${inquiry.statusClass}"
+                        th:text="${inquiry.displayStatus}">답변대기</td>
+                    <td th:text="${inquiry.createdAt != null ? #temporals.format(inquiry.createdAt, 'yyyy-MM-dd') : '-'}">-</td>
                 </tr>
                 </tbody>
             </table>
 
-            <!-- ✅ 나의 설정 -->
             <div class="section-header">
                 <h2>나의 설정</h2>
             </div>
-
             <div class="setting-list">
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>기본배송지설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        부산광역시 진구 서면로 123
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && myInfo.addressBasic != null ? myInfo.addressBasic + (myInfo.addressDetail != null && !#strings.isEmpty(myInfo.addressDetail) ? ' ' + myInfo.addressDetail : '') : '등록된 기본배송지가 없습니다.'}">
+                        등록된 기본배송지가 없습니다.
                     </div>
                 </div>
 
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>Email 설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        abc123@gmail.com
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && !#strings.isEmpty(myInfo.email) ? myInfo.email : '등록된 이메일이 없습니다.'}">
+                        등록된 이메일이 없습니다.
                     </div>
                 </div>
 
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>휴대폰 설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        010-1234-5678
-                    </div>
-                </div>
-            </div>
-
-            <!-- ✅ 최근 주문 내역 (MyBatis DTO 기반 출력) -->
-            <div th:each="order : ${recentOrders}" class="order-item">
-                <div class="thumb">
-                    <img th:if="${order.productImg != null}"
-                         th:src="@{${order.productImg}}"
-                         alt="상품 이미지">
-
-                    <img th:unless="${order.productImg != null}"
-                         th:src="@{/img/noimg.png}"
-                         alt="기본 이미지">
-                </div>
-
-                <div class="info">
-                    <p><strong>상품명:</strong> <span th:text="${order.productName ?: '정보없음'}"></span></p>
-                    <p><strong>주문번호:</strong> <span th:text="${order.orderNo ?: 'N/A'}"></span></p>
-                    <p><strong>주문일자:</strong>
-                        <span th:text="${order.orderedAt != null ? #temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm') : '날짜없음'}"></span>
-                    </p>
-                    <p><strong>주문상태:</strong> <span th:text="${order.status ?: '미정'}"></span></p>
-                    <p><strong>결제금액:</strong> <span th:text="${order.totalPrice}"></span>원</p>
-                </div>
-            </div>
-
-
-
-            <!-- ===========================
-                 ✅ 최근 주문 내역 확인용 테스트 블록
-                 =========================== -->
-            <div style="background:#f9f9f9; border:1px solid #ccc; padding:15px; margin-top:30px;">
-                <h3 style="margin-bottom:10px;">🧾 최근 주문 내역 (테스트 출력)</h3>
-
-                <div th:if="${#lists.isEmpty(recentOrders)}">
-                    <p>최근 주문 내역이 없습니다.</p>
-                </div>
-
-                <div th:each="order : ${recentOrders}">
-                    <div style="border-bottom:1px solid #ddd; padding:8px 0;">
-                        <p>
-                            <strong>주문번호:</strong> <span th:text="${order.orderNo}">O20251014001</span><br>
-                            <strong>상태:</strong> <span th:text="${order.status}">배송완료</span><br>
-                            <strong>주문일:</strong> <span th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}">2025-10-14 15:00</span><br>
-                            <strong>결제금액:</strong> <span th:text="${order.totalPrice}">34000</span>원
-                        </p>
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && !#strings.isEmpty(myInfo.phone) ? myInfo.phone : '등록된 휴대폰 번호가 없습니다.'}">
+                        등록된 휴대폰 번호가 없습니다.
                     </div>
                 </div>
             </div>
+        </div>
     </section>
+
 </main>
 
 <!-- 공통 푸터 -->

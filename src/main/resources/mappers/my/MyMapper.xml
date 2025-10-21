@@ -78,6 +78,12 @@
           AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
     </select>
 
+    <select id="countMyOrders" parameterType="string" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_ORDER o
+        WHERE o.MEMID = #{memId}
+    </select>
+
 
 
     <update id="updateConfirmYn">

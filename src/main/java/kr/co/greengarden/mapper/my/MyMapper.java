@@ -19,6 +19,8 @@ public interface MyMapper {
 
     long countOrderHistory(OrderHistoryCriteria criteria);
 
+    long countMyOrders(@Param("memId") String memId);
+
     // ✅ 상태 업데이트 쿼리 4종 (모두 상품단위로)
     void updateConfirmYn(@Param("orderNo") String orderNo,
                          @Param("proId") Long proId,
