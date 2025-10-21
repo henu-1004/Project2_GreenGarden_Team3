@@ -21,14 +21,15 @@
 
     <!-- 본문 -->
     <section class="content">
-        <div class="summary-box">
-            <div class="item"><span>주문</span><strong>2</strong></div>
-            <div class="item"><span>쿠폰</span><strong>1</strong></div>
-            <div class="item"><span>포인트</span><strong>1000</strong></div>
-            <div class="item"><span>문의</span><strong>1</strong></div>
+        <div th:if="${!loginStatus}" class="empty-box login-required">
+            <p>로그인 후 마이페이지를 이용하실 수 있습니다.</p>
+            <a th:href="@{/member/login}" class="btn-primary">로그인 하러가기</a>
         </div>
 
         <div class="banner">810 × 86 배너 광고</div>
+
+        <div th:if="${msg}" class="alert success" th:text="${msg}"></div>
+        <div th:if="${errorMsg}" class="alert error" th:text="${errorMsg}"></div>
 
         <div class="section-header">
             <h2>최근주문내역</h2>
@@ -45,27 +46,27 @@
                 <div class="info">
                     <p class="date">2022-12-13</p>
                     <p class="order-num">
-                        주문번호 : <a href="javascript:void(0)" onclick="openModal('orderModal')">202212341</a>
+                        주문번호 : <a href="javascript:void(0)" onclick="openModal('orderModal','202212341')">202212341</a>
                     </p>
-                    <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal')">㈜그린샵</a>] 샘플 상품 (1개)</p>
+                    <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal', null, null, 'sellerSample', null)">㈜그린샵</a>] 샘플 상품 (1개)</p>
                     <p class="price">34,000원</p>
                 </div>
-                <div class="status">배송완료</div>
-                <div class="actions">
-                    <button onclick="openModal('confirmModal')">구매확정</button>
-                    <button onclick="openModal('reviewModal')">상품평작성</button>
-                    <button onclick="openModal('exchangeModal')">교환신청</button>
-                    <button onclick="openModal('returnModal')">반품신청</button>
+                <div class="item">
+                    <span>쿠폰</span>
+                    <strong th:text="${homeSummary.availableCouponCount}">0</strong>
+                </div>
+                <div class="item">
+                    <span>포인트</span>
+                    <strong th:text="${#numbers.formatInteger(homeSummary.totalPoint, 3, 'COMMA')}">0</strong>
+                </div>
+                <div class="item">
+                    <span>문의</span>
+                    <strong th:text="${homeSummary.inquiryCount}">0</strong>
                 </div>
             </div>
-
-            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
-            <h4 style="margin-bottom:10px; color:#555;">🧩 아래는 실제 DB 기반 recentOrders 출력 테스트</h4>
-
             <!-- ==========================
      🧩 [2] 실제 데이터 바인딩 블록
      ========================== -->
-
             <!-- 주문 없음 -->
             <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
                 <p>최근 주문 내역이 없습니다.</p>
@@ -85,15 +86,16 @@
                         주문번호 :
                         <a href="javascript:void(0)"
                            th:text="${order.orderNo}"
-                           onclick="openModal('orderModal')">O20251014001</a>
+                           th:attr="onclick=|openModal('orderModal','${order.orderNo}')|">O20251014001</a>
                     </p>
                     <p class="product">
                         [<a href="javascript:void(0)"
-                            th:text="${order.sellerId}"
-                            onclick="openModal('sellerModal')">㈜그린샵</a>]
-                        <span th:text="${order.productName}">샘플 상품</span>
-                        (<span th:text="${order.quantity}">1</span>개)
+                            th:text="${order.sellerCompany}"
+                            th:attr="onclick=|openModal('sellerModal', null, null, '${order.sellerId}')|">㈜그린가든</a>]
+                        <span th:text="${order.productName}"></span>
+                        (<span th:text="${order.quantity}"></span>개)
                     </p>
+
                     <p class="price">
                         <span th:text="${order.totalPrice}">34000</span>원
                     </p>
@@ -102,19 +104,11 @@
                 <!-- 상태 -->
                 <div class="status" th:text="${order.status}">배송완료</div>
 
-                <!-- 상태 확인용 -->
-                <p class="yn-check">
-                    confirmYn: <span th:text="${order.confirmYn}"></span>,
-                    reviewYn: <span th:text="${order.reviewYn}"></span>,
-                    exchangeYn: <span th:text="${order.exchangeYn}"></span>,
-                    returnYn: <span th:text="${order.returnYn}"></span>
-                </p>
-
                 <!-- 버튼 영역 -->
                 <div class="actions">
                     <!-- ✅ 구매확정 -->
                     <button th:if="${order.confirmYn == 'N'}"
-                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">구매확정</button>
 
                     <button th:if="${order.confirmYn == 'Y'}"
@@ -123,7 +117,7 @@
 
                     <!-- ✅ 상품평작성 -->
                     <button th:if="${order.reviewYn == 'N'}"
-                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">상품평작성</button>
 
                     <button th:if="${order.reviewYn == 'Y'}"
@@ -132,7 +126,7 @@
 
                     <!-- ✅ 교환신청 -->
                     <button th:if="${order.exchangeYn == 'N'}"
-                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">교환신청</button>
 
                     <button th:if="${order.exchangeYn == 'Y'}"
@@ -141,60 +135,30 @@
 
                     <!-- ✅ 반품신청 -->
                     <button th:if="${order.returnYn == 'N'}"
-                            th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">반품신청</button>
 
                     <button th:if="${order.returnYn == 'Y'}"
                             class="btn-secondary done" disabled>반품신청 완료</button>
+
+                    <form th:if="${order.canCancel}" th:action="@{/my/order/cancel}" method="post" class="inline-form">
+                        <input type="hidden" name="orderNo" th:value="${order.orderNo}">
+                        <input type="hidden" name="proId" th:value="${order.proId}">
+                        <input type="hidden" name="redirect" value="home">
+                        <button type="submit" class="btn-secondary danger">주문취소</button>
+                    </form>
+
+                    <button th:if="${order.cancelYn == 'Y'}" class="btn-secondary done" disabled>취소완료</button>
+                    <button th:if="${!order.canCancel and order.cancelYn != 'Y'}" class="btn-secondary" disabled>취소불가</button>
                 </div>
-
-
             </div>
 
-            <!-- ✅ 포인트 적립 내역 -->
             <div class="section-header">
                 <h2>포인트 적립 내역</h2>
                 <a th:href="@{/my/point}" class="more">더보기 ></a>
             </div>
 
-            <!-- 1️⃣ 기존 하드코딩 영역 (샘플 유지) -->
-            <table class="point-table">
-                <thead>
-                <tr>
-                    <th>날짜</th>
-                    <th>적립내역</th>
-                    <th>주문번호</th>
-                    <th>포인트</th>
-                    <th>비고</th>
-                    <th>유효기간</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>2025-10-01</td>
-                    <td>구매적립</td>
-                    <td>20251001</td>
-                    <td class="plus">+500</td>
-                    <td>상품 구매적립</td>
-                    <td>2026-10-01</td>
-                </tr>
-                <tr>
-                    <td>2025-09-20</td>
-                    <td>리뷰작성</td>
-                    <td>-</td>
-                    <td class="plus">+100</td>
-                    <td>리뷰 이벤트</td>
-                    <td>2026-09-20</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
-
             <!-- 2️⃣ 실제 DB 기반 출력 -->
-            <hr style="margin:25px 0; border:1px dashed #ddd;">
-
-            <!-- DB 기반 출력 -->
             <h4 style="margin-bottom:10px; color:#555;">🧩 실제 DB 기반 recentPoints 출력</h4>
             <table class="point-table">
                 <thead>
@@ -211,20 +175,18 @@
                 <tr th:if="${#lists.isEmpty(recentPoints)}">
                     <td colspan="6">포인트 내역이 없습니다.</td>
                 </tr>
-                <tr th:each="p : ${recentPoints}">
-                    <td th:text="${#temporals.format(p.earnedAt, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${p.note}"></td>
-                    <td th:text="${p.type}"></td>
-                    <td th:text="${p.amount > 0 ? '+' + p.amount : p.amount}"
-                        th:classappend="${p.amount > 0} ? 'plus' : 'minus'"></td>
-                    <td th:text="${p.orderNo ?: '-'}"></td>
-                    <td th:text="${#temporals.format(p.expiredAt, 'yyyy-MM-dd')}"></td>
+                <tr th:each="point : ${recentPoints}">
+                    <td th:text="${point.earnedAt != null ? #temporals.format(point.earnedAt, 'yyyy-MM-dd') : '-'}"></td>
+                    <td th:text="${!#strings.isEmpty(point.note) ? point.note : '-'}"></td>
+                    <td th:text="${point.amount > 0 ? '적립' : '사용'}"></td>
+                    <td th:text="${point.amount > 0 ? '+' + #numbers.formatInteger(point.amount, 3, 'COMMA') : #numbers.formatInteger(point.amount, 3, 'COMMA')}"
+                        th:classappend="${point.amount > 0} ? ' plus' : ' minus'"></td>
+                    <td th:text="${point.orderNo != null ? point.orderNo : '-'}"></td>
+                    <td th:text="${point.expiredAt != null ? #temporals.format(point.expiredAt, 'yyyy-MM-dd') : '-'}"></td>
                 </tr>
                 </tbody>
             </table>
 
-
-            <!-- ✅ 상품평 내역 (하드코딩 샘플) -->
             <div class="section-header">
                 <h2>상품평 내역</h2>
                 <a th:href="@{/my/review}" class="more">더보기 ></a>
@@ -240,69 +202,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>[㈜그린샵] 샘플 상품</td>
-                    <td class="left">배송이 빨라요</td>
-                    <td>★★★★☆</td>
-                    <td>2025-09-20</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <hr style="margin:25px 0;border:1px dashed #ccc;">
-
-            <!-- ✅ 상품평 내역 (DB 기반 출력) -->
-            <div class="section-header">
-                <h2>상품평 내역(DB)</h2>
-                <a th:href="@{/my/review}" class="more">더보기 ></a>
-            </div>
-
-            <table class="review-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>상품명</th>
-                    <th>내용</th>
-                    <th>평점</th>
-                    <th>작성일</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- 리뷰 없음 -->
                 <tr th:if="${#lists.isEmpty(myReviews)}">
                     <td colspan="5">작성한 상품평이 없습니다.</td>
                 </tr>
-
-                <!-- 리뷰 있음 -->
                 <tr th:each="review, iterStat : ${myReviews}">
                     <td th:text="${iterStat.index + 1}">1</td>
-                    <td th:text="${review.productName}">샘플 상품</td>
-                    <td class="left" th:text="${review.content}">내용 예시</td>
-                    <td>
-                        <!-- rating이 존재할 때만 별 표시 -->
-                        <div th:if="${review.rating != null and review.rating > 0}">
-                            <span th:each="i : ${#numbers.sequence(1, T(java.lang.Math).round(review.rating))}">★</span>
-                            <span th:each="i : ${#numbers.sequence(T(java.lang.Math).round(review.rating) + 1, 5)}" style="color:#ccc;">★</span>
-                        </div>
-                        <!-- rating이 없거나 0이면 표시 안 함 -->
-                        <div th:unless="${review.rating != null and review.rating > 0}">
-                            <span style="color:#ccc;">★★★★★</span>
-                        </div>
-                    </td>
-
-                    <td th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">2025-10-17</td>
+                    <td th:text="${review.productName}">상품명</td>
+                    <td class="left" th:text="${review.content}">내용</td>
+                    <td th:text="${review.ratingStars}">★★★★★</td>
+                    <td th:text="${review.createdAt != null ? #temporals.format(review.createdAt, 'yyyy-MM-dd') : '-'}">-</td>
                 </tr>
-
                 </tbody>
             </table>
 
-
-
-            <!-- ✅ 문의 내역 -->
             <div class="section-header">
                 <h2>문의 내역</h2>
-                <a th:href="@{/my/inquiry}" class="more">더보기 ></a>
+                <a th:href="@{/my/qna}" class="more">더보기 ></a>
             </div>
             <table class="inquiry-table">
                 <thead>
@@ -315,100 +230,64 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>배송문의</td>
-                    <td class="left">배송 언제 오나요?</td>
-                    <td><span class="status done">답변완료</span></td>
-                    <td>2025-09-18</td>
+                <tr th:if="${#lists.isEmpty(recentInquiries)}">
+                    <td colspan="5">문의 내역이 없습니다.</td>
+                </tr>
+                <tr th:each="inquiry, iterStat : ${recentInquiries}">
+                    <td th:text="${iterStat.index + 1}">1</td>
+                    <td th:text="${inquiry.displayType}">문의유형</td>
+                    <td class="left">
+                        <a th:href="@{/cs/qna/view(inquiryId=${inquiry.inquiryId})}"
+                           th:text="${inquiry.title}">문의 제목</a>
+                    </td>
+                    <td class="status"
+                        th:classappend="${inquiry.statusClass}"
+                        th:text="${inquiry.displayStatus}">답변대기</td>
+                    <td th:text="${inquiry.createdAt != null ? #temporals.format(inquiry.createdAt, 'yyyy-MM-dd') : '-'}">-</td>
                 </tr>
                 </tbody>
             </table>
 
-            <!-- ✅ 나의 설정 -->
             <div class="section-header">
                 <h2>나의 설정</h2>
             </div>
-
             <div class="setting-list">
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>기본배송지설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        부산광역시 진구 서면로 123
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && myInfo.addressBasic != null ? myInfo.addressBasic + (myInfo.addressDetail != null && !#strings.isEmpty(myInfo.addressDetail) ? ' ' + myInfo.addressDetail : '') : '등록된 기본배송지가 없습니다.'}">
+                        등록된 기본배송지가 없습니다.
                     </div>
                 </div>
 
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>Email 설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        abc123@gmail.com
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && !#strings.isEmpty(myInfo.email) ? myInfo.email : '등록된 이메일이 없습니다.'}">
+                        등록된 이메일이 없습니다.
                     </div>
                 </div>
 
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>휴대폰 설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        010-1234-5678
-                    </div>
-                </div>
-            </div>
-
-            <!-- ✅ 최근 주문 내역 (MyBatis DTO 기반 출력) -->
-            <div th:each="order : ${recentOrders}" class="order-item">
-                <div class="thumb">
-                    <img th:if="${order.productImg != null}"
-                         th:src="@{${order.productImg}}"
-                         alt="상품 이미지">
-
-                    <img th:unless="${order.productImg != null}"
-                         th:src="@{/img/noimg.png}"
-                         alt="기본 이미지">
-                </div>
-
-                <div class="info">
-                    <p><strong>상품명:</strong> <span th:text="${order.productName ?: '정보없음'}"></span></p>
-                    <p><strong>주문번호:</strong> <span th:text="${order.orderNo ?: 'N/A'}"></span></p>
-                    <p><strong>주문일자:</strong>
-                        <span th:text="${order.orderedAt != null ? #temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm') : '날짜없음'}"></span>
-                    </p>
-                    <p><strong>주문상태:</strong> <span th:text="${order.status ?: '미정'}"></span></p>
-                    <p><strong>결제금액:</strong> <span th:text="${order.totalPrice}"></span>원</p>
-                </div>
-            </div>
-
-
-
-            <!-- ===========================
-                 ✅ 최근 주문 내역 확인용 테스트 블록
-                 =========================== -->
-            <div style="background:#f9f9f9; border:1px solid #ccc; padding:15px; margin-top:30px;">
-                <h3 style="margin-bottom:10px;">🧾 최근 주문 내역 (테스트 출력)</h3>
-
-                <div th:if="${#lists.isEmpty(recentOrders)}">
-                    <p>최근 주문 내역이 없습니다.</p>
-                </div>
-
-                <div th:each="order : ${recentOrders}">
-                    <div style="border-bottom:1px solid #ddd; padding:8px 0;">
-                        <p>
-                            <strong>주문번호:</strong> <span th:text="${order.orderNo}">O20251014001</span><br>
-                            <strong>상태:</strong> <span th:text="${order.status}">배송완료</span><br>
-                            <strong>주문일:</strong> <span th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}">2025-10-14 15:00</span><br>
-                            <strong>결제금액:</strong> <span th:text="${order.totalPrice}">34000</span>원
-                        </p>
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && !#strings.isEmpty(myInfo.phone) ? myInfo.phone : '등록된 휴대폰 번호가 없습니다.'}">
+                        등록된 휴대폰 번호가 없습니다.
                     </div>
                 </div>
             </div>
+        </div>
     </section>
+
 </main>
 
 <!-- 공통 푸터 -->
@@ -418,30 +297,42 @@
 <div id="orderModal" class="modal modal-order">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>주문상세</h2>
-            <span class="date">202x-12-13</span>
+            <div>
+                <h2>주문상세</h2>
+                <p class="order-meta">
+                    <span id="orderModalOrderNo">-</span>
+                    <span class="date" id="orderModalDate">-</span>
+                </p>
+            </div>
             <span class="close" onclick="closeModal('orderModal')">&times;</span>
         </div>
         <div class="modal-body">
+            <p id="orderDetailError" class="modal-error" style="display:none;"></p>
             <!-- 주문정보 -->
             <div class="section">
                 <h3>주문정보</h3>
                 <table>
-                    <tr><td>날짜</td><td>20xx-01-01</td></tr>
+                    <tbody>
+                    <tr><td>주문번호</td><td id="orderDetailOrderNo">-</td></tr>
+                    <tr><td>주문일자</td><td id="orderDetailOrderedAt">-</td></tr>
+                    <tr><td>주문상태</td><td id="orderDetailStatus">-</td></tr>
+                    <tr><td>결제수단</td><td id="orderDetailPayMethod">-</td></tr>
                     <tr>
                         <td>상품정보</td>
                         <td>
-                            <div class="product-info">
-                                <img src="/img/sample.png" alt="상품">
-                                <div>[㈜그린샵] 샘플 상품 (1개)<br>주문번호 : 202212341</div>
-                            </div>
+                            <div id="orderDetailProductList" class="product-list"></div>
                         </td>
                     </tr>
                     <tr>
                         <td>결제금액</td>
-                        <td>상품가: 34,000원<br>할인: -3,000원<br>배송비: 3,000원<br><strong>총 결제금액: 34,000원</strong></td>
+                        <td>
+                            <div>상품가: <span id="orderDetailItemsTotal">0</span>원</div>
+                            <div>할인: <span id="orderDetailDiscount">0</span>원</div>
+                            <div>배송비: <span id="orderDetailDeliveryTotal">0</span>원</div>
+                            <div><strong>총 결제금액: <span id="orderDetailPayment">0</span>원</strong></div>
+                        </td>
                     </tr>
-                    <tr><td>상태</td><td>배송완료</td></tr>
+                    </tbody>
                 </table>
             </div>
 
@@ -449,10 +340,12 @@
             <div class="section">
                 <h3>배송정보</h3>
                 <table>
-                    <tr><td>이름</td><td>홍길동</td></tr>
-                    <tr><td>연락처</td><td>010-1234-1001</td></tr>
-                    <tr><td>주소</td><td>[210**] 부산광역시 부산진구 다대동 1211동 1004호</td></tr>
-                    <tr><td>배송메시지</td><td>문앞에 두고 가주세요</td></tr>
+                    <tbody>
+                    <tr><td>이름</td><td id="orderDetailRecName">-</td></tr>
+                    <tr><td>연락처</td><td id="orderDetailRecPhone">-</td></tr>
+                    <tr><td>주소</td><td id="orderDetailRecAddress">-</td></tr>
+                    <tr><td>배송메시지</td><td id="orderDetailMessage">-</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -467,15 +360,18 @@
             <span class="close" onclick="closeModal('sellerModal')">&times;</span>
         </div>
         <div class="modal-body">
+            <p id="sellerInfoError" class="modal-error" style="display:none;"></p>
             <table>
-                <tr><td>판매자 등급</td><td>파워딜러</td></tr>
-                <tr><td>상호</td><td>(주) 그린샵</td></tr>
-                <tr><td>대표자</td><td>홍길동</td></tr>
-                <tr><td>연락처</td><td>051-123-1000</td></tr>
-                <tr><td>FAX</td><td>051-123-1001</td></tr>
-                <tr><td>Email</td><td>company@abc.com</td></tr>
-                <tr><td>사업자번호</td><td>123-12-123457</td></tr>
-                <tr><td>영업소재지</td><td>[210**] 부산광역시 부전구 대연동 1211동 1004호</td></tr>
+                <tbody>
+                <tr><td>판매자 등급</td><td id="sellerInfoGrade">-</td></tr>
+                <tr><td>상호</td><td id="sellerInfoCompany">-</td></tr>
+                <tr><td>대표자</td><td id="sellerInfoRepresentative">-</td></tr>
+                <tr><td>연락처</td><td id="sellerInfoTel">-</td></tr>
+                <tr><td>FAX</td><td id="sellerInfoFax">-</td></tr>
+                <tr><td>Email</td><td id="sellerInfoEmail">-</td></tr>
+                <tr><td>사업자번호</td><td id="sellerInfoBusinessNumber">-</td></tr>
+                <tr><td>영업소재지</td><td id="sellerInfoAddress">-</td></tr>
+                </tbody>
             </table>
             <div class="notice">
                 ※ 전자상거래법 제20조 제2항 및 동법 시행령 제25조 제2항에 의거하여<br>
@@ -494,31 +390,37 @@
             <span class="close" onclick="closeModal('inquiryModal')">&times;</span>
         </div>
         <div class="modal-body">
-            <form>
-                <div>
+            <form th:action="@{/my/inquiry}" method="post">
+                <input type="hidden" name="redirect" value="home">
+                <input type="hidden" name="category2" value="MY_PAGE">
+
+                <div class="form-group">
                     <label>문의유형</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="type"> 상품</label>
-                        <label><input type="radio" name="type"> 배송</label>
-                        <label><input type="radio" name="type"> 반품/취소</label>
-                        <label><input type="radio" name="type"> 교환</label>
-                        <label><input type="radio" name="type"> 기타</label>
+                        <label><input type="radio" name="category1" value="상품" checked> 상품</label>
+                        <label><input type="radio" name="category1" value="배송"> 배송</label>
+                        <label><input type="radio" name="category1" value="반품/취소"> 반품/취소</label>
+                        <label><input type="radio" name="category1" value="교환"> 교환</label>
+                        <label><input type="radio" name="category1" value="기타"> 기타</label>
                     </div>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Email</label>
-                    <input type="email" value="chh**@gmail.com">
+                    <input type="email" name="email"
+                           th:value="${myInfo != null && myInfo.email != null ? myInfo.email : ''}"
+                           placeholder="이메일 미등록"
+                           readonly>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>제목</label>
-                    <input type="text">
+                    <input type="text" name="title" maxlength="255" required placeholder="문의 제목을 입력해주세요.">
                 </div>
-                <div>
+                <div class="form-group">
                     <label>내용</label>
-                    <textarea></textarea>
+                    <textarea name="content" rows="5" required placeholder="문의 내용을 입력해주세요."></textarea>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-primary">등록하기</button>
+                    <button type="submit" class="btn-primary">등록하기</button>
                     <button type="button" class="btn-secondary" onclick="closeModal('inquiryModal')">취소</button>
                 </div>
             </form>
@@ -537,6 +439,7 @@
         <form th:action="@{/my/confirm}" method="post">
             <input type="hidden" name="orderNo" value="">
             <input type="hidden" name="proId" value="">
+            <input type="hidden" name="redirect" value="home">
             <div class="modal-body">
                 <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
                 <div class="actions">
@@ -609,15 +512,16 @@
         <form th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="orderNo" value="">
             <input type="hidden" name="proId" value="">
+            <input type="hidden" name="redirect" value="home">
             <div class="modal-body">
                 <h3>반품정보 입력</h3>
                 <div class="form-group">
                     <label>반품유형</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="reason" value="단순변심"> 단순변심</label>
-                        <label><input type="radio" name="reason" value="불량"> 파손 및 불량</label>
-                        <label><input type="radio" name="reason" value="주문실수"> 주문 실수</label>
-                        <label><input type="radio" name="reason" value="기타"> 기타</label>
+                        <label><input type="radio" name="type" value="단순변심" checked> 단순변심</label>
+                        <label><input type="radio" name="type" value="불량"> 파손 및 불량</label>
+                        <label><input type="radio" name="type" value="주문실수"> 주문 실수</label>
+                        <label><input type="radio" name="type" value="기타"> 기타</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -626,7 +530,7 @@
                 </div>
                 <div class="form-group">
                     <label>사진첨부</label>
-                    <input type="file" name="file" accept="image/*">
+                    <input type="file" name="proof" accept="image/*">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">반품신청</button>
@@ -649,10 +553,11 @@
         <form th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="orderNo" value="">
             <input type="hidden" name="proId" value="">
+            <input type="hidden" name="redirect" value="home">
             <div class="modal-body">
                 <div class="form-group">
                     <label>교환유형</label>
-                    <select name="reason">
+                    <select name="type">
                         <option>사이즈 문제</option>
                         <option>색상 문제</option>
                         <option>상품하자</option>
@@ -665,7 +570,7 @@
                 </div>
                 <div class="form-group">
                     <label>사진첨부</label>
-                    <input type="file" name="file" accept="image/*">
+                    <input type="file" name="proof" accept="image/*">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">교환신청</button>
@@ -679,48 +584,311 @@
 
 <!-- ===== JS ===== -->
 <script>
-    /**
-     * ✅ 공통 모달 열기
-     * @param id - 열 모달의 ID
-     * @param orderNo - 해당 주문번호 (없을 경우 null)
-     */
-    function openModal(id, orderNo, proId) {
+    const currencyFormatter = new Intl.NumberFormat('ko-KR');
+
+    function formatCurrency(value) {
+        if (value === null || value === undefined || isNaN(Number(value))) {
+            return '0';
+        }
+        return currencyFormatter.format(Number(value));
+    }
+
+    function formatDiscount(value) {
+        if (value === null || value === undefined) {
+            return '0';
+        }
+        const numeric = Number(value);
+        if (Number.isNaN(numeric) || numeric <= 0) {
+            return '0';
+        }
+        return '-' + formatCurrency(numeric);
+    }
+
+    function parseDate(value) {
+        if (!value) return null;
+        const date = new Date(value);
+        if (!Number.isNaN(date.getTime())) {
+            return date;
+        }
+        return null;
+    }
+
+    function formatDateTime(value) {
+        const date = parseDate(value);
+        if (!date) {
+            return value ? String(value).replace('T', ' ') : '-';
+        }
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
+    }
+
+    function setOrderProductListMessage(message) {
+        const list = document.getElementById('orderDetailProductList');
+        if (list) {
+            list.innerHTML = `<p class="empty">${message}</p>`;
+        }
+    }
+
+    function resetOrderModal() {
+        const defaults = {
+            orderModalOrderNo: '-',
+            orderModalDate: '-',
+            orderDetailOrderNo: '-',
+            orderDetailOrderedAt: '-',
+            orderDetailStatus: '-',
+            orderDetailPayMethod: '-',
+            orderDetailItemsTotal: '0',
+            orderDetailDiscount: '0',
+            orderDetailDeliveryTotal: '0',
+            orderDetailPayment: '0',
+            orderDetailRecName: '-',
+            orderDetailRecPhone: '-',
+            orderDetailRecAddress: '-',
+            orderDetailMessage: '-'
+        };
+        Object.entries(defaults).forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        });
+        setOrderProductListMessage('주문 상품 정보가 없습니다.');
+        const errorEl = document.getElementById('orderDetailError');
+        if (errorEl) {
+            errorEl.style.display = 'none';
+            errorEl.textContent = '';
+        }
+    }
+
+    function updateOrderModal(data) {
+        if (!data) return;
+
+        const fields = [
+            ['orderModalOrderNo', data.orderNo ?? '-'],
+            ['orderDetailOrderNo', data.orderNo ?? '-'],
+            ['orderModalDate', formatDateTime(data.orderedAt)],
+            ['orderDetailOrderedAt', formatDateTime(data.orderedAt)],
+            ['orderDetailStatus', data.status ?? '-'],
+            ['orderDetailPayMethod', data.payMethod ?? '-'],
+            ['orderDetailItemsTotal', formatCurrency(data.itemsTotal ?? data.totalPrice ?? 0)],
+            ['orderDetailDiscount', formatDiscount(data.discountTotal)],
+            ['orderDetailDeliveryTotal', formatCurrency(data.deliveryTotal ?? 0)],
+            ['orderDetailPayment', formatCurrency(data.paymentTotal ?? data.totalPrice ?? 0)],
+            ['orderDetailRecName', data.recName ?? '-'],
+            ['orderDetailRecPhone', data.recPhone ?? '-'],
+            ['orderDetailRecAddress', data.fullAddress ?? '-'],
+            ['orderDetailMessage', data.deliveryMessage ?? '-']
+        ];
+
+        fields.forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        });
+
+        const list = document.getElementById('orderDetailProductList');
+        if (!list) return;
+
+        list.innerHTML = '';
+        if (Array.isArray(data.items) && data.items.length > 0) {
+            data.items.forEach(item => {
+                const line = document.createElement('div');
+                line.className = 'product-line';
+
+                const thumb = document.createElement('div');
+                thumb.className = 'thumb';
+                const img = document.createElement('img');
+                const path = item.productImg || '';
+                if (path.startsWith('/uploads/')) {
+                    img.src = `/greengarden${path}`;
+                } else {
+                    img.src = path || '/greengarden/img/sample.png';
+                }
+
+                img.alt = '상품';
+                img.onerror = () => { img.src = '/img/sample.png'; };
+                thumb.appendChild(img);
+
+                const info = document.createElement('div');
+                info.className = 'info';
+
+                const name = document.createElement('strong');
+                name.textContent = item.productName || '-';
+                info.appendChild(name);
+
+                const quantity = item.quantity ?? 0;
+                const price = item.price ?? 0;
+
+                const option = document.createElement('span');
+                option.className = 'option';
+                option.textContent = `수량 ${quantity}개 / 단가 ${formatCurrency(price)}원`;
+                info.appendChild(option);
+
+                if (item.discountRate && item.discountRate > 0) {
+                    const discount = document.createElement('span');
+                    discount.className = 'option';
+                    const amount = item.discountAmount ?? 0;
+                    discount.textContent = `할인율 ${item.discountRate}% (할인 ${formatCurrency(amount)}원)`;
+                    info.appendChild(discount);
+                }
+
+                const lineTotal = document.createElement('div');
+                lineTotal.className = 'price';
+                lineTotal.textContent = `합계 ${formatCurrency(price * quantity)}원`;
+                info.appendChild(lineTotal);
+
+                line.appendChild(thumb);
+                line.appendChild(info);
+                list.appendChild(line);
+            });
+        } else {
+            setOrderProductListMessage('주문 상품 정보가 없습니다.');
+        }
+    }
+
+    async function loadOrderDetail(orderNo) {
+        const errorEl = document.getElementById('orderDetailError');
+        setOrderProductListMessage('주문 상품 정보를 불러오는 중입니다...');
+        try {
+            const response = await fetch(`/greengarden/my/home/order/${orderNo}`);
+            if (!response.ok) {
+                let message = '주문 정보를 불러오는 중 오류가 발생했습니다.';
+                if (response.status === 401) {
+                    message = '로그인이 필요합니다.';
+                } else if (response.status === 404) {
+                    message = '주문 정보를 찾을 수 없습니다.';
+                }
+                throw new Error(message);
+            }
+            const data = await response.json();
+            updateOrderModal(data);
+        } catch (err) {
+            resetOrderModal();
+            if (errorEl) {
+                errorEl.textContent = err.message;
+                errorEl.style.display = 'block';
+            }
+        }
+    }
+
+    function resetSellerModal() {
+        const defaults = {
+            sellerInfoGrade: '-',
+            sellerInfoCompany: '-',
+            sellerInfoRepresentative: '-',
+            sellerInfoTel: '-',
+            sellerInfoFax: '-',
+            sellerInfoEmail: '-',
+            sellerInfoBusinessNumber: '-',
+            sellerInfoAddress: '-'
+        };
+        Object.entries(defaults).forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        });
+        const errorEl = document.getElementById('sellerInfoError');
+        if (errorEl) {
+            errorEl.style.display = 'none';
+            errorEl.textContent = '';
+        }
+    }
+
+    function updateSellerModal(data) {
+        if (!data) return;
+        const mapping = {
+            sellerInfoGrade: data.gradeName ?? '-',
+            sellerInfoCompany: data.company ?? '-',
+            sellerInfoRepresentative: data.representative ?? '-',
+            sellerInfoTel: data.tel ?? '-',
+            sellerInfoFax: data.fax ?? '-',
+            sellerInfoEmail: data.email ?? '-',
+            sellerInfoBusinessNumber: data.businessNumber ?? '-',
+            sellerInfoAddress: data.fullAddress ?? '-'
+        };
+        Object.entries(mapping).forEach(([id, value]) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+        });
+    }
+
+    async function loadSellerInfo(sellerId) {
+        const errorEl = document.getElementById('sellerInfoError');
+        try {
+            const response = await fetch(`/greengarden/my/home/seller/${sellerId}`);
+            if (!response.ok) {
+                let message = '판매자 정보를 불러오는 중 오류가 발생했습니다.';
+                if (response.status === 401) {
+                    message = '로그인이 필요합니다.';
+                } else if (response.status === 404) {
+                    message = '판매자 정보를 찾을 수 없습니다.';
+                }
+                throw new Error(message);
+            }
+            const data = await response.json();
+            updateSellerModal(data);
+        } catch (err) {
+            resetSellerModal();
+            if (errorEl) {
+                errorEl.textContent = err.message;
+                errorEl.style.display = 'block';
+            }
+        }
+    }
+
+    function openModal(id, orderNo, proId, sellerId, orderItemId) {
         const modal = document.getElementById(id);
         if (!modal) return;
 
-        modal.style.display = "flex";
+        modal.style.display = 'flex';
 
-        // 주문번호 세팅
         const orderInput = modal.querySelector("input[name='orderNo']");
-        if (orderInput && orderNo) orderInput.value = orderNo;
+        if (orderInput) {
+            orderInput.value = orderNo || '';
+        }
 
-        // 상품번호 세팅
         const proInput = modal.querySelector("input[name='proId']");
-        if (proInput && proId) proInput.value = proId;
+        if (proInput) {
+            proInput.value = proId || '';
+        }
 
-        // 별점 초기화 (상품평 모달 열릴 때만)
+        const orderItemInput = modal.querySelector("input[name='orderItemId']");
+        if (orderItemInput) {
+            orderItemInput.value = orderItemId || '';
+        }
+
+        if (id === 'orderModal') {
+            resetOrderModal();
+            if (orderNo) {
+                loadOrderDetail(orderNo);
+            }
+        }
+
+        if (id === 'sellerModal') {
+            resetSellerModal();
+            if (sellerId) {
+                loadSellerInfo(sellerId);
+            }
+        }
+
         if (id === 'reviewModal') {
             resetStars();
         }
     }
 
-
-    /** ✅ 모달 닫기 */
     function closeModal(id) {
         const modal = document.getElementById(id);
-        if (modal) modal.style.display = "none";
+        if (modal) modal.style.display = 'none';
     }
 
-    /** ✅ 판매자 정보 → 문의하기 전환 */
     function openInquiry() {
         closeModal('sellerModal');
         openModal('inquiryModal');
     }
 
-    /** ✅ 별점 초기화 */
     function resetStars() {
         const stars = document.querySelectorAll('#starRating span');
-        const ratingInput = document.getElementById("ratingValue");
+        const ratingInput = document.getElementById('ratingValue');
         if (!stars.length || !ratingInput) return;
 
         ratingInput.value = 0;
@@ -729,24 +897,19 @@
         });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-        /* =========================
-           ⭐ 별점 선택 로직
-        ========================= */
+    document.addEventListener('DOMContentLoaded', () => {
         const stars = document.querySelectorAll('#starRating span');
-        const ratingInput = document.getElementById("ratingValue");
+        const ratingInput = document.getElementById('ratingValue');
         let selectedRating = 0;
 
         if (stars.length && ratingInput) {
             stars.forEach((star, index) => {
                 const value = index + 1;
 
-                // hover 시
                 star.addEventListener('mouseenter', () => {
                     stars.forEach((s, i) => s.classList.toggle('hovered', i < value));
                 });
 
-                // hover 해제 시 (선택된 별점만 유지)
                 star.addEventListener('mouseleave', () => {
                     stars.forEach((s, i) => {
                         s.classList.remove('hovered');
@@ -754,7 +917,6 @@
                     });
                 });
 
-                // 클릭 시 (별점 확정)
                 star.addEventListener('click', () => {
                     selectedRating = value;
                     ratingInput.value = selectedRating;
@@ -763,40 +925,35 @@
             });
         }
 
-        /* =========================
-           📸 리뷰 이미지 업로드 미리보기
-        ========================= */
-        const previewArea = document.getElementById("previewArea");
+        const previewArea = document.getElementById('previewArea');
         const inputs = [
-            document.getElementById("reviewFile1"),
-            document.getElementById("reviewFile2"),
-            document.getElementById("reviewFile3")
+            document.getElementById('reviewFile1'),
+            document.getElementById('reviewFile2'),
+            document.getElementById('reviewFile3')
         ];
 
         if (previewArea) {
             inputs.forEach((input, idx) => {
                 if (!input) return;
 
-                input.addEventListener("change", (e) => {
+                input.addEventListener('change', (e) => {
                     const file = e.target.files[0];
                     if (!file) return;
 
-                    // 기존 동일 슬롯 이미지 제거
                     const oldImg = previewArea.querySelector(`img[data-slot="${idx}"]`);
                     if (oldImg) oldImg.remove();
 
-                    // 새 이미지 미리보기 추가
                     const reader = new FileReader();
                     reader.onload = ev => {
-                        const img = document.createElement("img");
+                        const img = document.createElement('img');
                         img.src = ev.target.result;
                         img.dataset.slot = idx;
-                        img.style.width = "80px";
-                        img.style.height = "80px";
-                        img.style.objectFit = "cover";
-                        img.style.border = "1px solid #ccc";
-                        img.style.borderRadius = "4px";
-                        img.style.marginRight = "5px";
+                        img.style.width = '80px';
+                        img.style.height = '80px';
+                        img.style.objectFit = 'cover';
+                        img.style.border = '1px solid #ccc';
+                        img.style.borderRadius = '4px';
+                        img.style.marginRight = '5px';
                         previewArea.appendChild(img);
                     };
                     reader.readAsDataURL(file);

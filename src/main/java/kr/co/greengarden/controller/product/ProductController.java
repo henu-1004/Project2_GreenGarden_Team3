@@ -46,11 +46,14 @@ public class ProductController {
 
         Page<ProductListDTO> productList = productService.getProductCards(page, sortBy, direction, slug);
 
+        Category category = productService.getCategoryNameBySlug(slug);
+
         for (ProductListDTO p : productList) {
             int original = (int) Math.ceil(p.getPrice() * (100 - p.getDiscountRate()) / 100);
             p.setOriginalPrice(original);
         }
 
+        model.addAttribute("category", category);
         model.addAttribute("productList", productList);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("direction", direction);
@@ -178,6 +181,8 @@ public class ProductController {
         /* 2025/10/21 박효빈
          * 1. 상품 1개 상세보기 - 구매 로직 구현
          * */
+        /*
+
         // 만약 orderItemList가 null , 이거나 items가 비었을 때 ( 상품 상세에서 바로 구매한 경우 로직)
         if (orderItemList == null || orderItemList.getItems() == null || orderItemList.getItems().isEmpty()) {
             orderItemList = new OrderItemListWrapper();
@@ -198,7 +203,9 @@ public class ProductController {
 
             orderItemList.setItems(items);
         }
+        */
         orderService.orderRegister(orderDTO, orderItemList, memberDetails);
+
         return "redirect:/product/complete?orderNo=" + orderDTO.getOrderNo();
     }
 

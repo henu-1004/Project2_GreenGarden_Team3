@@ -39,6 +39,40 @@
     font-size: 14px;
 }
 
+.alert {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    border: 1px solid transparent;
+}
+
+.alert.success {
+    background: #e8f5f0;
+    border-color: #b3e0ce;
+    color: #175a48;
+}
+
+.alert.error {
+    background: #fdecea;
+    border-color: #f5c2c0;
+    color: #c0392b;
+}
+
+.empty-box {
+    border: 1px dashed #ddd;
+    background: #fafafa;
+    padding: 25px 20px;
+    text-align: center;
+    color: #666;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.login-required .btn-primary {
+    margin-top: 12px;
+}
+
 .content h2 {
     margin-bottom: 15px;
     font-size: 20px;
@@ -116,6 +150,12 @@
     flex-direction: column;
     gap: 5px;
 }
+.order-item .actions form {
+    display: flex;
+}
+.inline-form {
+    width: 100%;
+}
 .order-item .actions button {
     padding: 6px 10px;
     border: none;
@@ -125,6 +165,21 @@
     cursor: pointer;
 }
 .order-item .actions button:hover { background: #175a48; }
+.btn-secondary.done {
+    background: #e2f0ed;
+    color: #4a6c63;
+    cursor: default;
+}
+.btn-secondary.danger,
+.btn-outline.danger {
+    background: #fdecea;
+    color: #c0392b;
+}
+.btn-secondary.danger:hover,
+.btn-outline.danger:hover {
+    background: #f8d7d3;
+    color: #96281b;
+}
 
 /* ===== 포인트 리스트 ===== */
 .point-list {
@@ -217,7 +272,7 @@
 .inquiry-table td.status {
     font-weight: bold;
 }
-.inquiry-table td.status.complete { color: #175a48; }
+.inquiry-table td.status.completed { color: #175a48; }
 .inquiry-table td.status.waiting { color: #d9534f; }
 
 /* =========================
@@ -317,6 +372,16 @@
     background: #f3f7f6;
 }
 
+.modal-error {
+    color: #d9534f;
+    background: #fdecea;
+    border: 1px solid #f5c2c0;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
 /* 버튼 */
 .btn-primary {
     background: #175a48;
@@ -396,15 +461,109 @@
     margin-top: 15px;
 }
 
-/* ===== 판매자정보 ===== */
+/* ===== 주문/판매자 정보 ===== */
+.modal-order .modal-body,
 .modal-seller .modal-body {
     background: #fff;
-    padding: 0;
 }
+
+.modal-order .order-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
+}
+
+.modal-order .product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-order .product-list .empty {
+    color: #888;
+    font-size: 13px;
+}
+
+.modal-order .product-list .product-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid #e6ecea;
+    border-radius: 10px;
+    background: #f7faf9;
+}
+
+.modal-order .product-list .thumb {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.modal-order .product-list .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-order .product-list .info {
+    flex: 1;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.4;
+}
+
+.modal-order .product-list .info strong {
+    display: block;
+    font-size: 14px;
+    color: #2b6b34;
+    margin-bottom: 4px;
+}
+
+.modal-order .product-list .info .option {
+    color: #666;
+    font-size: 12px;
+}
+
+.modal-order .product-list .price {
+    font-weight: 600;
+    color: #1f3f32;
+    margin-top: 4px;
+}
+
+.modal-order table td:first-child,
+.modal-seller table td:first-child {
+    width: 120px;
+    color: #2b6b34;
+    font-weight: 600;
+}
+
+.modal-order table td,
+.modal-seller table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #e6ecea;
+    background: transparent;
+}
+
+.modal-order table tr:last-child td,
+.modal-seller table tr:last-child td {
+    border-bottom: none;
+}
+
+.modal-seller .modal-body {
+    padding: 24px 28px;
+}
+
 .modal-seller .btn-primary {
     display: block;
     margin: 15px auto;
 }
+
 .modal-seller .notice {
     font-size: 12px;
     color: #666;
@@ -419,11 +578,60 @@
     flex-direction: column;
     gap: 15px;
 }
-#inquiryModal label {
+#inquiryModal .modal-body .form-group,
+#returnModal .modal-body .form-group,
+#exchangeModal .modal-body .form-group,
+#reviewModal .modal-body .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#inquiryModal label,
+#returnModal label,
+#exchangeModal label {
     font-weight: bold;
     color: #2b6b34;
 }
-#inquiryModal .form-actions {
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 4px;
+}
+
+#inquiryModal input[type="text"],
+#inquiryModal input[type="email"],
+#inquiryModal textarea,
+#returnModal textarea,
+#exchangeModal textarea,
+#exchangeModal select {
+    border: 1px solid #d0dad6;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#inquiryModal textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+#inquiryModal input[readonly] {
+    background: #f7faf9;
+    color: #666;
+}
+
+#inquiryModal .form-actions,
+#returnModal .form-actions,
+#exchangeModal .form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -463,4 +671,55 @@
     object-fit: cover;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.pagination a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--gg-border);
+    color: var(--gg-text);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.pagination a.active,
+.pagination a:hover {
+    background: var(--gg-green-dark);
+    color: #fff;
+    border-color: var(--gg-green-dark);
+}
+
+.pagination a.disabled {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
+.filter-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0 18px;
+    color: var(--gg-muted);
+    font-size: 13px;
+}
+
+.filter-caption strong {
+    color: var(--gg-green-dark);
+}
+
+.filter-caption .limit-text {
+    color: #d07a3a;
+    font-size: 12px;
 }

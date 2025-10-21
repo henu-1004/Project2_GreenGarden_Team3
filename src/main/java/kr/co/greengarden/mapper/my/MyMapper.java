@@ -1,8 +1,16 @@
 package kr.co.greengarden.mapper.my;
 
+import kr.co.greengarden.dto.my.ExchangeRequestDTO;
+import kr.co.greengarden.dto.my.MyInfoDTO;
+import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
+import kr.co.greengarden.dto.my.MyInquiryDTO;
+import kr.co.greengarden.dto.my.OrderDetailDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
+import kr.co.greengarden.dto.my.OrderItemStatusDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
+import kr.co.greengarden.dto.my.ReturnRequestDTO;
+import kr.co.greengarden.dto.my.SellerInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -15,6 +23,12 @@ public interface MyMapper {
     List<OrderSummaryDTO> selectOrderHistory(OrderHistoryCriteria criteria);
 
     long countOrderHistory(OrderHistoryCriteria criteria);
+
+    long countMyOrders(@Param("memId") String memId);
+    OrderDetailDTO selectOrderDetail(@Param("memId") String memId,
+                                     @Param("orderNo") String orderNo);
+
+    SellerInfoDTO selectSellerInfo(@Param("sellerId") String sellerId);
 
     // ✅ 상태 업데이트 쿼리 4종 (모두 상품단위로)
     void updateConfirmYn(@Param("orderNo") String orderNo,
@@ -32,9 +46,42 @@ public interface MyMapper {
     void updateReturnYn(@Param("orderNo") String orderNo,
                         @Param("proId") Long proId,
                         @Param("yn") String yn);
+
+    void updateCancelYn(@Param("orderNo") String orderNo,
+                        @Param("proId") Long proId,
+                        @Param("yn") String yn);
+
+    OrderItemStatusDTO selectOrderItemStatus(@Param("memId") String memId,
+                                             @Param("orderNo") String orderNo,
+                                             @Param("proId") Long proId);
+
+    void insertExchangeRequest(ExchangeRequestDTO requestDTO);
+
+    void insertReturnRequest(ReturnRequestDTO requestDTO);
     // ✅ 리뷰 등록
     void insertProductReview(ProductReviewDTO reviewDTO);
 
     // ✅ 내가 작성한 리뷰 조회
     List<ProductReviewDTO> getMyReviews(@Param("memId") String memId);
+
+    long countMyReviews(@Param("memId") String memId);
+
+    List<ProductReviewDTO> getMyReviewsPage(@Param("memId") String memId,
+                                            @Param("offset") int offset,
+                                            @Param("limit") int limit);
+
+    // ✅ 내가 작성한 문의 조회
+    List<MyInquiryDTO> getMyInquiries(@Param("memId") String memId);
+
+    long countMyInquiries(@Param("memId") String memId);
+
+    List<MyInquiryDTO> getMyInquiriesPage(@Param("memId") String memId,
+                                          @Param("offset") int offset,
+                                          @Param("limit") int limit);
+
+    MyInfoDTO getMyInfo(@Param("memId") String memId);
+
+    int updateMyGeneralInfo(MyInfoUpdateDTO dto);
+
+    int updateMyMemberInfo(MyInfoUpdateDTO dto);
 }

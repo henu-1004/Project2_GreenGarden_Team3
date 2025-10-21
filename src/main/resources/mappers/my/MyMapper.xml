@@ -5,6 +5,29 @@
 
 <mapper namespace="kr.co.greengarden.mapper.my.MyMapper">
 
+    <resultMap id="OrderDetailResultMap" type="kr.co.greengarden.dto.my.OrderDetailDTO">
+        <id property="orderNo" column="orderNo" />
+        <result property="orderedAt" column="orderedAt"/>
+        <result property="status" column="status" />
+        <result property="payMethod" column="payMethod" />
+        <result property="totalPrice" column="totalPrice" />
+        <result property="recName" column="recName" />
+        <result property="recPhone" column="recPhone" />
+        <result property="recZipCode" column="recZipCode" />
+        <result property="recAddressBasic" column="recAddressBasic" />
+        <result property="recAddressDetail" column="recAddressDetail" />
+        <collection property="items" ofType="kr.co.greengarden.dto.my.OrderDetailItemDTO">
+            <id property="orderItemId" column="orderItemId" />
+            <result property="proId" column="proId" />
+            <result property="productName" column="productName" />
+            <result property="productImg" column="productImg" />
+            <result property="price" column="price" />
+            <result property="quantity" column="quantity" />
+            <result property="discountRate" column="discountRate" />
+            <result property="deliveryFee" column="deliveryFee" />
+        </collection>
+    </resultMap>
+
     <select id="selectRecentOrders" parameterType="string"
             resultType="kr.co.greengarden.dto.my.OrderSummaryDTO">
         SELECT
@@ -15,57 +38,96 @@
             oi.PRICE        AS price,
             oi.QUANTITY     AS quantity,
             (oi.PRICE * oi.QUANTITY) AS totalPrice,
-            o.STATUS        AS status,
+            COALESCE(d.STATUS, o.STATUS) AS status,
+            d.STATUS        AS deliveryStatus,
             o.ORDEREDAT     AS orderedAt,
             s.MEMID         AS sellerId,
-            ms.COMPANY      AS sellerName,
+            ms.COMPANY      AS sellerCompany,
             s.ADDRESSBASIC  AS sellerAddress,
+            oi.ORDERITEMID  AS orderItemId,
 
             -- ✅ 상품 단위 상태 관리
             oi.CONFIRM_YN   AS confirmYn,
             oi.REVIEW_YN    AS reviewYn,
             oi.EXCHANGE_YN  AS exchangeYn,
-            oi.RETURN_YN    AS returnYn
+            oi.RETURN_YN    AS returnYn,
+            oi.CANCEL_YN    AS cancelYn
 
         FROM TB_ORDER o
                  JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
                  JOIN TB_PRODUCT p ON oi.PROID = p.PROID
                  JOIN TB_MEMBER s ON p.MEMID = s.MEMID
                  JOIN TB_MEMBER_SELLER ms ON s.MEMID = ms.MEMID
+                 LEFT JOIN TB_DELIVERY d ON d.ORDERNO = o.ORDERNO
         WHERE o.MEMID = #{memId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
         ORDER BY o.ORDEREDAT DESC
             FETCH FIRST 5 ROWS ONLY
+    </select>
+
+    <select id="selectOrderDetail" parameterType="map"
+            resultMap="OrderDetailResultMap">
+        SELECT
+            o.ORDERNO         AS orderNo,
+            TO_CHAR(o.ORDEREDAT, 'YYYY-MM-DD HH24:MI:SS') AS orderedAt,
+            o.STATUS          AS status,
+            o.PAYMETHOD       AS payMethod,
+            o.TOTALPRICE      AS totalPrice,
+            o.RECNAME         AS recName,
+            o.RECPHONE        AS recPhone,
+            o.RECZIPCODE      AS recZipCode,
+            o.RECADDRESSBASIC AS recAddressBasic,
+            o.RECADDRESSDETAIL AS recAddressDetail,
+            oi.ORDERITEMID    AS orderItemId,
+            oi.PROID          AS proId,
+            p.NAME            AS productName,
+            p.IMG1            AS productImg,
+            oi.PRICE          AS price,
+            oi.QUANTITY       AS quantity,
+            oi.DISCOUNTRATE   AS discountRate,
+            oi.DELIVERYFEE    AS deliveryFee
+        FROM TB_ORDER o
+                 JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                 JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+        WHERE o.MEMID = #{memId}
+          AND o.ORDERNO = #{orderNo}
+        ORDER BY oi.ORDERITEMID
     </select>
 
     <select id="selectOrderHistory" parameterType="kr.co.greengarden.dto.my.OrderHistoryCriteria"
             resultType="kr.co.greengarden.dto.my.OrderSummaryDTO">
         SELECT *
         FROM (
-            SELECT inner_query.*, ROWNUM AS rn
-            FROM (
-                     SELECT
-                         o.ORDERNO                   AS orderNo,
-                         oi.PROID                    AS proId,
-                         p.NAME                      AS productName,
-                         p.IMG1                      AS productImg,
-                         oi.PRICE                    AS price,
-                         oi.QUANTITY                 AS quantity,
-                         (oi.PRICE * oi.QUANTITY)    AS totalPrice,
-                         o.STATUS                    AS status,
-                         o.ORDEREDAT                 AS orderedAt,
-                         oi.CONFIRM_YN               AS confirmYn,
-                         oi.REVIEW_YN                AS reviewYn,
-                         oi.EXCHANGE_YN              AS exchangeYn,
-                         oi.RETURN_YN                AS returnYn
-                     FROM TB_ORDER o
-                              JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
-                              JOIN TB_PRODUCT p ON oi.PROID = p.PROID
-                     WHERE o.MEMID = #{memId}
-                       AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
-                     ORDER BY o.ORDEREDAT DESC, oi.ORDERITEMID DESC
-                 ) inner_query
-            WHERE ROWNUM &lt;= #{endRow}
-        )
+                 SELECT inner_query.*, ROWNUM AS rn
+                 FROM (
+                          SELECT
+                              o.ORDERNO                   AS orderNo,
+                              oi.PROID                    AS proId,
+                              p.NAME                      AS productName,
+                              p.IMG1                      AS productImg,
+                              oi.PRICE                    AS price,
+                              oi.QUANTITY                 AS quantity,
+                              (oi.PRICE * oi.QUANTITY)    AS totalPrice,
+                              COALESCE(d.STATUS, o.STATUS) AS status,
+                              d.STATUS                    AS deliveryStatus,
+                              o.ORDEREDAT                 AS orderedAt,
+                              oi.CONFIRM_YN               AS confirmYn,
+                              oi.REVIEW_YN                AS reviewYn,
+                              oi.EXCHANGE_YN              AS exchangeYn,
+                              oi.RETURN_YN                AS returnYn,
+                              oi.CANCEL_YN                AS cancelYn,
+                              oi.ORDERITEMID              AS orderItemId
+                          FROM TB_ORDER o
+                                   JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                                   JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+                                   LEFT JOIN TB_DELIVERY d ON d.ORDERNO = o.ORDERNO
+                          WHERE o.MEMID = #{memId}
+                            AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
+                            AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
+                          ORDER BY o.ORDEREDAT DESC, oi.ORDERITEMID DESC
+                      ) inner_query
+                 WHERE ROWNUM &lt;= #{endRow}
+             )
         WHERE rn &gt;= #{startRow}
         ORDER BY rn
     </select>
@@ -75,8 +137,39 @@
         FROM TB_ORDER o
                  JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
         WHERE o.MEMID = #{memId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
           AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
     </select>
+
+    <select id="countMyOrders" parameterType="string" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_ORDER o
+        WHERE o.MEMID = #{memId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
+    </select>
+
+    <select id="selectSellerInfo" parameterType="string"
+            resultType="kr.co.greengarden.dto.my.SellerInfoDTO">
+        SELECT
+        m.MEMID AS sellerId,
+        m.ROLE AS gradeName,  <!-- 판매자/관리자/일반회원 구분 -->
+        s.COMPANY AS company,
+        s.REPRESENTATIVE AS representative,
+        s.TEL AS tel,
+        s.FAX AS fax,
+        s.BUSINESSNUMBER AS businessNumber,
+        s.TIN AS tin,
+        s.STATUS AS status,
+        m.ZIPCODE AS zipCode,
+        m.ADDRESSBASIC AS addressBasic,
+        m.ADDRESSDETAIL AS addressDetail
+        FROM TB_MEMBER m
+        LEFT JOIN TB_MEMBER_SELLER s ON m.MEMID = s.MEMID
+        WHERE m.MEMID = #{sellerId}
+    </select>
+
+
+
 
 
 
@@ -108,6 +201,55 @@
         WHERE ORDERNO = #{orderNo}
           AND PROID = #{proId}
     </update>
+
+    <update id="updateCancelYn">
+        UPDATE TB_ORDER_ITEM
+        SET CANCEL_YN = #{yn}
+        WHERE ORDERNO = #{orderNo}
+          AND PROID = #{proId}
+    </update>
+
+    <select id="selectOrderItemStatus" parameterType="map"
+            resultType="kr.co.greengarden.dto.my.OrderItemStatusDTO">
+        SELECT
+            oi.ORDERITEMID AS orderItemId,
+            oi.CANCEL_YN   AS cancelYn,
+            oi.EXCHANGE_YN AS exchangeYn,
+            oi.RETURN_YN   AS returnYn,
+            d.STATUS       AS deliveryStatus
+        FROM TB_ORDER_ITEM oi
+                 JOIN TB_ORDER o ON oi.ORDERNO = o.ORDERNO
+                 LEFT JOIN TB_DELIVERY d ON d.ORDERNO = o.ORDERNO
+        WHERE o.MEMID = #{memId}
+          AND oi.ORDERNO = #{orderNo}
+          AND oi.PROID = #{proId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
+    </select>
+
+    <!-- 교환 신청 -->
+    <insert id="insertExchangeRequest" parameterType="kr.co.greengarden.dto.my.ExchangeRequestDTO">
+        INSERT INTO TB_EXCHANGE (ORDERNO, TYPE, REASON, IMG_PATH, ORDERITEMID)
+        VALUES (
+                   #{orderNo, jdbcType=VARCHAR},
+                   #{type, jdbcType=VARCHAR},
+                   #{detail, jdbcType=VARCHAR},
+                   #{imgPath, jdbcType=VARCHAR},
+                   #{orderItemId, jdbcType=NUMERIC}
+               )
+    </insert>
+
+    <!-- 반품 신청 -->
+    <insert id="insertReturnRequest" parameterType="kr.co.greengarden.dto.my.ReturnRequestDTO">
+        INSERT INTO TB_RETURN (ORDERNO, TYPE, REASON, IMG_PATH, ORDERITEMID)
+        VALUES (
+                   #{orderNo, jdbcType=VARCHAR},
+                   #{type, jdbcType=VARCHAR},
+                   #{detail, jdbcType=VARCHAR},
+                   #{imgPath, jdbcType=VARCHAR},
+                   #{orderItemId, jdbcType=NUMERIC}
+               )
+    </insert>
+
 
     <!--리뷰 등록 쿼리 추가 👇-->
     <insert id="insertProductReview" parameterType="kr.co.greengarden.dto.my.ProductReviewDTO">
@@ -148,6 +290,106 @@
         WHERE r.MEMID = #{memId}
         ORDER BY r.CREATED_AT DESC
     </select>
+
+    <select id="countMyReviews" parameterType="string" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_PRODUCT_REVIEW r
+        WHERE r.MEMID = #{memId}
+    </select>
+
+    <select id="getMyReviewsPage" resultType="kr.co.greengarden.dto.my.ProductReviewDTO">
+        SELECT
+            r.REVIEW_ID AS reviewId,
+            r.PROID AS proId,
+            r.MEMID AS memId,
+            r.RATING AS rating,
+            r.CONTENT AS content,
+            r.CREATED_AT AS createdAt,
+            r.IMG1 AS img1,
+            r.IMG2 AS img2,
+            r.IMG3 AS img3,
+            r.ORDERNO AS orderNo,
+            p.NAME AS productName
+        FROM TB_PRODUCT_REVIEW r
+                 JOIN TB_PRODUCT p ON r.PROID = p.PROID
+        WHERE r.MEMID = #{memId}
+        ORDER BY r.CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+    <select id="getMyInquiries" parameterType="string" resultType="kr.co.greengarden.dto.my.MyInquiryDTO">
+        SELECT
+            i.INQUIRY_ID AS inquiryId,
+            i.CATEGORY1  AS type,
+            i.TITLE      AS title,
+            i.STATUS     AS status,
+            i.ANSWER     AS answer,
+            i.CREATED_AT AS createdAt
+        FROM TB_INQUIRY i
+        WHERE i.WRITER = #{memId}
+        ORDER BY i.CREATED_AT DESC
+    </select>
+
+    <select id="countMyInquiries" parameterType="string" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_INQUIRY i
+        WHERE i.WRITER = #{memId}
+    </select>
+
+    <select id="getMyInquiriesPage" resultType="kr.co.greengarden.dto.my.MyInquiryDTO">
+        SELECT
+            i.INQUIRY_ID AS inquiryId,
+            i.CATEGORY1  AS type,
+            i.TITLE      AS title,
+            i.STATUS     AS status,
+            i.ANSWER     AS answer,
+            i.CREATED_AT AS createdAt
+        FROM TB_INQUIRY i
+        WHERE i.WRITER = #{memId}
+        ORDER BY i.CREATED_AT DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+    <select id="getMyInfo" parameterType="string" resultType="kr.co.greengarden.dto.my.MyInfoDTO">
+        SELECT
+            m.MEMID          AS memId,
+            g.NAME           AS name,
+            g.BIRTH          AS birth,
+            g.GENDER         AS gender,
+            g.EMAIL          AS email,
+            g.PHONE          AS phone,
+            g.STATUS         AS status,
+            g.NOTE           AS note,
+            g.LASTLOGIN      AS lastLogin,
+            m.JOINDATE       AS joinDate,
+            gr.GRADE         AS grade,
+            gr.DISCOUNTRATE  AS discountRate,
+            m.ZIPCODE        AS zipCode,
+            m.ADDRESSBASIC   AS addressBasic,
+            m.ADDRESSDETAIL  AS addressDetail
+        FROM TB_MEMBER m
+                 LEFT JOIN TB_MEMBER_GENERAL g ON m.MEMID = g.MEMID
+                 LEFT JOIN TB_GRADE gr ON m.MEMID = gr.MEMID
+        WHERE m.MEMID = #{memId}
+    </select>
+
+    <update id="updateMyGeneralInfo" parameterType="kr.co.greengarden.dto.my.MyInfoUpdateDTO">
+        UPDATE TB_MEMBER_GENERAL
+        SET NAME = #{name},
+            BIRTH = #{birth, jdbcType=DATE},
+            GENDER = #{gender},
+            EMAIL = #{email},
+            PHONE = #{phone}
+        WHERE MEMID = #{memId}
+    </update>
+
+    <update id="updateMyMemberInfo" parameterType="kr.co.greengarden.dto.my.MyInfoUpdateDTO">
+        UPDATE TB_MEMBER
+        SET ZIPCODE = #{zipCode},
+            ADDRESSBASIC = #{addressBasic},
+            ADDRESSDETAIL = #{addressDetail}
+        WHERE MEMID = #{memId}
+    </update>
 
 
 </mapper>

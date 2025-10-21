@@ -36,6 +36,9 @@ public class OrderService {
 
     @Transactional
     public void orderRegister(OrderDTO orderDTO, OrderItemListWrapper orderItemList, MemberDetails memberDetails){
+        
+        System.out.println("서비스주문 : " + orderDTO.toString());
+        System.out.println("서비스주문상세 : " + orderItemList.toString());
 
         // 1. 필요한 정보 가져오기
         Cart cart = cartRepository.findAll(PageRequest.of(0, 1))
@@ -43,7 +46,7 @@ public class OrderService {
                 .stream()
                 .findFirst()
                 .orElse(null);
-        
+        /*
         //orderDTO.setOrderNo(cart.getOrderNo());
        // orderDTO.setMember(cart.getMember());
         //orderDTO.setStatus("결제 완료");
@@ -63,9 +66,23 @@ public class OrderService {
 
         // DTO -> Entity  변환
         Order order = modelMapper.map(orderDTO, Order.class);
+        */
+        Order order = Order.builder()
+                .orderNo(cart.getOrderNo())
+                .member(cart.getMember())  // Member 엔티티 직접 설정
+                .totalPrice(orderDTO.getTotalPrice())
+                .payMethod(orderDTO.getPayMethod())
+                .status("결제 완료")
+                .recName(orderDTO.getRecName())
+                .recPhone(orderDTO.getRecPhone())
+                .recZipCode(orderDTO.getRecZipCode())
+                .recAddressBasic(orderDTO.getRecAddressBasic())
+                .recAddressDetail(orderDTO.getRecAddressDetail())
+                .orderedAt(LocalDateTime.now())  // 주문 시간 설정
+                .build();
 
         // 바로 주입
-        order.setMember(member);  // 여기 이제 완전히 정상
+        // order.setMember(member);  // 여기 이제 완전히 정상
         Order updatedOrder = orderRepository.save(order);
 
         // 상품, 배송 처리 동일
@@ -198,7 +215,7 @@ public class OrderService {
     }
 
 
-    public Page<DeliveryDTO> findAllDeliveryBySearch(String searchType, String keyword, int page, int size){
+    public Page<DeliveryListDTO> findAllDeliveryBySearch(String searchType, String keyword, int page, int size){
         String st = (searchType == null) ? "" : searchType.trim();
         String kw = (keyword == null) ? "" : keyword.trim();
         Pageable pageable = PageRequest.of(page, size);

@@ -33,7 +33,7 @@ body {
     width: 930px;
     flex-shrink: 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
     border-radius: 8px;
     background: white;
     /* aside와 상단선을 맞춤 */
@@ -46,7 +46,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 3px solid #66968c;
     margin-bottom: 20px;
 }
 
@@ -81,7 +81,7 @@ body {
 
 .sort_nav li a {
     padding: 0 10px;
-    border-right: 1px solid #ccc;
+    border-right: 1px solid #66968c;
 }
 
 .sort_nav li:last-child a {
@@ -97,11 +97,11 @@ body {
 /* 검색 결과 - 2차 검색 ㅡㅡㅡㅡㅡ */
 .search-section {
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #66968c;
     margin-bottom: 20px;
 }
 
-.search-form {
+.main-search-form {
     position: relative; /* input 내부 버튼 위치를 위한 기준점 */
     display: flex;
     align-items: center;
@@ -113,20 +113,24 @@ body {
     align-items: center;
 }
 
-.search-form select,
-.search-form input {
+.main-search-form select,
+.main-search-form input {
     height: 40px;
     padding: 10px;
-    border: 1px solid #ccc;
+    margin: 10px 0;
+    border: 1px solid #66968c;
     border-radius: 8px;
     box-sizing: border-box;
 }
 
-.search-form select {
+.main-search-form select {
     margin-right: 10px;
 }
+.main-search-form input {
+    width: 100%;
+}
 
-.search-form button {
+.main-search-form button {
     position: absolute;
     top: 50%;
     right: 4px;
@@ -137,7 +141,7 @@ body {
     padding: 0;
 }
 
-.search-form button img {
+.main-search-form button img {
     width: 30px;
     height: 30px;
 }
@@ -149,7 +153,7 @@ body {
     display: flex;
     gap: 20px;
     align-items: center;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #66968c;
 }
 
 .product_image {

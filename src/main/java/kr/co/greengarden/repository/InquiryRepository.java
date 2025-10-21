@@ -5,6 +5,8 @@ import kr.co.greengarden.entity.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 이름 : 박효빈
  * 날짜 : 2025/10/14
@@ -12,5 +14,5 @@ import org.springframework.stereotype.Repository;
  * */
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Integer> {
-
+    List<Inquiry> findByWriter(String writer);  // ✅ 로그인 사용자 ID로 조회
 }

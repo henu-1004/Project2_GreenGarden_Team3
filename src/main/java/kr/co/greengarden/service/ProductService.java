@@ -40,9 +40,9 @@ public class ProductService {
                 ? Sort.by(sortBy).descending()
                 : Sort.by(sortBy).ascending();
 
-        // 8개만 가져오도록 제한
+        // 6개만 가져오도록 제한
         List<ProductListDTO> list = productRepository.findProductOrder(sort);
-        return list.size() > 8 ? list.subList(0, 8) : list;
+        return list.size() > 6 ? list.subList(0, 6) : list;
     }
 
     public void register(Product product){
@@ -71,6 +71,14 @@ public class ProductService {
         }
         return null;
     };
+
+    public Category getCategoryNameBySlug(String slug) {
+        Optional<Category> optCategory = categoryRepository.findBySlug(slug);
+        if (optCategory.isPresent()) {
+            return optCategory.get();
+        }
+        return null;
+    }
 
     public List<Product> getAllProducts() {
         return productRepository.findAll();

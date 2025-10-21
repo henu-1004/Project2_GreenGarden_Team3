@@ -40,11 +40,15 @@ public class MainController {
         List<ProductListDTO> newList = productService.getProducts("createdAt", "desc");
 
         if(authentication != null) {
+            Object p = authentication.getPrincipal();
+            //MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
+            //Member member = memberDetails.getMember();
+            if(p instanceof MemberDetails md) {
+                Member member = md.getMember();
+                model.addAttribute("member", member);
+            }
 
-            MemberDetails memberDetails = (MemberDetails) authentication.getPrincipal();
-            Member member = memberDetails.getMember();
 
-            model.addAttribute("member", member);
         }
 
         model.addAttribute("newList", newList);

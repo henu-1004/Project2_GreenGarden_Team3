@@ -1,10 +1,23 @@
 package kr.co.greengarden.service;
 
 import jakarta.transaction.Transactional;
+import kr.co.greengarden.dto.my.ExchangeRequestDTO;
+import kr.co.greengarden.dto.my.MyInfoDTO;
+import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
+import kr.co.greengarden.dto.my.MyInquiryDTO;
+import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
+import kr.co.greengarden.dto.my.OrderDetailDTO;
+import kr.co.greengarden.dto.my.OrderDetailItemDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
+import kr.co.greengarden.dto.my.OrderItemStatusDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
+import kr.co.greengarden.dto.my.PagedResult;
+import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
+import kr.co.greengarden.dto.my.ReturnRequestDTO;
+import kr.co.greengarden.dto.my.ReviewSummaryDTO;
+import kr.co.greengarden.dto.my.SellerInfoDTO;
 import kr.co.greengarden.entity.Order;
 import kr.co.greengarden.mapper.my.MyMapper;
 import kr.co.greengarden.repository.OrderRepository;
@@ -15,9 +28,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static kr.co.greengarden.util.PaginationUtils.buildPagination;
 
 @Slf4j
 @Service
@@ -26,6 +47,9 @@ public class MyService {
 
     private final OrderRepository orderRepository;
     private final MyMapper myMapper;
+
+    private static final int REVIEW_PAGE_SIZE = 5;
+    private static final int QNA_PAGE_SIZE = 10;
 
     // 🔹 [JPA] 단순 엔티티 기반 조회
     public List<Order> getRecent5Orders(String memberId) {
@@ -45,6 +69,8 @@ public class MyService {
             log.debug("→ orderNo={}, orderedAt={}, status={}",
                     o.getOrderNo(), o.getOrderedAt(), o.getStatus());
         }
+
+        orders.forEach(this::applyOrderActionFlags);
 
         return orders;
     }
@@ -113,6 +139,52 @@ public class MyService {
         return orderRepository.findAllByMember_MemId(memberId);
     }
 
+    public Optional<OrderDetailDTO> getOrderDetail(String memId, String orderNo) {
+        if (memId == null || memId.isBlank() || orderNo == null || orderNo.isBlank()) {
+            return Optional.empty();
+        }
+
+        OrderDetailDTO detail = myMapper.selectOrderDetail(memId, orderNo);
+        if (detail == null || detail.getItems() == null || detail.getItems().isEmpty()) {
+            return Optional.empty();
+        }
+
+        int itemsTotal = detail.getItems().stream()
+                .mapToInt(OrderDetailItemDTO::getLineTotal)
+                .sum();
+        int deliveryTotal = detail.getItems().stream()
+                .mapToInt(OrderDetailItemDTO::getDeliveryFee)
+                .sum();
+        int discountTotal = detail.getItems().stream()
+                .mapToInt(OrderDetailItemDTO::getDiscountAmount)
+                .sum();
+        int paymentTotal = itemsTotal + deliveryTotal - discountTotal;
+
+        detail.setItemsTotal(itemsTotal);
+        detail.setDeliveryTotal(deliveryTotal);
+        detail.setDiscountTotal(Math.max(discountTotal, 0));
+        detail.setPaymentTotal(paymentTotal);
+
+        return Optional.of(detail);
+    }
+
+    public Optional<SellerInfoDTO> getSellerInfo(String sellerId) {
+        if (sellerId == null || sellerId.isBlank()) {
+            return Optional.empty();
+        }
+
+        SellerInfoDTO info = myMapper.selectSellerInfo(sellerId);
+        if (info == null) {
+            return Optional.empty();
+        }
+
+        if (info.getGradeName() == null || info.getGradeName().isBlank()) {
+            info.setGradeName("일반판매자");
+        }
+
+        return Optional.of(info);
+    }
+
     public void updateConfirmYn(String orderNo, Long proId, String yn) {
         myMapper.updateConfirmYn(orderNo, proId, yn);
     }
@@ -129,20 +201,147 @@ public class MyService {
         myMapper.updateReturnYn(orderNo, proId, yn);
     }
 
+    @Transactional
+    public void submitExchange(String memId,
+                               String orderNo,
+                               Long proId,
+                               String type,
+                               String detail,
+                               MultipartFile proof) {
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getExchangeYn()))) {
+            throw new IllegalStateException("이미 교환을 신청한 주문입니다.");
+        }
+
+        String normalizedType = normalize(type);
+        if (normalizedType == null) {
+            normalizedType = "기타";
+        }
+        String reasonDetail = (detail == null || detail.isBlank()) ? "사유 미입력" : detail.trim();
+
+        String imgPath = null;
+        try {
+            imgPath = saveFileTo("exchange", proof);
+        } catch (IOException e) {
+            throw new IllegalStateException("교환 증빙 이미지를 저장하는 중 오류가 발생했습니다.", e);
+        }
+
+        ExchangeRequestDTO requestDTO = ExchangeRequestDTO.builder()
+                .orderNo(orderNo)
+                .orderItemId(status.getOrderItemId())
+                .type(normalizedType)
+                .detail(reasonDetail)
+                .imgPath(imgPath)
+                .build();
+
+        myMapper.insertExchangeRequest(requestDTO);
+        myMapper.updateExchangeYn(orderNo, proId, "Y");
+        log.info("✅ 교환 신청 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
+    }
+
+    @Transactional
+    public void submitReturnRequest(String memId,
+                                    String orderNo,
+                                    Long proId,
+                                    String type,
+                                    String detail,
+                                    MultipartFile proof) {
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getReturnYn()))) {
+            throw new IllegalStateException("이미 반품을 신청한 주문입니다.");
+        }
+
+        String normalizedType = normalize(type);
+        if (normalizedType == null) {
+            normalizedType = "기타";
+        }
+        String reasonDetail = (detail == null || detail.isBlank()) ? "사유 미입력" : detail.trim();
+
+        String imgPath = null;
+        try {
+            imgPath = saveFileTo("return", proof);
+        } catch (IOException e) {
+            throw new IllegalStateException("반품 증빙 이미지를 저장하는 중 오류가 발생했습니다.", e);
+        }
+
+        ReturnRequestDTO requestDTO = ReturnRequestDTO.builder()
+                .orderNo(orderNo)
+                .orderItemId(status.getOrderItemId())
+                .type(normalizedType)
+                .detail(reasonDetail)
+                .imgPath(imgPath)
+                .build();
+
+        myMapper.insertReturnRequest(requestDTO);
+        myMapper.updateReturnYn(orderNo, proId, "Y");
+        log.info("✅ 반품 신청 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
+    }
+
+    @Transactional
+    public void cancelOrderItem(String memId, String orderNo, Long proId) {
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
+
+        if (!containsStatus(status.getDeliveryStatus(), "배송준비")) {
+            throw new IllegalStateException("배송준비 상태에서만 취소할 수 있습니다.");
+        }
+
+        myMapper.updateCancelYn(orderNo, proId, "Y");
+        log.info("✅ 주문 취소 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
+    }
+
+    public MyInfoDTO getMyInfo(String memId) {
+        if (memId == null || memId.isBlank()) {
+            return null;
+        }
+        return myMapper.getMyInfo(memId);
+    }
+
+    @Transactional
+    public void updateMyInfo(MyInfoUpdateDTO dto) {
+        if (dto == null || dto.getMemId() == null || dto.getMemId().isBlank()) {
+            throw new IllegalArgumentException("회원 정보가 올바르지 않습니다.");
+        }
+
+        MyInfoUpdateDTO sanitized = MyInfoUpdateDTO.builder()
+                .memId(dto.getMemId())
+                .name(normalize(dto.getName()))
+                .birth(dto.getBirth())
+                .gender(normalize(dto.getGender()))
+                .email(normalize(dto.getEmail()))
+                .phone(normalize(dto.getPhone()))
+                .zipCode(normalize(dto.getZipCode()))
+                .addressBasic(normalize(dto.getAddressBasic()))
+                .addressDetail(normalize(dto.getAddressDetail()))
+                .build();
+
+        myMapper.updateMyGeneralInfo(sanitized);
+        myMapper.updateMyMemberInfo(sanitized);
+    }
+
     /** ✅ 리뷰 등록 로직 (파일 업로드 포함) */
     @Transactional
     public void writeProductReview(ProductReviewDTO dto) {
         try {
             // 파일 저장 처리
-            if (dto.getReviewFile1() != null && !dto.getReviewFile1().isEmpty()) {
-                dto.setImg1(saveFile(dto.getReviewFile1()));
-            }
-            if (dto.getReviewFile2() != null && !dto.getReviewFile2().isEmpty()) {
-                dto.setImg2(saveFile(dto.getReviewFile2()));
-            }
-            if (dto.getReviewFile3() != null && !dto.getReviewFile3().isEmpty()) {
-                dto.setImg3(saveFile(dto.getReviewFile3()));
-            }
+            String img1 = saveFileTo("review", dto.getReviewFile1());
+            String img2 = saveFileTo("review", dto.getReviewFile2());
+            String img3 = saveFileTo("review", dto.getReviewFile3());
+
+            if (img1 != null) dto.setImg1(img1);
+            if (img2 != null) dto.setImg2(img2);
+            if (img3 != null) dto.setImg3(img3);
 
             // DB insert
             myMapper.insertProductReview(dto);
@@ -161,37 +360,191 @@ public class MyService {
         return myMapper.getMyReviews(memId);
     }
 
-    /** ✅ 파일 저장 로직 */
-    private String saveFile(MultipartFile file) throws IOException {
-        String uploadDir = "uploads/review/"; // 프로젝트 내 상대 경로
-        File directory = new File(uploadDir);
-        if (!directory.exists()) directory.mkdirs();
+    public PagedResult<ProductReviewDTO> getMyReviewsPage(String memId, int page, int size) {
+        int pageSize = size > 0 ? size : REVIEW_PAGE_SIZE;
+        long totalCount = myMapper.countMyReviews(memId);
+        if (totalCount == 0) {
+            return PagedResult.empty(pageSize);
+        }
 
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        PaginationDTO pagination = buildPagination(page, pageSize, totalCount);
+        int offset = (pagination.getCurrentPage() - 1) * pagination.getPageSize();
+        List<ProductReviewDTO> items = myMapper.getMyReviewsPage(memId, offset, pagination.getPageSize());
+        return new PagedResult<>(items, pagination);
+    }
+
+    public ReviewSummaryDTO buildReviewSummary(List<ProductReviewDTO> reviews) {
+        List<ProductReviewDTO> safeReviews = reviews == null ? Collections.emptyList() : reviews;
+
+        double averageRating = safeReviews.stream()
+                .map(ProductReviewDTO::getRating)
+                .filter(Objects::nonNull)
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
+
+        long photoCount = safeReviews.stream()
+                .filter(ProductReviewDTO::hasPhoto)
+                .count();
+
+        long answeredCount = safeReviews.stream()
+                .filter(review -> review.getContent() != null && !review.getContent().isBlank())
+                .count();
+
+        return ReviewSummaryDTO.builder()
+                .averageRating(averageRating)
+                .totalCount(safeReviews.size())
+                .photoReviewCount(photoCount)
+                .answeredCount(answeredCount)
+                .build();
+    }
+
+    public List<MyInquiryDTO> getMyInquiries(String memId) {
+        return myMapper.getMyInquiries(memId);
+    }
+
+    public long countMyOrders(String memId) {
+        if (memId == null || memId.isBlank()) {
+            return 0;
+        }
+        return myMapper.countMyOrders(memId);
+    }
+
+    public long countMyInquiries(String memId) {
+        if (memId == null || memId.isBlank()) {
+            return 0;
+        }
+        return myMapper.countMyInquiries(memId);
+    }
+
+    public PagedResult<MyInquiryDTO> getMyInquiryPage(String memId, int page, int size) {
+        int pageSize = size > 0 ? size : QNA_PAGE_SIZE;
+        long totalCount = myMapper.countMyInquiries(memId);
+        if (totalCount == 0) {
+            return PagedResult.empty(pageSize);
+        }
+
+        PaginationDTO pagination = buildPagination(page, pageSize, totalCount);
+        int offset = (pagination.getCurrentPage() - 1) * pagination.getPageSize();
+        List<MyInquiryDTO> items = myMapper.getMyInquiriesPage(memId, offset, pagination.getPageSize());
+        return new PagedResult<>(items, pagination);
+    }
+
+    public MyInquirySummaryDTO buildInquirySummary(List<MyInquiryDTO> inquiries) {
+        List<MyInquiryDTO> safeInquiries = inquiries == null ? Collections.emptyList() : inquiries;
+
+        long completedCount = safeInquiries.stream()
+                .filter(MyInquiryDTO::isCompleted)
+                .count();
+
+        long waitingCount = safeInquiries.stream()
+                .filter(MyInquiryDTO::isWaiting)
+                .count();
+
+        Map<String, Long> typeCounts = safeInquiries.stream()
+                .collect(Collectors.groupingBy(MyInquiryDTO::getNormalizedType, Collectors.counting()));
+
+        return MyInquirySummaryDTO.builder()
+                .totalCount(safeInquiries.size())
+                .completedCount(completedCount)
+                .waitingCount(waitingCount)
+                .typeCounts(typeCounts)
+                .build();
+    }
+
+    /** ✅ 파일 저장 로직 (폴더 구분 가능) */
+    private String saveFileTo(String category, MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+
+        String safeCategory = (category == null || category.isBlank()) ? "misc" : category.trim();
+        String uploadDir = "uploads/" + safeCategory + "/";
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        String originalName = file.getOriginalFilename();
+        String safeName = (originalName == null || originalName.isBlank()) ? "file" : originalName.replaceAll("[^a-zA-Z0-9._-]", "_");
+        String fileName = UUID.randomUUID() + "_" + safeName;
         File dest = new File(directory, fileName);
         file.transferTo(dest);
 
-        // 브라우저 접근 경로로 반환
-        return "/uploads/review/" + fileName;
+        return "/uploads/" + safeCategory + "/" + fileName;
     }
 
     private void applyOrderActionFlags(OrderSummaryDTO order) {
+        String status = normalizeStatusValue(order.getStatus());
+        String deliveryStatus = normalizeStatusValue(order.getDeliveryStatus());
+
         String confirmYn = valueOrDefault(order.getConfirmYn());
         String reviewYn = valueOrDefault(order.getReviewYn());
         String exchangeYn = valueOrDefault(order.getExchangeYn());
         String returnYn = valueOrDefault(order.getReturnYn());
-        String status = order.getStatus() == null ? "" : order.getStatus();
+        String cancelYn = valueOrDefault(order.getCancelYn());
 
-        boolean isDelivered = status.contains("배송완료") || status.contains("구매확정");
+        order.setCancelYn(cancelYn);
+        order.setDeliveryStatus(deliveryStatus);
 
-        order.setCanConfirm(isDelivered && !"Y".equalsIgnoreCase(confirmYn));
-        order.setCanReview("Y".equalsIgnoreCase(confirmYn) && !"Y".equalsIgnoreCase(reviewYn));
-        order.setCanExchange(!"Y".equalsIgnoreCase(exchangeYn) && !"Y".equalsIgnoreCase(confirmYn));
-        order.setCanReturn(!"Y".equalsIgnoreCase(returnYn) && !"Y".equalsIgnoreCase(confirmYn));
+        boolean isCancelled = "Y".equalsIgnoreCase(cancelYn);
+        boolean isDelivered = containsStatus(status, "배송완료")
+                || containsStatus(status, "구매확정")
+                || containsStatus(deliveryStatus, "배송완료");
+
+        boolean readyToCancel = !isCancelled && containsStatus(deliveryStatus, "배송준비");
+
+        order.setCanConfirm(!isCancelled && isDelivered && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanReview(!isCancelled && "Y".equalsIgnoreCase(confirmYn) && !"Y".equalsIgnoreCase(reviewYn));
+        order.setCanExchange(!isCancelled && !"Y".equalsIgnoreCase(exchangeYn) && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanReturn(!isCancelled && !"Y".equalsIgnoreCase(returnYn) && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanCancel(readyToCancel);
+
+        if (isCancelled) {
+            order.setStatus("취소완료");
+            order.setCanExchange(false);
+            order.setCanReturn(false);
+            order.setCanReview(false);
+            order.setCanConfirm(false);
+            order.setCanCancel(false);
+        }
     }
 
     private String valueOrDefault(String value) {
-        return value == null ? "N" : value;
+        if (value == null) {
+            return "N";
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? "N" : trimmed;
+    }
+
+    private String normalizeStatusValue(String status) {
+        return status == null ? "" : status.trim();
+    }
+
+    private boolean containsStatus(String status, String keyword) {
+        if (status == null || keyword == null) {
+            return false;
+        }
+        String normalizedStatus = status.replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
+        String normalizedKeyword = keyword.replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
+        return normalizedStatus.contains(normalizedKeyword);
+    }
+
+    private OrderItemStatusDTO requireOrderItemStatus(String memId, String orderNo, Long proId) {
+        OrderItemStatusDTO status = myMapper.selectOrderItemStatus(memId, orderNo, proId);
+        if (status == null || status.getOrderItemId() == null) {
+            throw new IllegalArgumentException("주문 정보를 찾을 수 없습니다.");
+        }
+        return status;
+    }
+
+    private String normalize(String value) {
+        if (value == null) {
+            return null;
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 
 

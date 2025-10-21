@@ -14,7 +14,9 @@ public class DeliveryDTO {
     private int deliveryId;
     private String orderNo;
     private String invoiceNo;
+    private String company;
     private String status;
     private LocalDateTime createdAt;
     private String note;
+
 }

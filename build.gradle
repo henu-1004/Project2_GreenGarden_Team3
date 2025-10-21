@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'kr.co.greengarden'
-version = '0.0.6-SNAPSHOT'
+version = '1.0.0-RELEASE'
 description = 'GreenGarden'
 
 processResources {
@@ -56,6 +56,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.modelmapper/modelmapper
     implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.1'
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 
 }
 

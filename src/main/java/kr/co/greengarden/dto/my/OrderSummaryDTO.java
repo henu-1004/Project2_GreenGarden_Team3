@@ -21,8 +21,13 @@ public class OrderSummaryDTO {
     private String status;          // 주문 상태
     private LocalDateTime orderedAt;// 주문일자
     private String sellerId;        // 판매자 ID
+    private String sellerCompany;   // ✅ 회사명
     private String sellerAddress;   // 판매자 주소
     private String sellerName;      // 상호명
+
+    private Long orderItemId;       // 주문 상품 PK
+    private String cancelYn;        // 주문취소 여부
+    private String deliveryStatus;  // 배송 상태 (TB_DELIVERY)
 
     // ✅ 상태 관리 컬럼
     private String confirmYn;       // 구매확정 여부
@@ -35,4 +40,5 @@ public class OrderSummaryDTO {
     private boolean canReview;      // 리뷰작성 버튼 활성화 여부
     private boolean canExchange;    // 교환신청 버튼 활성화 여부
     private boolean canReturn;      // 반품신청 버튼 활성화 여부
+    private boolean canCancel;      // 주문취소 버튼 활성화 여부
 }

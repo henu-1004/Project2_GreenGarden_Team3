@@ -1,5 +1,6 @@
 package kr.co.greengarden.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,8 +9,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+
 @Configuration
 public class SecurityConfig {
+
+
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,6 +36,15 @@ public class SecurityConfig {
                 .usernameParameter("memId")
                 .passwordParameter("password")
         );
+        // 구글 소셜 로그인
+        http.oauth2Login(oauth -> oauth
+                .loginPage("/member/login") // 기존 로그인 페이지 그대로 사용
+                .failureHandler((req, res, ex) -> {
+                    ex.printStackTrace(); // 콘솔에 정확한 예외 표시
+                    res.sendRedirect(req.getContextPath() + "/member/login?error=oauth2");
+                })
+                .defaultSuccessUrl("/", true) // 로그인 성공 시 메인으로 이동
+        );
 
         // 로그아웃 설정
         http.logout(logout -> logout
@@ -51,7 +64,9 @@ public class SecurityConfig {
         // 인가 설정
         http.authorizeHttpRequests(authorize -> authorize
                 // ✅ 정적 리소스 및 공용 페이지는 모두 허용
-                .requestMatchers("/", "/member/**", "/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+                .requestMatchers("/", "/member/**", "/css/**", "/js/**", "/images/**", "/favicon.ico",
+                        "/oauth2/**", "/login/**", "/error"
+                ).permitAll()
 
                 // ✅ 마이페이지는 로그인 사용자만 접근 가능
                 .requestMatchers("/my/**").authenticated()

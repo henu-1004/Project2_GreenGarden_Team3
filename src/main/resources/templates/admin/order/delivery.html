@@ -20,9 +20,9 @@
             <div class="top-nav">
                 <h5>배송현황</h5>
                 <ul class="page-nation">
-                    <li><a href="#">Home</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
                     <li><a href="#">주문관리</a></li>
-                    <li><a href="#">배송현황</a></li>
+                    <li><a th:href="@{/admin/order/delivery}">배송현황</a></li>
                 </ul>
             </div>
             <form th:action="@{#}" method="get" class="search-form">
@@ -51,13 +51,13 @@
                 </tr>
                 <tr th:each="delivery, stat : ${deliveryList}">
                     <td><span class="delivery-number-link" onclick="openModal('modalDeliveryDetail')">[[${delivery.invoiceNo}]]</span></td>
-                    <td>-</td>
+                    <td>[[${delivery.company}]]</td>
                     <td>[[${delivery.orderNo}]]</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td>[[${delivery.recName}]]</td>
+                    <td>[[${delivery.name}]]</td>
+                    <td>[[${delivery.quantity}]]</td>
+                    <td>[[${delivery.totalPrice}]]</td>
+                    <td>[[${delivery.deliveryFee}]]</td>
                     <td style="color: dodgerblue">[[${delivery.status}]]</td>
                     <td>[[${delivery.createdAt}]]</td>
                 </tr>

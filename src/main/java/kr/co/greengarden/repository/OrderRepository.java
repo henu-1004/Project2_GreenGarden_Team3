@@ -86,27 +86,43 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             @Param("keyword") String keyword,
             Pageable pageable);
 
-    @Query(
-            value = """
-                      SELECT new kr.co.greengarden.dto.admin.DeliveryDTO(
-                        d.deliveryId, d.order.orderNo, d.invoiceNo, d.status, d.createdAt, d.note
-                      )
-                      from Delivery d
-                      where
-                        (:keyword is null or :keyword = '')
-                        or (
-                          ( :searchType is null or :searchType = '' ) and (
-                            lower(d.invoiceNo)    like lower(concat('%', :keyword, '%')) or
-                            lower(d.order.orderNo)  like lower(concat('%', :keyword, '%')) or
-                            lower(d.note) like lower(concat('%', :keyword, '%'))
-                          )
-                        )
-                        or (:searchType = 'invoiceNo'    and lower(d.invoiceNo)    like lower(concat('%', :keyword, '%')))
-                        or (:searchType = 'orderNo'  and lower(d.order.orderNo)  like lower(concat('%', :keyword, '%')))
-                        or (:searchType = 'name' and lower(d.note) like lower(concat('%', :keyword, '%')))
-                    """
-    )
-    Page<DeliveryDTO> findAllDeliveryBySearch(
+    @Query("""
+        select new kr.co.greengarden.dto.admin.DeliveryListDTO(
+          d.invoiceNo, d.company, o.orderNo, o.recName, MIN(p.name), 
+          CAST(COALESCE(SUM(oi.quantity), 0) AS long),
+          CAST(o.totalPrice AS integer),
+          CAST(MAX(oi.deliveryFee) AS long),
+          COALESCE(d2.status, ''), 
+          d.createdAt
+        )
+        from Delivery d
+        join d.order o
+        join o.orderItems oi                         
+        join oi.product p
+        left join Delivery d2
+          on d2.order = o
+         and d2.createdAt = (
+            select max(d3.createdAt) from Delivery d3 where d3.order = o
+         )
+        where
+          (
+            (:keyword is null or :keyword = '')
+            or (
+              (:searchType is null or :searchType = '') and (
+                lower(d.invoiceNo) like lower(concat('%', :keyword, '%')) or
+                lower(o.orderNo)   like lower(concat('%', :keyword, '%')) or
+                lower(d.note)      like lower(concat('%', :keyword, '%'))
+              )
+            )
+            or (:searchType = 'invoiceNo' and lower(d.invoiceNo) like lower(concat('%', :keyword, '%')))
+            or (:searchType = 'orderNo'   and lower(o.orderNo)   like lower(concat('%', :keyword, '%')))
+            or (:searchType = 'name'      and lower(o.recName)   like lower(concat('%', :keyword, '%')))
+          )
+        group by
+          d.invoiceNo, d.company, o.orderNo, o.recName, o.totalPrice, d.createdAt, d2.status
+        order by d.createdAt desc
+        """)
+    Page<DeliveryListDTO> findAllDeliveryBySearch(
             @Param("searchType") String searchType,
             @Param("keyword") String keyword,
             Pageable pageable);
@@ -138,4 +154,6 @@ public interface OrderRepository extends JpaRepository<Order, String> {
                 WHERE o.orderNo = :orderNo
             """)
     List<AdminOrderDetailListDTO> findOrderDetailList(String orderNo);
+
+
 }

@@ -44,7 +44,7 @@ body {
     flex-shrink: 0;
     /* 화면 설계서 스타일: 흰색 배경, 둥근 모서리 */
     background-color: #fff;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #C7D9D5;
     border-radius: 8px;
     padding: 0;
 }
@@ -156,7 +156,7 @@ body {
     flex-grow: 1;
     /* 화면 설계서 스타일: 흰색 배경, 둥근 모서리 */
     background-color: #fff;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #C7D9D5;
     border-radius: 8px;
     padding: 25px 30px;
 }
