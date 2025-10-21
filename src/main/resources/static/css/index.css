@@ -28,6 +28,19 @@
     font-size : 26px;
 }
 
+/* ㅡㅡ 상품영역 클릭시, 해당 제품페이지로 넘어가도록 하기 위해 추가한 요소에 대한 부분 */
+/* 새로 추가된 a 태그가 블록 요소로 작동하게 함 */
+#best_top > a,
+#best_bottom > a,
+.products > a {
+    /* 1. 블록 요소로 변경 */
+    display: block;
+
+    /* 2. 부모 <div> 영역을 너비/높이 모두 꽉 채움 */
+    width: 100%;
+    height: 100%;
+}
+
 /* ㅡㅡ 상품영역 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
 .best_top_product,
 .best_bottom_product,
