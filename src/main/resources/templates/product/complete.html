@@ -60,13 +60,9 @@
                     <tr>
                         <th>총 결제 금액</th>
                         <td>
-                            <span th:text="${#numbers.formatInteger(
-                                order != null ?
-                                    order.totalPrice
-                                    :
-                                    ((product.price * (1 - (product.discountRate / 100.0))) * quantity)
-                                    + (product.deliveryFee != null ? product.deliveryFee : 0),
-                            0)}">0</span>원
+<span th:with="totalPrice=(${product.price * quantity - ((product.price * (product.discountRate / 100.0)) * quantity) + (product.deliveryFee != null ? product.deliveryFee : 0)})"
+      th:text="${#numbers.formatInteger(totalPrice, 0)}">0</span>원
+
                         </td>
                     </tr>
                 </table>
