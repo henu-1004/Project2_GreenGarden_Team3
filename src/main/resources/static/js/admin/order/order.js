@@ -13,6 +13,9 @@ async function openModal(modalId, orderNo) {
     const modal = document.getElementById(modalId);
     if (!modal) return;
 
+    console.log('Modal ID:', modalId);  // 모달 ID 확인
+    console.log('Order No:', orderNo);  // 전달된 orderNo 확인
+
     // 모달 표시
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -22,7 +25,7 @@ async function openModal(modalId, orderNo) {
     } else if (modalId === 'modalOrderDetail') {
         await fillOrderDetailModal(modal, orderNo);
     } else if (modalId === 'modalDeliveryDetail') {
-
+        await fillDeliveryDetailModal(modal, orderNo)
     }
 }
 
@@ -216,6 +219,59 @@ async function fillOrderDetailModal(modal, orderNo) {
     setText('#ship-recName', first.recName ?? '');
     setText('#ship-recPhone', first.recPhone ?? '');
     setText('#ship-recAddress', `${safe(first.recAddressBasic)} ${safe(first.recAddressDetail)}`.trim());
+}
+
+async function fillDeliveryDetailModal(modal, orderNo) {
+    try {
+        const url = `${window.BASE_URL}admin/order/deliveryDetail/${encodeURIComponent(orderNo)}`;
+        const res = await fetch(url, {headers: {'Accept': 'application/json'}});
+
+        if (!res.ok) {
+            throw new Error('배송 정보 불러오기 실패');
+        }
+        const deliveryDetails = await res.json();
+        console.log('배송 상세 정보:', deliveryDetails);  // 응답 데이터를 확인
+        if (!deliveryDetails || !deliveryDetails.items) {
+            console.error('배송 상세 데이터가 없거나 잘못되었습니다.');
+            return;
+        }
+
+        // 배송 정보 채우기
+        modal.querySelector("#order-no").textContent = deliveryDetails.orderNo || '';
+        modal.querySelector("#recipient").textContent = deliveryDetails.recName || '';
+        modal.querySelector("#contact").textContent = deliveryDetails.contact || '';
+        modal.querySelector("#address").textContent = deliveryDetails.address || '';
+        modal.querySelector("#delivery-company").textContent = deliveryDetails.company || '';
+        modal.querySelector("#invoice-no").textContent = deliveryDetails.invoiceNo || '';
+        modal.querySelector("#note").textContent = deliveryDetails.note || '';
+
+        // 상품 테이블 채우기
+        const cartItemsContainer = modal.querySelector("#cart-items");
+        cartItemsContainer.innerHTML = '';  // 기존 내용 초기화
+
+        deliveryDetails.items.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="col-item-info">
+                    <div class="product-image">
+                        <img src="${item.imageUrl || 'https://placehold.co/150x150/e0e0e0/000000?text=Product+Image'}" alt="${item.productName}" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+                    </div>
+                </td>
+                <td><a href="#">${item.productId}</a></td>
+                <td>${item.productName}</td>
+                <td>${item.seller}</td>
+                <td>${item.price.toLocaleString()}원</td>
+                <td>${item.discount.toLocaleString()}원</td>
+                <td>${item.quantity}</td>
+                <td>${item.deliveryFee.toLocaleString()}원</td>
+                <td>${item.totalPrice.toLocaleString()}원</td>
+            `;
+            cartItemsContainer.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error("배송 상세 정보 불러오기 실패", error);
+    }
 }
 
 // 기존 openModal에 연결

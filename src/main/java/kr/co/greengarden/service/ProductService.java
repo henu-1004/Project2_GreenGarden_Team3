@@ -32,6 +32,10 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+    public ProductListDTO getProductByProNO(String proNo){
+        return productRepository.findProductByProNo(proNo);
+    }
+
     public List<ProductListDTO> getProducts(String sortBy, String direction) {
         Set<String> allowed = Set.of("price", "discountRate", "views", "stock", "proNo", "createdAt");
         if (!allowed.contains(sortBy)) sortBy = "proNo"; // 기본 정렬 키
@@ -43,6 +47,11 @@ public class ProductService {
         // 6개만 가져오도록 제한
         List<ProductListDTO> list = productRepository.findProductOrder(sort);
         return list.size() > 6 ? list.subList(0, 6) : list;
+    }
+
+    public List<ProductListDTO> getProductsOrderByRating() {
+        List<ProductListDTO> list = productRepository.findProductOrderByRating();
+        return list.size() > 6 ? list.subList(0, 5) : list;
     }
 
     public void register(Product product){

@@ -7,6 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 /*
  * 날짜 : 2025/09/23
  * 이름 : 한탁원
@@ -22,5 +25,9 @@ public interface MemberRepository extends JpaRepository<Member, String> {
     @Query("update Member m set m.password = :pw where m.memId = :id")
     int updatePassword(@Param("id") String memId,
                        @Param("pw") String encodedPassword);
+
+    @Query("SELECT m FROM Member m WHERE m.joinDate >= :startOfDay AND m.joinDate < :endOfDay")
+    List<Member> findMembersJoinedDate(@Param("startOfDay") LocalDateTime startOfDay,
+                                        @Param("endOfDay") LocalDateTime endOfDay);
 
 }

@@ -51,6 +51,13 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             "FROM Order o")
     List<AdminIndexOrderInfoDTO> findAdminIndexOrderInfo();
 
+    @Query("SELECT new kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO(" +
+            "COALESCE(o.status, '미지정'), o.totalPrice) " +
+            "FROM Order o " +
+            "WHERE o.orderedAt >= :startOfDay AND o.orderedAt < :endOfDay")
+    List<AdminIndexOrderInfoDTO> findAdminIndexOrderInfo(@Param("startOfDay") LocalDateTime startOfDay,
+                                                         @Param("endOfDay") LocalDateTime endOfDay);
+
     @Query(
             value = """
                       SELECT new kr.co.greengarden.dto.admin.AdminOrderListDTO(
@@ -155,5 +162,20 @@ public interface OrderRepository extends JpaRepository<Order, String> {
             """)
     List<AdminOrderDetailListDTO> findOrderDetailList(String orderNo);
 
+    @Query("""
+        SELECT new kr.co.greengarden.dto.admin.AdminDeliveryDetailListDTO(
+            p.img1, p.proNo, p.name, s.company, oi.price, oi.discountRate, oi.quantity, oi.deliveryFee, 
+            o.orderNo, o.recName, o.recPhone, o.recZipCode, o.recAddressBasic, o.recAddressDetail,
+            d.company, d.invoiceNo, d.note
+        )
+        FROM OrderItem oi
+        JOIN oi.order o
+        JOIN oi.product p
+        JOIN p.seller s
+        JOIN o.member m
+        JOIN Delivery d ON d.order.orderNo = o.orderNo
+        WHERE d.deliveryId = :deliveryId
+        """)
+    List<AdminDeliveryDetailListDTO> findDeliveryDetailList(String invoiceNo);
 
 }

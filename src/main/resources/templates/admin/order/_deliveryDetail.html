@@ -31,21 +31,7 @@
                     </tr>
                     </thead>
                     <tbody id="cart-items">
-                    <tr>
-                        <td class="col-item-info">
-                            <div class="product-image">
-                                <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image" alt="상품명" onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';" >
-                            </div>
-                        </td>
-                        <td><a href="#">120120021</a></td>
-                        <td>OOO</td>
-                        <td>(주)상호명</td>
-                        <td>29,500원</td>
-                        <td>-1,200원</td>
-                        <td>3</td>
-                        <td>0</td>
-                        <td>68,400원</td>
-                    </tr>
+                    <!-- 상품 정보가 여기에 동적으로 채워짐 -->
                     </tbody>
                 </table>
             </section>
@@ -54,32 +40,32 @@
                 <table class="order-info-table">
                     <tr>
                         <th>주문번호</th>
-                        <td>2025092116848666</td>
+                        <td id="order-no"></td>
                     </tr>
                     <tr>
                         <th>수령인</th>
-                        <td>김철수</td>
+                        <td id="recipient"></td>
                     </tr>
                     <tr>
                         <th>연락처</th>
-                        <td>010-1234-5678</td>
+                        <td id="contact"></td>
                     </tr>
                     <tr>
                         <th>배송지 주소</th>
-                        <td>서울특별시 강남구 ...</td>
+                        <td id="address"></td>
                     </tr>
                     <tr></tr>
                     <tr>
                         <th>택배사</th>
-                        <td>로젠택배</td>
+                        <td id="delivery-company"></td>
                     </tr>
                     <tr>
                         <th>송장번호</th>
-                        <td>10122102315</td>
+                        <td id="invoice-no"></td>
                     </tr>
                     <tr>
                         <th>기타</th>
-                        <td>감사합니다. 수고하세요.</td>
+                        <td id="note"></td>
                     </tr>
                 </table>
             </section>

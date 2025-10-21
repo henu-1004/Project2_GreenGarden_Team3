@@ -40,6 +40,13 @@ public class AdminOrderController {
         return orderService.findOrderDetailList(orderNo);
     }
 
+    @GetMapping("/admin/order/deliveryDetail/{orderNo}")
+    @ResponseBody
+    public List<AdminDeliveryDetailListDTO> getDeliveryDetail(@PathVariable String orderNo) {
+        System.out.println("상세 요청 invoiceNo: " + orderNo);
+        return orderService.findDeliveryDetailList(orderNo);
+    }
+
     @GetMapping("/admin/order/deliveryInput/{orderNo}")
     @ResponseBody
     public DeliveryInputDTO deliveryInput(@PathVariable String orderNo) {

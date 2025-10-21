@@ -47,4 +47,10 @@ public class OrderItem {
     /* admin chart에 필요해서 추가 */
     @Column(name = "CANCEL_YN")
     private String cancelYN;
+
+    @Column(name = "EXCHNAGE_YN")
+    private String exchangeYN;
+
+    @Column(name = "RETURN_YN")
+    private String returnYN;
 }

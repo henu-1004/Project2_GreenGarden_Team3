@@ -106,4 +106,27 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("update Product p set p.orderCount = p.orderCount + 1 where p.proId = :proId")
     void updateOrderCountByProductId(@Param("proId") int proId);
 
+    @Query("""
+        SELECT new kr.co.greengarden.dto.ProductListDTO(
+           p.proId, p.img1, p.name, p.description,
+           p.price, p.deliveryFee, p.discountRate, s.company, p.createdAt, COALESCE(r.rating, 0)
+        )
+         FROM Product p
+         JOIN p.seller s
+         LEFT JOIN ProductReview r ON r.product = p
+         ORDER BY r.rating DESC
+    """)
+    List<ProductListDTO> findProductOrderByRating();
+
+    @Query("""
+        SELECT new kr.co.greengarden.dto.ProductListDTO(
+           p.proId, p.img1, p.name, p.description,
+                  p.price, p.deliveryFee, p.discountRate, s.company, p.createdAt
+        )
+        FROM Product p
+        JOIN p.seller s
+        WHERE p.proNo = :proNo
+    """)
+    ProductListDTO findProductByProNo(String proNo);
+
 }

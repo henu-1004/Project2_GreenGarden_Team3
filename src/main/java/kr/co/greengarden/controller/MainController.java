@@ -6,6 +6,7 @@ import kr.co.greengarden.dto.NoticeDTO;
 import kr.co.greengarden.dto.ProductListDTO;
 import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.Member;
+import kr.co.greengarden.entity.Product;
 import kr.co.greengarden.security.MemberDetails;
 import kr.co.greengarden.service.FaqService;
 import kr.co.greengarden.service.InquiryService;
@@ -14,10 +15,12 @@ import kr.co.greengarden.service.ProductService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -38,6 +41,21 @@ public class MainController {
 
         List<ProductListDTO> hitList = productService.getProducts("views", "desc");
         List<ProductListDTO> newList = productService.getProducts("createdAt", "desc");
+        List<ProductListDTO> saleList = productService.getProducts("discountRate", "desc");
+
+        List<ProductListDTO> brandLeaderList = new ArrayList<>();
+
+        brandLeaderList.add(productService.getProductByProNO("P202510210024"));
+        brandLeaderList.add(productService.getProductByProNO("P202510210023"));
+        brandLeaderList.add(productService.getProductByProNO("P202510210022"));
+        brandLeaderList.add(productService.getProductByProNO("P202510210021"));
+        brandLeaderList.add(productService.getProductByProNO("P202510210020"));
+        brandLeaderList.add(productService.getProductByProNO("P202510210019"));
+
+        List<ProductListDTO> ratingList = productService.getProductsOrderByRating();
+        List<ProductListDTO> topProducts = ratingList.subList(0, 2);
+        List<ProductListDTO> bottomProducts = ratingList.subList(2, 5);
+
 
         if(authentication != null) {
 
@@ -49,7 +67,10 @@ public class MainController {
 
         model.addAttribute("newList", newList);
         model.addAttribute("hitList", hitList);
-
+        model.addAttribute("saleList", saleList);
+        model.addAttribute("brandLeaderList", brandLeaderList);
+        model.addAttribute("topProducts", topProducts);
+        model.addAttribute("bottomProducts", bottomProducts);
         return "index";
     }
 

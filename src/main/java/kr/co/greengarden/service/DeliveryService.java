@@ -3,6 +3,7 @@ package kr.co.greengarden.service;
 import jakarta.persistence.Column;
 import kr.co.greengarden.dto.CartDTO;
 import kr.co.greengarden.dto.CartListDTO;
+import kr.co.greengarden.dto.admin.AdminIndexOrderInfoDTO;
 import kr.co.greengarden.dto.admin.DeliveryDTO;
 import kr.co.greengarden.entity.*;
 import kr.co.greengarden.repository.*;
@@ -48,6 +49,20 @@ public class DeliveryService {
                 .build();
 
         deliveryRepository.save(newDelivery);
+    }
+
+    public int getStatusCount(){
+        List<Delivery> delivery = deliveryRepository.findAll();
+
+        int statusCount = 0;
+
+        for (Delivery del : delivery) {
+            if(del.getStatus().equals("배송 대기")) {
+                statusCount++;
+            }
+        }
+
+        return statusCount;
     }
 
 }
