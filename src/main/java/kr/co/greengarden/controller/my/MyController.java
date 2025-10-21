@@ -450,7 +450,17 @@ public class MyController {
             return "redirect:/my/info";
         }
 
+        if (form.getCurrentPassword() == null || form.getCurrentPassword().isBlank()) {
+            redirect.addFlashAttribute("infoErrorMessage", "현재 비밀번호를 입력해주세요.");
+            return "redirect:/my/info";
+        }
+
         String memId = userDetails.getUsername();
+        if (!myService.verifyPassword(memId, form.getCurrentPassword())) {
+            redirect.addFlashAttribute("infoErrorMessage", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/my/info";
+        }
+
         MyInfoUpdateDTO updateDTO = MyInfoUpdateDTO.builder()
                 .memId(memId)
                 .name(form.getName())
@@ -468,6 +478,39 @@ public class MyController {
             redirect.addFlashAttribute("infoSuccessMessage", "회원 정보가 업데이트되었습니다.");
         } catch (IllegalArgumentException ex) {
             redirect.addFlashAttribute("infoErrorMessage", ex.getMessage());
+        }
+
+        return "redirect:/my/info";
+    }
+
+    @PostMapping("/info/withdraw")
+    public String withdraw(@AuthenticationPrincipal UserDetails userDetails,
+                           @RequestParam("password") String password,
+                           RedirectAttributes redirect) {
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        if (password == null || password.isBlank()) {
+            redirect.addFlashAttribute("withdrawErrorMessage", "비밀번호를 입력해주세요.");
+            return "redirect:/my/info";
+        }
+
+        String memId = userDetails.getUsername();
+        if (!myService.verifyPassword(memId, password)) {
+            redirect.addFlashAttribute("withdrawErrorMessage", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/my/info";
+        }
+
+        try {
+            myService.withdrawMember(memId);
+            redirect.addFlashAttribute("withdrawSuccessMessage", "회원 탈퇴 처리가 완료되었습니다. 고객센터를 통해 재가입을 도와드릴 수 있습니다.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            log.error("❌ 회원 탈퇴 처리 실패", ex);
+            redirect.addFlashAttribute("withdrawErrorMessage", ex.getMessage());
+        } catch (Exception ex) {
+            log.error("❌ 회원 탈퇴 처리 중 알 수 없는 오류", ex);
+            redirect.addFlashAttribute("withdrawErrorMessage", "회원 탈퇴 처리 중 오류가 발생했습니다.");
         }
 
         return "redirect:/my/info";

@@ -61,11 +61,66 @@
         });
     };
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const trigger = document.querySelector(BUTTON_SELECTOR);
-        if (!trigger) {
+    const toggleModalVisibility = (modal, visible) => {
+        if (!modal) {
             return;
         }
-        trigger.addEventListener('click', openPostcode);
+        modal.style.display = visible ? 'flex' : 'none';
+        modal.setAttribute('aria-hidden', visible ? 'false' : 'true');
+        if (!visible) {
+            const password = modal.querySelector('input[type="password"]');
+            if (password) {
+                password.value = '';
+            }
+        }
+    };
+
+    const bindWithdrawModal = () => {
+        const trigger = document.getElementById('withdrawBtn');
+        const modal = document.getElementById('withdrawModal');
+        if (!trigger || !modal) {
+            return;
+        }
+
+        const closeButtons = modal.querySelectorAll('[data-close="withdrawModal"]');
+        const closeModal = () => toggleModalVisibility(modal, false);
+        const openModal = () => {
+            toggleModalVisibility(modal, true);
+            const field = modal.querySelector('#withdrawPassword');
+            if (field) {
+                field.focus();
+            }
+        };
+
+        trigger.addEventListener('click', openModal);
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', closeModal);
+            btn.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    closeModal();
+                }
+            });
+        });
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        modal.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const trigger = document.querySelector(BUTTON_SELECTOR);
+        if (trigger) {
+            trigger.addEventListener('click', openPostcode);
+        }
+        bindWithdrawModal();
     });
 })();

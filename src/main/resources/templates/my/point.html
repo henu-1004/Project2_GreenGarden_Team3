@@ -27,10 +27,7 @@
         <h1>포인트 현황</h1>
         <p class="lead">적립과 사용 내역을 확인하고 다양한 혜택을 놓치지 마세요.</p>
 
-        <div class="order-banner">
-            <img th:src="@{/img/my/point_banner.png}" alt="포인트 배너" width="810" height="86"
-                 onerror="this.src='https://dummyimage.com/810x86/d9ede6/175a48.png&text=GreenGarden+MY+Point';">
-        </div>
+        <div class="banner-area" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
 
         <!-- 요약 -->
         <div class="point-summary">

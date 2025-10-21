@@ -34,7 +34,9 @@
 }
 
 .banner-area {
-    margin-bottom: 8px;
+    margin: 24px 0;
+    display: flex;
+    justify-content: center;
 }
 
 .banner-carousel {
@@ -538,6 +540,21 @@
 .btn-secondary:hover {
     background: #66968c;
     color: #fff;
+}
+
+.btn-danger {
+    background: #d9534f;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-danger:hover {
+    background: #c9302c;
 }
 
 /* ===== 구매확정 ===== */

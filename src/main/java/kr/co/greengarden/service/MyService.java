@@ -19,23 +19,23 @@ import kr.co.greengarden.dto.my.ReturnRequestDTO;
 import kr.co.greengarden.dto.my.ReviewSummaryDTO;
 import kr.co.greengarden.dto.my.SellerInfoDTO;
 import kr.co.greengarden.entity.Order;
+import kr.co.greengarden.handler.ImageHandler;
 import kr.co.greengarden.mapper.my.MyMapper;
+import kr.co.greengarden.repository.MemberRepository;
 import kr.co.greengarden.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static kr.co.greengarden.util.PaginationUtils.buildPagination;
@@ -47,6 +47,9 @@ public class MyService {
 
     private final OrderRepository orderRepository;
     private final MyMapper myMapper;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final ImageHandler imageHandler;
 
     private static final int REVIEW_PAGE_SIZE = 5;
     private static final int QNA_PAGE_SIZE = 10;
@@ -224,10 +227,12 @@ public class MyService {
         String reasonDetail = (detail == null || detail.isBlank()) ? "사유 미입력" : detail.trim();
 
         String imgPath = null;
-        try {
-            imgPath = saveFileTo("exchange", proof);
-        } catch (IOException e) {
-            throw new IllegalStateException("교환 증빙 이미지를 저장하는 중 오류가 발생했습니다.", e);
+        if (proof != null && !proof.isEmpty()) {
+            try {
+                imgPath = imageHandler.saveImage(proof, "exchange");
+            } catch (RuntimeException ex) {
+                throw new IllegalStateException("교환 증빙 이미지를 저장하는 중 오류가 발생했습니다.", ex);
+            }
         }
 
         ExchangeRequestDTO requestDTO = ExchangeRequestDTO.builder()
@@ -266,10 +271,12 @@ public class MyService {
         String reasonDetail = (detail == null || detail.isBlank()) ? "사유 미입력" : detail.trim();
 
         String imgPath = null;
-        try {
-            imgPath = saveFileTo("return", proof);
-        } catch (IOException e) {
-            throw new IllegalStateException("반품 증빙 이미지를 저장하는 중 오류가 발생했습니다.", e);
+        if (proof != null && !proof.isEmpty()) {
+            try {
+                imgPath = imageHandler.saveImage(proof, "return");
+            } catch (RuntimeException ex) {
+                throw new IllegalStateException("반품 증빙 이미지를 저장하는 중 오류가 발생했습니다.", ex);
+            }
         }
 
         ReturnRequestDTO requestDTO = ReturnRequestDTO.builder()
@@ -334,10 +341,9 @@ public class MyService {
     @Transactional
     public void writeProductReview(ProductReviewDTO dto) {
         try {
-            // 파일 저장 처리
-            String img1 = saveFileTo("review", dto.getReviewFile1());
-            String img2 = saveFileTo("review", dto.getReviewFile2());
-            String img3 = saveFileTo("review", dto.getReviewFile3());
+            String img1 = imageHandler.saveImage(dto.getReviewFile1(), "review");
+            String img2 = imageHandler.saveImage(dto.getReviewFile2(), "review");
+            String img3 = imageHandler.saveImage(dto.getReviewFile3(), "review");
 
             if (img1 != null) dto.setImg1(img1);
             if (img2 != null) dto.setImg2(img2);
@@ -350,7 +356,7 @@ public class MyService {
             // REVIEW_YN 업데이트
             myMapper.updateReviewYn(dto.getOrderNo(), dto.getProId(), "Y");
 
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
             log.error("❌ 리뷰 파일 업로드 실패", e);
         }
     }
@@ -452,26 +458,27 @@ public class MyService {
                 .build();
     }
 
-    /** ✅ 파일 저장 로직 (폴더 구분 가능) */
-    private String saveFileTo(String category, MultipartFile file) throws IOException {
-        if (file == null || file.isEmpty()) {
-            return null;
+    public boolean verifyPassword(String memId, String rawPassword) {
+        if (memId == null || memId.isBlank() || rawPassword == null || rawPassword.isBlank()) {
+            return false;
         }
 
-        String safeCategory = (category == null || category.isBlank()) ? "misc" : category.trim();
-        String uploadDir = "uploads/" + safeCategory + "/";
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
+        return memberRepository.findById(memId)
+                .map(member -> passwordEncoder.matches(rawPassword, member.getPassword()))
+                .orElse(false);
+    }
+
+    @Transactional
+    public void withdrawMember(String memId) {
+        if (memId == null || memId.isBlank()) {
+            throw new IllegalArgumentException("회원 정보가 올바르지 않습니다.");
         }
 
-        String originalName = file.getOriginalFilename();
-        String safeName = (originalName == null || originalName.isBlank()) ? "file" : originalName.replaceAll("[^a-zA-Z0-9._-]", "_");
-        String fileName = UUID.randomUUID() + "_" + safeName;
-        File dest = new File(directory, fileName);
-        file.transferTo(dest);
-
-        return "/uploads/" + safeCategory + "/" + fileName;
+        String note = "회원 요청 탈퇴 (" + LocalDate.now() + ")";
+        int updated = myMapper.updateMemberStatus(memId, "탈퇴", note);
+        if (updated == 0) {
+            throw new IllegalStateException("회원 정보를 찾을 수 없습니다.");
+        }
     }
 
     private void applyOrderActionFlags(OrderSummaryDTO order) {

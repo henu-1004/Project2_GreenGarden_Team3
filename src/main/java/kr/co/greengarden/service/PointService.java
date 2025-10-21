@@ -92,10 +92,10 @@ public class PointService {
         int blockSize = 5;
         int startPage = ((currentPage - 1) / blockSize) * blockSize + 1;
         int endPage = Math.min(startPage + blockSize - 1, totalPages);
-        boolean hasPrev = startPage > 1;
-        boolean hasNext = endPage < totalPages;
-        int prevPage = hasPrev ? startPage - 1 : 1;
-        int nextPage = hasNext ? endPage + 1 : totalPages;
+        boolean hasPrev = currentPage > 1;
+        boolean hasNext = currentPage < totalPages;
+        int prevPage = hasPrev ? currentPage - 1 : 1;
+        int nextPage = hasNext ? currentPage + 1 : totalPages;
 
         return PointLedgerPageDTO.builder()
                 .items(items)
