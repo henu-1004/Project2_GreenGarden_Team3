@@ -28,6 +28,9 @@
 
         <div class="banner">810 × 86 배너 광고</div>
 
+        <div th:if="${msg}" class="alert success" th:text="${msg}"></div>
+        <div th:if="${errorMsg}" class="alert error" th:text="${errorMsg}"></div>
+
         <div class="section-header">
             <h2>최근주문내역</h2>
             <a th:href="@{/my/order}" class="more">더보기 ></a>
@@ -45,7 +48,7 @@
                     <p class="order-num">
                         주문번호 : <a href="javascript:void(0)" onclick="openModal('orderModal','202212341')">202212341</a>
                     </p>
-                    <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal', null, null, 'sellerSample')">㈜그린샵</a>] 샘플 상품 (1개)</p>
+                    <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal', null, null, 'sellerSample', null)">㈜그린샵</a>] 샘플 상품 (1개)</p>
                     <p class="price">34,000원</p>
                 </div>
                 <div class="item">
@@ -105,7 +108,7 @@
                 <div class="actions">
                     <!-- ✅ 구매확정 -->
                     <button th:if="${order.confirmYn == 'N'}"
-                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('confirmModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">구매확정</button>
 
                     <button th:if="${order.confirmYn == 'Y'}"
@@ -114,7 +117,7 @@
 
                     <!-- ✅ 상품평작성 -->
                     <button th:if="${order.reviewYn == 'N'}"
-                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('reviewModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">상품평작성</button>
 
                     <button th:if="${order.reviewYn == 'Y'}"
@@ -123,7 +126,7 @@
 
                     <!-- ✅ 교환신청 -->
                     <button th:if="${order.exchangeYn == 'N'}"
-                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('exchangeModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">교환신청</button>
 
                     <button th:if="${order.exchangeYn == 'Y'}"
@@ -132,11 +135,21 @@
 
                     <!-- ✅ 반품신청 -->
                     <button th:if="${order.returnYn == 'N'}"
-                            th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}')|"
+                            th:attr="onclick=|openModal('returnModal','${order.orderNo}','${order.proId}', null, '${order.orderItemId}')|"
                             class="btn-primary">반품신청</button>
 
                     <button th:if="${order.returnYn == 'Y'}"
                             class="btn-secondary done" disabled>반품신청 완료</button>
+
+                    <form th:if="${order.canCancel}" th:action="@{/my/order/cancel}" method="post" class="inline-form">
+                        <input type="hidden" name="orderNo" th:value="${order.orderNo}">
+                        <input type="hidden" name="proId" th:value="${order.proId}">
+                        <input type="hidden" name="redirect" value="home">
+                        <button type="submit" class="btn-secondary danger">주문취소</button>
+                    </form>
+
+                    <button th:if="${order.cancelYn == 'Y'}" class="btn-secondary done" disabled>취소완료</button>
+                    <button th:if="${!order.canCancel and order.cancelYn != 'Y'}" class="btn-secondary" disabled>취소불가</button>
                 </div>
             </div>
 
@@ -377,31 +390,37 @@
             <span class="close" onclick="closeModal('inquiryModal')">&times;</span>
         </div>
         <div class="modal-body">
-            <form>
-                <div>
+            <form th:action="@{/my/inquiry}" method="post">
+                <input type="hidden" name="redirect" value="home">
+                <input type="hidden" name="category2" value="MY_PAGE">
+
+                <div class="form-group">
                     <label>문의유형</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="type"> 상품</label>
-                        <label><input type="radio" name="type"> 배송</label>
-                        <label><input type="radio" name="type"> 반품/취소</label>
-                        <label><input type="radio" name="type"> 교환</label>
-                        <label><input type="radio" name="type"> 기타</label>
+                        <label><input type="radio" name="category1" value="상품" checked> 상품</label>
+                        <label><input type="radio" name="category1" value="배송"> 배송</label>
+                        <label><input type="radio" name="category1" value="반품/취소"> 반품/취소</label>
+                        <label><input type="radio" name="category1" value="교환"> 교환</label>
+                        <label><input type="radio" name="category1" value="기타"> 기타</label>
                     </div>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>Email</label>
-                    <input type="email" value="chh**@gmail.com">
+                    <input type="email" name="email"
+                           th:value="${myInfo != null && myInfo.email != null ? myInfo.email : ''}"
+                           placeholder="이메일 미등록"
+                           readonly>
                 </div>
-                <div>
+                <div class="form-group">
                     <label>제목</label>
-                    <input type="text">
+                    <input type="text" name="title" maxlength="255" required placeholder="문의 제목을 입력해주세요.">
                 </div>
-                <div>
+                <div class="form-group">
                     <label>내용</label>
-                    <textarea></textarea>
+                    <textarea name="content" rows="5" required placeholder="문의 내용을 입력해주세요."></textarea>
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="btn-primary">등록하기</button>
+                    <button type="submit" class="btn-primary">등록하기</button>
                     <button type="button" class="btn-secondary" onclick="closeModal('inquiryModal')">취소</button>
                 </div>
             </form>
@@ -420,6 +439,7 @@
         <form th:action="@{/my/confirm}" method="post">
             <input type="hidden" name="orderNo" value="">
             <input type="hidden" name="proId" value="">
+            <input type="hidden" name="redirect" value="home">
             <div class="modal-body">
                 <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
                 <div class="actions">
@@ -492,15 +512,16 @@
         <form th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="orderNo" value="">
             <input type="hidden" name="proId" value="">
+            <input type="hidden" name="redirect" value="home">
             <div class="modal-body">
                 <h3>반품정보 입력</h3>
                 <div class="form-group">
                     <label>반품유형</label>
                     <div class="radio-group">
-                        <label><input type="radio" name="reason" value="단순변심"> 단순변심</label>
-                        <label><input type="radio" name="reason" value="불량"> 파손 및 불량</label>
-                        <label><input type="radio" name="reason" value="주문실수"> 주문 실수</label>
-                        <label><input type="radio" name="reason" value="기타"> 기타</label>
+                        <label><input type="radio" name="type" value="단순변심" checked> 단순변심</label>
+                        <label><input type="radio" name="type" value="불량"> 파손 및 불량</label>
+                        <label><input type="radio" name="type" value="주문실수"> 주문 실수</label>
+                        <label><input type="radio" name="type" value="기타"> 기타</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -509,7 +530,7 @@
                 </div>
                 <div class="form-group">
                     <label>사진첨부</label>
-                    <input type="file" name="file" accept="image/*">
+                    <input type="file" name="proof" accept="image/*">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">반품신청</button>
@@ -532,10 +553,11 @@
         <form th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
             <input type="hidden" name="orderNo" value="">
             <input type="hidden" name="proId" value="">
+            <input type="hidden" name="redirect" value="home">
             <div class="modal-body">
                 <div class="form-group">
                     <label>교환유형</label>
-                    <select name="reason">
+                    <select name="type">
                         <option>사이즈 문제</option>
                         <option>색상 문제</option>
                         <option>상품하자</option>
@@ -548,7 +570,7 @@
                 </div>
                 <div class="form-group">
                     <label>사진첨부</label>
-                    <input type="file" name="file" accept="image/*">
+                    <input type="file" name="proof" accept="image/*">
                 </div>
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">교환신청</button>
@@ -814,20 +836,25 @@
         }
     }
 
-    function openModal(id, orderNo, proId, sellerId) {
+    function openModal(id, orderNo, proId, sellerId, orderItemId) {
         const modal = document.getElementById(id);
         if (!modal) return;
 
         modal.style.display = 'flex';
 
         const orderInput = modal.querySelector("input[name='orderNo']");
-        if (orderInput && orderNo) {
-            orderInput.value = orderNo;
+        if (orderInput) {
+            orderInput.value = orderNo || '';
         }
 
         const proInput = modal.querySelector("input[name='proId']");
-        if (proInput && proId) {
-            proInput.value = proId;
+        if (proInput) {
+            proInput.value = proId || '';
+        }
+
+        const orderItemInput = modal.querySelector("input[name='orderItemId']");
+        if (orderItemInput) {
+            orderItemInput.value = orderItemId || '';
         }
 
         if (id === 'orderModal') {

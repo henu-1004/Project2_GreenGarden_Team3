@@ -33,6 +33,9 @@
                  onerror="this.src='https://dummyimage.com/810x86/d9ede6/175a48.png&text=GreenGarden+MY+Order';">
         </div>
 
+        <div th:if="${msg}" class="alert success" th:text="${msg}"></div>
+        <div th:if="${errorMsg}" class="alert error" th:text="${errorMsg}"></div>
+
         <!-- 기간별 조회 -->
         <div class="order-filter">
             <form class="quick-range" th:action="@{/my/order}" method="get">
@@ -105,20 +108,36 @@
                                 <input type="hidden" name="orderNo" th:value="${order.orderNo}">
                                 <input type="hidden" name="proId" th:value="${order.proId}">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <input type="hidden" name="redirect" value="order">
                                 <button type="submit" class="btn-primary">구매확정</button>
                             </form>
-                            <form th:if="${order.canExchange}" th:action="@{/my/exchange/complete}" method="post">
+                            <form th:if="${order.canExchange}" th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="orderNo" th:value="${order.orderNo}">
                                 <input type="hidden" name="proId" th:value="${order.proId}">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <input type="hidden" name="redirect" value="order">
+                                <input type="hidden" name="type" value="주문내역">
+                                <input type="hidden" name="detail" value="주문내역 페이지에서 신청">
                                 <button type="submit" class="btn-outline">교환신청</button>
                             </form>
-                            <form th:if="${order.canReturn}" th:action="@{/my/return/complete}" method="post">
+                            <form th:if="${order.canReturn}" th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="orderNo" th:value="${order.orderNo}">
                                 <input type="hidden" name="proId" th:value="${order.proId}">
                                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <input type="hidden" name="redirect" value="order">
+                                <input type="hidden" name="type" value="주문내역">
+                                <input type="hidden" name="detail" value="주문내역 페이지에서 신청">
                                 <button type="submit" class="btn-outline">반품신청</button>
                             </form>
+                            <form th:if="${order.canCancel}" th:action="@{/my/order/cancel}" method="post">
+                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
+                                <input type="hidden" name="proId" th:value="${order.proId}">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                                <input type="hidden" name="redirect" value="order">
+                                <button type="submit" class="btn-outline danger">주문취소</button>
+                            </form>
+                            <span th:if="${order.cancelYn == 'Y'}" class="status-label">취소완료</span>
+                            <span th:if="${!order.canCancel and order.cancelYn != 'Y'}" class="status-label muted">취소불가</span>
                         </div>
                     </td>
                 </tr>

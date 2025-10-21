@@ -1,6 +1,7 @@
 package kr.co.greengarden.service;
 
 import jakarta.transaction.Transactional;
+import kr.co.greengarden.dto.my.ExchangeRequestDTO;
 import kr.co.greengarden.dto.my.MyInfoDTO;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
@@ -9,10 +10,12 @@ import kr.co.greengarden.dto.my.OrderDetailDTO;
 import kr.co.greengarden.dto.my.OrderDetailItemDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
+import kr.co.greengarden.dto.my.OrderItemStatusDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.PagedResult;
 import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
+import kr.co.greengarden.dto.my.ReturnRequestDTO;
 import kr.co.greengarden.dto.my.ReviewSummaryDTO;
 import kr.co.greengarden.dto.my.SellerInfoDTO;
 import kr.co.greengarden.entity.Order;
@@ -29,6 +32,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -197,6 +201,106 @@ public class MyService {
         myMapper.updateReturnYn(orderNo, proId, yn);
     }
 
+    @Transactional
+    public void submitExchange(String memId,
+                               String orderNo,
+                               Long proId,
+                               String type,
+                               String detail,
+                               MultipartFile proof) {
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getExchangeYn()))) {
+            throw new IllegalStateException("이미 교환을 신청한 주문입니다.");
+        }
+
+        String normalizedType = normalize(type);
+        if (normalizedType == null) {
+            normalizedType = "기타";
+        }
+        String reasonDetail = (detail == null || detail.isBlank()) ? "사유 미입력" : detail.trim();
+
+        String imgPath = null;
+        try {
+            imgPath = saveFileTo("exchange", proof);
+        } catch (IOException e) {
+            throw new IllegalStateException("교환 증빙 이미지를 저장하는 중 오류가 발생했습니다.", e);
+        }
+
+        ExchangeRequestDTO requestDTO = ExchangeRequestDTO.builder()
+                .orderNo(orderNo)
+                .orderItemId(status.getOrderItemId())
+                .type(normalizedType)
+                .detail(reasonDetail)
+                .imgPath(imgPath)
+                .build();
+
+        myMapper.insertExchangeRequest(requestDTO);
+        myMapper.updateExchangeYn(orderNo, proId, "Y");
+        log.info("✅ 교환 신청 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
+    }
+
+    @Transactional
+    public void submitReturnRequest(String memId,
+                                    String orderNo,
+                                    Long proId,
+                                    String type,
+                                    String detail,
+                                    MultipartFile proof) {
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getReturnYn()))) {
+            throw new IllegalStateException("이미 반품을 신청한 주문입니다.");
+        }
+
+        String normalizedType = normalize(type);
+        if (normalizedType == null) {
+            normalizedType = "기타";
+        }
+        String reasonDetail = (detail == null || detail.isBlank()) ? "사유 미입력" : detail.trim();
+
+        String imgPath = null;
+        try {
+            imgPath = saveFileTo("return", proof);
+        } catch (IOException e) {
+            throw new IllegalStateException("반품 증빙 이미지를 저장하는 중 오류가 발생했습니다.", e);
+        }
+
+        ReturnRequestDTO requestDTO = ReturnRequestDTO.builder()
+                .orderNo(orderNo)
+                .orderItemId(status.getOrderItemId())
+                .type(normalizedType)
+                .detail(reasonDetail)
+                .imgPath(imgPath)
+                .build();
+
+        myMapper.insertReturnRequest(requestDTO);
+        myMapper.updateReturnYn(orderNo, proId, "Y");
+        log.info("✅ 반품 신청 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
+    }
+
+    @Transactional
+    public void cancelOrderItem(String memId, String orderNo, Long proId) {
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+
+        if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
+
+        if (!containsStatus(status.getDeliveryStatus(), "배송준비")) {
+            throw new IllegalStateException("배송준비 상태에서만 취소할 수 있습니다.");
+        }
+
+        myMapper.updateCancelYn(orderNo, proId, "Y");
+        log.info("✅ 주문 취소 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
+    }
+
     public MyInfoDTO getMyInfo(String memId) {
         if (memId == null || memId.isBlank()) {
             return null;
@@ -231,15 +335,13 @@ public class MyService {
     public void writeProductReview(ProductReviewDTO dto) {
         try {
             // 파일 저장 처리
-            if (dto.getReviewFile1() != null && !dto.getReviewFile1().isEmpty()) {
-                dto.setImg1(saveFile(dto.getReviewFile1()));
-            }
-            if (dto.getReviewFile2() != null && !dto.getReviewFile2().isEmpty()) {
-                dto.setImg2(saveFile(dto.getReviewFile2()));
-            }
-            if (dto.getReviewFile3() != null && !dto.getReviewFile3().isEmpty()) {
-                dto.setImg3(saveFile(dto.getReviewFile3()));
-            }
+            String img1 = saveFileTo("review", dto.getReviewFile1());
+            String img2 = saveFileTo("review", dto.getReviewFile2());
+            String img3 = saveFileTo("review", dto.getReviewFile3());
+
+            if (img1 != null) dto.setImg1(img1);
+            if (img2 != null) dto.setImg2(img2);
+            if (img3 != null) dto.setImg3(img3);
 
             // DB insert
             myMapper.insertProductReview(dto);
@@ -350,37 +452,91 @@ public class MyService {
                 .build();
     }
 
-    /** ✅ 파일 저장 로직 */
-    private String saveFile(MultipartFile file) throws IOException {
-        String uploadDir = "uploads/review/"; // 프로젝트 내 상대 경로
-        File directory = new File(uploadDir);
-        if (!directory.exists()) directory.mkdirs();
+    /** ✅ 파일 저장 로직 (폴더 구분 가능) */
+    private String saveFileTo(String category, MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
 
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String safeCategory = (category == null || category.isBlank()) ? "misc" : category.trim();
+        String uploadDir = "uploads/" + safeCategory + "/";
+        File directory = new File(uploadDir);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        String originalName = file.getOriginalFilename();
+        String safeName = (originalName == null || originalName.isBlank()) ? "file" : originalName.replaceAll("[^a-zA-Z0-9._-]", "_");
+        String fileName = UUID.randomUUID() + "_" + safeName;
         File dest = new File(directory, fileName);
         file.transferTo(dest);
 
-        // 브라우저 접근 경로로 반환
-        return "/uploads/review/" + fileName;
+        return "/uploads/" + safeCategory + "/" + fileName;
     }
 
     private void applyOrderActionFlags(OrderSummaryDTO order) {
+        String status = normalizeStatusValue(order.getStatus());
+        String deliveryStatus = normalizeStatusValue(order.getDeliveryStatus());
+
         String confirmYn = valueOrDefault(order.getConfirmYn());
         String reviewYn = valueOrDefault(order.getReviewYn());
         String exchangeYn = valueOrDefault(order.getExchangeYn());
         String returnYn = valueOrDefault(order.getReturnYn());
-        String status = order.getStatus() == null ? "" : order.getStatus();
+        String cancelYn = valueOrDefault(order.getCancelYn());
 
-        boolean isDelivered = status.contains("배송완료") || status.contains("구매확정");
+        order.setCancelYn(cancelYn);
+        order.setDeliveryStatus(deliveryStatus);
 
-        order.setCanConfirm(isDelivered && !"Y".equalsIgnoreCase(confirmYn));
-        order.setCanReview("Y".equalsIgnoreCase(confirmYn) && !"Y".equalsIgnoreCase(reviewYn));
-        order.setCanExchange(!"Y".equalsIgnoreCase(exchangeYn) && !"Y".equalsIgnoreCase(confirmYn));
-        order.setCanReturn(!"Y".equalsIgnoreCase(returnYn) && !"Y".equalsIgnoreCase(confirmYn));
+        boolean isCancelled = "Y".equalsIgnoreCase(cancelYn);
+        boolean isDelivered = containsStatus(status, "배송완료")
+                || containsStatus(status, "구매확정")
+                || containsStatus(deliveryStatus, "배송완료");
+
+        boolean readyToCancel = !isCancelled && containsStatus(deliveryStatus, "배송준비");
+
+        order.setCanConfirm(!isCancelled && isDelivered && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanReview(!isCancelled && "Y".equalsIgnoreCase(confirmYn) && !"Y".equalsIgnoreCase(reviewYn));
+        order.setCanExchange(!isCancelled && !"Y".equalsIgnoreCase(exchangeYn) && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanReturn(!isCancelled && !"Y".equalsIgnoreCase(returnYn) && !"Y".equalsIgnoreCase(confirmYn));
+        order.setCanCancel(readyToCancel);
+
+        if (isCancelled) {
+            order.setStatus("취소완료");
+            order.setCanExchange(false);
+            order.setCanReturn(false);
+            order.setCanReview(false);
+            order.setCanConfirm(false);
+            order.setCanCancel(false);
+        }
     }
 
     private String valueOrDefault(String value) {
-        return value == null ? "N" : value;
+        if (value == null) {
+            return "N";
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? "N" : trimmed;
+    }
+
+    private String normalizeStatusValue(String status) {
+        return status == null ? "" : status.trim();
+    }
+
+    private boolean containsStatus(String status, String keyword) {
+        if (status == null || keyword == null) {
+            return false;
+        }
+        String normalizedStatus = status.replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
+        String normalizedKeyword = keyword.replaceAll("\\s+", "").toLowerCase(Locale.ROOT);
+        return normalizedStatus.contains(normalizedKeyword);
+    }
+
+    private OrderItemStatusDTO requireOrderItemStatus(String memId, String orderNo, Long proId) {
+        OrderItemStatusDTO status = myMapper.selectOrderItemStatus(memId, orderNo, proId);
+        if (status == null || status.getOrderItemId() == null) {
+            throw new IllegalArgumentException("주문 정보를 찾을 수 없습니다.");
+        }
+        return status;
     }
 
     private String normalize(String value) {
