@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -50,16 +51,6 @@ public interface CouponIssueRepository extends JpaRepository<CouponIssue, Long> 
   ORDER BY i.ISSUE_ID DESC
 """, nativeQuery = true)
     java.util.List<kr.co.greengarden.repository.IssuedRow> findIssuedRows();
-
-
-import kr.co.greengarden.entity.CouponIssue;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.util.List;
-
-public interface CouponIssueRepository extends JpaRepository<CouponIssue, String> {
 
     @Query("select ci from CouponIssue ci " +
             "join fetch ci.coupon c " +
