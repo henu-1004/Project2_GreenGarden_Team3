@@ -206,7 +206,16 @@
                                 <hr>
                                 <div class="total-price">
                                     <span>전체주문금액</span>
-                                    <span id="total-order-price">[[${orderInfo.totalPrice}]]</span>
+                                    <span id="total-order-price"
+                                          th:text="${#numbers.formatInteger(
+          (orderInfo != null) ?
+              ((orderInfo.originalTotalPrice - orderInfo.discountPrice) + orderInfo.deliveryFee)
+              :
+              ((product.price * quantity)
+              - ((product.price * (product.discountRate / 100.0)) * quantity)
+              + (product.deliveryFee != null ? product.deliveryFee : 0)),
+          0)}">
+</span>
                                     <input type="hidden" name="totalPrice" th:value="${orderInfo.totalPrice}">
                                 </div>
                                 <div class="item">
