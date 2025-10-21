@@ -39,6 +39,26 @@
     font-size: 14px;
 }
 
+.alert {
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    border: 1px solid transparent;
+}
+
+.alert.success {
+    background: #e8f5f0;
+    border-color: #b3e0ce;
+    color: #175a48;
+}
+
+.alert.error {
+    background: #fdecea;
+    border-color: #f5c2c0;
+    color: #c0392b;
+}
+
 .empty-box {
     border: 1px dashed #ddd;
     background: #fafafa;
@@ -130,6 +150,12 @@
     flex-direction: column;
     gap: 5px;
 }
+.order-item .actions form {
+    display: flex;
+}
+.inline-form {
+    width: 100%;
+}
 .order-item .actions button {
     padding: 6px 10px;
     border: none;
@@ -139,6 +165,21 @@
     cursor: pointer;
 }
 .order-item .actions button:hover { background: #175a48; }
+.btn-secondary.done {
+    background: #e2f0ed;
+    color: #4a6c63;
+    cursor: default;
+}
+.btn-secondary.danger,
+.btn-outline.danger {
+    background: #fdecea;
+    color: #c0392b;
+}
+.btn-secondary.danger:hover,
+.btn-outline.danger:hover {
+    background: #f8d7d3;
+    color: #96281b;
+}
 
 /* ===== 포인트 리스트 ===== */
 .point-list {
@@ -537,11 +578,60 @@
     flex-direction: column;
     gap: 15px;
 }
-#inquiryModal label {
+#inquiryModal .modal-body .form-group,
+#returnModal .modal-body .form-group,
+#exchangeModal .modal-body .form-group,
+#reviewModal .modal-body .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#inquiryModal label,
+#returnModal label,
+#exchangeModal label {
     font-weight: bold;
     color: #2b6b34;
 }
-#inquiryModal .form-actions {
+
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 14px;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 4px;
+}
+
+#inquiryModal input[type="text"],
+#inquiryModal input[type="email"],
+#inquiryModal textarea,
+#returnModal textarea,
+#exchangeModal textarea,
+#exchangeModal select {
+    border: 1px solid #d0dad6;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#inquiryModal textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+#inquiryModal input[readonly] {
+    background: #f7faf9;
+    color: #666;
+}
+
+#inquiryModal .form-actions,
+#returnModal .form-actions,
+#exchangeModal .form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
