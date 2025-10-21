@@ -10,6 +10,7 @@ import kr.co.greengarden.dto.*;
 import kr.co.greengarden.dto.admin.AdminOrderListDTO;
 import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.*;
+import kr.co.greengarden.repository.OrderRepository;
 import kr.co.greengarden.security.MemberDetails;
 import kr.co.greengarden.service.*;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class ProductController {
     private final MemberService memberService;
     private final OrderService orderService;
     private final OrderItemService orderItemService;
+    private final OrderRepository orderRepository;
 
     @GetMapping("/product/list")
     public String productListPage(@RequestParam(defaultValue = "0") int page,
@@ -81,14 +83,14 @@ public class ProductController {
         return "product/cart";
     }
 
-    @GetMapping("/product/order")
+/*    @GetMapping("/product/order2")
     public String orderPage(int productId, Integer quantity, Model model) {
         Product product = productService.getProduct(productId);
         model.addAttribute("product", product);
         model.addAttribute("quantity", quantity); // 선택한 수량 전달
 
-        return "product/order";
-    }
+        return "product/order2";
+    }*/
 
     @PostMapping("/product/action")
     public String handleProductAction(@AuthenticationPrincipal MemberDetails memberDetails,
@@ -124,23 +126,46 @@ public class ProductController {
     }
 
     @GetMapping("/product/order2")
-    public String orderPage(@RequestParam String cartId, Model model) {
-        List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
+    public String orderPage(@RequestParam(required = false) String cartId, @RequestParam(required = false) Integer productId,@RequestParam(required = false) Integer quantity,Model model) {
 
+        // 장바구니 구매 시
+        if (cartId != null) {
+        List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
         model.addAttribute("orderInfo", orderService.getOrderInfo(cartList));
         model.addAttribute("cartList", cartList);
-
         return "product/order2";
+        }
+        // 상품 상세 (view.html)에서 바로 구매 한 경우
+        if (productId != null && quantity != null) {
+            Product product = productService.getViewProduct(productId);
+            model.addAttribute("product", product);
+            model.addAttribute("quantity", quantity);
+
+            // ✅ orderInfo 기본값 생성
+            OrderInfoDTO orderInfo = new OrderInfoDTO();
+            orderInfo.setCount(quantity);
+            orderInfo.setOriginalTotalPrice(product.getPrice() * quantity);
+            orderInfo.setDiscountPrice((int)(product.getPrice() * product.getDiscountRate() / 100.0));
+            orderInfo.setDeliveryFee(product.getDeliveryFee());
+            orderInfo.setTotalPrice(product.getPrice() * quantity + product.getDeliveryFee());
+            orderInfo.setTotalPoint(product.getPoint() * quantity);
+            model.addAttribute("orderInfo", orderInfo);
+
+
+            return "product/order2";
+        }
+
+        return "redirect:/product/list";
     }
 
 
     @PostMapping("/product/orderFix")
-    public String orderFix(OrderDTO orderDTO, OrderItemListWrapper orderItemList, @AuthenticationPrincipal MemberDetails memberDetails) {
+    public String orderFix(OrderDTO orderDTO, OrderItemListWrapper orderItemList, Integer productId, Integer quantity, @AuthenticationPrincipal MemberDetails memberDetails) {
         // 결제 대기 -> 결제 완료
 
         /*  2025/10/16 한탁원
             1. prodId(전체)
-            2. 배송정보 (이름 연락처 주소 우편번호 기본주소 상세주소 배송메모
+            2. 배송정보 (이름 연락처 주소 우편번호 기본주소 상세주소 배송메모)
             3. 최종결제
             4. 최종결제방법
         */
@@ -149,19 +174,42 @@ public class ProductController {
            2. orderNo를 통해 orderItem 테이블에 데이터 삽입
            3.
          */
-        orderService.orderRegister(orderDTO, orderItemList, memberDetails);
 
+        /* 2025/10/21 박효빈
+         * 1. 상품 1개 상세보기 - 구매 로직 구현
+         * */
+        // 만약 orderItemList가 null , 이거나 items가 비었을 때 ( 상품 상세에서 바로 구매한 경우 로직)
+        if (orderItemList == null || orderItemList.getItems() == null || orderItemList.getItems().isEmpty()) {
+            orderItemList = new OrderItemListWrapper();
+            List<OrderItemDTO> items = new ArrayList<>();
+
+            // + form에서 prouctId, quantity 전달된 경우만 처리
+            if (productId != null && quantity != null) {
+                Product product = productService.getViewProduct(productId);
+
+                OrderItemDTO item = new OrderItemDTO();
+                item.setProId(productId);
+                item.setQuantity(quantity);
+                item.setPrice(product.getPrice());
+                item.setDiscountRate(product.getDiscountRate());
+
+                items.add(item);
+            }
+
+            orderItemList.setItems(items);
+        }
+        orderService.orderRegister(orderDTO, orderItemList, memberDetails);
         return "redirect:/product/complete?orderNo=" + orderDTO.getOrderNo();
     }
 
-    /* 2025/10/17 이수연 */
-    @GetMapping("/product/complete")
+    /* 2025/10/17 이수연 & 2025/10/21 박효빈*/
+ /*   @GetMapping("/product/complete")
     public String completePage(@AuthenticationPrincipal MemberDetails memberDetails, @RequestParam String orderNo, Model model) {
-        /*
+        *//*
             1. 주문완료된 정보가 그대로 보이도록 하기
 
             2. 주문완료된 상품은 장바구니에서 지우기
-        */
+        *//*
 
 
         // - 주문 정보 가져오기 (Order 테이블) findById
@@ -175,7 +223,34 @@ public class ProductController {
         //String memberId = memberDetails.getUsername();
         return "product/complete";
     }
+*/
 
+    // complete.html page 현재 (10/21)일자 기준 채울 수 있는 부분만 DB에서 가져와서 채움
+    @GetMapping("/product/complete")
+    public String completePage(String orderNo, Model model) {
+
+        // 주문 번호 기반 전체 주문 정보 조회
+        orderService.getCompleteOrderList(orderNo);
+
+        // 일단 상품 한개만 예시로 product 전달 (주문정보 가져오기)
+        Order order = orderRepository.findById(orderNo).orElse(null);
+
+        // product 정보 추출 (주문 상품 중 첫 번째로 기준)
+        if (order != null && order.getOrderItems() != null && !order.getOrderItems().isEmpty()) {
+            Product product = order.getOrderItems().get(0).getProduct();
+            int quantity = order.getOrderItems().get(0).getQuantity(); // ✅ 변수 선언 추가!
+
+
+            model.addAttribute("product", product);
+            model.addAttribute("order", order);
+            model.addAttribute("quantity", quantity); // ✅ 추가
+
+        }
+        // 주문 번호 전달
+        model.addAttribute("orderNo", orderNo);
+
+        return "product/complete";
+    }
     @GetMapping("/product/search")
     public String searchPage() {
         return "product/search";
