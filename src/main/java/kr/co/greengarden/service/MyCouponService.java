@@ -1,8 +1,10 @@
 package kr.co.greengarden.service;
 
-import kr.co.greengarden.dto.my.CouponPageDTO;
 import kr.co.greengarden.dto.my.CouponSummaryDTO;
+import kr.co.greengarden.dto.my.CouponTabPageDTO;
 import kr.co.greengarden.dto.my.MyCouponDTO;
+import kr.co.greengarden.dto.my.PagedResult;
+import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.entity.Coupon;
 import kr.co.greengarden.entity.CouponIssue;
 import kr.co.greengarden.repository.CouponIssueRepository;
@@ -15,13 +17,38 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static kr.co.greengarden.util.PaginationUtils.buildPagination;
+
 @Service
 @RequiredArgsConstructor
 public class MyCouponService {
 
     private final CouponIssueRepository couponIssueRepository;
 
-    public CouponPageDTO getCouponPage(String memId) {
+    public CouponTabPageDTO getCouponTabPage(String memId, String tab, int page, int size) {
+        CouponBuckets buckets = classifyCoupons(memId);
+        String activeTab = normalizeTab(tab);
+
+        List<MyCouponDTO> target = switch (activeTab) {
+            case "used" -> buckets.used();
+            case "expired" -> buckets.expired();
+            default -> buckets.available();
+        };
+
+        PagedResult<MyCouponDTO> pageResult = paginate(target, page, size);
+
+        return CouponTabPageDTO.builder()
+                .activeTab(activeTab)
+                .page(pageResult)
+                .summary(buckets.summary())
+                .build();
+    }
+
+    public CouponSummaryDTO getCouponSummary(String memId) {
+        return classifyCoupons(memId).summary();
+    }
+
+    private CouponBuckets classifyCoupons(String memId) {
         List<CouponIssue> issues = couponIssueRepository.findAllByMemberWithCoupon(memId);
         Comparator<CouponIssue> comparator = Comparator
                 .comparing((CouponIssue ci) -> getEndDate(ci.getCoupon()), Comparator.nullsLast(Comparator.naturalOrder()))
@@ -70,12 +97,7 @@ public class MyCouponService {
                 .expiringReferenceDate(soon)
                 .build();
 
-        return CouponPageDTO.builder()
-                .availableCoupons(available)
-                .usedCoupons(used)
-                .expiredCoupons(expired)
-                .summary(summary)
-                .build();
+        return new CouponBuckets(available, used, expired, summary);
     }
 
     private boolean isUsed(CouponIssue issue) {
@@ -118,5 +140,36 @@ public class MyCouponService {
                 .usedAt(issue.getUsedAt())
                 .note(coupon != null ? coupon.getNote() : null)
                 .build();
+    }
+
+    private PagedResult<MyCouponDTO> paginate(List<MyCouponDTO> source, int page, int size) {
+        int pageSize = size > 0 ? size : 6;
+        long totalCount = source.size();
+        if (totalCount == 0) {
+            return PagedResult.empty(pageSize);
+        }
+
+        PaginationDTO pagination = buildPagination(page, pageSize, totalCount);
+        int offset = (pagination.getCurrentPage() - 1) * pagination.getPageSize();
+        int endIndex = Math.min(offset + pagination.getPageSize(), source.size());
+        List<MyCouponDTO> slice = source.subList(offset, endIndex);
+        return new PagedResult<>(List.copyOf(slice), pagination);
+    }
+
+    private String normalizeTab(String tab) {
+        if (tab == null) {
+            return "available";
+        }
+        return switch (tab.toLowerCase()) {
+            case "used" -> "used";
+            case "expired" -> "expired";
+            default -> "available";
+        };
+    }
+
+    private record CouponBuckets(List<MyCouponDTO> available,
+                                 List<MyCouponDTO> used,
+                                 List<MyCouponDTO> expired,
+                                 CouponSummaryDTO summary) {
     }
 }

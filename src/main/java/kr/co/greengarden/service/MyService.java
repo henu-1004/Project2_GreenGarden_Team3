@@ -1,11 +1,15 @@
 package kr.co.greengarden.service;
 
 import jakarta.transaction.Transactional;
+import kr.co.greengarden.dto.my.MyInfoDTO;
+import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
+import kr.co.greengarden.dto.my.PagedResult;
+import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
 import kr.co.greengarden.dto.my.ReviewSummaryDTO;
 import kr.co.greengarden.entity.Order;
@@ -18,12 +22,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static kr.co.greengarden.util.PaginationUtils.buildPagination;
 
 @Slf4j
 @Service
@@ -32,6 +39,9 @@ public class MyService {
 
     private final OrderRepository orderRepository;
     private final MyMapper myMapper;
+
+    private static final int REVIEW_PAGE_SIZE = 5;
+    private static final int QNA_PAGE_SIZE = 10;
 
     // 🔹 [JPA] 단순 엔티티 기반 조회
     public List<Order> getRecent5Orders(String memberId) {
@@ -135,6 +145,35 @@ public class MyService {
         myMapper.updateReturnYn(orderNo, proId, yn);
     }
 
+    public MyInfoDTO getMyInfo(String memId) {
+        if (memId == null || memId.isBlank()) {
+            return null;
+        }
+        return myMapper.getMyInfo(memId);
+    }
+
+    @Transactional
+    public void updateMyInfo(MyInfoUpdateDTO dto) {
+        if (dto == null || dto.getMemId() == null || dto.getMemId().isBlank()) {
+            throw new IllegalArgumentException("회원 정보가 올바르지 않습니다.");
+        }
+
+        MyInfoUpdateDTO sanitized = MyInfoUpdateDTO.builder()
+                .memId(dto.getMemId())
+                .name(normalize(dto.getName()))
+                .birth(dto.getBirth())
+                .gender(normalize(dto.getGender()))
+                .email(normalize(dto.getEmail()))
+                .phone(normalize(dto.getPhone()))
+                .zipCode(normalize(dto.getZipCode()))
+                .addressBasic(normalize(dto.getAddressBasic()))
+                .addressDetail(normalize(dto.getAddressDetail()))
+                .build();
+
+        myMapper.updateMyGeneralInfo(sanitized);
+        myMapper.updateMyMemberInfo(sanitized);
+    }
+
     /** ✅ 리뷰 등록 로직 (파일 업로드 포함) */
     @Transactional
     public void writeProductReview(ProductReviewDTO dto) {
@@ -167,6 +206,19 @@ public class MyService {
         return myMapper.getMyReviews(memId);
     }
 
+    public PagedResult<ProductReviewDTO> getMyReviewsPage(String memId, int page, int size) {
+        int pageSize = size > 0 ? size : REVIEW_PAGE_SIZE;
+        long totalCount = myMapper.countMyReviews(memId);
+        if (totalCount == 0) {
+            return PagedResult.empty(pageSize);
+        }
+
+        PaginationDTO pagination = buildPagination(page, pageSize, totalCount);
+        int offset = (pagination.getCurrentPage() - 1) * pagination.getPageSize();
+        List<ProductReviewDTO> items = myMapper.getMyReviewsPage(memId, offset, pagination.getPageSize());
+        return new PagedResult<>(items, pagination);
+    }
+
     public ReviewSummaryDTO buildReviewSummary(List<ProductReviewDTO> reviews) {
         List<ProductReviewDTO> safeReviews = reviews == null ? Collections.emptyList() : reviews;
 
@@ -195,6 +247,19 @@ public class MyService {
 
     public List<MyInquiryDTO> getMyInquiries(String memId) {
         return myMapper.getMyInquiries(memId);
+    }
+
+    public PagedResult<MyInquiryDTO> getMyInquiryPage(String memId, int page, int size) {
+        int pageSize = size > 0 ? size : QNA_PAGE_SIZE;
+        long totalCount = myMapper.countMyInquiries(memId);
+        if (totalCount == 0) {
+            return PagedResult.empty(pageSize);
+        }
+
+        PaginationDTO pagination = buildPagination(page, pageSize, totalCount);
+        int offset = (pagination.getCurrentPage() - 1) * pagination.getPageSize();
+        List<MyInquiryDTO> items = myMapper.getMyInquiriesPage(memId, offset, pagination.getPageSize());
+        return new PagedResult<>(items, pagination);
     }
 
     public MyInquirySummaryDTO buildInquirySummary(List<MyInquiryDTO> inquiries) {
@@ -250,6 +315,14 @@ public class MyService {
 
     private String valueOrDefault(String value) {
         return value == null ? "N" : value;
+    }
+
+    private String normalize(String value) {
+        if (value == null) {
+            return null;
+        }
+        String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
     }
 
 

@@ -46,69 +46,61 @@
         </div>
 
         <div class="coupon-tabs">
-            <a th:href="@{/my/coupon(tab='available')}" th:classappend="${activeTab == 'available'} ? ' active'">
+            <a th:href="@{/my/coupon(tab='available', page=1)}" th:classappend="${activeTab == 'available'} ? ' active'">
                 사용 가능 (<span th:text="${couponSummary != null ? couponSummary.availableCount : 0}">0</span>)
             </a>
-            <a th:href="@{/my/coupon(tab='used')}" th:classappend="${activeTab == 'used'} ? ' active'">
+            <a th:href="@{/my/coupon(tab='used', page=1)}" th:classappend="${activeTab == 'used'} ? ' active'">
                 사용 완료 (<span th:text="${couponSummary != null ? couponSummary.usedCount : 0}">0</span>)
             </a>
-            <a th:href="@{/my/coupon(tab='expired')}" th:classappend="${activeTab == 'expired'} ? ' active'">
+            <a th:href="@{/my/coupon(tab='expired', page=1)}" th:classappend="${activeTab == 'expired'} ? ' active'">
                 기간 만료 (<span th:text="${couponSummary != null ? couponSummary.expiredCount : 0}">0</span>)
             </a>
         </div>
 
-        <!-- 사용 가능 쿠폰 -->
-        <div class="coupon-grid" th:if="${activeTab == 'available'}">
-            <div class="coupon-card" th:each="coupon : ${availableCoupons}">
+        <div class="filter-caption">
+            <span>
+                총 <strong th:text="${couponPage != null ? couponPage.totalCount : 0}">0</strong>건의 쿠폰이 조회되었습니다.
+            </span>
+        </div>
+
+        <div class="coupon-grid">
+            <div class="coupon-card"
+                 th:each="coupon : ${coupons}"
+                 th:classappend="${activeTab != 'available'} ? ' ' + activeTab : ''">
                 <div class="coupon-header">
-                    <span class="discount" th:text="${coupon.discountType == 'PERCENT' ? coupon.discountValue + '% 할인' : (coupon.discountType == 'SHIPPING' ? '무료배송' : #numbers.formatInteger(coupon.discountValue, 3, 'COMMA') + '원 할인')}">10% 할인</span>
+                    <span class="discount"
+                          th:text="${coupon.discountType == 'PERCENT' ? coupon.discountValue + '% 할인' : (coupon.discountType == 'SHIPPING' ? '무료배송' : #numbers.formatInteger(coupon.discountValue, 3, 'COMMA') + '원 할인')}">10% 할인</span>
                     <h3 th:text="${coupon.name}">쿠폰명</h3>
                 </div>
-                <p class="coupon-benefit" th:text="${coupon.benefit != null ? coupon.benefit : '쿠폰 혜택 안내'}">최대 20,000원 할인 · 30,000원 이상 구매 시</p>
+                <p class="coupon-benefit"
+                   th:text="${coupon.benefit != null ? coupon.benefit : '쿠폰 혜택 안내'}">혜택 안내</p>
                 <div class="coupon-meta">
-                    <span class="tag" th:text="${coupon.startDate != null ? #temporals.format(coupon.startDate, 'yyyy.MM.dd') : ''} + ' ~ ' + ${coupon.endDate != null ? #temporals.format(coupon.endDate, 'yyyy.MM.dd') : '기한 없음'}">2024.10.01 ~ 2024.10.31</span>
+                    <span class="tag" th:if="${activeTab == 'used'}"
+                          th:text="${coupon.usedAt != null ? '사용일 ' + #temporals.format(coupon.usedAt, 'yyyy.MM.dd HH:mm') : '사용 완료'}">사용 완료</span>
+                    <span class="tag" th:if="${activeTab == 'expired'}"
+                          th:text="${coupon.endDate != null ? #temporals.format(coupon.endDate, 'yyyy.MM.dd') + ' 만료' : '만료'}">만료</span>
+                    <span class="tag" th:if="${activeTab == 'available'}"
+                          th:text="${(coupon.startDate != null ? #temporals.format(coupon.startDate, 'yyyy.MM.dd') : '') + ' ~ ' + (coupon.endDate != null ? #temporals.format(coupon.endDate, 'yyyy.MM.dd') : '기한 없음')}">기간</span>
                     <span class="issuer" th:text="${coupon.issuer != null ? coupon.issuer : 'GreenGarden'}">GreenGarden</span>
                 </div>
-            </div>
-            <div class="empty-state coupon-empty" th:if="${availableCoupons == null or #lists.isEmpty(availableCoupons)}">
-                보유 중인 사용 가능 쿠폰이 없습니다.
             </div>
         </div>
 
-        <!-- 사용 완료 쿠폰 -->
-        <div class="coupon-grid" th:if="${activeTab == 'used'}">
-            <div class="coupon-card used" th:each="coupon : ${usedCoupons}">
-                <div class="coupon-header">
-                    <span class="discount" th:text="${coupon.discountType == 'PERCENT' ? coupon.discountValue + '% 할인' : (coupon.discountType == 'SHIPPING' ? '무료배송' : #numbers.formatInteger(coupon.discountValue, 3, 'COMMA') + '원 할인')}">10% 할인</span>
-                    <h3 th:text="${coupon.name}">쿠폰명</h3>
-                </div>
-                <p class="coupon-benefit" th:text="${coupon.benefit != null ? coupon.benefit : '쿠폰 혜택 안내'}">혜택 안내</p>
-                <div class="coupon-meta">
-                    <span class="tag" th:text="${coupon.usedAt != null ? '사용일 ' + #temporals.format(coupon.usedAt, 'yyyy.MM.dd HH:mm') : '사용 완료'}">2024.10.03</span>
-                    <span class="issuer" th:text="${coupon.issuer != null ? coupon.issuer : 'GreenGarden'}">GreenGarden</span>
-                </div>
-            </div>
-            <div class="empty-state coupon-empty" th:if="${usedCoupons == null or #lists.isEmpty(usedCoupons)}">
-                사용 완료한 쿠폰이 없습니다.
-            </div>
+        <div class="empty-state coupon-empty" th:if="${coupons == null or #lists.isEmpty(coupons)}" th:switch="${activeTab}">
+            <p th:case="'used'">사용 완료한 쿠폰이 없습니다.</p>
+            <p th:case="'expired'">만료된 쿠폰이 없습니다.</p>
+            <p th:case="*">보유 중인 사용 가능 쿠폰이 없습니다.</p>
         </div>
 
-        <!-- 만료 쿠폰 -->
-        <div class="coupon-grid" th:if="${activeTab == 'expired'}">
-            <div class="coupon-card expired" th:each="coupon : ${expiredCoupons}">
-                <div class="coupon-header">
-                    <span class="discount" th:text="${coupon.discountType == 'PERCENT' ? coupon.discountValue + '% 할인' : (coupon.discountType == 'SHIPPING' ? '무료배송' : #numbers.formatInteger(coupon.discountValue, 3, 'COMMA') + '원 할인')}">10% 할인</span>
-                    <h3 th:text="${coupon.name}">쿠폰명</h3>
-                </div>
-                <p class="coupon-benefit" th:text="${coupon.benefit != null ? coupon.benefit : '쿠폰 혜택 안내'}">혜택 안내</p>
-                <div class="coupon-meta">
-                    <span class="tag" th:text="${coupon.endDate != null ? #temporals.format(coupon.endDate, 'yyyy.MM.dd') + ' 만료' : '만료'}">2024.10.03 만료</span>
-                    <span class="issuer" th:text="${coupon.issuer != null ? coupon.issuer : 'GreenGarden'}">GreenGarden</span>
-                </div>
-            </div>
-            <div class="empty-state coupon-empty" th:if="${expiredCoupons == null or #lists.isEmpty(expiredCoupons)}">
-                만료된 쿠폰이 없습니다.
-            </div>
+        <div class="pagination" th:if="${couponPage != null and couponPage.totalPages > 1}">
+            <a th:classappend="${!couponPage.hasPrev}? ' disabled'"
+               th:href="@{/my/coupon(tab=${activeTab}, page=${couponPage.prevPage})}">이전</a>
+            <a th:each="p : ${#numbers.sequence(couponPage.startPage, couponPage.endPage)}"
+               th:classappend="${p == couponPage.currentPage}? ' active'"
+               th:href="@{/my/coupon(tab=${activeTab}, page=${p})}"
+               th:text="${p}">1</a>
+            <a th:classappend="${!couponPage.hasNext}? ' disabled'"
+               th:href="@{/my/coupon(tab=${activeTab}, page=${couponPage.nextPage})}">다음</a>
         </div>
 
         <!-- 이용 안내 -->
