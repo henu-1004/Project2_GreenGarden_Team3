@@ -67,9 +67,12 @@
                     </div>
                     <div class="row full">
                         <dt>기본 배송지</dt>
-                        <dd th:text="${info.addressBasic != null and !info.addressBasic.isBlank() ? info.addressBasic : '등록된 기본 배송지가 없습니다.'} + (info.addressDetail != null and !info.addressDetail.isBlank() ? ' ' + info.addressDetail : '')">
-                            부산광역시 부산진구 가야대로 123, 101동 101호
+                        <dd th:text="${info.addressBasic != null and !info.addressBasic.isBlank()
+                            ? info.addressBasic + ' ' + (info.addressDetail != null ? info.addressDetail : '')
+                            : '등록된 기본 배송지가 없습니다.'}">
                         </dd>
+
+
                     </div>
                 </dl>
             </div>
