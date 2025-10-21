@@ -145,6 +145,7 @@
                         <form th:if="${order.canCancel}" th:action="@{/my/order/cancel}" method="post" class="inline-form">
                             <input type="hidden" name="orderNo" th:value="${order.orderNo}">
                             <input type="hidden" name="proId" th:value="${order.proId}">
+                            <input type="hidden" name="orderItemId" th:value="${order.orderItemId}">
                             <input type="hidden" name="redirect" value="home">
                             <button type="submit" class="btn-secondary danger">주문취소</button>
                         </form>

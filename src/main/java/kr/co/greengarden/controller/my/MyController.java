@@ -561,11 +561,11 @@ public class MyController {
 
     @PostMapping("/confirm")
     public String confirmOrder(@RequestParam String orderNo,
-                               @RequestParam Long proId,
+                               @RequestParam Long orderItemId,
                                @RequestParam(value = "redirect", required = false) String redirectTarget,
                                @AuthenticationPrincipal UserDetails userDetails,
                                RedirectAttributes redirect) {
-        myService.updateConfirmYn(orderNo, proId, "Y");
+        myService.updateConfirmYn(orderNo, orderItemId, "Y");
         redirect.addFlashAttribute("msg", "구매확정 완료되었습니다.");
         return resolveRedirect(redirectTarget);
     }
@@ -590,7 +590,7 @@ public class MyController {
 
     @PostMapping("/exchange/complete")
     public String completeExchange(@RequestParam String orderNo,
-                                   @RequestParam Long proId,
+                                   @RequestParam Long orderItemId,
                                    @RequestParam(value = "type", required = false) String type,
                                    @RequestParam(value = "detail", required = false) String detail,
                                    @RequestParam(value = "proof", required = false) MultipartFile proof,
@@ -602,7 +602,7 @@ public class MyController {
         }
 
         try {
-            myService.submitExchange(userDetails.getUsername(), orderNo, proId, type, detail, proof);
+            myService.submitExchange(userDetails.getUsername(), orderNo, orderItemId, type, detail, proof);
             redirect.addFlashAttribute("msg", "교환 신청이 접수되었습니다.");
         } catch (IllegalArgumentException | IllegalStateException ex) {
             redirect.addFlashAttribute("errorMsg", ex.getMessage());
@@ -613,7 +613,7 @@ public class MyController {
 
     @PostMapping("/return/complete")
     public String completeReturn(@RequestParam String orderNo,
-                                 @RequestParam Long proId,
+                                 @RequestParam Long orderItemId,
                                  @RequestParam(value = "type", required = false) String type,
                                  @RequestParam(value = "detail", required = false) String detail,
                                  @RequestParam(value = "proof", required = false) MultipartFile proof,
@@ -625,7 +625,7 @@ public class MyController {
         }
 
         try {
-            myService.submitReturnRequest(userDetails.getUsername(), orderNo, proId, type, detail, proof);
+            myService.submitReturnRequest(userDetails.getUsername(), orderNo, orderItemId, type, detail, proof);
             redirect.addFlashAttribute("msg", "반품 신청이 접수되었습니다.");
         } catch (IllegalArgumentException | IllegalStateException ex) {
             redirect.addFlashAttribute("errorMsg", ex.getMessage());
@@ -636,7 +636,7 @@ public class MyController {
 
     @PostMapping("/order/cancel")
     public String cancelOrder(@RequestParam String orderNo,
-                              @RequestParam Long proId,
+                              @RequestParam Long orderItemId,
                               @RequestParam(value = "redirect", required = false) String redirectTarget,
                               @AuthenticationPrincipal UserDetails userDetails,
                               RedirectAttributes redirect) {
@@ -645,7 +645,7 @@ public class MyController {
         }
 
         try {
-            myService.cancelOrderItem(userDetails.getUsername(), orderNo, proId);
+            myService.cancelOrderItem(userDetails.getUsername(), orderNo, orderItemId);
             redirect.addFlashAttribute("msg", "주문이 취소되었습니다.");
         } catch (IllegalArgumentException | IllegalStateException ex) {
             redirect.addFlashAttribute("errorMsg", ex.getMessage());
