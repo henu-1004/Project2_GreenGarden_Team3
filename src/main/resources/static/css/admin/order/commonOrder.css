@@ -30,7 +30,7 @@ body {
     width: 1030px;
     flex-shrink: 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
     border-radius: 8px;
     background: white;
     /* aside와 상단선을 맞춤 */
@@ -124,13 +124,13 @@ body {
 
 .order-table th {
     padding: 10px;
-    border-top: 3px solid #C7D9D5;
-    border-bottom: 3px solid #C7D9D5;
+    border-top: 3px solid #66968c;
+    border-bottom: 3px solid #66968c;
 }
 
 .order-table td {
     padding: 10px;
-    border-bottom: 1px solid #C7D9D5;
+    border-bottom: 1px solid #66968c;
 }
 
 /* 주문번호가 있는 클래스를 지정하여 밑줄을 살림 */
@@ -169,7 +169,7 @@ body {
 }
 
 .pagination a {
-    border: 1px solid #C7D9D5; /* 테두리 */
+    border: 1px solid #66968c; /* 테두리 */
     padding: 8px 12px; /* 내부 여백 */
     border-radius: 4px; /* 둥근 모서리 */
     transition: background-color 0.2s; /* 부드러운 색 변화 */
@@ -178,7 +178,7 @@ body {
 }
 
 .pagination a:hover {
-    background-color: #C7D9D5;
+    background-color: #66968c;
 }
 
 .pagination a.active {

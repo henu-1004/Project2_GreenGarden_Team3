@@ -12,7 +12,7 @@
     position: relative;
     border-radius: 8px;
     background-color: white;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
 }
 
 #aside ul {
@@ -39,13 +39,13 @@
 /* 1차 메뉴 hover */
 #aside > ul > li:hover > span {
     color: white;
-    background-color: #175a48;
+    background-color: #66968c;
 }
 
 /* 1차 메뉴 active (클릭한 상태 유지) */
 #aside > ul > li.active > span {
-    color: white;
-    background-color: #175a48;
+    color: #175a48;
+    background-color: #66968c;
 }
 
 /* 2차 메뉴 기본 숨김 */
@@ -84,7 +84,7 @@
 
 /* 2차 메뉴 active (클릭한 상태 유지) */
 #aside > ul > li > ul > li.active {
-    background-color: #C7D9D5;
+    background-color: #f1f4f5;
 }
 
 #aside > ul > li > ul > li.active > a {
