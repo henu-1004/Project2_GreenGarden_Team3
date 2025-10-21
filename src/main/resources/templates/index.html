@@ -44,8 +44,7 @@
                 <div class="product">
                     <div id="best_title"><a>B E S T</a></div>
                     <div id="best_top">
-                        <a th:href="@{/product/detail/{id}(id=${i})}"
-                           th:each="i, iterStat : ${#numbers.sequence(1, 2)}">
+                        <a th:href="@{/product/view(proId=${i})}" th:each="i, iterStat : ${#numbers.sequence(1, 2)}">
                             <div class="best_top_product">
                                 <img th:src="@{/images/sample_thumb.png}" alt="상품">
                                 <p>상품명</p>
@@ -55,8 +54,7 @@
                         </a>
                     </div>
                     <div id="best_bottom">
-                        <a th:href="@{/product/detail/{id}(id=${i})}"
-                           th:each="i, iterStat : ${#numbers.sequence(1, 3)}">
+                        <a th:href="@{/product/view(proId=${i})}" th:each="i, iterStat : ${#numbers.sequence(1, 3)}">
                             <div class="best_bottom_product">
                                 <img th:src="@{/images/sample_thumb.png}" alt="상품">
                                 <p>상품명</p>
@@ -68,7 +66,7 @@
                 </div>
 
                 <div class="products right" title="HIT">
-                    <a th:href="@{/product/detail/{id}(id=${i})}" th:each="product : ${hitList}">
+                    <a th:href="@{/product/view(proId=${product.proId})}" th:each="product : ${hitList}">
                         <div class="products_item">
                             <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                             <p th:text="${product.name}">상품명</p>
@@ -91,7 +89,7 @@
 
                 <div class="products left" title="NEW">
 
-                    <a th:href="@{/product/detail/{id}(id=${product.proId})}" th:each="product : ${newList}">
+                    <a th:href="@{/product/view(proId=${product.proId})}" th:each="product : ${newList}">
                         <div class="products_item">
                             <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                             <p th:text="${product.name}">상품명</p>
@@ -114,7 +112,7 @@
                 </div>
 
                 <div class="products right" title="BRAND LEADER">
-                    <a th:href="@{/product/detail/{id}(id=${i})}" th:each="i, iterStat : ${#numbers.sequence(1, 6)}">
+                    <a th:href="@{/product/view(proId=${i})}" th:each="i, iterStat : ${#numbers.sequence(1, 6)}">
                         <div class="products_item">
                             <img th:src="@{/images/sample_thumb.png}" alt="상품">
                             <p>상품명</p>
@@ -126,7 +124,7 @@
 
 
                 <div class="products left" title="SALE">
-                    <a th:href="@{/product/detail/{id}(id=${i})}" th:each="i, iterStat : ${#numbers.sequence(1, 6)}">
+                    <a th:href="@{/product/view(proId=${i})}" th:each="i, iterStat : ${#numbers.sequence(1, 6)}">
                         <div class="products_item">
                             <img th:src="@{/images/sample_thumb.png}" alt="상품">
                             <p>상품명</p>
@@ -136,11 +134,11 @@
                     </a>
                 </div>
 
-                <div th:replace="~{common/footer :: footer}"></div>
             </section>
         </div>
     </div>
 </main>
+<div th:replace="~{common/footer :: footer}"></div>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const slides = document.querySelectorAll("#slide .slides img");
