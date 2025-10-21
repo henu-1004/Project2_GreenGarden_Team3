@@ -27,90 +27,121 @@
         <h1>포인트 현황</h1>
         <p class="lead">적립과 사용 내역을 확인하고 다양한 혜택을 놓치지 마세요.</p>
 
+        <div class="order-banner">
+            <img th:src="@{/img/my/point_banner.png}" alt="포인트 배너" width="810" height="86"
+                 onerror="this.src='https://dummyimage.com/810x86/d9ede6/175a48.png&text=GreenGarden+MY+Point';">
+        </div>
+
         <!-- 요약 -->
         <div class="point-summary">
             <div class="summary-card">
                 <span>보유 포인트</span>
-                <strong>12,500P</strong>
+                <strong th:text="${#numbers.formatInteger(totalPoint, 3, 'COMMA')} + 'P'">0P</strong>
                 <small>쇼핑 시 현금처럼 사용 가능합니다.</small>
             </div>
             <div class="summary-card">
-                <span>이번 달 적립</span>
-                <strong>+1,200P</strong>
-                <small>리뷰 작성 및 구매 적립 포함</small>
+                <span>선택 기간 적립</span>
+                <strong th:text="${#numbers.formatInteger(summary.earnedInPeriod, 3, 'COMMA')} + 'P'">0P</strong>
+                <small th:text="${startDate} + ' ~ ' + ${endDate}">-</small>
             </div>
             <div class="summary-card">
-                <span>소멸 예정</span>
-                <strong>300P</strong>
-                <small>2025-01-31까지 사용하세요.</small>
+                <span>선택 기간 사용</span>
+                <strong th:text="'-' + ${#numbers.formatInteger(summary.usedInPeriod, 3, 'COMMA')} + 'P'">-0P</strong>
+                <small th:text="${startDate} + ' ~ ' + ${endDate}">-</small>
+            </div>
+            <div class="summary-card">
+                <span>소멸 예정 포인트 (30일)</span>
+                <strong th:text="${#numbers.formatInteger(summary.expiringSoonAmount, 3, 'COMMA')} + 'P'">0P</strong>
+                <small th:text="${summary.expiringSoonCount > 0 ? summary.expiringReferenceDate + '까지 ' + summary.expiringSoonCount + '건' : '향후 30일 내 소멸 예정 포인트가 없습니다.'}">-</small>
             </div>
         </div>
 
         <!-- 포인트 로그 -->
         <div class="point-log">
             <div class="filter-bar">
-                <label>기간</label>
-                <div class="quick-range">
-                    <button class="active">1개월</button>
-                    <button>3개월</button>
-                    <button>6개월</button>
-                </div>
-                <input type="date">
-                <span>~</span>
-                <input type="date">
+                <form class="quick-range" th:action="@{/my/point}" method="get">
+                    <input type="hidden" name="page" value="1"/>
+                    <input type="hidden" name="type" th:value="${selectedType}"/>
+                    <button type="submit" name="period" value="1m" th:classappend="${selectedPeriod == '1m'} ? ' active'">1개월</button>
+                    <button type="submit" name="period" value="3m" th:classappend="${selectedPeriod == '3m'} ? ' active'">3개월</button>
+                    <button type="submit" name="period" value="6m" th:classappend="${selectedPeriod == '6m'} ? ' active'">6개월</button>
+                    <button type="submit" name="period" value="12m" th:classappend="${selectedPeriod == '12m'} ? ' active'">12개월</button>
+                </form>
+
+                <form class="custom-range" th:action="@{/my/point}" method="get">
+                    <input type="hidden" name="page" value="1"/>
+                    <input type="hidden" name="type" th:value="${selectedType}"/>
+                    <label for="startDate">기간 직접 입력</label>
+                    <input type="date" id="startDate" name="startDate" th:value="${startDate}" required>
+                    <span>~</span>
+                    <input type="date" id="endDate" name="endDate" th:value="${endDate}" required>
+                    <button type="submit" class="btn-primary">조회</button>
+                </form>
+
                 <div class="chip-group">
-                    <button class="chip active">전체</button>
-                    <button class="chip">적립</button>
-                    <button class="chip">사용</button>
+                    <a class="chip" th:href="@{/my/point(page=1, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type='ALL')}"
+                       th:classappend="${selectedType == 'ALL'} ? ' active'">전체</a>
+                    <a class="chip" th:href="@{/my/point(page=1, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type='EARN')}"
+                       th:classappend="${selectedType == 'EARN'} ? ' active'">적립</a>
+                    <a class="chip" th:href="@{/my/point(page=1, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type='USE')}"
+                       th:classappend="${selectedType == 'USE'} ? ' active'">사용</a>
                 </div>
-                <button class="btn-primary">조회하기</button>
             </div>
 
-            <table class="data-table">
-                <thead>
-                <tr>
-                    <th>일자</th>
-                    <th>구분</th>
-                    <th>상세내역</th>
-                    <th>변동 포인트</th>
-                    <th>잔여 포인트</th>
-                    <th>유효기간</th>
-                </tr>
-                </thead>
-                <tbody>
-                <!-- 샘플 데이터 -->
-                <tr th:if="${pointLogs == null}">
-                    <td>2025-10-12</td>
-                    <td>적립</td>
-                    <td class="left">[주문번호 20251012] 구매 적립</td>
-                    <td class="amount-plus">+800</td>
-                    <td>12,500</td>
-                    <td>2026-10-12</td>
-                </tr>
-                <tr th:if="${pointLogs == null}">
-                    <td>2025-10-05</td>
-                    <td>사용</td>
-                    <td class="left">장바구니 할인 사용</td>
-                    <td class="amount-minus">-500</td>
-                    <td>11,700</td>
-                    <td>-</td>
-                </tr>
+            <div class="filter-caption">
+                <span>총 <strong th:text="${totalCount}">0</strong>건의 내역이 조회되었습니다.</span>
+                <span th:if="${limited}" class="limit-text">※ 조회 기간은 최대 12개월까지 가능합니다.</span>
+            </div>
 
-                <!-- 실제 데이터 -->
-                <tr th:each="log : ${pointLogs}" th:if="${pointLogs != null}">
-                    <td th:text="${#temporals.format(log.createdAt, 'yyyy-MM-dd')}">2025-10-01</td>
-                    <td th:text="${log.type}">적립</td>
-                    <td class="left" th:text="${log.description}">주문 적립</td>
-                    <td th:classappend="${log.amount > 0} ? ' amount-plus' : ' amount-minus'"
-                        th:text="${log.amount > 0 ? '+' + log.amount : log.amount}">+500</td>
-                    <td th:text="${log.balance}">1000</td>
-                    <td th:text="${log.expireAt != null ? #temporals.format(log.expireAt, 'yyyy-MM-dd') : '-'}">2026-01-01</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="table-wrapper" th:if="${pointLogs != null and !#lists.isEmpty(pointLogs)}">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>일자</th>
+                        <th>구분</th>
+                        <th>주문번호</th>
+                        <th>상세내역</th>
+                        <th>적립</th>
+                        <th>사용</th>
+                        <th>잔여포인트</th>
+                        <th>유효기간</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="log : ${pointLogs}">
+                        <td th:text="${log.earnedAt != null ? #temporals.format(log.earnedAt, 'yyyy-MM-dd') : '-'}">2025-10-12</td>
+                        <td th:text="${log.amount > 0 ? '적립' : '사용'}">적립</td>
+                        <td th:text="${log.orderNo != null ? log.orderNo : '-'}">-</td>
+                        <td class="left" th:text="${log.note != null ? log.note : (log.amount > 0 ? '포인트 적립' : '포인트 사용')}">-</td>
+                        <td class="amount-plus"
+                            th:text="${log.amount > 0 ? '+' + #numbers.formatInteger(log.amount, 3, 'COMMA') : '-'}">+500</td>
+                        <td class="amount-minus"
+                            th:text="${log.amount < 0 ? #numbers.formatInteger(-log.amount, 3, 'COMMA') : '-'}">-</td>
+                        <td th:text="${#numbers.formatInteger(log.balanceAfter != null ? log.balanceAfter : 0, 3, 'COMMA')}">0</td>
+                        <td th:text="${log.expiredAt != null ? #temporals.format(log.expiredAt, 'yyyy-MM-dd') : '-'}">2026-10-12</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-            <div class="empty-state" th:if="${pointLogs != null and #lists.isEmpty(pointLogs)}">
+            <div class="empty-state" th:if="${pointLogs == null or #lists.isEmpty(pointLogs)}">
                 조회된 포인트 내역이 없습니다.
+            </div>
+
+            <div class="pagination" th:if="${pointPage != null and pointPage.totalPages > 1}">
+                <a class="page-link prev"
+                   th:classappend="${!pointPage.hasPrev}? ' disabled'"
+                   th:href="@{/my/point(page=${pointPage.prevPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type=${selectedType})}"
+                   aria-label="이전 페이지">이전</a>
+                <a class="page-link"
+                   th:each="p : ${#numbers.sequence(pointPage.startPage, pointPage.endPage)}"
+                   th:classappend="${p == pointPage.currentPage}? ' active'"
+                   th:href="@{/my/point(page=${p}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type=${selectedType})}"
+                   th:text="${p}">1</a>
+                <a class="page-link next"
+                   th:classappend="${!pointPage.hasNext}? ' disabled'"
+                   th:href="@{/my/point(page=${pointPage.nextPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type=${selectedType})}"
+                   aria-label="다음 페이지">다음</a>
             </div>
         </div>
 

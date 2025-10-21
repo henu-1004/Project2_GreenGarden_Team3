@@ -169,7 +169,7 @@
                         <label><input type="checkbox">구매조건 확인 및 결제진행 동의합니다.</label>
                         <div class="btn-wrap">
                             <button type="button" class="btn btn-primary"
-                                    th:onclick="|location.href='/greengarden/product/complete?orderNo=' + ${product.proId}|">
+                                    th:onclick="|location.href='/greengarden/product/complete?proId=' + ${product.proId} + '&quantity=' + ${quantity}|">
                                 주문하기
                             </button>
                             <button type="button" class="btn btn-secondary"

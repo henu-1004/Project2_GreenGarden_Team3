@@ -17,7 +17,7 @@ body {
 #main-section {
     width: 1200px;
     flex-shrink: 0;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
     border-radius: 8px;
     background: white;
 }
@@ -27,7 +27,7 @@ body {
     font-weight: 300;
     text-align: center;
     margin-bottom: 30px;
-    color: #4CAF50;
+    color: #175a48;
     letter-spacing: 2px;
 }
 /* ㅡㅡㅡ company index css ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ*/
@@ -131,9 +131,9 @@ body {
 
 .read-more-btn {
     display: inline-block;
-    color: #4CAF50;
+    color: #175a48;
     text-decoration: none;
-    border-bottom: 1px solid #4CAF50;
+    border-bottom: 1px solid #175a48;
     padding-bottom: 2px;
     transition: all 0.3s;
 }

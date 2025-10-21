@@ -1,42 +1,150 @@
 .qna-intro {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     margin-bottom: 28px;
 }
 
 .qna-intro .intro-card {
     border: 1px solid var(--gg-border);
-    border-radius: 16px;
+    border-radius: 18px;
     padding: 22px;
     background: #fff;
-    box-shadow: 0 8px 16px rgba(23, 90, 72, 0.05);
+    box-shadow: 0 12px 24px rgba(23, 90, 72, 0.08);
+    min-height: 150px;
 }
 
 .qna-intro .intro-card h3 {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     color: var(--gg-green-dark);
+    font-size: 16px;
 }
 
 .qna-intro .intro-card p {
     margin: 0;
     color: var(--gg-muted);
     font-size: 13px;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .qna-filters {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 20px;
+    padding: 18px 22px;
+    border-radius: 16px;
+    border: 1px solid var(--gg-border);
+    background: var(--gg-bg);
 }
 
 .qna-filters .chip-group {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+}
+
+.qna-filters .chip-group .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--gg-border);
+    background: #fff;
+    color: var(--gg-text);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.qna-filters .chip-group .chip .count {
+    color: var(--gg-green-dark);
+    font-weight: 600;
+}
+
+.qna-filters .chip-group .chip.active,
+.qna-filters .chip-group .chip:hover {
+    background: rgba(23, 90, 72, 0.14);
+    border-color: var(--gg-green-dark);
+    color: var(--gg-green-dark);
+}
+
+.qna-filters .actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.qna-filters .actions .btn-outline,
+.qna-filters .actions .btn-primary {
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.qna-filters .actions .btn-outline {
+    border: 1px solid var(--gg-green-dark);
+    background: transparent;
+    color: var(--gg-green-dark);
+}
+
+.qna-filters .actions .btn-outline:hover {
+    background: var(--gg-green-dark);
+    color: #fff;
+}
+
+.qna-filters .actions .btn-primary {
+    border: 1px solid transparent;
+    background: var(--gg-green-dark);
+    color: #fff;
+}
+
+.qna-filters .actions .btn-primary:hover {
+    background: var(--gg-green);
+}
+
+.table-wrapper.qna-table-wrapper {
+    border: 1px solid var(--gg-border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.qna-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 640px;
+}
+
+.qna-table thead {
+    background: rgba(23, 90, 72, 0.08);
+}
+
+.qna-table th,
+.qna-table td {
+    padding: 14px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--gg-border);
+    color: var(--gg-text);
+    text-align: center;
+}
+
+.qna-table td.left {
+    text-align: left;
+}
+
+.qna-table td.left a {
+    color: var(--gg-green-dark);
+    text-decoration: none;
+}
+
+.qna-table td.left a:hover {
+    text-decoration: underline;
 }
 
 .qna-table td.status {
@@ -49,6 +157,50 @@
 
 .qna-table td.status.waiting {
     color: #e6933b;
+}
+
+.qna-table tbody tr:nth-child(even) {
+    background: rgba(23, 90, 72, 0.03);
+}
+
+.qna-table tbody tr:hover {
+    background: rgba(23, 90, 72, 0.08);
+}
+
+.empty-state {
+    margin-top: 18px;
+    padding: 42px 24px;
+    border: 1px dashed var(--gg-border);
+    border-radius: 16px;
+    background: #fff;
+    color: var(--gg-muted);
+}
+
+.pagination {
+    margin-top: 24px;
+}
+
+.qna-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 18px;
+}
+
+.qna-actions .btn-outline {
+    border-radius: 999px;
+    border: 1px solid var(--gg-green-dark);
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gg-green-dark);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.qna-actions .btn-outline:hover {
+    background: var(--gg-green-dark);
+    color: #fff;
 }
 
 .qna-guide {
@@ -75,8 +227,35 @@
     font-size: 13px;
 }
 
-.qna-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 18px;
+@media (max-width: 1024px) {
+    .qna-filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .qna-filters .actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-wrapper.qna-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .qna-table {
+        min-width: 600px;
+    }
+}
+
+@media (max-width: 540px) {
+    .qna-actions {
+        justify-content: stretch;
+    }
+
+    .qna-actions .btn-outline {
+        width: 100%;
+        text-align: center;
+    }
 }

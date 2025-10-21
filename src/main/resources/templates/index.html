@@ -44,6 +44,7 @@
             <section id="main-section">
                 <div class="product">
                     <div id="best_title"><a>B E S T</a></div>
+
                     <div id="best_top">
                         <div class="best_top_product" th:each="i, iterStat : ${#numbers.sequence(1, 2)}">
                             <img th:src="@{/images/sample_thumb.png}" alt="상품">
@@ -63,6 +64,7 @@
                 </div>
 
                 <div class="products right" title="HIT">
+
                     <div class="products_item" th:each="product : ${hitList}">
                         <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                         <p th:text="${product.name}">상품명</p>
@@ -84,6 +86,7 @@
                 </div>
 
                 <div class="products left" title="NEW">
+
                     <div class="products_item" th:each="product : ${newList}">
                         <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                         <p th:text="${product.name}">상품명</p>
@@ -105,7 +108,8 @@
                 </div>
 
                 <div class="products right" title="BRAND LEADER">
-                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 6)}">
                         <img th:src="@{/images/sample_thumb.png}" alt="상품">
                         <p>상품명</p>
                         <span><a>30,000원</a><a>10%</a></span><br>
@@ -114,7 +118,7 @@
                 </div>
 
                 <div class="products left" title="SALE">
-                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 8)}">
+                    <div class="products_item" th:each="i, iterStat : ${#numbers.sequence(1, 6)}">
                         <img th:src="@{/images/sample_thumb.png}" alt="상품">
                         <p>상품명</p>
                         <span><a>30,000원</a><a>10%</a></span><br>

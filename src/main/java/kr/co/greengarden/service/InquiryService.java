@@ -4,6 +4,8 @@ import kr.co.greengarden.dto.InquiryDTO;
 import kr.co.greengarden.dto.NoticeDTO;
 import kr.co.greengarden.dto.PageRequestDTO;
 import kr.co.greengarden.dto.PageResponseDTO;
+import kr.co.greengarden.dto.my.MyInquiryDTO;
+import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
 import kr.co.greengarden.entity.Inquiry;
 import kr.co.greengarden.mapper.InquiryMapper;
 import kr.co.greengarden.repository.InquiryRepository;
@@ -18,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -166,6 +170,46 @@ public class InquiryService {
         List<Inquiry> inquiryList = inquiryRepository.findAll();
 
         return inquiryList.size();
+    }
+
+    /**
+     * ✅ 마이페이지 - 내 문의 목록 조회
+     */
+    public List<MyInquiryDTO> getMyInquiries(String memId) {
+        List<Inquiry> inquiries = inquiryRepository.findByWriter(memId);
+        return inquiries.stream()
+                .map(inquiry -> {
+                    MyInquiryDTO dto = new MyInquiryDTO();
+                    dto.setInquiryId(inquiry.getInquiryId());
+                    dto.setTitle(inquiry.getTitle());
+                    dto.setType(inquiry.getCategory1()); // ex. "배송", "환불" 등
+                    dto.setStatus(inquiry.getStatus());
+                    dto.setAnswer(inquiry.getAnswer());
+                    dto.setCreatedAt(inquiry.getCreatedAt());
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * ✅ 마이페이지 - 문의 요약 정보 계산
+     */
+    public MyInquirySummaryDTO getMyInquirySummary(String memId) {
+        List<MyInquiryDTO> list = getMyInquiries(memId);
+
+        long total = list.size();
+        long completed = list.stream().filter(MyInquiryDTO::isCompleted).count();
+        long waiting = total - completed;
+
+        Map<String, Long> typeCounts = list.stream()
+                .collect(Collectors.groupingBy(MyInquiryDTO::getDisplayType, Collectors.counting()));
+
+        return MyInquirySummaryDTO.builder()
+                .totalCount(total)
+                .completedCount(completed)
+                .waitingCount(waiting)
+                .typeCounts(typeCounts)
+                .build();
     }
 
 }

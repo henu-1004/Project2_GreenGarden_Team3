@@ -19,7 +19,7 @@ main {
 
 #header-top {
     padding: 10px;
-    background-color: #C7D9D5;
+    background-color: #66968c;
 }
 
 .header-util {
@@ -32,6 +32,11 @@ main {
     padding-left: 10px;
     text-decoration: none;
     color: #175a48;
+}
+/* 현재 페이지의 링크에 적용될 스타일 (밑줄) */
+#header-top a.active {
+    text-decoration: underline; /* 밑줄을 추가하는 핵심 스타일 */
+    font-weight: bold;
 }
 
 #header-middle {
