@@ -14,7 +14,7 @@ public class DeliveryInputDTO {
     private String recName;
     private String recZipCode;
     private String recAddressBasic;
-    private String recDetail;
+    private String recAddressDetail;
     private String company;
     private String invoiceNo;
     private String Note;
