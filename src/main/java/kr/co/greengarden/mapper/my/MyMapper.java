@@ -21,6 +21,7 @@ public interface MyMapper {
 
     long countOrderHistory(OrderHistoryCriteria criteria);
 
+    long countMyOrders(@Param("memId") String memId);
     OrderDetailDTO selectOrderDetail(@Param("memId") String memId,
                                      @Param("orderNo") String orderNo);
 

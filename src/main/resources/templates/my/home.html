@@ -21,11 +21,9 @@
 
     <!-- 본문 -->
     <section class="content">
-        <div class="summary-box">
-            <div class="item"><span>주문</span><strong>2</strong></div>
-            <div class="item"><span>쿠폰</span><strong>1</strong></div>
-            <div class="item"><span>포인트</span><strong>1000</strong></div>
-            <div class="item"><span>문의</span><strong>1</strong></div>
+        <div th:if="${!loginStatus}" class="empty-box login-required">
+            <p>로그인 후 마이페이지를 이용하실 수 있습니다.</p>
+            <a th:href="@{/member/login}" class="btn-primary">로그인 하러가기</a>
         </div>
 
         <div class="banner">810 × 86 배너 광고</div>
@@ -50,12 +48,17 @@
                     <p class="product">[<a href="javascript:void(0)" onclick="openModal('sellerModal', null, null, 'sellerSample')">㈜그린샵</a>] 샘플 상품 (1개)</p>
                     <p class="price">34,000원</p>
                 </div>
-                <div class="status">배송완료</div>
-                <div class="actions">
-                    <button onclick="openModal('confirmModal')">구매확정</button>
-                    <button onclick="openModal('reviewModal')">상품평작성</button>
-                    <button onclick="openModal('exchangeModal')">교환신청</button>
-                    <button onclick="openModal('returnModal')">반품신청</button>
+                <div class="item">
+                    <span>쿠폰</span>
+                    <strong th:text="${homeSummary.availableCouponCount}">0</strong>
+                </div>
+                <div class="item">
+                    <span>포인트</span>
+                    <strong th:text="${#numbers.formatInteger(homeSummary.totalPoint, 3, 'COMMA')}">0</strong>
+                </div>
+                <div class="item">
+                    <span>문의</span>
+                    <strong th:text="${homeSummary.inquiryCount}">0</strong>
                 </div>
             </div>
             <!-- ==========================
@@ -135,11 +138,8 @@
                     <button th:if="${order.returnYn == 'Y'}"
                             class="btn-secondary done" disabled>반품신청 완료</button>
                 </div>
-
-
             </div>
 
-            <!-- ✅ 포인트 적립 내역 -->
             <div class="section-header">
                 <h2>포인트 적립 내역</h2>
                 <a th:href="@{/my/point}" class="more">더보기 ></a>
@@ -162,24 +162,22 @@
                 <tr th:if="${#lists.isEmpty(recentPoints)}">
                     <td colspan="6">포인트 내역이 없습니다.</td>
                 </tr>
-                <tr th:each="p : ${recentPoints}">
-                    <td th:text="${#temporals.format(p.earnedAt, 'yyyy-MM-dd')}"></td>
-                    <td th:text="${p.note}"></td>
-                    <td th:text="${p.type}"></td>
-                    <td th:text="${p.amount > 0 ? '+' + p.amount : p.amount}"
-                        th:classappend="${p.amount > 0} ? 'plus' : 'minus'"></td>
-                    <td th:text="${p.orderNo ?: '-'}"></td>
-                    <td th:text="${#temporals.format(p.expiredAt, 'yyyy-MM-dd')}"></td>
+                <tr th:each="point : ${recentPoints}">
+                    <td th:text="${point.earnedAt != null ? #temporals.format(point.earnedAt, 'yyyy-MM-dd') : '-'}"></td>
+                    <td th:text="${!#strings.isEmpty(point.note) ? point.note : '-'}"></td>
+                    <td th:text="${point.amount > 0 ? '적립' : '사용'}"></td>
+                    <td th:text="${point.amount > 0 ? '+' + #numbers.formatInteger(point.amount, 3, 'COMMA') : #numbers.formatInteger(point.amount, 3, 'COMMA')}"
+                        th:classappend="${point.amount > 0} ? ' plus' : ' minus'"></td>
+                    <td th:text="${point.orderNo != null ? point.orderNo : '-'}"></td>
+                    <td th:text="${point.expiredAt != null ? #temporals.format(point.expiredAt, 'yyyy-MM-dd') : '-'}"></td>
                 </tr>
                 </tbody>
             </table>
 
-            <!-- ✅ 상품평 내역 (DB 기반 출력) -->
             <div class="section-header">
-                <h2>상품평 내역(DB)</h2>
+                <h2>상품평 내역</h2>
                 <a th:href="@{/my/review}" class="more">더보기 ></a>
             </div>
-
             <table class="review-table">
                 <thead>
                 <tr>
@@ -191,40 +189,22 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- 리뷰 없음 -->
                 <tr th:if="${#lists.isEmpty(myReviews)}">
                     <td colspan="5">작성한 상품평이 없습니다.</td>
                 </tr>
-
-                <!-- 리뷰 있음 -->
                 <tr th:each="review, iterStat : ${myReviews}">
                     <td th:text="${iterStat.index + 1}">1</td>
-                    <td th:text="${review.productName}">샘플 상품</td>
-                    <td class="left" th:text="${review.content}">내용 예시</td>
-                    <td>
-                        <!-- rating이 존재할 때만 별 표시 -->
-                        <div th:if="${review.rating != null and review.rating > 0}">
-                            <span th:each="i : ${#numbers.sequence(1, T(java.lang.Math).round(review.rating))}">★</span>
-                            <span th:each="i : ${#numbers.sequence(T(java.lang.Math).round(review.rating) + 1, 5)}" style="color:#ccc;">★</span>
-                        </div>
-                        <!-- rating이 없거나 0이면 표시 안 함 -->
-                        <div th:unless="${review.rating != null and review.rating > 0}">
-                            <span style="color:#ccc;">★★★★★</span>
-                        </div>
-                    </td>
-
-                    <td th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">2025-10-17</td>
+                    <td th:text="${review.productName}">상품명</td>
+                    <td class="left" th:text="${review.content}">내용</td>
+                    <td th:text="${review.ratingStars}">★★★★★</td>
+                    <td th:text="${review.createdAt != null ? #temporals.format(review.createdAt, 'yyyy-MM-dd') : '-'}">-</td>
                 </tr>
-
                 </tbody>
             </table>
 
-
-
-            <!-- ✅ 문의 내역 -->
             <div class="section-header">
                 <h2>문의 내역</h2>
-                <a th:href="@{/my/inquiry}" class="more">더보기 ></a>
+                <a th:href="@{/my/qna}" class="more">더보기 ></a>
             </div>
             <table class="inquiry-table">
                 <thead>
@@ -237,53 +217,64 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>배송문의</td>
-                    <td class="left">배송 언제 오나요?</td>
-                    <td><span class="status done">답변완료</span></td>
-                    <td>2025-09-18</td>
+                <tr th:if="${#lists.isEmpty(recentInquiries)}">
+                    <td colspan="5">문의 내역이 없습니다.</td>
+                </tr>
+                <tr th:each="inquiry, iterStat : ${recentInquiries}">
+                    <td th:text="${iterStat.index + 1}">1</td>
+                    <td th:text="${inquiry.displayType}">문의유형</td>
+                    <td class="left">
+                        <a th:href="@{/cs/qna/view(inquiryId=${inquiry.inquiryId})}"
+                           th:text="${inquiry.title}">문의 제목</a>
+                    </td>
+                    <td class="status"
+                        th:classappend="${inquiry.statusClass}"
+                        th:text="${inquiry.displayStatus}">답변대기</td>
+                    <td th:text="${inquiry.createdAt != null ? #temporals.format(inquiry.createdAt, 'yyyy-MM-dd') : '-'}">-</td>
                 </tr>
                 </tbody>
             </table>
 
-            <!-- ✅ 나의 설정 -->
             <div class="section-header">
                 <h2>나의 설정</h2>
             </div>
-
             <div class="setting-list">
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>기본배송지설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        부산광역시 진구 서면로 123
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && myInfo.addressBasic != null ? myInfo.addressBasic + (myInfo.addressDetail != null && !#strings.isEmpty(myInfo.addressDetail) ? ' ' + myInfo.addressDetail : '') : '등록된 기본배송지가 없습니다.'}">
+                        등록된 기본배송지가 없습니다.
                     </div>
                 </div>
 
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>Email 설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        abc123@gmail.com
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && !#strings.isEmpty(myInfo.email) ? myInfo.email : '등록된 이메일이 없습니다.'}">
+                        등록된 이메일이 없습니다.
                     </div>
                 </div>
 
                 <div class="setting-item">
                     <div class="setting-top">
                         <span>휴대폰 설정</span>
-                        <a href="#">변경</a>
+                        <a th:href="@{/my/info}">변경</a>
                     </div>
-                    <div class="setting-bottom">
-                        010-1234-5678
+                    <div class="setting-bottom"
+                         th:text="${myInfo != null && !#strings.isEmpty(myInfo.phone) ? myInfo.phone : '등록된 휴대폰 번호가 없습니다.'}">
+                        등록된 휴대폰 번호가 없습니다.
                     </div>
                 </div>
             </div>
+        </div>
     </section>
+
 </main>
 
 <!-- 공통 푸터 -->
