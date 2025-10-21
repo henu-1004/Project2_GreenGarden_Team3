@@ -5,6 +5,9 @@ import kr.co.greengarden.dto.my.MyInfoDTO;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
+import kr.co.greengarden.dto.my.OrderDetailDTO;
+import kr.co.greengarden.dto.my.OrderDetailItemDTO;
+import kr.co.greengarden.dto.my.OrderDetailRowDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
@@ -12,6 +15,7 @@ import kr.co.greengarden.dto.my.PagedResult;
 import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
 import kr.co.greengarden.dto.my.ReviewSummaryDTO;
+import kr.co.greengarden.dto.my.SellerDetailDTO;
 import kr.co.greengarden.entity.Order;
 import kr.co.greengarden.mapper.my.MyMapper;
 import kr.co.greengarden.repository.OrderRepository;
@@ -22,7 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +129,88 @@ public class MyService {
                 .prevPage(prevPage)
                 .nextPage(nextPage)
                 .build();
+    }
+
+    public OrderDetailDTO getOrderDetail(String memId, String orderNo) {
+        if (memId == null || memId.isBlank() || orderNo == null || orderNo.isBlank()) {
+            return null;
+        }
+
+        List<OrderDetailRowDTO> rows = myMapper.selectOrderDetail(memId, orderNo);
+        if (rows == null || rows.isEmpty()) {
+            return null;
+        }
+
+        OrderDetailRowDTO first = rows.get(0);
+        List<OrderDetailItemDTO> items = new ArrayList<>();
+        int productTotal = 0;
+        int discountTotal = 0;
+        int shippingFee = 0;
+        int pointUsed = 0;
+
+        for (OrderDetailRowDTO row : rows) {
+            int price = safeInt(row.getItemPrice());
+            int quantity = Math.max(1, safeInt(row.getQuantity()));
+            int discountRate = safeInt(row.getDiscountRate());
+            int delivery = safeInt(row.getDeliveryFee());
+            int productAmount = price * quantity;
+            int discountAmount = calculateDiscount(price, discountRate, quantity);
+            int lineTotal = productAmount - discountAmount + delivery;
+
+            productTotal += productAmount;
+            discountTotal += discountAmount;
+            shippingFee += delivery;
+            pointUsed += safeInt(row.getPointUsed());
+
+            items.add(OrderDetailItemDTO.builder()
+                    .proId(row.getProId())
+                    .productName(row.getProductName())
+                    .productImg(row.getProductImg())
+                    .price(price)
+                    .quantity(quantity)
+                    .discountRate(discountRate)
+                    .discountAmount(discountAmount)
+                    .deliveryFee(delivery)
+                    .lineTotal(lineTotal)
+                    .sellerId(row.getSellerId())
+                    .sellerName(row.getSellerName())
+                    .build());
+        }
+
+        int calculatedFinal = productTotal - discountTotal + shippingFee - pointUsed;
+        int finalAmount = first.getTotalPrice() != null ? first.getTotalPrice() : calculatedFinal;
+
+        return OrderDetailDTO.builder()
+                .orderNo(first.getOrderNo())
+                .orderedAt(first.getOrderedAt())
+                .orderStatus(first.getOrderStatus())
+                .payMethod(first.getPayMethod())
+                .productTotal(productTotal)
+                .discountTotal(discountTotal)
+                .shippingFee(shippingFee)
+                .pointUsed(pointUsed)
+                .finalAmount(finalAmount)
+                .deliveryStatus(first.getDeliveryStatus())
+                .deliveryCompany(first.getDeliveryCompany())
+                .invoiceNo(first.getInvoiceNo())
+                .deliveryNote(first.getDeliveryNote())
+                .receiverName(first.getReceiverName())
+                .receiverPhone(first.getReceiverPhone())
+                .receiverZipCode(first.getReceiverZipCode())
+                .receiverAddressBasic(first.getReceiverAddressBasic())
+                .receiverAddressDetail(first.getReceiverAddressDetail())
+                .ordererName(first.getOrdererName())
+                .ordererPhone(first.getOrdererPhone())
+                .ordererEmail(first.getOrdererEmail())
+                .items(items)
+                .build();
+    }
+
+    public SellerDetailDTO getSellerDetail(String sellerId) {
+        if (sellerId == null || sellerId.isBlank()) {
+            return null;
+        }
+        return myMapper.selectSellerDetail(sellerId);
     }
 
     // 🔹 [JPA] 전체 주문 내역 (나중에 상세 페이지용)
@@ -323,6 +412,21 @@ public class MyService {
         }
         String trimmed = value.trim();
         return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    private int safeInt(Integer value) {
+        return value == null ? 0 : value;
+    }
+
+    private int calculateDiscount(int price, int rate, int quantity) {
+        if (price <= 0 || rate <= 0 || quantity <= 0) {
+            return 0;
+        }
+        BigDecimal base = BigDecimal.valueOf(price)
+                .multiply(BigDecimal.valueOf(rate))
+                .divide(BigDecimal.valueOf(100), 0, RoundingMode.HALF_UP)
+                .multiply(BigDecimal.valueOf(quantity));
+        return base.intValue();
     }
 
 

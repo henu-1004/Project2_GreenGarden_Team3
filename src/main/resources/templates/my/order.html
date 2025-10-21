@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>마이페이지 | 주문 내역</title>
 
+    <!-- CSRF -->
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}">
+
     <!-- 공통 CSS -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
@@ -11,6 +16,7 @@
     <!-- my 전용 CSS -->
     <link rel="stylesheet" th:href="@{/css/my/home.css}">
     <link rel="stylesheet" th:href="@{/css/my/order.css}">
+    <link rel="stylesheet" th:href="@{/css/my/order-modal.css}">
     <link rel="stylesheet" th:href="@{/css/my/aside.css}">
 </head>
 <body>
@@ -83,7 +89,12 @@
                 <tr th:each="order : ${orders}">
                     <td data-label="주문일자" th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd')}">2023-01-01</td>
                     <td data-label="주문번호" class="order-number">
-                        <span th:text="${order.orderNo}">O20230101001</span>
+                        <button type="button"
+                                class="link-button"
+                                th:attr="data-order-no=${order.orderNo}"
+                                onclick="MyOrder.openOrderDetail(this)">
+                            <span th:text="${order.orderNo}">O20230101001</span>
+                        </button>
                     </td>
                     <td data-label="상품정보">
                         <div class="product-info">
@@ -93,6 +104,13 @@
                             </div>
                             <div class="details">
                                 <p class="name" th:text="${order.productName}">상품명</p>
+                                <button type="button"
+                                        class="seller-link"
+                                        th:if="${order.sellerName != null}"
+                                        th:attr="data-seller-id=${order.sellerId},data-order-no=${order.orderNo}"
+                                        onclick="MyOrder.openSellerInfo(this)">
+                                    <span th:text="${order.sellerName}">GreenGarden</span>
+                                </button>
                             </div>
                         </div>
                     </td>
@@ -101,24 +119,22 @@
                     <td data-label="주문상태" th:text="${order.status}">배송중</td>
                     <td data-label="신청">
                         <div class="order-actions">
-                            <form th:if="${order.canConfirm}" th:action="@{/my/confirm}" method="post">
-                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
-                                <input type="hidden" name="proId" th:value="${order.proId}">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <button type="submit" class="btn-primary">구매확정</button>
-                            </form>
-                            <form th:if="${order.canExchange}" th:action="@{/my/exchange/complete}" method="post">
-                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
-                                <input type="hidden" name="proId" th:value="${order.proId}">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <button type="submit" class="btn-outline">교환신청</button>
-                            </form>
-                            <form th:if="${order.canReturn}" th:action="@{/my/return/complete}" method="post">
-                                <input type="hidden" name="orderNo" th:value="${order.orderNo}">
-                                <input type="hidden" name="proId" th:value="${order.proId}">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                                <button type="submit" class="btn-outline">반품신청</button>
-                            </form>
+                            <button type="button" class="btn-primary"
+                                    th:if="${order.canConfirm}"
+                                    th:attr="data-order-no=${order.orderNo},data-pro-id=${order.proId}"
+                                    onclick="MyOrder.openConfirm(this)">구매확정</button>
+                            <button type="button" class="btn-outline"
+                                    th:if="${order.canReview}"
+                                    th:attr="data-order-no=${order.orderNo},data-pro-id=${order.proId},data-product-name=${order.productName}"
+                                    onclick="MyOrder.openReview(this)">리뷰작성</button>
+                            <button type="button" class="btn-outline"
+                                    th:if="${order.canExchange}"
+                                    th:attr="data-order-no=${order.orderNo},data-pro-id=${order.proId}"
+                                    onclick="MyOrder.openExchange(this)">교환신청</button>
+                            <button type="button" class="btn-outline"
+                                    th:if="${order.canReturn}"
+                                    th:attr="data-order-no=${order.orderNo},data-pro-id=${order.proId}"
+                                    onclick="MyOrder.openReturn(this)">반품신청</button>
                         </div>
                     </td>
                 </tr>
@@ -154,5 +170,305 @@
 <!-- 공통 푸터 -->
 <div th:replace="~{common/footer :: footer}"></div>
 
+<!-- ===== 주문상세 모달 ===== -->
+<div id="orderModal" class="modal modal-order">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-header-text">
+                <h2>주문상세</h2>
+                <p class="header-meta"><span data-field="orderNo">-</span> · <span data-field="orderedAt">-</span></p>
+            </div>
+            <button type="button" class="close" onclick="MyOrder.closeModal('orderModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <section class="modal-section">
+                <h3>주문 정보</h3>
+                <div class="info-grid">
+                    <div><span>결제수단</span><strong data-field="payMethod">-</strong></div>
+                    <div><span>배송상태</span><strong data-field="deliveryStatus">-</strong></div>
+                    <div><span>택배사</span><strong data-field="deliveryCompany">-</strong></div>
+                    <div><span>송장번호</span><strong data-field="invoiceNo">-</strong></div>
+                </div>
+                <div class="order-items">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>상품정보</th>
+                            <th>수량</th>
+                            <th>결제금액</th>
+                            <th>판매자</th>
+                        </tr>
+                        </thead>
+                        <tbody data-field="items">
+                        <tr class="loading-row"><td colspan="4">주문 정보를 불러오는 중입니다...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="modal-section">
+                <h3>결제 내역</h3>
+                <ul class="amount-list">
+                    <li><span>상품금액</span><strong data-field="productTotal">0원</strong></li>
+                    <li><span>할인금액</span><strong data-field="discountTotal">0원</strong></li>
+                    <li><span>배송비</span><strong data-field="shippingFee">0원</strong></li>
+                    <li><span>포인트 사용</span><strong data-field="pointUsed">0원</strong></li>
+                    <li class="total"><span>최종 결제금액</span><strong data-field="finalAmount">0원</strong></li>
+                </ul>
+            </section>
+
+            <section class="modal-section">
+                <h3>배송지 정보</h3>
+                <div class="info-grid">
+                    <div><span>수령인</span><strong data-field="receiverName">-</strong></div>
+                    <div><span>연락처</span><strong data-field="receiverPhone">-</strong></div>
+                    <div class="full"><span>주소</span><strong data-field="receiverAddress">-</strong></div>
+                    <div class="full"><span>배송메모</span><strong data-field="deliveryNote">-</strong></div>
+                </div>
+            </section>
+
+            <section class="modal-section">
+                <h3>주문자 정보</h3>
+                <div class="info-grid">
+                    <div><span>주문자</span><strong data-field="ordererName">-</strong></div>
+                    <div><span>연락처</span><strong data-field="ordererPhone">-</strong></div>
+                    <div class="full"><span>이메일</span><strong data-field="ordererEmail">-</strong></div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 판매자정보 모달 ===== -->
+<div id="sellerModal" class="modal modal-seller">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>판매자 정보</h2>
+            <button type="button" class="close" onclick="MyOrder.closeModal('sellerModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="seller-summary">
+                <h3 data-field="company">-</h3>
+                <p data-field="grade">-</p>
+            </div>
+            <table class="seller-table">
+                <tbody>
+                <tr><th>대표자</th><td data-field="representative">-</td></tr>
+                <tr><th>연락처</th><td data-field="tel">-</td></tr>
+                <tr><th>이메일</th><td data-field="email">-</td></tr>
+                <tr><th>사업자번호</th><td data-field="businessNumber">-</td></tr>
+                <tr><th>통신판매업</th><td data-field="tin">-</td></tr>
+                <tr><th>주소</th><td data-field="address">-</td></tr>
+                <tr><th>상태</th><td data-field="status">-</td></tr>
+                </tbody>
+            </table>
+            <div class="modal-actions">
+                <button type="button" class="btn-primary" onclick="MyOrder.openInquiry()">문의하기</button>
+            </div>
+            <p class="seller-notice">※ 전자상거래법 제20조 제2항 및 시행령 제25조 제2항에 따라 판매자 정보 고지 의무가 있습니다.</p>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 문의하기 모달 ===== -->
+<div id="inquiryModal" class="modal modal-inquiry">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>판매자 문의</h2>
+            <button type="button" class="close" onclick="MyOrder.closeModal('inquiryModal')">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="inquiryForm">
+                <input type="hidden" name="sellerId">
+                <input type="hidden" name="orderNo">
+                <div class="form-group">
+                    <label>문의 유형</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="category" value="상품" checked> 상품</label>
+                        <label><input type="radio" name="category" value="배송"> 배송</label>
+                        <label><input type="radio" name="category" value="교환/반품"> 교환/반품</label>
+                        <label><input type="radio" name="category" value="기타"> 기타</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inquiryCategoryDetail">세부 유형</label>
+                    <select id="inquiryCategoryDetail" name="detailCategory">
+                        <option value="">선택없음</option>
+                        <option value="상품상세문의">상품상세문의</option>
+                        <option value="배송상태문의">배송상태문의</option>
+                        <option value="교환문의">교환문의</option>
+                        <option value="반품문의">반품문의</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="inquiryTitle">제목</label>
+                    <input type="text" id="inquiryTitle" name="title" maxlength="100" placeholder="문의 제목을 입력해주세요." required>
+                </div>
+                <div class="form-group">
+                    <label for="inquiryContent">내용</label>
+                    <textarea id="inquiryContent" name="content" rows="5" maxlength="500"
+                              placeholder="최소 10자 이상, 500자 이내로 작성해주세요." required></textarea>
+                </div>
+                <div class="form-feedback" data-role="inquiry-feedback"></div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">등록하기</button>
+                    <button type="button" class="btn-secondary" onclick="MyOrder.closeModal('inquiryModal')">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 구매확정 모달 ===== -->
+<div id="confirmModal" class="modal modal-confirm">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>구매확정</h2>
+            <button type="button" class="close" onclick="MyOrder.closeModal('confirmModal')">&times;</button>
+        </div>
+        <form th:action="@{/my/confirm}" method="post">
+            <input type="hidden" name="orderNo" value="">
+            <input type="hidden" name="proId" value="">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="modal-body">
+                <p>상품을 받으셨나요?<br>받으신 경우에만 구매확정을 진행해주세요.</p>
+                <div class="actions">
+                    <button type="submit" class="btn-primary">확정하기</button>
+                    <button type="button" class="btn-secondary" onclick="MyOrder.closeModal('confirmModal')">취소</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== 상품평작성 모달 ===== -->
+<div id="reviewModal" class="modal">
+    <div class="modal-content modal-review">
+        <div class="modal-header">
+            <h2>상품평 작성</h2>
+            <button type="button" class="close" onclick="MyOrder.closeModal('reviewModal')">&times;</button>
+        </div>
+        <form th:action="@{/my/review/complete}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="orderNo" value="">
+            <input type="hidden" name="proId" value="">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>상품명</label>
+                    <p id="reviewProductName">-</p>
+                </div>
+                <div class="form-group">
+                    <label>별점</label>
+                    <div id="starRating" class="star-rating">
+                        <span data-value="1">★</span>
+                        <span data-value="2">★</span>
+                        <span data-value="3">★</span>
+                        <span data-value="4">★</span>
+                        <span data-value="5">★</span>
+                    </div>
+                    <input type="hidden" id="ratingValue" name="rating" value="0">
+                </div>
+                <div class="form-group">
+                    <label>내용</label>
+                    <textarea name="content" rows="5" placeholder="최소 10자 이상, 500자 이내로 작성해주세요." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>사진</label>
+                    <div class="upload-area">
+                        <input type="file" id="reviewFile1" name="reviewFile1" accept="image/*">
+                        <input type="file" id="reviewFile2" name="reviewFile2" accept="image/*">
+                        <input type="file" id="reviewFile3" name="reviewFile3" accept="image/*">
+                        <small>최대 3장까지 업로드 가능합니다.</small>
+                        <div id="previewArea" class="preview-area"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">작성완료</button>
+                    <button type="button" class="btn-secondary" onclick="MyOrder.closeModal('reviewModal')">취소</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== 반품신청 모달 ===== -->
+<div id="returnModal" class="modal modal-return">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>반품 신청</h2>
+            <button type="button" class="close" onclick="MyOrder.closeModal('returnModal')">&times;</button>
+        </div>
+        <form th:action="@{/my/return/complete}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="orderNo" value="">
+            <input type="hidden" name="proId" value="">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="modal-body">
+                <h3>반품 정보 입력</h3>
+                <div class="form-group">
+                    <label>반품 유형</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="reason" value="단순변심" checked> 단순 변심</label>
+                        <label><input type="radio" name="reason" value="불량"> 파손 및 불량</label>
+                        <label><input type="radio" name="reason" value="주문실수"> 주문 실수</label>
+                        <label><input type="radio" name="reason" value="기타"> 기타</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>상세 사유</label>
+                    <textarea name="detail" rows="4" placeholder="반품 사유를 입력해주세요." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>사진 첨부</label>
+                    <input type="file" name="file" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">반품신청</button>
+                    <button type="button" class="btn-secondary" onclick="MyOrder.closeModal('returnModal')">취소</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== 교환신청 모달 ===== -->
+<div id="exchangeModal" class="modal modal-exchange">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>교환 신청</h2>
+            <button type="button" class="close" onclick="MyOrder.closeModal('exchangeModal')">&times;</button>
+        </div>
+        <form th:action="@{/my/exchange/complete}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="orderNo" value="">
+            <input type="hidden" name="proId" value="">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>교환 유형</label>
+                    <select name="reason">
+                        <option value="사이즈 문제">사이즈 문제</option>
+                        <option value="색상 문제">색상 문제</option>
+                        <option value="상품 하자">상품 하자</option>
+                        <option value="기타">기타</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>사유 입력</label>
+                    <textarea name="detail" rows="4" placeholder="교환 사유를 입력해주세요." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>사진 첨부</label>
+                    <input type="file" name="file" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">교환신청</button>
+                    <button type="button" class="btn-secondary" onclick="MyOrder.closeModal('exchangeModal')">취소</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== 스크립트 ===== -->
+<script th:src="@{/js/my/order.js}"></script>
 </body>
 </html>

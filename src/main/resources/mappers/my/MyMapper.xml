@@ -78,6 +78,70 @@
           AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
     </select>
 
+    <select id="selectOrderDetail" resultType="kr.co.greengarden.dto.my.OrderDetailRowDTO">
+        SELECT
+            o.ORDERNO           AS orderNo,
+            o.ORDEREDAT         AS orderedAt,
+            o.STATUS            AS orderStatus,
+            o.PAYMETHOD         AS payMethod,
+            o.TOTALPRICE        AS totalPrice,
+            o.RECNAME           AS receiverName,
+            o.RECPHONE          AS receiverPhone,
+            o.RECZIPCODE        AS receiverZipCode,
+            o.RECADDRESSBASIC   AS receiverAddressBasic,
+            o.RECADDRESSDETAIL  AS receiverAddressDetail,
+            d.STATUS            AS deliveryStatus,
+            d.COMPANY           AS deliveryCompany,
+            d.INVOICE_NO        AS invoiceNo,
+            d.NOTE              AS deliveryNote,
+            mg.NAME             AS ordererName,
+            mg.PHONE            AS ordererPhone,
+            mg.EMAIL            AS ordererEmail,
+            oi.PROID            AS proId,
+            p.NAME              AS productName,
+            p.IMG1              AS productImg,
+            oi.PRICE            AS itemPrice,
+            oi.QUANTITY         AS quantity,
+            oi.DISCOUNT_RATE    AS discountRate,
+            oi.DELIVERYFEE      AS deliveryFee,
+            oi.POINT_USED       AS pointUsed,
+            s.MEMID             AS sellerId,
+            ms.COMPANY          AS sellerName
+        FROM TB_ORDER o
+                 JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                 JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+                 JOIN TB_MEMBER s ON p.MEMID = s.MEMID
+                 LEFT JOIN TB_MEMBER_SELLER ms ON s.MEMID = ms.MEMID
+                 JOIN TB_MEMBER_GENERAL mg ON o.MEMID = mg.MEMID
+                 LEFT JOIN TB_DELIVERY d ON o.ORDERNO = d.ORDERNO
+        WHERE o.MEMID = #{memId}
+          AND o.ORDERNO = #{orderNo}
+        ORDER BY oi.ORDERITEMID
+    </select>
+
+    <select id="selectSellerDetail" parameterType="string" resultType="kr.co.greengarden.dto.my.SellerDetailDTO">
+        SELECT
+            ms.MEMID          AS sellerId,
+            ms.COMPANY        AS company,
+            ms.REPRESENTATIVE AS representative,
+            ms.TEL            AS tel,
+            ms.FAX            AS fax,
+            ms.BUSINESSNUMBER AS businessNumber,
+            ms.TIN            AS tin,
+            ms.STATUS         AS status,
+            mg.EMAIL          AS email,
+            mg.PHONE          AS phone,
+            m.ZIPCODE         AS zipCode,
+            m.ADDRESSBASIC    AS addressBasic,
+            m.ADDRESSDETAIL   AS addressDetail,
+            g.GRADE           AS grade
+        FROM TB_MEMBER_SELLER ms
+                 JOIN TB_MEMBER m ON ms.MEMID = m.MEMID
+                 LEFT JOIN TB_MEMBER_GENERAL mg ON ms.MEMID = mg.MEMID
+                 LEFT JOIN TB_GRADE g ON ms.MEMID = g.MEMID
+        WHERE ms.MEMID = #{sellerId}
+    </select>
+
 
 
     <update id="updateConfirmYn">

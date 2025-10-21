@@ -3,9 +3,11 @@ package kr.co.greengarden.mapper.my;
 import kr.co.greengarden.dto.my.MyInfoDTO;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
+import kr.co.greengarden.dto.my.OrderDetailRowDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
+import kr.co.greengarden.dto.my.SellerDetailDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -18,6 +20,11 @@ public interface MyMapper {
     List<OrderSummaryDTO> selectOrderHistory(OrderHistoryCriteria criteria);
 
     long countOrderHistory(OrderHistoryCriteria criteria);
+
+    List<OrderDetailRowDTO> selectOrderDetail(@Param("memId") String memId,
+                                              @Param("orderNo") String orderNo);
+
+    SellerDetailDTO selectSellerDetail(@Param("sellerId") String sellerId);
 
     // ✅ 상태 업데이트 쿼리 4종 (모두 상품단위로)
     void updateConfirmYn(@Param("orderNo") String orderNo,

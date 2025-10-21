@@ -51,7 +51,7 @@ public class MyCouponService {
     private CouponBuckets classifyCoupons(String memId) {
         List<CouponIssue> issues = couponIssueRepository.findAllByMemberWithCoupon(memId);
         Comparator<CouponIssue> comparator = Comparator
-                .comparing((CouponIssue ci) -> getEndDate(ci.getCoupon()), Comparator.nullsLast(Comparator.naturalOrder()))
+                .comparing((CouponIssue ci) -> getEndDateTime(ci.getCoupon()), Comparator.nullsLast(Comparator.naturalOrder()))
                 .thenComparing(CouponIssue::getIssueId);
         issues.sort(comparator);
 
@@ -59,7 +59,8 @@ public class MyCouponService {
         List<MyCouponDTO> used = new ArrayList<>();
         List<MyCouponDTO> expired = new ArrayList<>();
 
-        LocalDate today = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDate today = now.toLocalDate();
         LocalDate soon = today.plusDays(7);
 
         int estimatedSavings = 0;
@@ -67,9 +68,10 @@ public class MyCouponService {
 
         for (CouponIssue issue : issues) {
             Coupon coupon = issue.getCoupon();
-            LocalDate endDate = getEndDate(coupon);
+            LocalDateTime endDateTime = getEndDateTime(coupon);
+            LocalDate endDate = endDateTime != null ? endDateTime.toLocalDate() : null;
             boolean usedStatus = isUsed(issue);
-            boolean expiredStatus = !usedStatus && endDate != null && endDate.isBefore(today);
+            boolean expiredStatus = !usedStatus && endDateTime != null && !endDateTime.isAfter(now);
 
             MyCouponDTO dto = toDto(issue);
 
@@ -108,11 +110,11 @@ public class MyCouponService {
         return status != null && status.equalsIgnoreCase("USED");
     }
 
-    private LocalDate getEndDate(Coupon coupon) {
+    private LocalDateTime getEndDateTime(Coupon coupon) {
         if (coupon == null || coupon.getEndDate() == null) {
             return null;
         }
-        return coupon.getEndDate().toLocalDate();
+        return coupon.getEndDate();
     }
 
     private LocalDate getStartDate(Coupon coupon) {
@@ -125,6 +127,7 @@ public class MyCouponService {
     private MyCouponDTO toDto(CouponIssue issue) {
         Coupon coupon = issue.getCoupon();
         LocalDateTime issuedAt = coupon != null ? coupon.getIssuedAt() : null;
+        LocalDate endDate = coupon != null && coupon.getEndDate() != null ? coupon.getEndDate().toLocalDate() : null;
         return MyCouponDTO.builder()
                 .issueId(issue.getIssueId())
                 .couponNo(coupon != null ? coupon.getCouponNo() : null)
@@ -135,7 +138,7 @@ public class MyCouponService {
                 .discountType(coupon != null ? coupon.getDiscountType() : null)
                 .discountValue(coupon != null ? coupon.getDiscountValue() : 0)
                 .startDate(getStartDate(coupon))
-                .endDate(getEndDate(coupon))
+                .endDate(endDate)
                 .issuedAt(issuedAt)
                 .usedAt(issue.getUsedAt())
                 .note(coupon != null ? coupon.getNote() : null)
