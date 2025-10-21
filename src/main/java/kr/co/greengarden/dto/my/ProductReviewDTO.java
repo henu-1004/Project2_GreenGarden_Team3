@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class ProductReviewDTO {
     private Long reviewId;
     private Long proId;
+    private Long orderItemId;
     private String memId;
     private String orderNo;
     private Double rating;

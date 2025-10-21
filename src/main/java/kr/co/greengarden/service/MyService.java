@@ -188,30 +188,30 @@ public class MyService {
         return Optional.of(info);
     }
 
-    public void updateConfirmYn(String orderNo, Long proId, String yn) {
-        myMapper.updateConfirmYn(orderNo, proId, yn);
+    public void updateConfirmYn(String orderNo, Long orderItemId, String yn) {
+        myMapper.updateConfirmYn(orderNo, orderItemId, yn);
     }
 
-    public void updateReviewYn(String orderNo, Long proId, String yn) {
-        myMapper.updateReviewYn(orderNo, proId, yn);
+    public void updateReviewYn(String orderNo, Long orderItemId, String yn) {
+        myMapper.updateReviewYn(orderNo, orderItemId, yn);
     }
 
-    public void updateExchangeYn(String orderNo, Long proId, String yn) {
-        myMapper.updateExchangeYn(orderNo, proId, yn);
+    public void updateExchangeYn(String orderNo, Long orderItemId, String yn) {
+        myMapper.updateExchangeYn(orderNo, orderItemId, yn);
     }
 
-    public void updateReturnYn(String orderNo, Long proId, String yn) {
-        myMapper.updateReturnYn(orderNo, proId, yn);
+    public void updateReturnYn(String orderNo, Long orderItemId, String yn) {
+        myMapper.updateReturnYn(orderNo, orderItemId, yn);
     }
 
     @Transactional
     public void submitExchange(String memId,
                                String orderNo,
-                               Long proId,
+                               Long orderItemId,
                                String type,
                                String detail,
                                MultipartFile proof) {
-        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, orderItemId);
 
         if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
             throw new IllegalStateException("이미 취소된 주문입니다.");
@@ -244,18 +244,18 @@ public class MyService {
                 .build();
 
         myMapper.insertExchangeRequest(requestDTO);
-        myMapper.updateExchangeYn(orderNo, proId, "Y");
+        myMapper.updateExchangeYn(orderNo, status.getOrderItemId(), "Y");
         log.info("✅ 교환 신청 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
     }
 
     @Transactional
     public void submitReturnRequest(String memId,
                                     String orderNo,
-                                    Long proId,
+                                    Long orderItemId,
                                     String type,
                                     String detail,
                                     MultipartFile proof) {
-        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, orderItemId);
 
         if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
             throw new IllegalStateException("이미 취소된 주문입니다.");
@@ -288,13 +288,13 @@ public class MyService {
                 .build();
 
         myMapper.insertReturnRequest(requestDTO);
-        myMapper.updateReturnYn(orderNo, proId, "Y");
+        myMapper.updateReturnYn(orderNo, status.getOrderItemId(), "Y");
         log.info("✅ 반품 신청 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
     }
 
     @Transactional
-    public void cancelOrderItem(String memId, String orderNo, Long proId) {
-        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, proId);
+    public void cancelOrderItem(String memId, String orderNo, Long orderItemId) {
+        OrderItemStatusDTO status = requireOrderItemStatus(memId, orderNo, orderItemId);
 
         if ("Y".equalsIgnoreCase(valueOrDefault(status.getCancelYn()))) {
             throw new IllegalStateException("이미 취소된 주문입니다.");
@@ -304,7 +304,7 @@ public class MyService {
             throw new IllegalStateException("배송준비 상태에서만 취소할 수 있습니다.");
         }
 
-        myMapper.updateCancelYn(orderNo, proId, "Y");
+        myMapper.updateCancelYn(orderNo, status.getOrderItemId(), "Y");
         log.info("✅ 주문 취소 완료 orderNo={}, orderItemId={}", orderNo, status.getOrderItemId());
     }
 
@@ -354,7 +354,7 @@ public class MyService {
             log.info("✅ 리뷰 등록 완료 (orderNo={}, memId={})", dto.getOrderNo(), dto.getMemId());
 
             // REVIEW_YN 업데이트
-            myMapper.updateReviewYn(dto.getOrderNo(), dto.getProId(), "Y");
+            myMapper.updateReviewYn(dto.getOrderNo(), dto.getOrderItemId(), "Y");
 
         } catch (RuntimeException e) {
             log.error("❌ 리뷰 파일 업로드 실패", e);
@@ -538,8 +538,8 @@ public class MyService {
         return normalizedStatus.contains(normalizedKeyword);
     }
 
-    private OrderItemStatusDTO requireOrderItemStatus(String memId, String orderNo, Long proId) {
-        OrderItemStatusDTO status = myMapper.selectOrderItemStatus(memId, orderNo, proId);
+    private OrderItemStatusDTO requireOrderItemStatus(String memId, String orderNo, Long orderItemId) {
+        OrderItemStatusDTO status = myMapper.selectOrderItemStatus(memId, orderNo, orderItemId);
         if (status == null || status.getOrderItemId() == null) {
             throw new IllegalArgumentException("주문 정보를 찾을 수 없습니다.");
         }

@@ -32,28 +32,28 @@ public interface MyMapper {
 
     // ✅ 상태 업데이트 쿼리 4종 (모두 상품단위로)
     void updateConfirmYn(@Param("orderNo") String orderNo,
-                         @Param("proId") Long proId,
+                         @Param("orderItemId") Long orderItemId,
                          @Param("yn") String yn);
 
     void updateReviewYn(@Param("orderNo") String orderNo,
-                        @Param("proId") Long proId,
+                        @Param("orderItemId") Long orderItemId,
                         @Param("yn") String yn);
 
     void updateExchangeYn(@Param("orderNo") String orderNo,
-                          @Param("proId") Long proId,
+                          @Param("orderItemId") Long orderItemId,
                           @Param("yn") String yn);
 
     void updateReturnYn(@Param("orderNo") String orderNo,
-                        @Param("proId") Long proId,
+                        @Param("orderItemId") Long orderItemId,
                         @Param("yn") String yn);
 
     void updateCancelYn(@Param("orderNo") String orderNo,
-                        @Param("proId") Long proId,
+                        @Param("orderItemId") Long orderItemId,
                         @Param("yn") String yn);
 
     OrderItemStatusDTO selectOrderItemStatus(@Param("memId") String memId,
                                              @Param("orderNo") String orderNo,
-                                             @Param("proId") Long proId);
+                                             @Param("orderItemId") Long orderItemId);
 
     void insertExchangeRequest(ExchangeRequestDTO requestDTO);
 
