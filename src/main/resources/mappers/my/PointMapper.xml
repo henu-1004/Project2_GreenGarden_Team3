@@ -5,6 +5,31 @@
 
 <mapper namespace="kr.co.greengarden.mapper.my.PointMapper">
 
+    <sql id="ledgerBaseWhere">
+        FROM TB_POINT_LEDGER L
+        JOIN TB_POINT P ON L.POINTID = P.POINTID
+        WHERE P.MEMID = #{memId}
+        <if test="startDate != null">
+            AND L.EARNEDAT &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND L.EARNEDAT &lt;= #{endDate}
+        </if>
+    </sql>
+
+    <sql id="ledgerTypeFilter">
+        <if test="type != null and type != 'ALL'">
+            <choose>
+                <when test="type == 'EARN'">
+                    AND L.AMOUNT &gt; 0
+                </when>
+                <when test="type == 'USE'">
+                    AND L.AMOUNT &lt; 0
+                </when>
+            </choose>
+        </if>
+    </sql>
+
     <!-- 회원별 포인트 내역 조회 -->
     <select id="selectPointLedger" parameterType="string"
             resultType="kr.co.greengarden.dto.my.PointLedgerDTO">
@@ -28,6 +53,87 @@
         SELECT NVL(TOTALPOINT, 0)
         FROM TB_POINT
         WHERE MEMID = #{memId}
+    </select>
+
+    <select id="selectPointLedgerPage" parameterType="kr.co.greengarden.dto.my.PointLedgerCriteria"
+            resultType="kr.co.greengarden.dto.my.PointLedgerDTO">
+        SELECT
+        L.LEGID        AS legId,
+        L.POINTID      AS pointId,
+        L.AMOUNT       AS amount,
+        L.TYPE         AS type,
+        L.NOTE         AS note,
+        L.ORDERNO      AS orderNo,
+        L.EARNEDAT     AS earnedAt,
+        L.EXPIREDAT    AS expiredAt
+        <include refid="ledgerBaseWhere"/>
+        <include refid="ledgerTypeFilter"/>
+        ORDER BY L.EARNEDAT DESC, L.LEGID DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <select id="countPointLedger" parameterType="kr.co.greengarden.dto.my.PointLedgerCriteria" resultType="long">
+        SELECT COUNT(*)
+        <include refid="ledgerBaseWhere"/>
+        <include refid="ledgerTypeFilter"/>
+    </select>
+
+    <select id="sumAmountBefore" parameterType="kr.co.greengarden.dto.my.PointLedgerCriteria" resultType="int">
+        SELECT NVL(SUM(amount), 0) FROM (
+            SELECT L.AMOUNT AS amount,
+                   ROW_NUMBER() OVER (ORDER BY L.EARNEDAT DESC, L.LEGID DESC) AS RN
+            <include refid="ledgerBaseWhere"/>
+            <include refid="ledgerTypeFilter"/>
+        ) SUB
+        WHERE RN &lt;= #{offset}
+    </select>
+
+    <select id="sumEarned" resultType="int">
+        SELECT NVL(SUM(L.AMOUNT), 0)
+        FROM TB_POINT_LEDGER L
+        JOIN TB_POINT P ON L.POINTID = P.POINTID
+        WHERE P.MEMID = #{memId}
+        <if test="startDate != null">
+            AND L.EARNEDAT &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND L.EARNEDAT &lt;= #{endDate}
+        </if>
+        AND L.AMOUNT &gt; 0
+    </select>
+
+    <select id="sumUsed" resultType="int">
+        SELECT NVL(SUM(L.AMOUNT), 0)
+        FROM TB_POINT_LEDGER L
+        JOIN TB_POINT P ON L.POINTID = P.POINTID
+        WHERE P.MEMID = #{memId}
+        <if test="startDate != null">
+            AND L.EARNEDAT &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND L.EARNEDAT &lt;= #{endDate}
+        </if>
+        AND L.AMOUNT &lt; 0
+    </select>
+
+    <select id="sumExpiringSoon" resultType="int">
+        SELECT NVL(SUM(L.AMOUNT), 0)
+        FROM TB_POINT_LEDGER L
+        JOIN TB_POINT P ON L.POINTID = P.POINTID
+        WHERE P.MEMID = #{memId}
+        AND L.AMOUNT &gt; 0
+        AND L.EXPIREDAT IS NOT NULL
+        AND L.EXPIREDAT BETWEEN #{fromDate} AND #{toDate}
+    </select>
+
+    <select id="countExpiringSoon" resultType="int">
+        SELECT NVL(COUNT(*), 0)
+        FROM TB_POINT_LEDGER L
+        JOIN TB_POINT P ON L.POINTID = P.POINTID
+        WHERE P.MEMID = #{memId}
+        AND L.AMOUNT &gt; 0
+        AND L.EXPIREDAT IS NOT NULL
+        AND L.EXPIREDAT BETWEEN #{fromDate} AND #{toDate}
     </select>
 
 </mapper>

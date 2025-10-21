@@ -1,9 +1,14 @@
 package kr.co.greengarden.controller.my;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.greengarden.dto.my.CouponPageDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
+import kr.co.greengarden.dto.my.PointLedgerCriteria;
+import kr.co.greengarden.dto.my.PointLedgerPageDTO;
+import kr.co.greengarden.dto.my.PointSummaryDTO;
 import kr.co.greengarden.service.MyService;
+import kr.co.greengarden.service.MyCouponService;
 import kr.co.greengarden.service.PointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +32,7 @@ public class MyController {
 
     private final MyService myService;
     private final PointService pointService;
+    private final MyCouponService myCouponService;
 
     @GetMapping("/home")
     public String home(HttpServletRequest request, Model model,
@@ -143,14 +149,126 @@ public class MyController {
     }
 
     @GetMapping("/point")
-    public String point(HttpServletRequest request, Model model) {
+    public String point(HttpServletRequest request,
+                       Model model,
+                       @AuthenticationPrincipal UserDetails userDetails,
+                       @RequestParam(value = "period", required = false) String period,
+                       @RequestParam(value = "startDate", required = false)
+                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                       @RequestParam(value = "endDate", required = false)
+                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                       @RequestParam(value = "type", defaultValue = "ALL") String type,
+                       @RequestParam(value = "page", defaultValue = "1") int page) {
+
         model.addAttribute("currentUri", request.getRequestURI());
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        String memId = userDetails.getUsername();
+        LocalDate today = LocalDate.now();
+        LocalDate resolvedEnd = endDate != null ? endDate : today;
+        if (resolvedEnd.isAfter(today)) {
+            resolvedEnd = today;
+        }
+
+        LocalDate resolvedStart;
+        String selectedPeriod;
+        if (period != null && !period.isBlank()) {
+            switch (period) {
+                case "1m":
+                    resolvedStart = resolvedEnd.minusMonths(1).plusDays(1);
+                    break;
+                case "6m":
+                    resolvedStart = resolvedEnd.minusMonths(6).plusDays(1);
+                    break;
+                case "12m":
+                    resolvedStart = resolvedEnd.minusMonths(12).plusDays(1);
+                    break;
+                case "3m":
+                default:
+                    resolvedStart = resolvedEnd.minusMonths(3).plusDays(1);
+                    period = "3m";
+                    break;
+            }
+            selectedPeriod = period;
+        } else if (startDate != null && endDate != null) {
+            resolvedStart = startDate;
+            selectedPeriod = "custom";
+        } else {
+            resolvedStart = resolvedEnd.minusMonths(3).plusDays(1);
+            selectedPeriod = "3m";
+        }
+
+        if (resolvedStart.isAfter(resolvedEnd)) {
+            resolvedStart = resolvedEnd;
+        }
+
+        LocalDate minStart = resolvedEnd.minusMonths(12);
+        boolean limited = false;
+        if (resolvedStart.isBefore(minStart)) {
+            resolvedStart = minStart;
+            limited = true;
+        }
+
+        String normalizedType = switch (type == null ? "ALL" : type.toUpperCase()) {
+            case "EARN", "USE" -> type.toUpperCase();
+            default -> "ALL";
+        };
+
+        PointLedgerCriteria criteria = PointLedgerCriteria.builder()
+                .memId(memId)
+                .startDate(resolvedStart)
+                .endDate(resolvedEnd)
+                .type(normalizedType)
+                .page(page)
+                .size(10)
+                .build();
+
+        PointLedgerPageDTO ledgerPage = pointService.getPointLedgerPage(criteria);
+        PointSummaryDTO summary = pointService.getPointSummary(memId, resolvedStart, resolvedEnd);
+
+        model.addAttribute("pointLogs", ledgerPage.getItems());
+        model.addAttribute("pointPage", ledgerPage);
+        model.addAttribute("summary", summary);
+        model.addAttribute("totalPoint", summary.getTotalPoint());
+        model.addAttribute("selectedPeriod", selectedPeriod);
+        model.addAttribute("periodParam", "custom".equals(selectedPeriod) ? null : selectedPeriod);
+        model.addAttribute("startDate", resolvedStart);
+        model.addAttribute("endDate", resolvedEnd);
+        model.addAttribute("limited", limited);
+        model.addAttribute("selectedType", normalizedType);
+        model.addAttribute("typeParam", normalizedType);
+        model.addAttribute("totalCount", ledgerPage.getTotalCount());
+
         return "my/point";
     }
 
     @GetMapping("/coupon")
-    public String coupon(HttpServletRequest request, Model model) {
+    public String coupon(HttpServletRequest request,
+                         Model model,
+                         @AuthenticationPrincipal UserDetails userDetails,
+                         @RequestParam(value = "tab", defaultValue = "available") String tab) {
         model.addAttribute("currentUri", request.getRequestURI());
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        String memId = userDetails.getUsername();
+        CouponPageDTO couponPage = myCouponService.getCouponPage(memId);
+
+        String activeTab = switch (tab == null ? "available" : tab.toLowerCase()) {
+            case "used" -> "used";
+            case "expired" -> "expired";
+            default -> "available";
+        };
+
+        model.addAttribute("couponSummary", couponPage.getSummary());
+        model.addAttribute("availableCoupons", couponPage.getAvailableCoupons());
+        model.addAttribute("usedCoupons", couponPage.getUsedCoupons());
+        model.addAttribute("expiredCoupons", couponPage.getExpiredCoupons());
+        model.addAttribute("activeTab", activeTab);
+
         return "my/coupon";
     }
 

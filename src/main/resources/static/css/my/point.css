@@ -69,10 +69,93 @@
 }
 
 .point-log .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
     margin-bottom: 16px;
+    align-items: center;
 }
 
 .point-log .chip-group {
     display: flex;
     gap: 10px;
+}
+
+.point-log .quick-range,
+.point-log .custom-range {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.point-log .quick-range button,
+.point-log .custom-range button {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--gg-border);
+    background: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.point-log .quick-range button.active,
+.point-log .quick-range button:hover {
+    background: var(--gg-green);
+    color: #fff;
+    border-color: var(--gg-green);
+}
+
+.point-log .custom-range label {
+    font-size: 13px;
+    color: var(--gg-muted);
+}
+
+.point-log .custom-range input[type="date"] {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--gg-border);
+    font-size: 13px;
+}
+
+.point-log .custom-range .btn-primary {
+    border-radius: 999px;
+}
+
+.point-log .chip-group .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--gg-border);
+    background: #fff;
+    color: var(--gg-text);
+    font-size: 13px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.point-log .chip-group .chip.active,
+.point-log .chip-group .chip:hover {
+    background: rgba(23, 90, 72, 0.12);
+    border-color: var(--gg-green);
+    color: var(--gg-green-dark);
+}
+
+.point-log .filter-caption {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 12px;
+    color: var(--gg-muted);
+    font-size: 13px;
+}
+
+.point-log .filter-caption .limit-text {
+    color: #d9534f;
+}
+
+.order-banner {
+    margin-bottom: 24px;
 }

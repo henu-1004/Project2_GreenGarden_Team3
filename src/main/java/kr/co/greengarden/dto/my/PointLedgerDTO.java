@@ -20,4 +20,5 @@ public class PointLedgerDTO {
     private String type;        // 적립/사용
     private String note;        // 상세 내용
     private String orderNo;     // 관련 주문번호
+    private Integer balanceAfter; // 내역 적용 후 잔여 포인트
 }
