@@ -8,6 +8,8 @@ package kr.co.greengarden.service;
 import jakarta.transaction.Transactional;
 import kr.co.greengarden.dto.admin.CouponDTO;
 import kr.co.greengarden.entity.Coupon;
+import kr.co.greengarden.entity.CouponIssue;
+import kr.co.greengarden.repository.CouponIssueRepository;
 import kr.co.greengarden.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ public class CouponService {
 
     private final CouponRepository couponRepository;
     private final ModelMapper modelMapper;
+    private final CouponIssueRepository couponIssueRepository;
 
     // --- 쿠폰 종류별 식별 코드 (상수) ---
     // private static final String TYPE_INDIVIDUAL = "1";  // 개별상품할인
@@ -85,6 +88,46 @@ public class CouponService {
                 .map(coupon -> modelMapper.map(coupon, CouponDTO.class))
                 .collect(Collectors.toList());
     }
+
+    public List<CouponDTO> getCouponListWithCounts(){
+        List<CouponDTO> list = getCouponList(); // 기존 메서드 그대로 호출
+
+        for(CouponDTO dto : list){
+            String couponNo = dto.getCouponNo();
+            dto.setIssueCount((int) couponIssueRepository.countByCouponNoAndStatusIn(
+            couponNo, java.util.List.of("ISSUED", "USED")));
+            dto.setUsedCount((int) couponIssueRepository.countByCouponNoAndStatus(
+                    couponNo, "USED"));
+        }
+        return list;
+    }
+
+    public long getIssueCount(String couponNo){
+        return couponIssueRepository.countByCouponNoAndStatusIn(
+                couponNo, java.util.List.of("ISSUED", "USED"));
+    }
+
+    public long getUsedCount(String couponNo){
+        return couponIssueRepository.countByCouponNoAndStatus(couponNo, "USED");
+    }
+
+    public java.util.List<kr.co.greengarden.repository.IssuedRow> getIssuedListSimple(){
+        return couponIssueRepository.findIssuedRows();
+    }
+
+    // 쿠폰 발급현황 관리(중단)
+    @Transactional
+        public void stopIssued(String issueId){
+        CouponIssue ci = couponIssueRepository.findByIdForUpdate(issueId)
+        .orElseThrow(() -> new IllegalArgumentException("발급행 없음"));
+        if("USED".equals(ci.getStatus())) throw new IllegalStateException("이미 사용됨");
+        if("CANCELLED".equals(ci.getStatus())) throw new IllegalStateException("이미 중단됨");
+        ci.setStatus("CANCELLED");
+    }
+
+
+
+
 
 
 }

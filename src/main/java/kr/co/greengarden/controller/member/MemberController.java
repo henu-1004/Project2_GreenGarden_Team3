@@ -30,6 +30,7 @@ public class MemberController {
     private final TermsService termsService;
     private final EmailService emailService;
 
+
     @GetMapping("/member/login")
     public String login() {
         return "member/login";
@@ -103,6 +104,7 @@ public class MemberController {
         return ResponseEntity.ok(map);
 
     }
+
 
 
 }
