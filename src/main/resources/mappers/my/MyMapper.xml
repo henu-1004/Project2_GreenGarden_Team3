@@ -5,6 +5,29 @@
 
 <mapper namespace="kr.co.greengarden.mapper.my.MyMapper">
 
+    <resultMap id="OrderDetailResultMap" type="kr.co.greengarden.dto.my.OrderDetailDTO">
+        <id property="orderNo" column="orderNo" />
+        <result property="orderedAt" column="orderedAt"/>
+        <result property="status" column="status" />
+        <result property="payMethod" column="payMethod" />
+        <result property="totalPrice" column="totalPrice" />
+        <result property="recName" column="recName" />
+        <result property="recPhone" column="recPhone" />
+        <result property="recZipCode" column="recZipCode" />
+        <result property="recAddressBasic" column="recAddressBasic" />
+        <result property="recAddressDetail" column="recAddressDetail" />
+        <collection property="items" ofType="kr.co.greengarden.dto.my.OrderDetailItemDTO">
+            <id property="orderItemId" column="orderItemId" />
+            <result property="proId" column="proId" />
+            <result property="productName" column="productName" />
+            <result property="productImg" column="productImg" />
+            <result property="price" column="price" />
+            <result property="quantity" column="quantity" />
+            <result property="discountRate" column="discountRate" />
+            <result property="deliveryFee" column="deliveryFee" />
+        </collection>
+    </resultMap>
+
     <select id="selectRecentOrders" parameterType="string"
             resultType="kr.co.greengarden.dto.my.OrderSummaryDTO">
         SELECT
@@ -18,7 +41,7 @@
             o.STATUS        AS status,
             o.ORDEREDAT     AS orderedAt,
             s.MEMID         AS sellerId,
-            ms.COMPANY      AS sellerName,
+            ms.COMPANY AS sellerCompany,
             s.ADDRESSBASIC  AS sellerAddress,
 
             -- ✅ 상품 단위 상태 관리
@@ -35,6 +58,35 @@
         WHERE o.MEMID = #{memId}
         ORDER BY o.ORDEREDAT DESC
             FETCH FIRST 5 ROWS ONLY
+    </select>
+
+    <select id="selectOrderDetail" parameterType="map"
+            resultMap="OrderDetailResultMap">
+        SELECT
+            o.ORDERNO         AS orderNo,
+            TO_CHAR(o.ORDEREDAT, 'YYYY-MM-DD HH24:MI:SS') AS orderedAt,
+            o.STATUS          AS status,
+            o.PAYMETHOD       AS payMethod,
+            o.TOTALPRICE      AS totalPrice,
+            o.RECNAME         AS recName,
+            o.RECPHONE        AS recPhone,
+            o.RECZIPCODE      AS recZipCode,
+            o.RECADDRESSBASIC AS recAddressBasic,
+            o.RECADDRESSDETAIL AS recAddressDetail,
+            oi.ORDERITEMID    AS orderItemId,
+            oi.PROID          AS proId,
+            p.NAME            AS productName,
+            p.IMG1            AS productImg,
+            oi.PRICE          AS price,
+            oi.QUANTITY       AS quantity,
+            oi.DISCOUNTRATE   AS discountRate,
+            oi.DELIVERYFEE    AS deliveryFee
+        FROM TB_ORDER o
+                 JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                 JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+        WHERE o.MEMID = #{memId}
+          AND o.ORDERNO = #{orderNo}
+        ORDER BY oi.ORDERITEMID
     </select>
 
     <select id="selectOrderHistory" parameterType="kr.co.greengarden.dto.my.OrderHistoryCriteria"
@@ -77,6 +129,29 @@
         WHERE o.MEMID = #{memId}
           AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
     </select>
+
+    <select id="selectSellerInfo" parameterType="string"
+            resultType="kr.co.greengarden.dto.my.SellerInfoDTO">
+        SELECT
+        m.MEMID AS sellerId,
+        m.ROLE AS gradeName,  <!-- 판매자/관리자/일반회원 구분 -->
+        s.COMPANY AS company,
+        s.REPRESENTATIVE AS representative,
+        s.TEL AS tel,
+        s.FAX AS fax,
+        s.BUSINESSNUMBER AS businessNumber,
+        s.TIN AS tin,
+        s.STATUS AS status,
+        m.ZIPCODE AS zipCode,
+        m.ADDRESSBASIC AS addressBasic,
+        m.ADDRESSDETAIL AS addressDetail
+        FROM TB_MEMBER m
+        LEFT JOIN TB_MEMBER_SELLER s ON m.MEMID = s.MEMID
+        WHERE m.MEMID = #{sellerId}
+    </select>
+
+
+
 
 
 

@@ -21,6 +21,7 @@ public class OrderSummaryDTO {
     private String status;          // 주문 상태
     private LocalDateTime orderedAt;// 주문일자
     private String sellerId;        // 판매자 ID
+    private String sellerCompany;   // ✅ 회사명
     private String sellerAddress;   // 판매자 주소
     private String sellerName;      // 상호명
 

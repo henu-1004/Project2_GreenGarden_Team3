@@ -5,6 +5,8 @@ import kr.co.greengarden.dto.my.MyInfoDTO;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
+import kr.co.greengarden.dto.my.OrderDetailDTO;
+import kr.co.greengarden.dto.my.OrderDetailItemDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
@@ -12,6 +14,7 @@ import kr.co.greengarden.dto.my.PagedResult;
 import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
 import kr.co.greengarden.dto.my.ReviewSummaryDTO;
+import kr.co.greengarden.dto.my.SellerInfoDTO;
 import kr.co.greengarden.entity.Order;
 import kr.co.greengarden.mapper.my.MyMapper;
 import kr.co.greengarden.repository.OrderRepository;
@@ -27,6 +30,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -127,6 +131,52 @@ public class MyService {
     // 🔹 [JPA] 전체 주문 내역 (나중에 상세 페이지용)
     public List<Order> findAllByMember_MemId(String memberId) {
         return orderRepository.findAllByMember_MemId(memberId);
+    }
+
+    public Optional<OrderDetailDTO> getOrderDetail(String memId, String orderNo) {
+        if (memId == null || memId.isBlank() || orderNo == null || orderNo.isBlank()) {
+            return Optional.empty();
+        }
+
+        OrderDetailDTO detail = myMapper.selectOrderDetail(memId, orderNo);
+        if (detail == null || detail.getItems() == null || detail.getItems().isEmpty()) {
+            return Optional.empty();
+        }
+
+        int itemsTotal = detail.getItems().stream()
+                .mapToInt(OrderDetailItemDTO::getLineTotal)
+                .sum();
+        int deliveryTotal = detail.getItems().stream()
+                .mapToInt(OrderDetailItemDTO::getDeliveryFee)
+                .sum();
+        int discountTotal = detail.getItems().stream()
+                .mapToInt(OrderDetailItemDTO::getDiscountAmount)
+                .sum();
+        int paymentTotal = itemsTotal + deliveryTotal - discountTotal;
+
+        detail.setItemsTotal(itemsTotal);
+        detail.setDeliveryTotal(deliveryTotal);
+        detail.setDiscountTotal(Math.max(discountTotal, 0));
+        detail.setPaymentTotal(paymentTotal);
+
+        return Optional.of(detail);
+    }
+
+    public Optional<SellerInfoDTO> getSellerInfo(String sellerId) {
+        if (sellerId == null || sellerId.isBlank()) {
+            return Optional.empty();
+        }
+
+        SellerInfoDTO info = myMapper.selectSellerInfo(sellerId);
+        if (info == null) {
+            return Optional.empty();
+        }
+
+        if (info.getGradeName() == null || info.getGradeName().isBlank()) {
+            info.setGradeName("일반판매자");
+        }
+
+        return Optional.of(info);
     }
 
     public void updateConfirmYn(String orderNo, Long proId, String yn) {
