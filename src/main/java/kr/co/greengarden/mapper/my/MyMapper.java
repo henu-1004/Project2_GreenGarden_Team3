@@ -1,5 +1,8 @@
 package kr.co.greengarden.mapper.my;
 
+import kr.co.greengarden.dto.my.MyInfoDTO;
+import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
+import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
@@ -37,4 +40,25 @@ public interface MyMapper {
 
     // ✅ 내가 작성한 리뷰 조회
     List<ProductReviewDTO> getMyReviews(@Param("memId") String memId);
+
+    long countMyReviews(@Param("memId") String memId);
+
+    List<ProductReviewDTO> getMyReviewsPage(@Param("memId") String memId,
+                                            @Param("offset") int offset,
+                                            @Param("limit") int limit);
+
+    // ✅ 내가 작성한 문의 조회
+    List<MyInquiryDTO> getMyInquiries(@Param("memId") String memId);
+
+    long countMyInquiries(@Param("memId") String memId);
+
+    List<MyInquiryDTO> getMyInquiriesPage(@Param("memId") String memId,
+                                          @Param("offset") int offset,
+                                          @Param("limit") int limit);
+
+    MyInfoDTO getMyInfo(@Param("memId") String memId);
+
+    int updateMyGeneralInfo(MyInfoUpdateDTO dto);
+
+    int updateMyMemberInfo(MyInfoUpdateDTO dto);
 }
