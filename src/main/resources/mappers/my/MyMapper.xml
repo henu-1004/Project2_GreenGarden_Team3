@@ -7,7 +7,7 @@
 
     <resultMap id="OrderDetailResultMap" type="kr.co.greengarden.dto.my.OrderDetailDTO">
         <id property="orderNo" column="orderNo" />
-        <result property="orderedAt" column="orderedAt" />
+        <result property="orderedAt" column="orderedAt"/>
         <result property="status" column="status" />
         <result property="payMethod" column="payMethod" />
         <result property="totalPrice" column="totalPrice" />
@@ -41,7 +41,7 @@
             o.STATUS        AS status,
             o.ORDEREDAT     AS orderedAt,
             s.MEMID         AS sellerId,
-            ms.COMPANY      AS sellerName,
+            ms.COMPANY AS sellerCompany,
             s.ADDRESSBASIC  AS sellerAddress,
 
             -- ✅ 상품 단위 상태 관리
@@ -64,7 +64,7 @@
             resultMap="OrderDetailResultMap">
         SELECT
             o.ORDERNO         AS orderNo,
-            o.ORDEREDAT       AS orderedAt,
+            TO_CHAR(o.ORDEREDAT, 'YYYY-MM-DD HH24:MI:SS') AS orderedAt,
             o.STATUS          AS status,
             o.PAYMETHOD       AS payMethod,
             o.TOTALPRICE      AS totalPrice,
@@ -133,23 +133,25 @@
     <select id="selectSellerInfo" parameterType="string"
             resultType="kr.co.greengarden.dto.my.SellerInfoDTO">
         SELECT
-            m.MEMID                     AS sellerId,
-            COALESCE(g.GRADE, '일반판매자') AS gradeName,
-            ms.COMPANY                  AS company,
-            ms.REPRESENTATIVE           AS representative,
-            ms.TEL                      AS tel,
-            ms.FAX                      AS fax,
-            mg.EMAIL                    AS email,
-            ms.BUSINESSNUMBER           AS businessNumber,
-            m.ZIPCODE                   AS zipCode,
-            m.ADDRESSBASIC              AS addressBasic,
-            m.ADDRESSDETAIL             AS addressDetail
+        m.MEMID AS sellerId,
+        m.ROLE AS gradeName,  <!-- 판매자/관리자/일반회원 구분 -->
+        s.COMPANY AS company,
+        s.REPRESENTATIVE AS representative,
+        s.TEL AS tel,
+        s.FAX AS fax,
+        s.BUSINESSNUMBER AS businessNumber,
+        s.TIN AS tin,
+        s.STATUS AS status,
+        m.ZIPCODE AS zipCode,
+        m.ADDRESSBASIC AS addressBasic,
+        m.ADDRESSDETAIL AS addressDetail
         FROM TB_MEMBER m
-                 LEFT JOIN TB_MEMBER_SELLER ms ON m.MEMID = ms.MEMID
-                 LEFT JOIN TB_MEMBER_GENERAL mg ON m.MEMID = mg.MEMID
-                 LEFT JOIN TB_GRADE g ON m.MEMID = g.MEMID
+        LEFT JOIN TB_MEMBER_SELLER s ON m.MEMID = s.MEMID
         WHERE m.MEMID = #{sellerId}
     </select>
+
+
+
 
 
 

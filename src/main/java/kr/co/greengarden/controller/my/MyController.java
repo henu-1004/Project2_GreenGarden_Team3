@@ -86,12 +86,16 @@ public class MyController {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
+        String memId = userDetails.getUsername();
+        log.info("📦 [ORDER DETAIL] memId={}, orderNo={}", memId, orderNo);
 
-        Optional<OrderDetailDTO> detail = myService.getOrderDetail(userDetails.getUsername(), orderNo);
-        return detail.<ResponseEntity<?>>map(ResponseEntity::ok)
+        Optional<OrderDetailDTO> detail = myService.getOrderDetail(memId, orderNo);
+        log.info("📦 결과: {}", detail.isPresent() ? "✅ 데이터 있음" : "❌ 데이터 없음");
+        return detail.map(d -> ResponseEntity.ok((Object)d))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("주문 정보를 찾을 수 없습니다."));
     }
+
 
     @GetMapping("/home/seller/{sellerId}")
     @ResponseBody
@@ -100,12 +104,14 @@ public class MyController {
         if (userDetails == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
-
+        log.info("🛍 [SELLER INFO] sellerId={}", sellerId);
         Optional<SellerInfoDTO> sellerInfo = myService.getSellerInfo(sellerId);
-        return sellerInfo.<ResponseEntity<?>>map(ResponseEntity::ok)
+        log.info("🛍 결과: {}", sellerInfo.isPresent() ? "✅ 데이터 있음" : "❌ 데이터 없음");
+        return sellerInfo.map(s -> ResponseEntity.ok((Object)s))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("판매자 정보를 찾을 수 없습니다."));
     }
+
 
 
     @GetMapping("/order")

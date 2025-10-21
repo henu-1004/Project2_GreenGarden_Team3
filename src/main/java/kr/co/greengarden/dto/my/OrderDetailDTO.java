@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ import java.util.List;
 public class OrderDetailDTO {
 
     private String orderNo;               // 주문번호
-    private LocalDateTime orderedAt;      // 주문일시
+    private String orderedAt;      // 주문일시
     private String status;                // 주문상태
     private String payMethod;             // 결제수단
     private int totalPrice;               // 주문 총액(테이블 컬럼)

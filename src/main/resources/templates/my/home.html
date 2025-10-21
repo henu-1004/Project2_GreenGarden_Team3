@@ -58,14 +58,9 @@
                     <button onclick="openModal('returnModal')">반품신청</button>
                 </div>
             </div>
-
-            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
-            <h4 style="margin-bottom:10px; color:#555;">🧩 아래는 실제 DB 기반 recentOrders 출력 테스트</h4>
-
             <!-- ==========================
      🧩 [2] 실제 데이터 바인딩 블록
      ========================== -->
-
             <!-- 주문 없음 -->
             <div th:if="${#lists.isEmpty(recentOrders)}" class="empty-box">
                 <p>최근 주문 내역이 없습니다.</p>
@@ -89,11 +84,12 @@
                     </p>
                     <p class="product">
                         [<a href="javascript:void(0)"
-                            th:text="${order.sellerId}"
-                            th:attr="onclick=|openModal('sellerModal', null, null, '${order.sellerId}')|">㈜그린샵</a>]
-                        <span th:text="${order.productName}">샘플 상품</span>
-                        (<span th:text="${order.quantity}">1</span>개)
+                            th:text="${order.sellerCompany}"
+                            th:attr="onclick=|openModal('sellerModal', null, null, '${order.sellerId}')|">㈜그린가든</a>]
+                        <span th:text="${order.productName}"></span>
+                        (<span th:text="${order.quantity}"></span>개)
                     </p>
+
                     <p class="price">
                         <span th:text="${order.totalPrice}">34000</span>원
                     </p>
@@ -101,14 +97,6 @@
 
                 <!-- 상태 -->
                 <div class="status" th:text="${order.status}">배송완료</div>
-
-                <!-- 상태 확인용 -->
-                <p class="yn-check">
-                    confirmYn: <span th:text="${order.confirmYn}"></span>,
-                    reviewYn: <span th:text="${order.reviewYn}"></span>,
-                    exchangeYn: <span th:text="${order.exchangeYn}"></span>,
-                    returnYn: <span th:text="${order.returnYn}"></span>
-                </p>
 
                 <!-- 버튼 영역 -->
                 <div class="actions">
@@ -157,44 +145,7 @@
                 <a th:href="@{/my/point}" class="more">더보기 ></a>
             </div>
 
-            <!-- 1️⃣ 기존 하드코딩 영역 (샘플 유지) -->
-            <table class="point-table">
-                <thead>
-                <tr>
-                    <th>날짜</th>
-                    <th>적립내역</th>
-                    <th>주문번호</th>
-                    <th>포인트</th>
-                    <th>비고</th>
-                    <th>유효기간</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>2025-10-01</td>
-                    <td>구매적립</td>
-                    <td>20251001</td>
-                    <td class="plus">+500</td>
-                    <td>상품 구매적립</td>
-                    <td>2026-10-01</td>
-                </tr>
-                <tr>
-                    <td>2025-09-20</td>
-                    <td>리뷰작성</td>
-                    <td>-</td>
-                    <td class="plus">+100</td>
-                    <td>리뷰 이벤트</td>
-                    <td>2026-09-20</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <hr style="margin: 25px 0; border: 1px dashed #ddd;">
-
             <!-- 2️⃣ 실제 DB 기반 출력 -->
-            <hr style="margin:25px 0; border:1px dashed #ddd;">
-
-            <!-- DB 기반 출력 -->
             <h4 style="margin-bottom:10px; color:#555;">🧩 실제 DB 기반 recentPoints 출력</h4>
             <table class="point-table">
                 <thead>
@@ -222,35 +173,6 @@
                 </tr>
                 </tbody>
             </table>
-
-
-            <!-- ✅ 상품평 내역 (하드코딩 샘플) -->
-            <div class="section-header">
-                <h2>상품평 내역</h2>
-                <a th:href="@{/my/review}" class="more">더보기 ></a>
-            </div>
-            <table class="review-table">
-                <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>상품명</th>
-                    <th>내용</th>
-                    <th>평점</th>
-                    <th>작성일</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>[㈜그린샵] 샘플 상품</td>
-                    <td class="left">배송이 빨라요</td>
-                    <td>★★★★☆</td>
-                    <td>2025-09-20</td>
-                </tr>
-                </tbody>
-            </table>
-
-            <hr style="margin:25px 0;border:1px dashed #ccc;">
 
             <!-- ✅ 상품평 내역 (DB 기반 출력) -->
             <div class="section-header">
@@ -358,53 +280,6 @@
                     </div>
                     <div class="setting-bottom">
                         010-1234-5678
-                    </div>
-                </div>
-            </div>
-
-            <!-- ✅ 최근 주문 내역 (MyBatis DTO 기반 출력) -->
-            <div th:each="order : ${recentOrders}" class="order-item">
-                <div class="thumb">
-                    <img th:if="${order.productImg != null}"
-                         th:src="@{${order.productImg}}"
-                         alt="상품 이미지">
-
-                    <img th:unless="${order.productImg != null}"
-                         th:src="@{/img/noimg.png}"
-                         alt="기본 이미지">
-                </div>
-
-                <div class="info">
-                    <p><strong>상품명:</strong> <span th:text="${order.productName ?: '정보없음'}"></span></p>
-                    <p><strong>주문번호:</strong> <span th:text="${order.orderNo ?: 'N/A'}"></span></p>
-                    <p><strong>주문일자:</strong>
-                        <span th:text="${order.orderedAt != null ? #temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm') : '날짜없음'}"></span>
-                    </p>
-                    <p><strong>주문상태:</strong> <span th:text="${order.status ?: '미정'}"></span></p>
-                    <p><strong>결제금액:</strong> <span th:text="${order.totalPrice}"></span>원</p>
-                </div>
-            </div>
-
-
-
-            <!-- ===========================
-                 ✅ 최근 주문 내역 확인용 테스트 블록
-                 =========================== -->
-            <div style="background:#f9f9f9; border:1px solid #ccc; padding:15px; margin-top:30px;">
-                <h3 style="margin-bottom:10px;">🧾 최근 주문 내역 (테스트 출력)</h3>
-
-                <div th:if="${#lists.isEmpty(recentOrders)}">
-                    <p>최근 주문 내역이 없습니다.</p>
-                </div>
-
-                <div th:each="order : ${recentOrders}">
-                    <div style="border-bottom:1px solid #ddd; padding:8px 0;">
-                        <p>
-                            <strong>주문번호:</strong> <span th:text="${order.orderNo}">O20251014001</span><br>
-                            <strong>상태:</strong> <span th:text="${order.status}">배송완료</span><br>
-                            <strong>주문일:</strong> <span th:text="${#temporals.format(order.orderedAt, 'yyyy-MM-dd HH:mm')}">2025-10-14 15:00</span><br>
-                            <strong>결제금액:</strong> <span th:text="${order.totalPrice}">34000</span>원
-                        </p>
                     </div>
                 </div>
             </div>
@@ -811,7 +686,13 @@
                 const thumb = document.createElement('div');
                 thumb.className = 'thumb';
                 const img = document.createElement('img');
-                img.src = item.productImg || '/img/sample.png';
+                const path = item.productImg || '';
+                if (path.startsWith('/uploads/')) {
+                    img.src = `/greengarden${path}`;
+                } else {
+                    img.src = path || '/greengarden/img/sample.png';
+                }
+
                 img.alt = '상품';
                 img.onerror = () => { img.src = '/img/sample.png'; };
                 thumb.appendChild(img);
@@ -857,7 +738,7 @@
         const errorEl = document.getElementById('orderDetailError');
         setOrderProductListMessage('주문 상품 정보를 불러오는 중입니다...');
         try {
-            const response = await fetch(`/my/home/order/${orderNo}`);
+            const response = await fetch(`/greengarden/my/home/order/${orderNo}`);
             if (!response.ok) {
                 let message = '주문 정보를 불러오는 중 오류가 발생했습니다.';
                 if (response.status === 401) {
@@ -921,7 +802,7 @@
     async function loadSellerInfo(sellerId) {
         const errorEl = document.getElementById('sellerInfoError');
         try {
-            const response = await fetch(`/my/home/seller/${sellerId}`);
+            const response = await fetch(`/greengarden/my/home/seller/${sellerId}`);
             if (!response.ok) {
                 let message = '판매자 정보를 불러오는 중 오류가 발생했습니다.';
                 if (response.status === 401) {
