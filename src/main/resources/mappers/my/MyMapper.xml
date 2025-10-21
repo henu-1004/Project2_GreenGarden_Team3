@@ -219,12 +219,17 @@
             d.STATUS       AS deliveryStatus
         FROM TB_ORDER_ITEM oi
                  JOIN TB_ORDER o ON oi.ORDERNO = o.ORDERNO
-                 LEFT JOIN TB_DELIVERY d ON d.ORDERNO = o.ORDERNO
+                 LEFT JOIN (
+            SELECT ORDERNO, MAX(STATUS) AS STATUS
+            FROM TB_DELIVERY
+            GROUP BY ORDERNO
+        ) d ON d.ORDERNO = o.ORDERNO
         WHERE o.MEMID = #{memId}
           AND oi.ORDERNO = #{orderNo}
           AND oi.ORDERITEMID = #{orderItemId}
           AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
     </select>
+
 
     <!-- 교환 신청 -->
     <insert id="insertExchangeRequest" parameterType="kr.co.greengarden.dto.my.ExchangeRequestDTO">
