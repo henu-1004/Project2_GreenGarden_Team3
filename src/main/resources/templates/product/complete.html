@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 완료 - Green Garden</title>
-
+    <!--
+        날짜 : 2025/10/21
+        이름 : 박효빈
+        내용 : 주문 완료 페이지 (할인 및 배송비 계산식 완전 반영)
+    -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/aside.css}">
     <link rel="stylesheet" th:href="@{/css/product/complete.css}">
     <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
+
 <body>
 <div th:replace="~{common/headerWithSearch :: headerWithSearch}"></div>
 
@@ -46,7 +51,7 @@
                     </tr>
                     <tr>
                         <th>주문자</th>
-                        <td th:text="${order != null ? order.recName : '회원정보 없음'}">김철수</td>
+                        <td th:text="${order != null ? order.recName : '회원정보 없음'}">홍길동</td>
                     </tr>
                     <tr>
                         <th>연락처</th>
@@ -55,8 +60,13 @@
                     <tr>
                         <th>총 결제 금액</th>
                         <td>
-                            <span th:text="${#numbers.formatInteger(order != null ? order.totalPrice : (product.price * quantity + (product.deliveryFee != null ? product.deliveryFee : 0)), 0)}"></span>
-                            <span>원</span>
+                            <span th:text="${#numbers.formatInteger(
+                                order != null ?
+                                    order.totalPrice
+                                    :
+                                    ((product.price * (1 - (product.discountRate / 100.0))) * quantity)
+                                    + (product.deliveryFee != null ? product.deliveryFee : 0),
+                            0)}">0</span>원
                         </td>
                     </tr>
                 </table>
@@ -68,7 +78,7 @@
                 <table class="order-info">
                     <tr>
                         <th>수취인</th>
-                        <td th:text="${order != null ? order.recName : '직접 입력'}">김철수</td>
+                        <td th:text="${order != null ? order.recName : '직접 입력'}">홍길동</td>
                     </tr>
                     <tr>
                         <th>연락처</th>
@@ -77,7 +87,7 @@
                     <tr>
                         <th>배송지 주소</th>
                         <td th:text="${order != null ? (order.recAddressBasic + ' ' + order.recAddressDetail) : '주소 정보 없음'}">
-                            서울특별시 강남구 ...
+                            서울특별시 강남구 테헤란로 00길 123
                         </td>
                     </tr>
                 </table>
@@ -96,33 +106,36 @@
                     </thead>
                     <tbody>
 
-                    <!-- 여러개 상품 -->
+                    <!-- ✅ 여러개 상품 -->
                     <tr th:if="${order != null and order.orderItems != null and #lists.size(order.orderItems) > 1}"
                         th:each="item : ${order.orderItems}">
                         <td class="col_item_info">
                             <div class="product_image">
                                 <img th:src="@{${item.product.img1}}"
                                      alt="상품 이미지"
-                                     onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+                                     onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=No+Image';">
                             </div>
                             <div class="product_info">
                                 <h6 th:text="${item.product.name}">상품명</h6>
                                 <p th:text="${item.product.description}">상품설명</p>
                             </div>
                         </td>
-                        <td th:text="${item.quantity + '개'}">2개</td>
+                        <td th:text="${item.quantity + '개'}"></td>
                         <td>
-                            <span th:text="${#numbers.formatInteger(item.price * item.quantity, 0)}"></span><span>원</span>
+                            <span th:text="${#numbers.formatInteger(
+                                ((item.product.price * (1 - (item.product.discountRate / 100.0))) * item.quantity)
+                                + (item.product.deliveryFee != null ? item.product.deliveryFee : 0),
+                            0)}"></span>원
                         </td>
                     </tr>
 
-                    <!-- 단일 상품 -->
+                    <!-- ✅ 단일 상품 -->
                     <tr th:if="${order == null or order.orderItems == null or #lists.size(order.orderItems) <= 1}">
                         <td class="col_item_info">
                             <div class="product_image">
                                 <img th:src="@{${product.img1}}"
                                      alt="상품 이미지"
-                                     onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+                                     onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=No+Image';">
                             </div>
                             <div class="product_info">
                                 <h6 th:text="${product.name}">상품명</h6>
@@ -131,7 +144,10 @@
                         </td>
                         <td th:text="${quantity + '개'}">1개</td>
                         <td>
-                            <span th:text="${#numbers.formatInteger(product.price * quantity, 0)}"></span><span>원</span>
+                            <span th:text="${#numbers.formatInteger(
+                                ((product.price * (1 - (product.discountRate / 100.0))) * quantity)
+                                + (product.deliveryFee != null ? product.deliveryFee : 0),
+                            0)}"></span>원
                         </td>
                     </tr>
 
@@ -149,16 +165,28 @@
                             </div>
                             <div class="item">
                                 <span>상품금액</span>
-                                <span th:text="${#numbers.formatInteger(order != null ? order.totalPrice : (product.price * quantity), 0)}">27,000</span>
+                                <span th:text="${#numbers.formatInteger(product.price * quantity, 0)}">9000000</span>
+                            </div>
+                            <div class="item">
+                                <span>할인금액</span>
+                                <span th:text="${'-' + #numbers.formatInteger((product.price * (product.discountRate / 100.0)) * quantity, 0)}">-900000</span>
                             </div>
                             <div class="item">
                                 <span>배송비</span>
-                                <span th:text="${#numbers.formatInteger(product != null ? product.deliveryFee : 0, 0)}">0</span>
+                                <span th:text="${#numbers.formatInteger(product.deliveryFee != null ? product.deliveryFee : 0, 0)}">20000000</span>
                             </div>
                             <hr>
                             <div class="total-price">
                                 <span>전체주문금액</span>
-                                <span th:text="${#numbers.formatInteger(order != null ? order.totalPrice : (product.price * quantity + (product.deliveryFee != null ? product.deliveryFee : 0)), 0)}">24,650</span>
+                                <span th:text="${#numbers.formatInteger(
+                                    (product.price * quantity)
+                                    - ((product.price * (product.discountRate / 100.0)) * quantity)
+                                    + (product.deliveryFee != null ? product.deliveryFee : 0),
+                                0)}">28100000</span>
+                            </div>
+                            <div class="item">
+                                <span>적립 포인트</span>
+                                <span th:text="${#numbers.formatInteger(product.point * quantity, 0)} + 'P'">100P</span>
                             </div>
                         </div>
                     </div>
