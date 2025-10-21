@@ -1,5 +1,6 @@
 package kr.co.greengarden.mapper.my;
 
+import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
@@ -37,4 +38,7 @@ public interface MyMapper {
 
     // ✅ 내가 작성한 리뷰 조회
     List<ProductReviewDTO> getMyReviews(@Param("memId") String memId);
+
+    // ✅ 내가 작성한 문의 조회
+    List<MyInquiryDTO> getMyInquiries(@Param("memId") String memId);
 }

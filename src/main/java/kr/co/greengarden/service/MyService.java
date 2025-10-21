@@ -1,10 +1,13 @@
 package kr.co.greengarden.service;
 
 import jakarta.transaction.Transactional;
+import kr.co.greengarden.dto.my.MyInquiryDTO;
+import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
+import kr.co.greengarden.dto.my.ReviewSummaryDTO;
 import kr.co.greengarden.entity.Order;
 import kr.co.greengarden.mapper.my.MyMapper;
 import kr.co.greengarden.repository.OrderRepository;
@@ -17,7 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -159,6 +165,58 @@ public class MyService {
     /** ✅ 리뷰 목록 조회 */
     public List<ProductReviewDTO> getMyReviews(String memId) {
         return myMapper.getMyReviews(memId);
+    }
+
+    public ReviewSummaryDTO buildReviewSummary(List<ProductReviewDTO> reviews) {
+        List<ProductReviewDTO> safeReviews = reviews == null ? Collections.emptyList() : reviews;
+
+        double averageRating = safeReviews.stream()
+                .map(ProductReviewDTO::getRating)
+                .filter(Objects::nonNull)
+                .mapToDouble(Double::doubleValue)
+                .average()
+                .orElse(0.0);
+
+        long photoCount = safeReviews.stream()
+                .filter(ProductReviewDTO::hasPhoto)
+                .count();
+
+        long answeredCount = safeReviews.stream()
+                .filter(review -> review.getContent() != null && !review.getContent().isBlank())
+                .count();
+
+        return ReviewSummaryDTO.builder()
+                .averageRating(averageRating)
+                .totalCount(safeReviews.size())
+                .photoReviewCount(photoCount)
+                .answeredCount(answeredCount)
+                .build();
+    }
+
+    public List<MyInquiryDTO> getMyInquiries(String memId) {
+        return myMapper.getMyInquiries(memId);
+    }
+
+    public MyInquirySummaryDTO buildInquirySummary(List<MyInquiryDTO> inquiries) {
+        List<MyInquiryDTO> safeInquiries = inquiries == null ? Collections.emptyList() : inquiries;
+
+        long completedCount = safeInquiries.stream()
+                .filter(MyInquiryDTO::isCompleted)
+                .count();
+
+        long waitingCount = safeInquiries.stream()
+                .filter(MyInquiryDTO::isWaiting)
+                .count();
+
+        Map<String, Long> typeCounts = safeInquiries.stream()
+                .collect(Collectors.groupingBy(MyInquiryDTO::getNormalizedType, Collectors.counting()));
+
+        return MyInquirySummaryDTO.builder()
+                .totalCount(safeInquiries.size())
+                .completedCount(completedCount)
+                .waitingCount(waitingCount)
+                .typeCounts(typeCounts)
+                .build();
     }
 
     /** ✅ 파일 저장 로직 */

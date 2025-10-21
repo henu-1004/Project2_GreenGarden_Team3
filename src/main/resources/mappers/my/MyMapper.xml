@@ -149,5 +149,18 @@
         ORDER BY r.CREATED_AT DESC
     </select>
 
+    <select id="getMyInquiries" parameterType="string" resultType="kr.co.greengarden.dto.my.MyInquiryDTO">
+        SELECT
+            i.INQUIRY_ID AS inquiryId,
+            i.CATEGORY1  AS type,
+            i.TITLE      AS title,
+            i.STATUS     AS status,
+            i.ANSWER     AS answer,
+            i.CREATED_AT AS createdAt
+        FROM TB_INQUIRY i
+        WHERE i.WRITER = #{memId}
+        ORDER BY i.CREATED_AT DESC
+    </select>
+
 
 </mapper>

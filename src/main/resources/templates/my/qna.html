@@ -25,7 +25,10 @@
     <!-- 본문 -->
     <section class="content">
         <h1>문의 내역</h1>
-        <p class="lead">배송, 교환, 상품에 대한 질문을 등록하고 답변 상태를 확인하세요.</p>
+        <p class="lead"
+           th:text="'등록된 문의 ' + (${qnaSummary == null ? 0 : qnaSummary.totalCount}) + '건 · 답변대기 ' + (${qnaSummary == null ? 0 : qnaSummary.waitingCount}) + '건 · 답변완료 ' + (${qnaSummary == null ? 0 : qnaSummary.completedCount}) + '건'">
+            배송, 교환, 상품에 대한 질문을 등록하고 답변 상태를 확인하세요.
+        </p>
 
         <!-- 인트로 안내 -->
         <div class="qna-intro">
@@ -46,11 +49,26 @@
         <!-- 필터 영역 -->
         <div class="qna-filters">
             <div class="chip-group">
-                <button class="chip active">전체</button>
-                <button class="chip">배송</button>
-                <button class="chip">교환/반품</button>
-                <button class="chip">상품</button>
-                <button class="chip">기타</button>
+                <button class="chip active">
+                    전체 <span class="count"
+                             th:text="${qnaSummary == null ? 0 : qnaSummary.totalCount}">0</span>
+                </button>
+                <button class="chip">
+                    배송 <span class="count"
+                               th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('배송')}">0</span>
+                </button>
+                <button class="chip">
+                    교환/반품 <span class="count"
+                                   th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('교환/반품')}">0</span>
+                </button>
+                <button class="chip">
+                    상품 <span class="count"
+                               th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('상품')}">0</span>
+                </button>
+                <button class="chip">
+                    기타 <span class="count"
+                               th:text="${qnaSummary == null ? 0 : qnaSummary.typeCount('기타')}">0</span>
+                </button>
             </div>
             <div class="actions">
                 <button class="btn-outline">FAQ 보기</button>
@@ -70,36 +88,22 @@
             </tr>
             </thead>
             <tbody>
-            <!-- 샘플 데이터 -->
-            <tr th:if="${qnaList == null}">
-                <td>3</td>
-                <td>배송</td>
-                <td class="left">주문한 상품 배송이 지연되고 있어요.</td>
-                <td class="status waiting">답변중</td>
-                <td>2025-10-12</td>
-            </tr>
-            <tr th:if="${qnaList == null}">
-                <td>2</td>
-                <td>상품</td>
-                <td class="left">상품 색상 교환이 가능한가요?</td>
-                <td class="status completed">답변완료</td>
-                <td>2025-10-07</td>
-            </tr>
-
             <!-- 실제 데이터 -->
-            <tr th:each="qna, iter : ${qnaList}" th:if="${qnaList != null}">
+            <tr th:each="qna, iter : ${qnaList}">
                 <td th:text="${iter.count}">1</td>
-                <td th:text="${qna.type}">배송</td>
-                <td class="left" th:text="${qna.title}">문의 제목</td>
-                <td class="status" th:classappend="${qna.status == '답변완료'} ? ' completed' : ' waiting'"
-                    th:text="${qna.status}">답변중</td>
+                <td th:text="${qna.displayType}">배송</td>
+                <td class="left">
+                    <a th:href="@{/cs/qna/view(inquiryId=${qna.inquiryId})}" th:text="${qna.title}">문의 제목</a>
+                </td>
+                <td class="status" th:classappend="${qna.statusClass}"
+                    th:text="${qna.displayStatus}">답변대기</td>
                 <td th:text="${#temporals.format(qna.createdAt, 'yyyy-MM-dd')}">2025-09-30</td>
             </tr>
             </tbody>
         </table>
 
         <!-- 문의 내역 없음 -->
-        <div class="empty-state" th:if="${qnaList != null and #lists.isEmpty(qnaList)}">
+        <div class="empty-state" th:if="${#lists.isEmpty(qnaList)}">
             등록된 문의가 없습니다. 궁금한 사항을 남겨주세요.
         </div>
 

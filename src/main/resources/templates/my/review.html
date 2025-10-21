@@ -31,17 +31,17 @@
         <div class="review-summary">
             <div class="score-box">
                 <span>평균 평점</span>
-                <strong>4.7</strong>
-                <span>(최근 6개월 기준)</span>
+                <strong th:text="${reviewSummary == null ? '0.0' : reviewSummary.formattedAverageRating}">0.0</strong>
+                <span th:text="'총 ' + (${reviewSummary == null ? 0 : reviewSummary.totalCount}) + '건'">총 0건</span>
             </div>
             <div class="detail-box">
                 <dl>
                     <dt>작성한 리뷰</dt>
-                    <dd>12건</dd>
+                    <dd th:text="(${reviewSummary == null ? 0 : reviewSummary.totalCount}) + '건'">0건</dd>
                     <dt>포토 리뷰</dt>
-                    <dd>4건</dd>
+                    <dd th:text="(${reviewSummary == null ? 0 : reviewSummary.photoReviewCount}) + '건'">0건</dd>
                     <dt>답변 완료</dt>
-                    <dd>9건</dd>
+                    <dd th:text="(${reviewSummary == null ? 0 : reviewSummary.answeredCount}) + '건'">0건</dd>
                 </dl>
             </div>
         </div>
@@ -57,27 +57,11 @@
             <button class="btn-outline">리뷰 작성 가이드</button>
         </div>
 
-        <!-- 샘플 데이터 -->
-        <article class="review-item" th:if="${reviewList == null}">
-            <div class="item-header">
-                <h3>[㈜그린가든] 싱그러운 몬스테라</h3>
-                <div class="rating">★★★★★</div>
-            </div>
-            <div class="item-meta">2025-10-01 · 주문번호 20251001001</div>
-            <div class="item-body">
-                식물이 매우 건강하고 배송도 빨랐어요! 다음에도 다시 구매하겠습니다.
-            </div>
-            <div class="item-actions">
-                <button class="btn-outline">리뷰 수정</button>
-                <button class="btn-outline">삭제</button>
-            </div>
-        </article>
-
         <!-- 실제 데이터 -->
-        <article class="review-item" th:each="review : ${reviewList}" th:if="${reviewList != null}">
+        <article class="review-item" th:each="review : ${reviewList}">
             <div class="item-header">
                 <h3 th:text="${review.productName}">상품명</h3>
-                <div class="rating" th:text="${review.ratingStars}">★★★★☆</div>
+                <div class="rating" th:text="${review.ratingStars}">★★★★★</div>
             </div>
             <div class="item-meta">
                 <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd')}">2025-09-22</span>
@@ -93,7 +77,7 @@
         </article>
 
         <!-- 리뷰 없음 -->
-        <div class="empty-state review-empty" th:if="${reviewList != null and #lists.isEmpty(reviewList)}">
+        <div class="empty-state review-empty" th:if="${#lists.isEmpty(reviewList)}">
             아직 작성한 리뷰가 없습니다.
         </div>
     </section>
