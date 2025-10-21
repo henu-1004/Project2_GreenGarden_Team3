@@ -72,7 +72,8 @@
                                 </tr>
                                 </thead>
                                 <tbody id="cart-items">
-                                <tr th:each="cart, stat  : ${cartList}">
+                                <!-- ✅ 장바구니 구매 -->
+                                <tr th:if="${cartList != null}" th:each="cart, stat  : ${cartList}">
                                     <td class="col-item-info">
                                         <div class="product-image">
                                             <img src="https://placehold.co/150x150/e0e0e0/000000?text=Product+Image"
@@ -90,13 +91,13 @@
                                     </td>
                                     <td>
                                         <div class="price-after">
-                                            <p class="original-price"><[[${cart.originalPrice}]]원</p>
-                                            <p class="discount-rate">[[${cart.discountRate}]]% ↓</p>
+                                            <p class="original-price">[[${cart.originalPrice}]]원</p>
+                                            <p class="discount-rate"><[[${cart.discountRate}]]% ↓</p>
                                         </div>
                                     </td>
                                     <td>[[${cart.point * cart.quantity}]]</td>
                                     <td>
-                                        <p class="shopping_fee">배송비 [[${cart.deliveryFee}]]원</p>
+                                        <p class="shopping_fee">[[${cart.deliveryFee}]]원</p>
                                     </td>
                                     <td>[[${cart.originalPrice * cart.quantity + cart.deliveryFee}]]</td>
 
@@ -105,7 +106,44 @@
                                     <input type="hidden" th:name="|items[${stat.index}].price|" th:value="${cart.price}">
                                     <input type="hidden" th:name="|items[${stat.index}].discountRate|" th:value="${cart.discountRate}">
                                 </tr>
+
+                                <!-- ✅ 단일 상품 바로구매 -->
+                                <tr th:if="${cartList == null and product != null}">
+                                    <td class="col-item-info">
+                                        <div class="product-image">
+                                            <img th:src="@{${product.img1}}"
+                                                 alt="상품명"
+                                                 onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+                                        </div>
+                                        <div class="product-info">
+                                            <h6>[[${product.name}]]</h6>
+                                            <p>[[${product.description}]]</p>
+                                        </div>
+                                    </td>
+                                    <td>[[${quantity}]]개</td>
+                                    <td>
+                                        <p class="price">[[${product.price}]]원</p>
+                                    </td>
+                                    <td>
+                                        <div class="price-after">
+                                            <p class="original-price">[[${product.price}]]원</p>
+                                            <p class="discount-rate">[[${product.discountRate}]]% ↓</p>
+                                        </div>
+                                    </td>
+                                    <td>[[${product.point * quantity}]]</td>
+                                    <td>
+                                        <p class="shopping_fee">[[${product.deliveryFee}]]원</p>
+                                    </td>
+                                    <td>[[${(product.price - (product.price * product.discountRate / 100)) * quantity + product.deliveryFee}]]</td>
+
+                                    <!-- 단일상품 hidden -->
+                                    <input type="hidden" name="productId" th:value="${product.proId}">
+                                    <input type="hidden" name="quantity" th:value="${quantity}">
+                                    <input type="hidden" name="price" th:value="${product.price}">
+                                    <input type="hidden" name="discountRate" th:value="${product.discountRate}">
+                                </tr>
                                 </tbody>
+
                             </table>
 
                         </div>
@@ -185,6 +223,7 @@
                         <div class="btn-wrap">
                             <button class="btn btn-primary">주문하기</button>
                             <button class="btn btn-secondary">주문취소</button>
+
                         </div>
                     </div>
                 </div>
