@@ -186,7 +186,7 @@
             alert("상품 정보가 없습니다.");
             return;
         }
-        const encodedUrl = `/greengarden/product/order2?productId=${encodeURIComponent(productId)}&quantity=${encodeURIComponent(quantityValue)}`;
+        const encodedUrl = `/greengarden/product/order?productId=${encodeURIComponent(productId)}&quantity=${encodeURIComponent(quantityValue)}`;
         location.href = encodedUrl;
     });
 
