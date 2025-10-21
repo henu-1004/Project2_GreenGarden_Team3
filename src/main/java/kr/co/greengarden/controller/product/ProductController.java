@@ -50,11 +50,14 @@ public class ProductController {
 
         Page<ProductListDTO> productList = productService.getProductCards(page, sortBy, direction, slug);
 
+        Category category = productService.getCategoryNameBySlug(slug);
+
         for (ProductListDTO p : productList) {
             int original = (int) Math.ceil(p.getPrice() * (100 - p.getDiscountRate()) / 100);
             p.setOriginalPrice(original);
         }
 
+        model.addAttribute("category", category);
         model.addAttribute("productList", productList);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("direction", direction);
