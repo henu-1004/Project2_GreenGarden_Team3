@@ -392,4 +392,12 @@
     </update>
 
 
+    <update id="updateMemberStatus">
+        UPDATE TB_MEMBER_GENERAL
+        SET STATUS = #{status},
+            NOTE = #{note}
+        WHERE MEMID = #{memId}
+    </update>
+
+
 </mapper>

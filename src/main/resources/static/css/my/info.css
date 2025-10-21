@@ -13,20 +13,6 @@
     color: var(--gg-muted);
 }
 
-.info-banner {
-    margin-bottom: 24px;
-    border-radius: 16px;
-    overflow: hidden;
-}
-
-.info-banner img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 16px;
-    background: #f3f7f6;
-}
-
 .alert {
     padding: 12px 16px;
     border-radius: 12px;
@@ -219,14 +205,69 @@
     flex: 1;
 }
 
+.address-zip .zip-field .btn-outline {
+    background: linear-gradient(135deg, rgba(23, 90, 72, 0.95), rgba(102, 150, 140, 0.9));
+    color: #fff;
+    border: none;
+    padding: 0 18px;
+    height: 40px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 10px 20px rgba(23, 90, 72, 0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.address-zip .zip-field .btn-outline:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(23, 90, 72, 0.24);
+}
+
+.form-row .field-hint {
+    color: var(--gg-muted);
+    font-size: 12px;
+}
+
 .form-actions {
     display: flex;
     justify-content: flex-end;
     margin-top: 24px;
+    gap: 12px;
 }
 
 .form-actions .btn-primary {
     padding: 12px 28px;
+}
+
+.form-actions .btn-danger {
+    padding: 12px 28px;
+}
+
+.info-modal {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.info-modal .modal-content {
+    max-width: 420px;
+}
+
+.modal-description {
+    margin: 0 0 16px;
+    color: var(--gg-muted);
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.withdraw-form .form-row {
+    gap: 10px;
+}
+
+.withdraw-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
 }
 
 @media (max-width: 960px) {

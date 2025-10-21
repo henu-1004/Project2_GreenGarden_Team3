@@ -1,18 +1,3 @@
-.order-banner {
-    margin: 24px 0;
-    display: flex;
-    justify-content: center;
-}
-
-.order-banner img {
-    width: 100%;
-    max-width: 810px;
-    height: auto;
-    border-radius: 12px;
-    object-fit: cover;
-    box-shadow: 0 6px 20px rgba(23, 90, 72, 0.08);
-}
-
 .order-filter {
     display: flex;
     flex-wrap: wrap;

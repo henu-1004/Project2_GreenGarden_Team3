@@ -84,4 +84,8 @@ public interface MyMapper {
     int updateMyGeneralInfo(MyInfoUpdateDTO dto);
 
     int updateMyMemberInfo(MyInfoUpdateDTO dto);
+
+    int updateMemberStatus(@Param("memId") String memId,
+                           @Param("status") String status,
+                           @Param("note") String note);
 }

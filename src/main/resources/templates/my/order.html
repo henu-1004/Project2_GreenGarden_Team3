@@ -28,7 +28,7 @@
         <p class="lead">최근 주문 현황과 배송 진행 상황을 한눈에 확인해 보세요.</p>
 
         <!-- 상단 배너 -->
-        <div class="order-banner" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
+        <div class="banner-area" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
 
         <div th:if="${msg}" class="alert success" th:text="${msg}"></div>
         <div th:if="${errorMsg}" class="alert error" th:text="${errorMsg}"></div>
