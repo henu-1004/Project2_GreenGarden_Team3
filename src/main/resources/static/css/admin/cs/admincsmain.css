@@ -28,7 +28,7 @@ body {
     width: 1030px;
     flex-shrink: 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
     border-radius: 8px;
     background: white;
     box-sizing: border-box;
@@ -40,7 +40,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 3px solid #ddd;
+    border-bottom: 3px solid #66968c;
     margin-bottom: 20px;
 }
 .top_nav h5 {
@@ -64,7 +64,6 @@ body {
 /* --- 검색 영역 --- */
 .search-form {
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
     margin-bottom: 20px;
     position: relative;
     display: flex;
@@ -139,8 +138,8 @@ body {
 /* 활성화된 페이지 (현재 페이지) */
 .cs-pagination a.active {
     color: #fff;
-    background-color: #175a48;
-    border-color: #175a48;
+    background-color: #66968c;
+    border-color: #66968c;
     font-weight: bold;
     pointer-events: none;
 }
@@ -249,14 +248,14 @@ body {
     padding: 8px 16px;
     font-size: 14px;
     border-radius: 4px;
-    border: 1px solid #007bff;
-    background-color: #007bff;
+    border: 1px solid #175a48;
+    background-color: #175a48;
     color: white;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 .action-buttons button:hover {
-    background-color: #0056b3;
+    background-color: #66968c;
 }
 
 /* --- View 페이지 스타일 (아이콘 제거 및 간격 조정) --- */
@@ -363,12 +362,12 @@ body {
 
 /* 목록 버튼 (파란색) */
 .admincs-view-actions .btn-list {
-    background-color: #4a90e2;
+    background-color: #66968c;
     color: #fff;
-    border-color: #4a90e2;
+    border-color: #66968c;
 }
 .admincs-view-actions .btn-list:hover {
-    background-color: #397ad1;
+    background-color: #175a48;
 }
 
 /* 불필요한 아이콘 관련 CSS 정리 */
@@ -449,7 +448,7 @@ body {
 
 /* 등록하기 버튼 (파란색) */
 .admincs-write-actions .btn-register {
-    background-color: #4a90e2;
+    background-color: #175a48;
     color: #fff;
 }
 
@@ -491,7 +490,7 @@ body {
 }
 
 .search-form .btn-search {
-    background-color: #4CAF50;
+    background-color: #175a48;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -501,7 +500,7 @@ body {
 }
 
 .search-form .btn-search:hover {
-    background-color: #43a047;
+    background-color: #66968c;
 }
 
 /* ====== 모달 창 ====== */
@@ -574,7 +573,7 @@ body {
 }
 
 .modal-buttons .btn-submit {
-    background-color: #4CAF50;
+    background-color: #175a48;
     color: white;
     border: none;
     padding: 8px 14px;
@@ -638,7 +637,7 @@ body {
 }
 
 .admincs-reply-textarea:focus {
-    border-color: #2d6a4f;
+    border-color: #175a48;
     box-shadow: 0 0 5px rgba(45, 106, 79, 0.3);
     outline: none;
 }
@@ -652,7 +651,7 @@ body {
 
 /* 등록 버튼 */
 .admincs-view-actions .btn-submit {
-    background-color: #2d6a4f;
+    background-color: #175a48;
     color: #fff;
     font-weight: bold;
     border: none;
@@ -664,7 +663,7 @@ body {
 }
 
 .admincs-view-actions .btn-submit:hover {
-    background-color: #1b4332;
+    background-color: #66968c;
 }
 
 /* 목록 버튼 */
@@ -687,5 +686,5 @@ body {
 
 
 
-.btn-submit:hover { background-color: #43a047; }
+.btn-submit:hover { background-color: #66968c; }
 .btn-cancel:hover { background-color: #777; }

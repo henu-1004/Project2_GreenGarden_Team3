@@ -29,11 +29,11 @@ body {
 /* 메인 시작 - 상품보기 영역 */
 #main-section {
     flex-grow: 1;
-    background: white;
     padding: 30px;
+    margin-top: 20px;
+    border: 3px solid #66968c;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    box-sizing: border-box;
+    background: white;
 }
 /* 탑 페이지 네이션 */
 .top_nav {
@@ -41,7 +41,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 3px solid #66968c;
     margin-bottom: 20px;
 }
 
@@ -82,7 +82,7 @@ body {
 .product-image-area > img {
     width: 480px;
     height: 480px;
-    object-fit: contain;
+    object-fit: cover;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
 }
@@ -151,6 +151,12 @@ body {
     margin-bottom: 10px;
 }
 
+.product-talk {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
 .product-meta-info {
     display: flex;
     gap: 15px;
@@ -164,7 +170,7 @@ body {
     gap: 5px;
 }
 
-.product-benefits, .shopping-info, .origin-info, .product-options, .total-price {
+.product-benefits, .shopping-info, .origin-info, .product-options {
     padding: 15px 0;
     border-top: 1px solid #eee;
     display: flex;
@@ -175,25 +181,37 @@ body {
     width: 100%;
 }
 
+.product-options {
+    margin: 10px 0;
+}
+
 .product-options select {
     width: 100%;
     padding: 10px;
+    margin: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
+.product-options input[type="number"] {
+    width: 50px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
 .total-price {
-    justify-content: flex-end;
     font-size: 1.2em;
     font-weight: bold;
 }
 .total-price span {
-    width: auto;
+    display: block;
 }
 
 .action-buttons {
     display: flex;
-    gap: 10px;
+    gap: 30px;
     margin-top: 20px;
+    padding: 0 15px;
 }
 
 .action-buttons button {
@@ -205,6 +223,7 @@ body {
     cursor: pointer;
     color: white;
     text-transform: uppercase;
+    font-size: 20px;
 }
 
 .action-buttons .cart-button {

@@ -36,7 +36,7 @@ a {
     width: 1030px;
     flex-shrink: 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
     border-radius: 8px;
     background: white;
     /* aside와 상단선을 맞춤 */
@@ -49,7 +49,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 3px solid #ddd;
+    border-bottom: 3px solid #66968c;
     margin-bottom: 20px;
 }
 
@@ -198,5 +198,5 @@ table tr td:last-child {
 }
 
 .btn-insert:hover {
-    background-color: #3e8e41;
+    background-color: #66968c;
 }

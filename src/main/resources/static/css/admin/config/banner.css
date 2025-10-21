@@ -31,7 +31,7 @@ body {
     width: 930px;
     flex-shrink: 0;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 3px solid #66968c;
     border-radius: 8px;
     background: white;
     /* aside와 상단선을 맞춤 */
@@ -47,7 +47,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding-bottom: 10px;
-    border-bottom: 3px solid #ddd;
+    border-bottom: 3px solid #66968c;
     margin-bottom: 20px;
 }
 
@@ -320,17 +320,6 @@ td a {
 .version-box td {
     text-align: left;
 }
-
-
-/*.version-box th,
-.version-box {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center; /* 가로 중앙정렬 */
-    vertical-align: middle; /* 세로 중앙 정렬 */
-}*/
-
-
 .version-box .btn {
     display: inline-block;
     background: #175a48;
@@ -356,5 +345,3 @@ td a {
     box-sizing: border-box;
     width: 200px;
     }
-/* 모달 끝 ㅡㅡㅡㅡㅡ */
->>>>>>> 640797a (feat: admin > config/banner, config/version, shop/list 모달(open-modal) 추가 및 CSS 수정)
