@@ -27,6 +27,8 @@
         <h1>나의 리뷰</h1>
         <p class="lead">작성한 리뷰를 관리하고, 추가 혜택을 챙겨보세요.</p>
 
+        <div class="banner-area" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
+
         <!-- 리뷰 요약 -->
         <div class="review-summary">
             <div class="score-box">
@@ -68,13 +70,15 @@
 
         <div class="pagination" th:if="${reviewPage != null and reviewPage.totalPages > 1}">
             <a th:classappend="${!reviewPage.hasPrev}? ' disabled'"
-               th:href="@{/my/review(page=${reviewPage.prevPage})}">이전</a>
+               th:href="${reviewPage.hasPrev} ? @{/my/review(page=${reviewPage.prevPage})} : '#'"
+               th:attr="aria-disabled=${!reviewPage.hasPrev}, tabindex=${!reviewPage.hasPrev}? -1 : null">이전</a>
             <a th:each="p : ${#numbers.sequence(reviewPage.startPage, reviewPage.endPage)}"
                th:classappend="${p == reviewPage.currentPage}? ' active'"
                th:href="@{/my/review(page=${p})}"
                th:text="${p}">1</a>
             <a th:classappend="${!reviewPage.hasNext}? ' disabled'"
-               th:href="@{/my/review(page=${reviewPage.nextPage})}">다음</a>
+               th:href="${reviewPage.hasNext} ? @{/my/review(page=${reviewPage.nextPage})} : '#'"
+               th:attr="aria-disabled=${!reviewPage.hasNext}, tabindex=${!reviewPage.hasNext}? -1 : null">다음</a>
         </div>
     </section>
 </main>

@@ -1,18 +1,3 @@
-.order-banner {
-    margin: 24px 0;
-    display: flex;
-    justify-content: center;
-}
-
-.order-banner img {
-    width: 100%;
-    max-width: 810px;
-    height: auto;
-    border-radius: 12px;
-    object-fit: cover;
-    box-shadow: 0 6px 20px rgba(23, 90, 72, 0.08);
-}
-
 .order-filter {
     display: flex;
     flex-wrap: wrap;
@@ -164,6 +149,43 @@
 
 .order-actions button {
     width: 100%;
+}
+
+.btn-outline {
+    border: 1px solid var(--gg-border);
+    background: #fff;
+    color: var(--gg-green-dark);
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-outline:hover {
+    background: var(--gg-green-dark);
+    color: #fff;
+}
+
+.btn-outline.danger {
+    background: #fdecea;
+    border-color: #f5c2c0;
+    color: #c0392b;
+}
+
+.btn-outline.danger:hover {
+    background: #f8d7d3;
+    color: #96281b;
+}
+
+.status-label {
+    display: inline-block;
+    font-size: 13px;
+    color: var(--gg-green-dark);
+    margin-top: 4px;
+}
+
+.status-label.muted {
+    color: var(--gg-muted);
 }
 
 .empty-state {

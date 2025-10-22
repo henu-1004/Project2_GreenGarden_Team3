@@ -1,8 +1,10 @@
 package kr.co.greengarden.controller.my;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kr.co.greengarden.dto.InquiryDTO;
 import kr.co.greengarden.dto.my.CouponSummaryDTO;
 import kr.co.greengarden.dto.my.CouponTabPageDTO;
+import kr.co.greengarden.dto.my.MyHomeSummaryDTO;
 import kr.co.greengarden.dto.my.MyInfoDTO;
 import kr.co.greengarden.dto.my.MyInfoForm;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
@@ -11,16 +13,19 @@ import kr.co.greengarden.dto.my.MyInquirySummaryDTO;
 import kr.co.greengarden.dto.my.OrderDetailDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
 import kr.co.greengarden.dto.my.OrderHistoryPageDTO;
+import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.PagedResult;
 import kr.co.greengarden.dto.my.PaginationDTO;
 import kr.co.greengarden.dto.my.PointLedgerCriteria;
+import kr.co.greengarden.dto.my.PointLedgerDTO;
 import kr.co.greengarden.dto.my.PointLedgerPageDTO;
 import kr.co.greengarden.dto.my.PointSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
 import kr.co.greengarden.dto.my.ReviewSummaryDTO;
 import kr.co.greengarden.dto.my.SellerInfoDTO;
-import kr.co.greengarden.service.MyService;
+import kr.co.greengarden.service.InquiryService;
 import kr.co.greengarden.service.MyCouponService;
+import kr.co.greengarden.service.MyService;
 import kr.co.greengarden.service.PointService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,10 +38,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Slf4j
@@ -48,6 +55,7 @@ public class MyController {
     private final MyService myService;
     private final PointService pointService;
     private final MyCouponService myCouponService;
+    private final InquiryService inquiryService;
 
     @GetMapping("/home")
     public String home(HttpServletRequest request, Model model,
@@ -56,23 +64,51 @@ public class MyController {
         model.addAttribute("currentUri", request.getRequestURI());
 
         if (userDetails == null) {
-            System.out.println("❌ 로그인 정보 없음 (userDetails == null)");
+            log.debug("❌ 로그인 정보 없음 (userDetails == null)");
             model.addAttribute("recentOrders", List.of());
+            model.addAttribute("recentPoints", List.of());
+            model.addAttribute("myReviews", List.of());
+            model.addAttribute("recentInquiries", List.of());
+            model.addAttribute("homeSummary", MyHomeSummaryDTO.empty());
+            model.addAttribute("couponSummary", CouponSummaryDTO.builder().build());
+            model.addAttribute("totalPoint", 0);
+            model.addAttribute("myInfo", null);
             model.addAttribute("loginStatus", false);
         } else {
             String memId = userDetails.getUsername();
-            System.out.println("✅ 로그인된 사용자 ID: " + memId);
+            log.debug("✅ 로그인된 사용자 ID: {}", memId);
 
-            // ✅ MyBatis 기반 최근 주문내역 조회 (상품명, 이미지 포함)
-            model.addAttribute("recentOrders", myService.getRecentOrderSummary(memId));
+            List<OrderSummaryDTO> recentOrders = myService.getRecentOrderSummary(memId);
+            List<ProductReviewDTO> myReviews = myService.getMyReviews(memId).stream()
+                    .limit(5)
+                    .collect(Collectors.toList());
+            List<PointLedgerDTO> recentPoints = pointService.getRecentLedger(memId);
+            List<MyInquiryDTO> recentInquiries = myService.getMyInquiries(memId).stream()
+                    .limit(5)
+                    .collect(Collectors.toList());
+            MyInfoDTO myInfo = myService.getMyInfo(memId);
+            CouponSummaryDTO couponSummary = myCouponService.getCouponSummary(memId);
+            int totalPoint = pointService.getTotalPoint(memId);
 
-            // ✅ 내가 작성한 상품평 내역 조회
-            model.addAttribute("myReviews", myService.getMyReviews(memId));
+            long orderCount = myService.countMyOrders(memId);
+            long inquiryCount = myService.countMyInquiries(memId);
+            int availableCouponCount = couponSummary != null ? couponSummary.getAvailableCount() : 0;
 
-            // ✅ 포인트 내역 (최근 5건 + 총 포인트)
-            model.addAttribute("recentPoints", pointService.getRecentLedger(memId));
-            model.addAttribute("totalPoint", pointService.getTotalPoint(memId));
+            MyHomeSummaryDTO summary = MyHomeSummaryDTO.builder()
+                    .orderCount(orderCount)
+                    .availableCouponCount(availableCouponCount)
+                    .totalPoint(totalPoint)
+                    .inquiryCount(inquiryCount)
+                    .build();
 
+            model.addAttribute("recentOrders", recentOrders);
+            model.addAttribute("myReviews", myReviews);
+            model.addAttribute("recentPoints", recentPoints);
+            model.addAttribute("recentInquiries", recentInquiries);
+            model.addAttribute("myInfo", myInfo);
+            model.addAttribute("couponSummary", couponSummary != null ? couponSummary : CouponSummaryDTO.builder().build());
+            model.addAttribute("homeSummary", summary);
+            model.addAttribute("totalPoint", totalPoint);
             model.addAttribute("loginStatus", true);
         }
 
@@ -116,14 +152,14 @@ public class MyController {
 
     @GetMapping("/order")
     public String order(HttpServletRequest request,
-                       Model model,
-                       @AuthenticationPrincipal UserDetails userDetails,
-                       @RequestParam(value = "period", required = false) String period,
-                       @RequestParam(value = "startDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                       @RequestParam(value = "endDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                       @RequestParam(value = "page", defaultValue = "1") int page) {
+                        Model model,
+                        @AuthenticationPrincipal UserDetails userDetails,
+                        @RequestParam(value = "period", required = false) String period,
+                        @RequestParam(value = "startDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                        @RequestParam(value = "endDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                        @RequestParam(value = "page", defaultValue = "1") int page) {
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {
             return "redirect:/member/login";
@@ -186,6 +222,7 @@ public class MyController {
         OrderHistoryPageDTO pageDTO = myService.getOrderHistory(criteria);
 
         model.addAttribute("orders", pageDTO.getOrders());
+        model.addAttribute("myInfo", myService.getMyInfo(memId));
         model.addAttribute("pageInfo", pageDTO);
         model.addAttribute("startDate", resolvedStart);
         model.addAttribute("endDate", resolvedEnd);
@@ -199,15 +236,15 @@ public class MyController {
 
     @GetMapping("/point")
     public String point(HttpServletRequest request,
-                       Model model,
-                       @AuthenticationPrincipal UserDetails userDetails,
-                       @RequestParam(value = "period", required = false) String period,
-                       @RequestParam(value = "startDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                       @RequestParam(value = "endDate", required = false)
-                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-                       @RequestParam(value = "type", defaultValue = "ALL") String type,
-                       @RequestParam(value = "page", defaultValue = "1") int page) {
+                        Model model,
+                        @AuthenticationPrincipal UserDetails userDetails,
+                        @RequestParam(value = "period", required = false) String period,
+                        @RequestParam(value = "startDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                        @RequestParam(value = "endDate", required = false)
+                        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                        @RequestParam(value = "type", defaultValue = "ALL") String type,
+                        @RequestParam(value = "page", defaultValue = "1") int page) {
 
         model.addAttribute("currentUri", request.getRequestURI());
         if (userDetails == null) {
@@ -413,7 +450,17 @@ public class MyController {
             return "redirect:/my/info";
         }
 
+        if (form.getCurrentPassword() == null || form.getCurrentPassword().isBlank()) {
+            redirect.addFlashAttribute("infoErrorMessage", "현재 비밀번호를 입력해주세요.");
+            return "redirect:/my/info";
+        }
+
         String memId = userDetails.getUsername();
+        if (!myService.verifyPassword(memId, form.getCurrentPassword())) {
+            redirect.addFlashAttribute("infoErrorMessage", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/my/info";
+        }
+
         MyInfoUpdateDTO updateDTO = MyInfoUpdateDTO.builder()
                 .memId(memId)
                 .name(form.getName())
@@ -436,19 +483,96 @@ public class MyController {
         return "redirect:/my/info";
     }
 
+    @PostMapping("/info/withdraw")
+    public String withdraw(@AuthenticationPrincipal UserDetails userDetails,
+                           @RequestParam("password") String password,
+                           RedirectAttributes redirect) {
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        if (password == null || password.isBlank()) {
+            redirect.addFlashAttribute("withdrawErrorMessage", "비밀번호를 입력해주세요.");
+            return "redirect:/my/info";
+        }
+
+        String memId = userDetails.getUsername();
+        if (!myService.verifyPassword(memId, password)) {
+            redirect.addFlashAttribute("withdrawErrorMessage", "비밀번호가 일치하지 않습니다.");
+            return "redirect:/my/info";
+        }
+
+        try {
+            myService.withdrawMember(memId);
+            redirect.addFlashAttribute("withdrawSuccessMessage", "회원 탈퇴 처리가 완료되었습니다. 고객센터를 통해 재가입을 도와드릴 수 있습니다.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            log.error("❌ 회원 탈퇴 처리 실패", ex);
+            redirect.addFlashAttribute("withdrawErrorMessage", ex.getMessage());
+        } catch (Exception ex) {
+            log.error("❌ 회원 탈퇴 처리 중 알 수 없는 오류", ex);
+            redirect.addFlashAttribute("withdrawErrorMessage", "회원 탈퇴 처리 중 오류가 발생했습니다.");
+        }
+
+        return "redirect:/my/info";
+    }
+
+    @PostMapping("/inquiry")
+    public String submitInquiry(@AuthenticationPrincipal UserDetails userDetails,
+                                @RequestParam("category1") String category1,
+                                @RequestParam(value = "category2", required = false) String category2,
+                                @RequestParam("title") String title,
+                                @RequestParam("content") String content,
+                                @RequestParam(value = "redirect", required = false) String redirectTarget,
+                                RedirectAttributes redirect) {
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        String trimmedTitle = title == null ? null : title.trim();
+        String trimmedContent = content == null ? null : content.trim();
+
+        if (trimmedTitle == null || trimmedTitle.isBlank() ||
+                trimmedContent == null || trimmedContent.isBlank()) {
+            redirect.addFlashAttribute("errorMsg", "제목과 내용을 모두 입력해주세요.");
+            return resolveRedirect(redirectTarget);
+        }
+
+        String primary = (category1 == null || category1.isBlank()) ? "기타" : category1.trim();
+        String secondary = (category2 == null || category2.isBlank()) ? "MY_PAGE" : category2.trim();
+
+        try {
+            InquiryDTO inquiryDTO = InquiryDTO.builder()
+                    .category1(primary)
+                    .category2(secondary)
+                    .title(trimmedTitle)
+                    .content(trimmedContent)
+                    .channel("MY_PAGE")
+                    .build();
+            inquiryService.registerInquiry(inquiryDTO);
+            redirect.addFlashAttribute("msg", "문의가 등록되었습니다.");
+        } catch (Exception ex) {
+            log.error("❌ 문의 등록 실패", ex);
+            redirect.addFlashAttribute("errorMsg", "문의 등록 중 오류가 발생했습니다.");
+        }
+
+        return resolveRedirect(redirectTarget);
+    }
+
 
     @PostMapping("/confirm")
     public String confirmOrder(@RequestParam String orderNo,
-                               @RequestParam Long proId,
+                               @RequestParam Long orderItemId,
+                               @RequestParam(value = "redirect", required = false) String redirectTarget,
                                @AuthenticationPrincipal UserDetails userDetails,
                                RedirectAttributes redirect) {
-        myService.updateConfirmYn(orderNo, proId, "Y");
+        myService.updateConfirmYn(orderNo, orderItemId, "Y");
         redirect.addFlashAttribute("msg", "구매확정 완료되었습니다.");
-        return "redirect:/my/home";
+        return resolveRedirect(redirectTarget);
     }
 
     @PostMapping("/review/complete")
     public String completeReview(@ModelAttribute kr.co.greengarden.dto.my.ProductReviewDTO reviewDTO,
+                                 @RequestParam(value = "redirect", required = false) String redirectTarget,
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  RedirectAttributes redirect) {
 
@@ -461,29 +585,82 @@ public class MyController {
         myService.writeProductReview(reviewDTO);
 
         redirect.addFlashAttribute("msg", "상품평이 등록되었습니다!");
-        return "redirect:/my/home";
+        return resolveRedirect(redirectTarget);
     }
 
     @PostMapping("/exchange/complete")
     public String completeExchange(@RequestParam String orderNo,
-                                   @RequestParam Long proId,
+                                   @RequestParam Long orderItemId,
+                                   @RequestParam(value = "type", required = false) String type,
+                                   @RequestParam(value = "detail", required = false) String detail,
+                                   @RequestParam(value = "proof", required = false) MultipartFile proof,
+                                   @RequestParam(value = "redirect", required = false) String redirectTarget,
                                    @AuthenticationPrincipal UserDetails userDetails,
                                    RedirectAttributes redirect) {
-        myService.updateExchangeYn(orderNo, proId, "Y");
-        redirect.addFlashAttribute("msg", "교환신청 완료!");
-        return "redirect:/my/home";
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        try {
+            myService.submitExchange(userDetails.getUsername(), orderNo, orderItemId, type, detail, proof);
+            redirect.addFlashAttribute("msg", "교환 신청이 접수되었습니다.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            redirect.addFlashAttribute("errorMsg", ex.getMessage());
+        }
+
+        return resolveRedirect(redirectTarget);
     }
 
     @PostMapping("/return/complete")
     public String completeReturn(@RequestParam String orderNo,
-                                 @RequestParam Long proId,
+                                 @RequestParam Long orderItemId,
+                                 @RequestParam(value = "type", required = false) String type,
+                                 @RequestParam(value = "detail", required = false) String detail,
+                                 @RequestParam(value = "proof", required = false) MultipartFile proof,
+                                 @RequestParam(value = "redirect", required = false) String redirectTarget,
                                  @AuthenticationPrincipal UserDetails userDetails,
                                  RedirectAttributes redirect) {
-        myService.updateReturnYn(orderNo, proId, "Y");
-        redirect.addFlashAttribute("msg", "반품신청 완료!");
-        return "redirect:/my/home";
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        try {
+            myService.submitReturnRequest(userDetails.getUsername(), orderNo, orderItemId, type, detail, proof);
+            redirect.addFlashAttribute("msg", "반품 신청이 접수되었습니다.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            redirect.addFlashAttribute("errorMsg", ex.getMessage());
+        }
+
+        return resolveRedirect(redirectTarget);
+    }
+
+    @PostMapping("/order/cancel")
+    public String cancelOrder(@RequestParam String orderNo,
+                              @RequestParam Long orderItemId,
+                              @RequestParam(value = "redirect", required = false) String redirectTarget,
+                              @AuthenticationPrincipal UserDetails userDetails,
+                              RedirectAttributes redirect) {
+        if (userDetails == null) {
+            return "redirect:/member/login";
+        }
+
+        try {
+            myService.cancelOrderItem(userDetails.getUsername(), orderNo, orderItemId);
+            redirect.addFlashAttribute("msg", "주문이 취소되었습니다.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            redirect.addFlashAttribute("errorMsg", ex.getMessage());
+        }
+
+        return resolveRedirect(redirectTarget);
     }
 
 
+
+    private String resolveRedirect(String target) {
+        if (target != null && target.equalsIgnoreCase("order")) {
+            return "redirect:/my/order";
+        }
+        return "redirect:/my/home";
+    }
 
 }

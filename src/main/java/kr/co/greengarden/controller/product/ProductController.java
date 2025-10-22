@@ -7,8 +7,6 @@ package kr.co.greengarden.controller.product;
 */
 
 import kr.co.greengarden.dto.*;
-import kr.co.greengarden.dto.admin.AdminOrderListDTO;
-import kr.co.greengarden.dto.admin.AdminProductListDTO;
 import kr.co.greengarden.entity.*;
 import kr.co.greengarden.repository.OrderRepository;
 import kr.co.greengarden.security.MemberDetails;
@@ -20,14 +18,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -50,11 +46,14 @@ public class ProductController {
 
         Page<ProductListDTO> productList = productService.getProductCards(page, sortBy, direction, slug);
 
+        Category category = productService.getCategoryNameBySlug(slug);
+
         for (ProductListDTO p : productList) {
             int original = (int) Math.ceil(p.getPrice() * (100 - p.getDiscountRate()) / 100);
             p.setOriginalPrice(original);
         }
 
+        model.addAttribute("category", category);
         model.addAttribute("productList", productList);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("direction", direction);
@@ -114,7 +113,7 @@ public class ProductController {
         return "product/cart";
     }
 
-    @PostMapping("/product/order2")
+    @PostMapping("/product/order")
     public String order(@RequestParam("cartIds") List<Integer> cartIds, Model model) {
         List<CartListDTO> cartList = cartService.getCartListBycartIds(cartIds);
 
@@ -122,19 +121,24 @@ public class ProductController {
         model.addAttribute("orderInfo", orderService.getOrderInfo(cartList));
         model.addAttribute("cartList", cartList);
 
-        return "product/order2";
+        return "product/order";
     }
 
-    @GetMapping("/product/order2")
-    public String orderPage(@RequestParam(required = false) String cartId, @RequestParam(required = false) Integer productId,@RequestParam(required = false) Integer quantity,Model model) {
+    @GetMapping("/product/order")
+    public String orderPage(@RequestParam(required = false) String cartId,
+                            @RequestParam(required = false) Integer productId,
+                            @RequestParam(required = false) Integer quantity,
+                            Model model) {
 
         // 장바구니 구매 시
         if (cartId != null) {
-        List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
-        model.addAttribute("orderInfo", orderService.getOrderInfo(cartList));
-        model.addAttribute("cartList", cartList);
-        return "product/order2";
+            List<CartListDTO> cartList = cartService.getCartList(Integer.parseInt(cartId));
+            model.addAttribute("orderInfo", orderService.getOrderInfo(cartList));
+            model.addAttribute("cartList", cartList);
+
+            return "product/order";  //  (경로 포함)
         }
+
         // 상품 상세 (view.html)에서 바로 구매 한 경우
         if (productId != null && quantity != null) {
             Product product = productService.getViewProduct(productId);
@@ -151,8 +155,7 @@ public class ProductController {
             orderInfo.setTotalPoint(product.getPoint() * quantity);
             model.addAttribute("orderInfo", orderInfo);
 
-
-            return "product/order2";
+            return "product/order";  // ✅ 수정됨 (경로 포함)
         }
 
         return "redirect:/product/list";

@@ -30,6 +30,8 @@
             배송, 교환, 상품에 대한 질문을 등록하고 답변 상태를 확인하세요.
         </p>
 
+        <div class="banner-area" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
+
         <!-- 인트로 안내 -->
         <div class="qna-intro">
             <div class="intro-card">
@@ -112,7 +114,8 @@
         <div class="pagination" th:if="${qnaPage != null and qnaPage.totalPages > 1}">
             <a class="page-link prev"
                th:classappend="${!qnaPage.hasPrev}? ' disabled'"
-               th:href="@{/my/qna(page=${qnaPage.prevPage})}"
+               th:href="${qnaPage.hasPrev} ? @{/my/qna(page=${qnaPage.prevPage})} : '#'"
+               th:attr="aria-disabled=${!qnaPage.hasPrev}, tabindex=${!qnaPage.hasPrev}? -1 : null"
                aria-label="이전 페이지">이전</a>
             <a class="page-link"
                th:each="p : ${#numbers.sequence(qnaPage.startPage, qnaPage.endPage)}"
@@ -121,7 +124,8 @@
                th:text="${p}">1</a>
             <a class="page-link next"
                th:classappend="${!qnaPage.hasNext}? ' disabled'"
-               th:href="@{/my/qna(page=${qnaPage.nextPage})}"
+               th:href="${qnaPage.hasNext} ? @{/my/qna(page=${qnaPage.nextPage})} : '#'"
+               th:attr="aria-disabled=${!qnaPage.hasNext}, tabindex=${!qnaPage.hasNext}? -1 : null"
                aria-label="다음 페이지">다음</a>
         </div>
 

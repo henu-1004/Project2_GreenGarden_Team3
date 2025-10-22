@@ -71,3 +71,13 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/,file:./uploads/
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 169178720707-ue74ijmhnr3bpaj09uo1pf46ni5v1dgg.apps.googleusercontent.com
+            client-secret: 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
+            scope: [ openid, email, profile ]
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"

@@ -28,7 +28,22 @@
     font-size : 26px;
 }
 
-/* ㅡㅡ 상품영역 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ */
+/* ㅡㅡ 상품영역 클릭시, 해당 제품페이지로 넘어가도록 하기 위해 추가한 요소에 대한 부분 */
+/* 새로 추가된 a 태그가 레이아웃을 담당하도록 변경 */
+#best_top > a,
+#best_bottom > a,
+.products > a {
+    /* 기존 CSS에서 flex: 1; 이 있던 곳에 flex 속성을 줘야 함 */
+    /* best_top/bottom 은 flex 레이아웃 */
+    flex: 1;
+
+    /* <a>가 블록처럼 작동 + <div> 전체를 덮도록 */
+    display: block;
+    height: 100%;
+    /* width: 100%; 는 flex: 1; 이 처리해 줘서 없어도 되지만, 넣어놔도 상관 없음 */
+}
+
+/* ㅡㅡ 기존 상품 영역 (이제 a의 자식이 됨)에서 flex: 1;을 제거 */
 .best_top_product,
 .best_bottom_product,
 .products_item{
@@ -37,7 +52,8 @@
     text-align: center;
     align-items: center;
     border: solid 1px #66968c;
-    flex: 1;
+    /* 🛑 중요: flex: 1; 을 반드시 제거! (이미 부모 <a>로 옮겼기 때문) */
+    /* flex: 1; */
 }
 
 #best_top {
@@ -55,14 +71,14 @@
 }
 
 .best_top_product img {
-    width: 580px;
+    width: 567px;
     height: 380px;
     object-fit: cover;
     margin-bottom: 10px;
 }
 .best_bottom_product img,
 .products_item img {
-    width: 360px;
+    width: 364px;
     height: 280px;
     object-fit: cover;
     margin-bottom: 10px;
@@ -74,7 +90,9 @@
     margin-bottom: 20px;
     gap: 20px;
 }
-
+.products > a {
+    display: block;
+}
 
 /* === 위치 ====================================== */
 .right {

@@ -1,12 +1,15 @@
 package kr.co.greengarden.mapper.my;
 
+import kr.co.greengarden.dto.my.ExchangeRequestDTO;
 import kr.co.greengarden.dto.my.MyInfoDTO;
 import kr.co.greengarden.dto.my.MyInfoUpdateDTO;
 import kr.co.greengarden.dto.my.MyInquiryDTO;
 import kr.co.greengarden.dto.my.OrderDetailDTO;
 import kr.co.greengarden.dto.my.OrderHistoryCriteria;
+import kr.co.greengarden.dto.my.OrderItemStatusDTO;
 import kr.co.greengarden.dto.my.OrderSummaryDTO;
 import kr.co.greengarden.dto.my.ProductReviewDTO;
+import kr.co.greengarden.dto.my.ReturnRequestDTO;
 import kr.co.greengarden.dto.my.SellerInfoDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,6 +24,7 @@ public interface MyMapper {
 
     long countOrderHistory(OrderHistoryCriteria criteria);
 
+    long countMyOrders(@Param("memId") String memId);
     OrderDetailDTO selectOrderDetail(@Param("memId") String memId,
                                      @Param("orderNo") String orderNo);
 
@@ -28,20 +32,32 @@ public interface MyMapper {
 
     // ✅ 상태 업데이트 쿼리 4종 (모두 상품단위로)
     void updateConfirmYn(@Param("orderNo") String orderNo,
-                         @Param("proId") Long proId,
+                         @Param("orderItemId") Long orderItemId,
                          @Param("yn") String yn);
 
     void updateReviewYn(@Param("orderNo") String orderNo,
-                        @Param("proId") Long proId,
+                        @Param("orderItemId") Long orderItemId,
                         @Param("yn") String yn);
 
     void updateExchangeYn(@Param("orderNo") String orderNo,
-                          @Param("proId") Long proId,
+                          @Param("orderItemId") Long orderItemId,
                           @Param("yn") String yn);
 
     void updateReturnYn(@Param("orderNo") String orderNo,
-                        @Param("proId") Long proId,
+                        @Param("orderItemId") Long orderItemId,
                         @Param("yn") String yn);
+
+    void updateCancelYn(@Param("orderNo") String orderNo,
+                        @Param("orderItemId") Long orderItemId,
+                        @Param("yn") String yn);
+
+    OrderItemStatusDTO selectOrderItemStatus(@Param("memId") String memId,
+                                             @Param("orderNo") String orderNo,
+                                             @Param("orderItemId") Long orderItemId);
+
+    void insertExchangeRequest(ExchangeRequestDTO requestDTO);
+
+    void insertReturnRequest(ReturnRequestDTO requestDTO);
     // ✅ 리뷰 등록
     void insertProductReview(ProductReviewDTO reviewDTO);
 
@@ -68,4 +84,8 @@ public interface MyMapper {
     int updateMyGeneralInfo(MyInfoUpdateDTO dto);
 
     int updateMyMemberInfo(MyInfoUpdateDTO dto);
+
+    int updateMemberStatus(@Param("memId") String memId,
+                           @Param("status") String status,
+                           @Param("note") String note);
 }

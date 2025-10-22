@@ -20,9 +20,9 @@
             <div class="top-nav">
                 <h5>배송현황</h5>
                 <ul class="page-nation">
-                    <li><a href="#">Home</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
                     <li><a href="#">주문관리</a></li>
-                    <li><a href="#">배송현황</a></li>
+                    <li><a th:href="@{/admin/order/delivery}">배송현황</a></li>
                 </ul>
             </div>
             <form th:action="@{#}" method="get" class="search-form">

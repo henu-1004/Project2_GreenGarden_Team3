@@ -27,10 +27,7 @@
         <h1>포인트 현황</h1>
         <p class="lead">적립과 사용 내역을 확인하고 다양한 혜택을 놓치지 마세요.</p>
 
-        <div class="order-banner">
-            <img th:src="@{/img/my/point_banner.png}" alt="포인트 배너" width="810" height="86"
-                 onerror="this.src='https://dummyimage.com/810x86/d9ede6/175a48.png&text=GreenGarden+MY+Point';">
-        </div>
+        <div class="banner-area" th:insert="~{my/fragments/banner :: mypageBanner}"></div>
 
         <!-- 요약 -->
         <div class="point-summary">
@@ -131,7 +128,8 @@
             <div class="pagination" th:if="${pointPage != null and pointPage.totalPages > 1}">
                 <a class="page-link prev"
                    th:classappend="${!pointPage.hasPrev}? ' disabled'"
-                   th:href="@{/my/point(page=${pointPage.prevPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type=${selectedType})}"
+                   th:href="${pointPage.hasPrev} ? @{/my/point(page=${pointPage.prevPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type=${selectedType})} : '#'"
+                   th:attr="aria-disabled=${!pointPage.hasPrev}, tabindex=${!pointPage.hasPrev}? -1 : null"
                    aria-label="이전 페이지">이전</a>
                 <a class="page-link"
                    th:each="p : ${#numbers.sequence(pointPage.startPage, pointPage.endPage)}"
@@ -140,7 +138,8 @@
                    th:text="${p}">1</a>
                 <a class="page-link next"
                    th:classappend="${!pointPage.hasNext}? ' disabled'"
-                   th:href="@{/my/point(page=${pointPage.nextPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type=${selectedType})}"
+                   th:href="${pointPage.hasNext} ? @{/my/point(page=${pointPage.nextPage}, period=${periodParam}, startDate=${selectedPeriod == 'custom' ? startDate : null}, endDate=${selectedPeriod == 'custom' ? endDate : null}, type=${selectedType})} : '#'"
+                   th:attr="aria-disabled=${!pointPage.hasNext}, tabindex=${!pointPage.hasNext}? -1 : null"
                    aria-label="다음 페이지">다음</a>
             </div>
         </div>
