@@ -44,7 +44,7 @@
                 <div class="product">
                     <div id="best_title"><a>B E S T</a></div>
                     <div id="best_top">
-                        <div class="products_item" th:each="product : ${topProducts}">
+                        <div class="best_top_product" th:each="product : ${topProducts}">
                             <a th:href="@{/product/view(proId=${product.proId})}">
                             <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                             <p th:text="${product.name}">상품명</p>
@@ -56,7 +56,7 @@
                                 <a th:text="${#numbers.formatInteger(product.price * (1 - product.discountRate / 100.0), 3, 'COMMA') + '원'}">
                                     27,000원
                                 </a>
-                                <button th:text="${product.deliveryFee == 0 ? '무료배송' : product.deliveryFee + '원'}">
+                                <button th:tex  t="${product.deliveryFee == 0 ? '무료배송' : product.deliveryFee + '원'}">
                                     무료배송
                                 </button>
                             </span>
@@ -65,7 +65,7 @@
                     </div>
 
                     <div id="best_bottom">
-                        <div class="products_item" th:each="product : ${bottomProducts}">
+                        <div class="best_bottom_product" th:each="product : ${bottomProducts}">
                           <a th:href="@{/product/view(proId=${product.proId})}">
                             <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                             <p th:text="${product.name}">상품명</p>
