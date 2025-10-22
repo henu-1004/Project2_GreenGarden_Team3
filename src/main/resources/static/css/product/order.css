@@ -87,6 +87,20 @@ a {
     border: 1px solid #66968c;
     border-radius: 5px;
 }
+/* 우편번호 검색 버튼 */
+.subbtn {
+    height: 32px;
+    padding: 0 12px;
+    background-color: #6dbb75;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
 
 
 /* 배송 메모 상단 정렬 */
