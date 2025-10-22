@@ -92,9 +92,10 @@
                                     <td>[[${cart.point * cart.quantity}]]P</td>
                                     <td>[[${cart.deliveryFee}]]원</td>
                                     <td>
-                                        [[${(cart.price * cart.quantity)
+                                        [[${#numbers.formatInteger(
+                                        ((cart.price * cart.quantity)
                                         - ((cart.price * (cart.discountRate / 100.0)) * cart.quantity)
-                                        + (cart.deliveryFee != null ? cart.deliveryFee : 0)}]]원
+                                        + (cart.deliveryFee != null ? cart.deliveryFee : 0)), 0)}]]원
                                     </td>
 
                                     <input type="hidden" th:name="|items[${stat.index}].proId|" th:value="${cart.proId}">
@@ -117,9 +118,10 @@
                                     <td>[[${product.point * quantity}]]P</td>
                                     <td>[[${product.deliveryFee}]]원</td>
                                     <td>
-                                        [[${(product.price * quantity)
+                                        [[${#numbers.formatInteger(
+                                        ((product.price * quantity)
                                         - ((product.price * (product.discountRate / 100.0)) * quantity)
-                                        + (product.deliveryFee != null ? product.deliveryFee : 0)}]]원
+                                        + (product.deliveryFee != null ? product.deliveryFee : 0)), 0)}]]원
                                     </td>
 
                                     <input type="hidden" name="productId" th:value="${product.proId}">
@@ -162,7 +164,7 @@
                             </div>
                         </div>
 
-                        <!-- ✅ 최종결제정보 (금액+단위 붙여서 표시) -->
+                        <!-- ✅ 최종결제정보 -->
                         <div class="payment-summary">
                             <h2>최종결제정보</h2>
 
@@ -175,7 +177,10 @@
                                 <hr>
                                 <div class="total-price">
                                     <span>전체주문금액</span>
-                                    <span>[[${#numbers.formatInteger((orderInfo.originalTotalPrice - orderInfo.discountPrice) + orderInfo.deliveryFee, 0)}]]원</span>
+                                    <span>
+                    [[${#numbers.formatInteger(
+                      ((orderInfo.originalTotalPrice - orderInfo.discountPrice) + orderInfo.deliveryFee), 0)}]]원
+                  </span>
                                 </div>
                                 <div class="item"><span>적립 포인트</span><span>[[${orderInfo.totalPoint}]]P</span></div>
                             </div>
@@ -189,10 +194,12 @@
                                 <hr>
                                 <div class="total-price">
                                     <span>전체주문금액</span>
-                                    <span>[[${#numbers.formatInteger(
-                                            (product.price * quantity)
-                                            - ((product.price * (product.discountRate / 100.0)) * quantity)
-                                            + (product.deliveryFee != null ? product.deliveryFee : 0), 0)}]]원</span>
+                                    <span>
+                    [[${#numbers.formatInteger(
+                      ((product.price * quantity)
+                      - ((product.price * (product.discountRate / 100.0)) * quantity)
+                      + (product.deliveryFee != null ? product.deliveryFee : 0)), 0)}]]원
+                  </span>
                                 </div>
                                 <div class="item"><span>적립 포인트</span><span>[[${#numbers.formatInteger(product.point * quantity, 0)}]]P</span></div>
                             </div>
@@ -223,7 +230,7 @@
 <script>
     function postcode() {
         new daum.Postcode({
-            oncomplete: function(data) {
+            oncomplete: function (data) {
                 var addr = (data.userSelectedType === 'R') ? data.roadAddress : data.jibunAddress;
                 document.getElementById('zip_code').value = data.zonecode;
                 document.getElementById('address_basic').value = addr;
@@ -232,6 +239,5 @@
         }).open();
     }
 </script>
-
 </body>
 </html>
