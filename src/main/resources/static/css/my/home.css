@@ -596,6 +596,60 @@
     margin-top: 20px;
 }
 
+.modal-return .product-summary,
+.modal-exchange .product-summary {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 18px;
+    box-shadow: 0 12px 24px rgba(23, 90, 72, 0.08);
+    border: 1px solid rgba(23, 90, 72, 0.08);
+}
+
+.modal-return .product-summary h3,
+.modal-exchange .product-summary h3 {
+    margin: 0 0 10px;
+    color: var(--gg-green-dark);
+    font-size: 18px;
+}
+
+.modal-return .product-summary .product-name,
+.modal-exchange .product-summary .product-name {
+    margin: 0;
+    font-weight: 600;
+    color: var(--gg-text);
+    font-size: 15px;
+}
+
+.modal-return .product-summary .product-meta,
+.modal-exchange .product-summary .product-meta {
+    margin: 14px 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px 16px;
+}
+
+.modal-return .product-summary .product-meta div,
+.modal-exchange .product-summary .product-meta div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.modal-return .product-summary .product-meta dt,
+.modal-exchange .product-summary .product-meta dt {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--gg-muted);
+}
+
+.modal-return .product-summary .product-meta dd,
+.modal-exchange .product-summary .product-meta dd {
+    margin: 0;
+    font-size: 14px;
+    color: var(--gg-text);
+}
+
 /* ===== 반품신청 ===== */
 .modal-return .modal-body {
     background: #f3f7f6;

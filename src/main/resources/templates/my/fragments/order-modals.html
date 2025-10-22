@@ -126,7 +126,7 @@
                     </div>
                     <div class="form-actions">
                         <button type="submit" class="btn-primary">등록하기</button>
-                        <button type="button" class="btn-secondary" onclick="closeModal('inquiryModal')">취소</button>
+                        <button type="button" class="btn-secondary" onclick="cancelInquiry()">취소</button>
                     </div>
                 </form>
             </div>
@@ -220,6 +220,20 @@
                 <input type="hidden" name="orderItemId" value="">
                 <input type="hidden" name="redirect" th:value="${redirectTarget}">
                 <div class="modal-body">
+                    <div class="product-summary">
+                        <h3>신청 상품</h3>
+                        <p class="product-name" id="returnProductName">선택된 상품 정보가 없습니다.</p>
+                        <dl class="product-meta">
+                            <div>
+                                <dt>주문번호</dt>
+                                <dd id="returnOrderNo">-</dd>
+                            </div>
+                            <div>
+                                <dt>상품번호</dt>
+                                <dd id="returnProductCode">-</dd>
+                            </div>
+                        </dl>
+                    </div>
                     <h3>반품정보 입력</h3>
                     <div class="form-group">
                         <label>반품유형</label>
@@ -260,6 +274,20 @@
                 <input type="hidden" name="orderItemId" value="">
                 <input type="hidden" name="redirect" th:value="${redirectTarget}">
                 <div class="modal-body">
+                    <div class="product-summary">
+                        <h3>신청 상품</h3>
+                        <p class="product-name" id="exchangeProductName">선택된 상품 정보가 없습니다.</p>
+                        <dl class="product-meta">
+                            <div>
+                                <dt>주문번호</dt>
+                                <dd id="exchangeOrderNo">-</dd>
+                            </div>
+                            <div>
+                                <dt>상품번호</dt>
+                                <dd id="exchangeProductCode">-</dd>
+                            </div>
+                        </dl>
+                    </div>
                     <div class="form-group">
                         <label>교환유형</label>
                         <select name="type">

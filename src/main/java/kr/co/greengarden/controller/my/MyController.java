@@ -425,9 +425,12 @@ public class MyController {
         CouponSummaryDTO couponSummary = myCouponService.getCouponSummary(memId);
         info.setAvailableCouponCount(couponSummary.getAvailableCount());
 
+        String maskedMemId = maskMemberId(info.getMemId() != null ? info.getMemId() : memId);
+
         model.addAttribute("info", info);
         model.addAttribute("couponSummary", couponSummary);
         model.addAttribute("infoForm", MyInfoForm.from(info));
+        model.addAttribute("maskedMemId", maskedMemId);
 
         return "my/info";
     }
@@ -455,9 +458,21 @@ public class MyController {
             return "redirect:/my/info";
         }
 
+        boolean wantsPasswordChange = form.getNewPassword() != null && !form.getNewPassword().isBlank();
+        if (wantsPasswordChange) {
+            if (form.getConfirmPassword() == null || form.getConfirmPassword().isBlank()) {
+                redirect.addFlashAttribute("infoErrorMessage", "새 비밀번호 확인을 입력해주세요.");
+                return "redirect:/my/info";
+            }
+            if (!form.getNewPassword().equals(form.getConfirmPassword())) {
+                redirect.addFlashAttribute("infoErrorMessage", "새 비밀번호가 일치하지 않습니다.");
+                return "redirect:/my/info";
+            }
+        }
+
         String memId = userDetails.getUsername();
         if (!myService.verifyPassword(memId, form.getCurrentPassword())) {
-            redirect.addFlashAttribute("infoErrorMessage", "비밀번호가 일치하지 않습니다.");
+            redirect.addFlashAttribute("infoErrorMessage", "비밀번호가 틀렸습니다.");
             return "redirect:/my/info";
         }
 
@@ -471,12 +486,13 @@ public class MyController {
                 .zipCode(form.getZipCode())
                 .addressBasic(form.getAddressBasic())
                 .addressDetail(form.getAddressDetail())
+                .newPassword(wantsPasswordChange ? form.getNewPassword() : null)
                 .build();
 
         try {
             myService.updateMyInfo(updateDTO);
             redirect.addFlashAttribute("infoSuccessMessage", "회원 정보가 업데이트되었습니다.");
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalArgumentException | IllegalStateException ex) {
             redirect.addFlashAttribute("infoErrorMessage", ex.getMessage());
         }
 
@@ -498,7 +514,7 @@ public class MyController {
 
         String memId = userDetails.getUsername();
         if (!myService.verifyPassword(memId, password)) {
-            redirect.addFlashAttribute("withdrawErrorMessage", "비밀번호가 일치하지 않습니다.");
+            redirect.addFlashAttribute("withdrawErrorMessage", "비밀번호가 틀렸습니다.");
             return "redirect:/my/info";
         }
 
@@ -514,6 +530,16 @@ public class MyController {
         }
 
         return "redirect:/my/info";
+    }
+
+    private String maskMemberId(String memId) {
+        if (memId == null || memId.isBlank()) {
+            return "-";
+        }
+        int visible = Math.min(3, memId.length());
+        String prefix = memId.substring(0, visible);
+        String masked = "*".repeat(memId.length() - visible);
+        return prefix + masked;
     }
 
     @PostMapping("/inquiry")

@@ -261,6 +261,50 @@
         }
     }
 
+    function updateRequestProductSummary(modal) {
+        if (!modal) {
+            return;
+        }
+
+        const mapping = {
+            returnModal: {
+                name: 'returnProductName',
+                order: 'returnOrderNo',
+                code: 'returnProductCode'
+            },
+            exchangeModal: {
+                name: 'exchangeProductName',
+                order: 'exchangeOrderNo',
+                code: 'exchangeProductCode'
+            }
+        };
+
+        const config = mapping[modal.id];
+        if (!config) {
+            return;
+        }
+
+        const dataset = modal.dataset || {};
+        const productName = dataset.productName && dataset.productName.trim()
+            ? dataset.productName
+            : '선택된 상품 정보가 없습니다.';
+
+        const nameEl = document.getElementById(config.name);
+        if (nameEl) {
+            nameEl.textContent = productName;
+        }
+
+        const orderEl = document.getElementById(config.order);
+        if (orderEl) {
+            orderEl.textContent = dataset.orderNo && dataset.orderNo.trim() ? dataset.orderNo : '-';
+        }
+
+        const codeEl = document.getElementById(config.code);
+        if (codeEl) {
+            codeEl.textContent = dataset.proId && dataset.proId.trim() ? dataset.proId : '-';
+        }
+    }
+
     function resetStars() {
         const stars = document.querySelectorAll('#starRating span');
         const ratingInput = document.getElementById('ratingValue');
@@ -396,6 +440,30 @@
 
         modal.style.display = 'flex';
 
+        if (orderNo !== undefined) {
+            modal.dataset.orderNo = orderNo != null ? String(orderNo) : '';
+        }
+
+        if (proId !== undefined) {
+            modal.dataset.proId = proId != null ? String(proId) : '';
+        }
+
+        if (sellerId !== undefined) {
+            modal.dataset.sellerId = sellerId != null ? String(sellerId) : '';
+        }
+
+        if (orderItemId !== undefined) {
+            modal.dataset.orderItemId = orderItemId != null ? String(orderItemId) : '';
+        }
+
+        if (redirect !== undefined) {
+            modal.dataset.redirect = redirect != null ? String(redirect) : '';
+        }
+
+        if (productName !== undefined) {
+            modal.dataset.productName = productName != null ? String(productName) : '';
+        }
+
         const orderInput = modal.querySelector("input[name='orderNo']");
         if (orderInput) {
             orderInput.value = orderNo || '';
@@ -434,6 +502,10 @@
             resetStars();
             updateReviewProductName(productName);
         }
+
+        if (id === 'returnModal' || id === 'exchangeModal') {
+            updateRequestProductSummary(modal);
+        }
     }
 
     function closeModal(id) {
@@ -444,13 +516,39 @@
     }
 
     function openInquiry(redirectTarget = 'home') {
+        const sellerModal = document.getElementById('sellerModal');
+        const sellerId = sellerModal && sellerModal.dataset ? sellerModal.dataset.sellerId : '';
+
         closeModal('sellerModal');
-        openModal('inquiryModal', null, null, null, null, redirectTarget);
+        openModal('inquiryModal', undefined, undefined, sellerId || undefined, undefined, redirectTarget, undefined);
+
+        const inquiryModal = document.getElementById('inquiryModal');
+        if (inquiryModal) {
+            inquiryModal.dataset.sellerId = sellerId || '';
+            inquiryModal.dataset.redirect = redirectTarget != null ? String(redirectTarget) : '';
+        }
+    }
+
+    function cancelInquiry() {
+        const inquiryModal = document.getElementById('inquiryModal');
+        if (!inquiryModal) {
+            return;
+        }
+
+        const sellerId = inquiryModal.dataset ? inquiryModal.dataset.sellerId : '';
+        const redirectTarget = inquiryModal.dataset ? inquiryModal.dataset.redirect : '';
+
+        closeModal('inquiryModal');
+
+        if (sellerId) {
+            openModal('sellerModal', undefined, undefined, sellerId, undefined, redirectTarget || undefined, undefined);
+        }
     }
 
     window.openModal = openModal;
     window.closeModal = closeModal;
     window.openInquiry = openInquiry;
+    window.cancelInquiry = cancelInquiry;
 
     document.addEventListener('DOMContentLoaded', () => {
         initStarRating();

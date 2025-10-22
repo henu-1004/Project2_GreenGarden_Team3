@@ -17,4 +17,5 @@ public class MyInfoUpdateDTO {
     private String zipCode;
     private String addressBasic;
     private String addressDetail;
+    private String newPassword;
 }

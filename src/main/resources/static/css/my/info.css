@@ -227,6 +227,22 @@
     font-size: 12px;
 }
 
+.form-row .field-error {
+    color: #c94a4a;
+    font-size: 12px;
+    margin: 0;
+    display: none;
+}
+
+.form-row .field-error.active {
+    display: block;
+}
+
+.form-row input.input-error {
+    border-color: #c94a4a;
+    box-shadow: 0 0 0 3px rgba(201, 74, 74, 0.15);
+}
+
 .form-actions {
     display: flex;
     justify-content: flex-end;
