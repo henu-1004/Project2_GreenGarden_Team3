@@ -7,7 +7,7 @@
     <!--
         날짜 : 2025/09/26
         이름 : 이수연 / 수정 : 박효빈 (2025/10/21)
-        내용 : 상품 주문 페이지 (단일 상품 / 장바구니 구매 통합)
+        내용 : 상품 주문 페이지 (단일 상품 / 장바구니 구매 통합 + 이미지 추가)
     -->
     <link rel="stylesheet" th:href="@{/css/common/headerWithSearch.css}">
     <link rel="stylesheet" th:href="@{/css/common/aside.css}">
@@ -80,7 +80,12 @@
                                 <tbody>
                                 <!-- 장바구니 구매 -->
                                 <tr th:if="${cartList != null}" th:each="cart, stat : ${cartList}">
-                                    <td>
+                                    <td class="col-item-info">
+                                        <div class="product-image">
+                                            <img th:src="@{${cart.img1}}"
+                                                 alt="상품 이미지"
+                                                 onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=No+Image';">
+                                        </div>
                                         <div class="product-info">
                                             <strong>[[${cart.name}]]</strong><br>
                                             <small>[[${cart.description}]]</small>
@@ -106,7 +111,12 @@
 
                                 <!-- 단일 상품 -->
                                 <tr th:if="${cartList == null and product != null}">
-                                    <td>
+                                    <td class="col-item-info">
+                                        <div class="product-image">
+                                            <img th:src="@{${product.img1}}"
+                                                 alt="상품 이미지"
+                                                 onerror="this.src='https://placehold.co/150x150/e0e0e0/000000?text=Product+Image';">
+                                        </div>
                                         <div class="product-info">
                                             <strong>[[${product.name}]]</strong><br>
                                             <small>[[${product.description}]]</small>
@@ -177,10 +187,7 @@
                                 <hr>
                                 <div class="total-price">
                                     <span>전체주문금액</span>
-                                    <span>
-                    [[${#numbers.formatInteger(
-                      ((orderInfo.originalTotalPrice - orderInfo.discountPrice) + orderInfo.deliveryFee), 0)}]]원
-                  </span>
+                                    <span>[[${#numbers.formatInteger(((orderInfo.originalTotalPrice - orderInfo.discountPrice) + orderInfo.deliveryFee), 0)}]]원</span>
                                 </div>
                                 <div class="item"><span>적립 포인트</span><span>[[${orderInfo.totalPoint}]]P</span></div>
                             </div>
@@ -194,12 +201,7 @@
                                 <hr>
                                 <div class="total-price">
                                     <span>전체주문금액</span>
-                                    <span>
-                    [[${#numbers.formatInteger(
-                      ((product.price * quantity)
-                      - ((product.price * (product.discountRate / 100.0)) * quantity)
-                      + (product.deliveryFee != null ? product.deliveryFee : 0)), 0)}]]원
-                  </span>
+                                    <span>[[${#numbers.formatInteger(((product.price * quantity) - ((product.price * (product.discountRate / 100.0)) * quantity) + (product.deliveryFee != null ? product.deliveryFee : 0)), 0)}]]원</span>
                                 </div>
                                 <div class="item"><span>적립 포인트</span><span>[[${#numbers.formatInteger(product.point * quantity, 0)}]]P</span></div>
                             </div>
