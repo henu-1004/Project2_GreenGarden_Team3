@@ -36,43 +36,30 @@ public class OrderService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public void orderRegister(OrderDTO orderDTO, OrderItemListWrapper orderItemList, MemberDetails memberDetails){
-        
+    public void orderRegister(OrderDTO orderDTO, OrderItemListWrapper orderItemList, MemberDetails memberDetails) {
+
         System.out.println("서비스주문 : " + orderDTO.toString());
         System.out.println("서비스주문상세 : " + orderItemList.toString());
 
-        // 1. 필요한 정보 가져오기
-        Cart cart = cartRepository.findAll(PageRequest.of(0, 1))
-                .getContent()
-                .stream()
-                .findFirst()
-                .orElse(null);
-
-
-        /*
-        //orderDTO.setOrderNo(cart.getOrderNo());
-       // orderDTO.setMember(cart.getMember());
-        //orderDTO.setStatus("결제 완료");
         // ✅ 로그인한 회원 정보 가져오기
+        if (memberDetails == null || memberDetails.getMember() == null) {
+            throw new IllegalArgumentException("로그인 정보가 없습니다.");
+        }
+
         MemberGeneral memberGeneral = memberGeneralRepository.findById(memberDetails.getMember().getMemId())
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 회원입니다."));
 
-        // 내부 Member 엔티티 추출
         Member member = memberGeneral.getMember();
 
-        // 주문 번호 생성
-        String orderNo = (cart == null)
-                ? UUID.randomUUID().toString().substring(0,12)
-                : cart.getOrderNo();
+        // ✅ 주문 번호 새로 생성
+        String orderNo = UUID.randomUUID().toString().substring(0, 12);
         orderDTO.setOrderNo(orderNo);
-        orderDTO.setStatus("결재완료");
+        orderDTO.setStatus("결제 완료");
 
-        // DTO -> Entity  변환
-        Order order = modelMapper.map(orderDTO, Order.class);
-        */
+        // ✅ 주문 Entity 생성
         Order order = Order.builder()
-                .orderNo(cart.getOrderNo())
-                .member(cart.getMember())  // Member 엔티티 직접 설정
+                .orderNo(orderNo)
+                .member(member)
                 .totalPrice(orderDTO.getTotalPrice())
                 .payMethod(orderDTO.getPayMethod())
                 .status("결제 완료")
@@ -81,14 +68,18 @@ public class OrderService {
                 .recZipCode(orderDTO.getRecZipCode())
                 .recAddressBasic(orderDTO.getRecAddressBasic())
                 .recAddressDetail(orderDTO.getRecAddressDetail())
-                .orderedAt(LocalDateTime.now())  // 주문 시간 설정
+                .orderedAt(LocalDateTime.now())
                 .build();
 
-        // 바로 주입
-        // order.setMember(member);  // 여기 이제 완전히 정상
         Order updatedOrder = orderRepository.save(order);
 
-        // 상품, 배송 처리 동일
+        // ✅ 상품 정보가 비어있는 경우 방지
+        if (orderItemList == null || orderItemList.getItems() == null) {
+            System.out.println("orderItemList가 비어있음");
+            return;
+        }
+
+        // ✅ 상품 / 배송 처리
         for (OrderItemDTO item : orderItemList.getItems()) {
             Product product = productRepository.findById(item.getProId())
                     .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
@@ -103,18 +94,21 @@ public class OrderService {
 
             orderItemRepository.save(orderItem);
 
-            if (cart != null) cartRepository.deleteByProduct_ProId(product.getProId());
-
-            Delivery delivery = Delivery.builder()
-                    .order(updatedOrder)
-                    .status("배송 대기")
-                    .createdAt(LocalDateTime.now())
-                    .build();
-
-            deliveryRepository.save(delivery);
+            // ✅ 장바구니에 있을 경우만 삭제
+            cartRepository.deleteByProduct_ProId(product.getProId());
         }
 
+        // ✅ 배송 정보 생성
+        Delivery delivery = Delivery.builder()
+                .order(updatedOrder)
+                .status("배송 대기")
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        deliveryRepository.save(delivery);
     }
+
+    
 
     /*
     @Transactional

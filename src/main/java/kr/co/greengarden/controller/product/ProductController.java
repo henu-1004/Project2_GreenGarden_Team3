@@ -95,7 +95,7 @@ public class ProductController {
     public String handleProductAction(@AuthenticationPrincipal MemberDetails memberDetails,
                                       @RequestParam("action") String action,
                                       CartDTO cartDTO) {
-        
+
         // 장바구니 버튼 클릭 시
         if ("cart".equals(action)) {
             cartDTO.setMemId(memberDetails.getUsername());
@@ -103,7 +103,7 @@ public class ProductController {
             cartService.register(cartDTO);
 
             return "redirect:/product/cart";
-        } 
+        }
         // 주문하기 버튼 클릭 시
         else if ("order".equals(action)) {
             // 주문 페이지로 이동
@@ -181,10 +181,28 @@ public class ProductController {
         /* 2025/10/21 박효빈
          * 1. 상품 1개 상세보기 - 구매 로직 구현
          * */
-        /*
 
 
-        */
+        // ✅ 단건 구매 시 orderItemList 직접 생성
+        if (orderItemList == null || orderItemList.getItems() == null || orderItemList.getItems().isEmpty()) {
+            orderItemList = new OrderItemListWrapper();
+            List<OrderItemDTO> items = new ArrayList<>();
+
+            if (productId != null && quantity != null) {
+                Product product = productService.getViewProduct(productId);
+
+                OrderItemDTO item = new OrderItemDTO();
+                item.setProId(productId);
+                item.setQuantity(quantity);
+                item.setPrice(product.getPrice());
+                item.setDiscountRate(product.getDiscountRate());
+
+                items.add(item);
+            }
+
+            orderItemList.setItems(items);
+        }
+
         orderService.orderRegister(orderDTO, orderItemList, memberDetails);
 
         return "redirect:/product/complete?orderNo=" + orderDTO.getOrderNo();
