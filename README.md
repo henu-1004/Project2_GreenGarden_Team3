@@ -1,4 +1,3 @@
-test
 케이마켓피그마 : https://www.figma.com/design/amLy5z6BomEXjUgbAdnB8F/
 
 3조피그마: [https://www.figma.com/board/6Jo7F300ovWIcDz6QiGuo4/3%EC%A1%B0_2%EC%B0%A8%EB%AF%B8%EB%8B%88%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8?node-id=0-1&t=rJgBD6yy6pGQASaU-1]
