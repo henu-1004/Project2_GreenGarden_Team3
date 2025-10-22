@@ -21,7 +21,7 @@
             <div class="top_nav">
                 <h5>상품보기</h5>
                 <ul class="page_nation">
-                    <li><a href="#">Home</a></li>
+                    <li><a th:href="@{/}">Home</a></li>
                     <li><a href="#">[[${product.category.parent != null ? product.category.parent.name : product.category.name}]]</a></li>
                     <li><a href="#">[[${product.category.name}]]</a></li>
                 </ul>
@@ -185,7 +185,7 @@
             alert("상품 정보가 없습니다.");
             return;
         }
-        const encodedUrl = `/greengarden/product/order2?productId=${encodeURIComponent(productId)}&quantity=${encodeURIComponent(quantityValue)}`;
+        const encodedUrl = `/greengarden/product/order?productId=${encodeURIComponent(productId)}&quantity=${encodeURIComponent(quantityValue)}`;
         location.href = encodedUrl;
     });
 

@@ -166,3 +166,46 @@
         to { transform: translateY(-6px); opacity: 0; }
     }
 
+/* Google 링크를 원형 아이콘 버튼으로 (N/Talk과 동일 크기) */
+.social-login a[href*="/oauth2/authorization/google"]{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    background:#fff;
+    border:1px solid #ccc;
+    text-decoration:none;
+    /* 'Google로 로그인' 긴 텍스트는 숨기고, 아이콘은 가상요소로 표시 */
+    font-size:0;
+    position:relative;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    transition: border-color .15s, box-shadow .15s, transform .05s;
+}
+
+/* 가운데 'G' 표시 */
+.social-login a[href*="/oauth2/authorization/google"]::before{
+    content:"G";
+    font-size:20px;
+    font-weight:800;
+    line-height:1;
+    /* 구글 컬러 느낌 */
+    background: linear-gradient(90deg,#4285F4 0 25%, #34A853 25% 50%, #FBBC05 50% 75%, #EA4335 75% 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color: transparent;
+}
+
+/* hover/active/focus 상태 */
+.social-login a[href*="/oauth2/authorization/google"]:hover{
+    border-color:#2d6f54;
+    box-shadow: 0 3px 12px rgba(0,0,0,.08);
+}
+.social-login a[href*="/oauth2/authorization/google"]:active{
+    transform: translateY(1px);
+}
+.social-login a[href*="/oauth2/authorization/google"]:focus{
+    outline:2px solid #2d6f54;
+    outline-offset:2px;
+}

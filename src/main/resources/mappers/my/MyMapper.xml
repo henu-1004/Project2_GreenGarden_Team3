@@ -38,24 +38,29 @@
             oi.PRICE        AS price,
             oi.QUANTITY     AS quantity,
             (oi.PRICE * oi.QUANTITY) AS totalPrice,
-            o.STATUS        AS status,
+            COALESCE(d.STATUS, o.STATUS) AS status,
+            d.STATUS        AS deliveryStatus,
             o.ORDEREDAT     AS orderedAt,
             s.MEMID         AS sellerId,
-            ms.COMPANY AS sellerCompany,
+            ms.COMPANY      AS sellerCompany,
             s.ADDRESSBASIC  AS sellerAddress,
+            oi.ORDERITEMID  AS orderItemId,
 
             -- ✅ 상품 단위 상태 관리
             oi.CONFIRM_YN   AS confirmYn,
             oi.REVIEW_YN    AS reviewYn,
             oi.EXCHANGE_YN  AS exchangeYn,
-            oi.RETURN_YN    AS returnYn
+            oi.RETURN_YN    AS returnYn,
+            oi.CANCEL_YN    AS cancelYn
 
         FROM TB_ORDER o
                  JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
                  JOIN TB_PRODUCT p ON oi.PROID = p.PROID
                  JOIN TB_MEMBER s ON p.MEMID = s.MEMID
                  JOIN TB_MEMBER_SELLER ms ON s.MEMID = ms.MEMID
+                 LEFT JOIN TB_DELIVERY d ON d.ORDERNO = o.ORDERNO
         WHERE o.MEMID = #{memId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
         ORDER BY o.ORDEREDAT DESC
             FETCH FIRST 5 ROWS ONLY
     </select>
@@ -93,31 +98,36 @@
             resultType="kr.co.greengarden.dto.my.OrderSummaryDTO">
         SELECT *
         FROM (
-            SELECT inner_query.*, ROWNUM AS rn
-            FROM (
-                     SELECT
-                         o.ORDERNO                   AS orderNo,
-                         oi.PROID                    AS proId,
-                         p.NAME                      AS productName,
-                         p.IMG1                      AS productImg,
-                         oi.PRICE                    AS price,
-                         oi.QUANTITY                 AS quantity,
-                         (oi.PRICE * oi.QUANTITY)    AS totalPrice,
-                         o.STATUS                    AS status,
-                         o.ORDEREDAT                 AS orderedAt,
-                         oi.CONFIRM_YN               AS confirmYn,
-                         oi.REVIEW_YN                AS reviewYn,
-                         oi.EXCHANGE_YN              AS exchangeYn,
-                         oi.RETURN_YN                AS returnYn
-                     FROM TB_ORDER o
-                              JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
-                              JOIN TB_PRODUCT p ON oi.PROID = p.PROID
-                     WHERE o.MEMID = #{memId}
-                       AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
-                     ORDER BY o.ORDEREDAT DESC, oi.ORDERITEMID DESC
-                 ) inner_query
-            WHERE ROWNUM &lt;= #{endRow}
-        )
+                 SELECT inner_query.*, ROWNUM AS rn
+                 FROM (
+                          SELECT
+                              o.ORDERNO                   AS orderNo,
+                              oi.PROID                    AS proId,
+                              p.NAME                      AS productName,
+                              p.IMG1                      AS productImg,
+                              oi.PRICE                    AS price,
+                              oi.QUANTITY                 AS quantity,
+                              (oi.PRICE * oi.QUANTITY)    AS totalPrice,
+                              COALESCE(d.STATUS, o.STATUS) AS status,
+                              d.STATUS                    AS deliveryStatus,
+                              o.ORDEREDAT                 AS orderedAt,
+                              oi.CONFIRM_YN               AS confirmYn,
+                              oi.REVIEW_YN                AS reviewYn,
+                              oi.EXCHANGE_YN              AS exchangeYn,
+                              oi.RETURN_YN                AS returnYn,
+                              oi.CANCEL_YN                AS cancelYn,
+                              oi.ORDERITEMID              AS orderItemId
+                          FROM TB_ORDER o
+                                   JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
+                                   JOIN TB_PRODUCT p ON oi.PROID = p.PROID
+                                   LEFT JOIN TB_DELIVERY d ON d.ORDERNO = o.ORDERNO
+                          WHERE o.MEMID = #{memId}
+                            AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
+                            AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
+                          ORDER BY o.ORDEREDAT DESC, oi.ORDERITEMID DESC
+                      ) inner_query
+                 WHERE ROWNUM &lt;= #{endRow}
+             )
         WHERE rn &gt;= #{startRow}
         ORDER BY rn
     </select>
@@ -127,7 +137,15 @@
         FROM TB_ORDER o
                  JOIN TB_ORDER_ITEM oi ON o.ORDERNO = oi.ORDERNO
         WHERE o.MEMID = #{memId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
           AND o.ORDEREDAT BETWEEN #{startDateTime} AND #{endDateTime}
+    </select>
+
+    <select id="countMyOrders" parameterType="string" resultType="long">
+        SELECT COUNT(*)
+        FROM TB_ORDER o
+        WHERE o.MEMID = #{memId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
     </select>
 
     <select id="selectSellerInfo" parameterType="string"
@@ -159,21 +177,21 @@
         UPDATE TB_ORDER_ITEM
         SET CONFIRM_YN = #{yn}
         WHERE ORDERNO = #{orderNo}
-          AND PROID = #{proId}
+          AND ORDERITEMID = #{orderItemId}
     </update>
 
     <update id="updateExchangeYn">
         UPDATE TB_ORDER_ITEM
         SET EXCHANGE_YN = #{yn}
         WHERE ORDERNO = #{orderNo}
-          AND PROID = #{proId}
+          AND ORDERITEMID = #{orderItemId}
     </update>
 
     <update id="updateReturnYn">
         UPDATE TB_ORDER_ITEM
         SET RETURN_YN = #{yn}
         WHERE ORDERNO = #{orderNo}
-          AND PROID = #{proId}
+          AND ORDERITEMID = #{orderItemId}
     </update>
 
     <!--상품개별의 리뷰작성관리를 위한 쿼리 👇-->
@@ -181,8 +199,62 @@
         UPDATE TB_ORDER_ITEM
         SET REVIEW_YN = #{yn}
         WHERE ORDERNO = #{orderNo}
-          AND PROID = #{proId}
+          AND ORDERITEMID = #{orderItemId}
     </update>
+
+    <update id="updateCancelYn">
+        UPDATE TB_ORDER_ITEM
+        SET CANCEL_YN = #{yn}
+        WHERE ORDERNO = #{orderNo}
+          AND ORDERITEMID = #{orderItemId}
+    </update>
+
+    <select id="selectOrderItemStatus" parameterType="map"
+            resultType="kr.co.greengarden.dto.my.OrderItemStatusDTO">
+        SELECT
+            oi.ORDERITEMID AS orderItemId,
+            oi.CANCEL_YN   AS cancelYn,
+            oi.EXCHANGE_YN AS exchangeYn,
+            oi.RETURN_YN   AS returnYn,
+            d.STATUS       AS deliveryStatus
+        FROM TB_ORDER_ITEM oi
+                 JOIN TB_ORDER o ON oi.ORDERNO = o.ORDERNO
+                 LEFT JOIN (
+            SELECT ORDERNO, MAX(STATUS) AS STATUS
+            FROM TB_DELIVERY
+            GROUP BY ORDERNO
+        ) d ON d.ORDERNO = o.ORDERNO
+        WHERE o.MEMID = #{memId}
+          AND oi.ORDERNO = #{orderNo}
+          AND oi.ORDERITEMID = #{orderItemId}
+          AND COALESCE(TRIM(o.STATUS), '결제완료') NOT IN ('결제대기', '결제 대기')
+    </select>
+
+
+    <!-- 교환 신청 -->
+    <insert id="insertExchangeRequest" parameterType="kr.co.greengarden.dto.my.ExchangeRequestDTO">
+        INSERT INTO TB_EXCHANGE (ORDERNO, TYPE, REASON, IMG_PATH, ORDERITEMID)
+        VALUES (
+                   #{orderNo, jdbcType=VARCHAR},
+                   #{type, jdbcType=VARCHAR},
+                   #{detail, jdbcType=VARCHAR},
+                   #{imgPath, jdbcType=VARCHAR},
+                   #{orderItemId, jdbcType=NUMERIC}
+               )
+    </insert>
+
+    <!-- 반품 신청 -->
+    <insert id="insertReturnRequest" parameterType="kr.co.greengarden.dto.my.ReturnRequestDTO">
+        INSERT INTO TB_RETURN (ORDERNO, TYPE, REASON, IMG_PATH, ORDERITEMID)
+        VALUES (
+                   #{orderNo, jdbcType=VARCHAR},
+                   #{type, jdbcType=VARCHAR},
+                   #{detail, jdbcType=VARCHAR},
+                   #{imgPath, jdbcType=VARCHAR},
+                   #{orderItemId, jdbcType=NUMERIC}
+               )
+    </insert>
+
 
     <!--리뷰 등록 쿼리 추가 👇-->
     <insert id="insertProductReview" parameterType="kr.co.greengarden.dto.my.ProductReviewDTO">
@@ -321,6 +393,14 @@
         SET ZIPCODE = #{zipCode},
             ADDRESSBASIC = #{addressBasic},
             ADDRESSDETAIL = #{addressDetail}
+        WHERE MEMID = #{memId}
+    </update>
+
+
+    <update id="updateMemberStatus">
+        UPDATE TB_MEMBER_GENERAL
+        SET STATUS = #{status},
+            NOTE = #{note}
         WHERE MEMID = #{memId}
     </update>
 

@@ -18,6 +18,7 @@ public class MyInfoForm {
     private String zipCode;
     private String addressBasic;
     private String addressDetail;
+    private String currentPassword;
 
     public static MyInfoForm from(MyInfoDTO dto) {
         MyInfoForm form = new MyInfoForm();
@@ -32,6 +33,7 @@ public class MyInfoForm {
         form.setZipCode(dto.getZipCode());
         form.setAddressBasic(dto.getAddressBasic());
         form.setAddressDetail(dto.getAddressDetail());
+        form.setCurrentPassword(null);
         return form;
     }
 }

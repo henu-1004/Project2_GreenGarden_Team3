@@ -20,9 +20,9 @@
             <div class="top-nav">
                 <h3>주문현황</h3>
                 <ul class="page-nation">
-                    <li><a th:href="@{/}">Home</a></li>
-                    <li><a th:href="@{/my/order}">주문관리</a></li>
-                    <li><a th:href="@{/}">주문현황</a></li>
+                    <li><a th:href="@{/admin/}">Home</a></li>
+                    <li><a href="#">주문관리</a></li>
+                    <li><a th:href="@{/admin/order/list}">주문현황</a></li>
                 </ul>
             </div>
             <form th:action="@{/admin/order/list}" method="get" class="search-form">

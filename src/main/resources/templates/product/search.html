@@ -23,8 +23,8 @@
             <section class="top_nav">
                 <h3>검색 결과 목록</h3>
                 <ul class="page_nation">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">상품검색</a></li>
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/product/search}">상품검색</a></li>
                     <li><a href="#">검색결과</a></li>
                 </ul>
             </section>
@@ -33,7 +33,7 @@
                     <h3><span>'검색명'</span> 검색 결과</h3>
                     <p>(총 : <span>20</span>건)</p>
                 </div>
-                    <form th:action="@{#}" method="get" class="search-form">
+                    <form th:action="@{#}" method="get" class="main-search-form">
                         <select>
                             <option>상품명</option>
                             <option>설명</option>

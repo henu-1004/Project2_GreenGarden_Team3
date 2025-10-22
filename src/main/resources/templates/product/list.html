@@ -23,9 +23,9 @@
             <div class="top_nav">
                 <h5>상품목록</h5>
                 <ul class="page_nation">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">반려식물</a></li>
-                    <li><a href="#">초보 식집사</a></li>
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a href="#">[[${category.parent != null ? category.parent.name : category.name}]]</a></li>
+                    <li><a href="#">[[${category.name != null ? category.name : category.parent.name}]]</a></li>
                 </ul>
             </div>
             <!-- 상품 목록 반복 영역 -->

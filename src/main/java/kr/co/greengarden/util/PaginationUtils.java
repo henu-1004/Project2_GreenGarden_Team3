@@ -20,10 +20,10 @@ public final class PaginationUtils {
 
         int startPage = ((currentPage - 1) / BLOCK_SIZE) * BLOCK_SIZE + 1;
         int endPage = Math.min(startPage + BLOCK_SIZE - 1, totalPages);
-        boolean hasPrev = startPage > 1;
-        boolean hasNext = endPage < totalPages;
-        int prevPage = hasPrev ? startPage - 1 : 1;
-        int nextPage = hasNext ? endPage + 1 : totalPages;
+        boolean hasPrev = currentPage > 1;
+        boolean hasNext = currentPage < totalPages;
+        int prevPage = hasPrev ? currentPage - 1 : 1;
+        int nextPage = hasNext ? currentPage + 1 : totalPages;
 
         return PaginationDTO.builder()
                 .totalCount(totalCount)

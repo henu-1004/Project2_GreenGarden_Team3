@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>메인 페이지 3조</title>
+    <title>3조 Green Garden</title>
     <link rel="stylesheet" th:href="@{/css/index.css}">
     <link rel="stylesheet" th:href="@{/css/common/header_index.css}">
     <link rel="stylesheet" th:href="@{/css/common/index_nav.css}">
-    <link rel="stylesheet" th:href="@{/css/common/footer.css}">
 </head>
 <!--
     날짜 : 2025/09/23
@@ -19,11 +18,11 @@
     <!-- ====== 상단 메인 슬라이드 ====== -->
     <div id="slide" class="banner-slider">
         <div class="slides">
-            <img th:src="@{/images/가을배너광고1536_1024.png}" alt="가을 배너">
-            <img th:src="@{/images/겨울배너광고1024_1024.png}" alt="겨울 배너">
-            <img th:src="@{/images/배너광고1536_1024.png}" alt="기본 배너">
-            <img th:src="@{/images/봄맞이배너광고1024_1024.png}" alt="봄 배너">
-            <img th:src="@{/images/여름배너광고1536_1024.png}" alt="여름 배너">
+            <img th:src="@{/images/slideBanner_005.png}" alt="특별 배너">
+            <img th:src="@{/images/slideBanner_003.png}" alt="가을 배너">
+            <img th:src="@{/images/slideBanner_004.png}" alt="겨울 배너">
+            <img th:src="@{/images/slideBanner_001.png}" alt="봄 배너">
+            <img th:src="@{/images/slideBanner_002.png}" alt="여름 배너">
         </div>
 
         <div class="dots">
@@ -37,14 +36,13 @@
 
     <div th:replace="~{common/index_nav :: index_nav}"></div> <!-- 카테고리 네비 삽입 -->
     <div id="Ad-banner-top">
-        상단 베너 광고
+        <img th:src="@{/images/topBanner_002.png}" alt="여름 배너">
     </div>
     <div id="main">
         <div class="content-wrap">
             <section id="main-section">
                 <div class="product">
                     <div id="best_title"><a>B E S T</a></div>
-
                     <div id="best_top">
                         <div class="products_item" th:each="product : ${topProducts}">
                             <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
@@ -103,33 +101,38 @@
                             </button>
                         </span>
                         </div>
+
                     </div>
 
                     <div class="products left" title="NEW">
 
-                        <div class="products_item" th:each="product : ${newList}">
+
+                    <div class="products_item" th:each="product : ${newList}">
+                        <a th:href="@{/product/view(proId=${product.proId})}">
                             <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                             <p th:text="${product.name}">상품명</p>
 
                             <span>
-                            <a th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}">30,000원</a>
-                            <a th:text="${product.discountRate + '%'}">10%</a>
-                        </span><br>
+                                <a th:text="${#numbers.formatInteger(product.price, 3, 'COMMA') + '원'}">30,000원</a>
+                                <a th:text="${product.discountRate + '%'}">10%</a>
+                            </span><br>
 
                             <span>
-                            <a th:text="${#numbers.formatInteger(product.price * (1 - product.discountRate / 100.0), 3, 'COMMA') + '원'}">
-                                27,000원
-                            </a>
-                            <button th:text="${product.deliveryFee == 0 ? '무료배송' : product.deliveryFee + '원'}">
-                                무료배송
-                            </button>
-                        </span>
-                        </div>
+                                <a th:text="${#numbers.formatInteger(product.price * (1 - product.discountRate / 100.0), 3, 'COMMA') + '원'}">
+                                    27,000원
+                                </a>
+                                <button th:text="${product.deliveryFee == 0 ? '무료배송' : product.deliveryFee + '원'}">
+                                    무료배송
+                                </button>
+                            </span>
+                        </a>
                     </div>
+
 
                     <div class="products right" title="BRAND LEADER">
 
                         <div class="products_item" th:each="product : ${brandLeaderList}">
+                          <a th:href="@{/product/view(proId=${product.proId})}">
                             <img th:if="${product.img1}" th:src="@{${product.img1}}" alt="상품 이미지">
                             <p th:text="${product.name}">상품명</p>
 
@@ -146,6 +149,7 @@
                                 무료배송
                             </button>
                         </span>
+                          </a>
                         </div>
                     </div>
 
@@ -169,12 +173,11 @@
                         </span>
                         </div>
                     </div>
-
-                    <div th:replace="~{common/footer :: footer}"></div>
             </section>
         </div>
     </div>
 </main>
+<div th:replace="~{common/footer :: footer}"></div>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         const slides = document.querySelectorAll("#slide .slides img");
