@@ -9,6 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +67,24 @@ public class MemberService {
     // 관리자 인덱스용
     public int getMemberCount(){
         List<Member> mer = memberRepository.findAll();
+        return mer.size();
+    }
+
+    public int getMemberTodayCount(){
+        LocalDate today = LocalDate.now();  // 오늘 날짜
+        LocalDateTime startOfDay = today.atStartOfDay(); // 오늘 00:00:00
+        LocalDateTime endOfDay = today.atTime(LocalTime.MAX); // 오늘 23:59:59.999999999
+
+        List<Member> mer = memberRepository.findMembersJoinedDate(startOfDay, endOfDay);
+        return mer.size();
+    }
+
+    public int getMemberYesterdayCount(){
+        LocalDate yesterday = LocalDate.now().minusDays(1);  // 어제 날짜
+        LocalDateTime startOfDay = yesterday.atStartOfDay(); // 어제 00:00:00
+        LocalDateTime endOfDay = yesterday.atTime(LocalTime.MAX);
+
+        List<Member> mer = memberRepository.findMembersJoinedDate(startOfDay, endOfDay);
         return mer.size();
     }
 }

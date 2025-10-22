@@ -24,6 +24,7 @@ public class ProductListDTO {
     private int discountRate;
     private String company;
     private LocalDateTime createdAt;
+    private int rating;
 
     public ProductListDTO(int proId, String img1, String name, String description,
                           int price, int deliveryFee, int discountRate, String company) {
@@ -48,6 +49,20 @@ public class ProductListDTO {
         this.discountRate = discountRate;
         this.company = company;
         this.createdAt = createdAt;
+    }
+
+    public ProductListDTO(int proId, String img1, String name, String description,
+                          int price, int deliveryFee, int discountRate, String company, LocalDateTime createdAt, int rating) {
+        this.proId = proId;
+        this.img1 = img1;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.deliveryFee = deliveryFee;
+        this.discountRate = discountRate;
+        this.company = company;
+        this.createdAt = createdAt;
+        this.rating = rating;
     }
 
     private int originalPrice;

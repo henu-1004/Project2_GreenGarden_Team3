@@ -183,26 +183,7 @@ public class ProductController {
          * */
         /*
 
-        // 만약 orderItemList가 null , 이거나 items가 비었을 때 ( 상품 상세에서 바로 구매한 경우 로직)
-        if (orderItemList == null || orderItemList.getItems() == null || orderItemList.getItems().isEmpty()) {
-            orderItemList = new OrderItemListWrapper();
-            List<OrderItemDTO> items = new ArrayList<>();
 
-            // + form에서 prouctId, quantity 전달된 경우만 처리
-            if (productId != null && quantity != null) {
-                Product product = productService.getViewProduct(productId);
-
-                OrderItemDTO item = new OrderItemDTO();
-                item.setProId(productId);
-                item.setQuantity(quantity);
-                item.setPrice(product.getPrice());
-                item.setDiscountRate(product.getDiscountRate());
-
-                items.add(item);
-            }
-
-            orderItemList.setItems(items);
-        }
         */
         orderService.orderRegister(orderDTO, orderItemList, memberDetails);
 

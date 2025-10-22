@@ -50,7 +50,7 @@
                     <th>접수일</th>
                 </tr>
                 <tr th:each="delivery, stat : ${deliveryList}">
-                    <td><span class="delivery-number-link" onclick="openModal('modalDeliveryDetail')">[[${delivery.invoiceNo}]]</span></td>
+                    <td><span class="delivery-number-link" th:attr="data-orderno=${delivery.invoiceNo}" onclick="openModal('modalDeliveryDetail', this.dataset.orderno)">[[${delivery.invoiceNo}]]</span></td>
                     <td>[[${delivery.company}]]</td>
                     <td>[[${delivery.orderNo}]]</td>
                     <td>[[${delivery.recName}]]</td>
@@ -60,19 +60,6 @@
                     <td>[[${delivery.deliveryFee}]]</td>
                     <td style="color: dodgerblue">[[${delivery.status}]]</td>
                     <td>[[${delivery.createdAt}]]</td>
-                </tr>
-
-                <tr>
-                    <td><span class="delivery-number-link" onclick="openModal('modalDeliveryDetail')">10122102315</span></td>
-                    <td>로젝택배</td>
-                    <td><a href="#">10121211341</a></td>
-                    <td>김유신</td>
-                    <td>OOO</td>
-                    <td>3</td>
-                    <td>68,400</td>
-                    <td>무료</td>
-                    <td style="color: dodgerblue">배송준비</td>
-                    <td>2025-10-24 13:45:55</td>
                 </tr>
 
             </table>
@@ -114,7 +101,10 @@
 </main>
 <div th:replace="~{admin/common/footer :: footer}"></div>
 <div th:replace="~{admin/order/_deliveryDetail :: modal-delivery-detail}"></div>
-<script th:src="@{/js/admin/aside.js}"></script>
+<script th:inline="javascript">
+    window.BASE_URL = /*[[@{/}]]*/ "/greengarden/";  // 반드시 "/"로 fallback
+</script>
 <script th:src="@{/js/admin/order/order.js}"></script>
+<script th:src="@{/js/admin/aside.js}"></script>
 </body>
 </html>

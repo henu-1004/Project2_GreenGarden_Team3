@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 /*
@@ -46,6 +47,8 @@ public class OrderService {
                 .stream()
                 .findFirst()
                 .orElse(null);
+
+
         /*
         //orderDTO.setOrderNo(cart.getOrderNo());
        // orderDTO.setMember(cart.getMember());
@@ -246,7 +249,53 @@ public class OrderService {
         return new AdminIndexOrderInfoWrapperDTO(statusCount, totalPrice, count);
     }
 
+    public AdminIndexOrderInfoWrapperDTO getAdminIndexOrderInfoToday() {
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay(); // 오늘 00:00:00
+        LocalDateTime endOfDay = today.atTime(LocalTime.MAX); // 오늘 23:59:59
+        List<AdminIndexOrderInfoDTO> orderInfo = orderRepository.findAdminIndexOrderInfo(startOfDay, endOfDay);
+
+        // 상태, 주문 총액, 주문 수
+        int statusCount = 0;
+        int totalPrice = 0;
+        int count = orderInfo.size();
+
+        for (AdminIndexOrderInfoDTO orderInfoDTO : orderInfo) {
+            if(orderInfoDTO.getStatus().equals("결제 대기")) {
+                statusCount++;
+            }
+            totalPrice += orderInfoDTO.getTotalPrice();
+        }
+
+        return new AdminIndexOrderInfoWrapperDTO(statusCount, totalPrice, count);
+    }
+
+    public AdminIndexOrderInfoWrapperDTO getAdminIndexOrderInfoYesterday() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);  // 어제 날짜
+        LocalDateTime startOfDay = yesterday.atStartOfDay(); // 어제 00:00:00
+        LocalDateTime endOfDay = yesterday.atTime(LocalTime.MAX); // 어제 23:59:59.999999999
+        List<AdminIndexOrderInfoDTO> orderInfo = orderRepository.findAdminIndexOrderInfo(startOfDay, endOfDay);
+
+        // 상태, 주문 총액, 주문 수
+        int statusCount = 0;
+        int totalPrice = 0;
+        int count = orderInfo.size();
+
+        for (AdminIndexOrderInfoDTO orderInfoDTO : orderInfo) {
+            if(orderInfoDTO.getStatus().equals("결제 대기")) {
+                statusCount++;
+            }
+            totalPrice += orderInfoDTO.getTotalPrice();
+        }
+
+        return new AdminIndexOrderInfoWrapperDTO(statusCount, totalPrice, count);
+    }
+
     public List<AdminOrderDetailListDTO> findOrderDetailList(String orderNo) {
         return orderRepository.findOrderDetailList(orderNo);
+    }
+
+    public List<AdminDeliveryDetailListDTO> findDeliveryDetailList(String invoiceNo) {
+        return orderRepository.findDeliveryDetailList(invoiceNo);
     }
 }
