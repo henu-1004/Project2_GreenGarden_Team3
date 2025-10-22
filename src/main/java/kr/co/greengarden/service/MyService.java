@@ -331,10 +331,19 @@ public class MyService {
                 .zipCode(normalize(dto.getZipCode()))
                 .addressBasic(normalize(dto.getAddressBasic()))
                 .addressDetail(normalize(dto.getAddressDetail()))
+                .newPassword(normalizePassword(dto.getNewPassword()))
                 .build();
 
         myMapper.updateMyGeneralInfo(sanitized);
         myMapper.updateMyMemberInfo(sanitized);
+
+        if (sanitized.getNewPassword() != null && !sanitized.getNewPassword().isBlank()) {
+            String encoded = passwordEncoder.encode(sanitized.getNewPassword());
+            int updated = memberRepository.updatePassword(sanitized.getMemId(), encoded);
+            if (updated == 0) {
+                throw new IllegalStateException("비밀번호를 변경할 수 없습니다.");
+            }
+        }
     }
 
     /** ✅ 리뷰 등록 로직 (파일 업로드 포함) */
@@ -551,6 +560,14 @@ public class MyService {
             return null;
         }
         String trimmed = value.trim();
+        return trimmed.isEmpty() ? null : trimmed;
+    }
+
+    private String normalizePassword(String password) {
+        if (password == null) {
+            return null;
+        }
+        String trimmed = password.trim();
         return trimmed.isEmpty() ? null : trimmed;
     }
 

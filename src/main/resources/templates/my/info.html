@@ -47,14 +47,14 @@
             <div class="avatar"
                  th:text="${info.name != null and !info.name.isBlank() ? info.name.substring(0,1) : (info.memId != null and info.memId.length() > 0 ? info.memId.substring(0,1) : 'GG')}">GG</div>
             <div class="summary-body">
-                <h2 th:text="${info.name != null and !info.name.isBlank() ? info.name : (info.memId != null ? info.memId : '그린가든 회원')}">그린가든 회원</h2>
+                <h2 th:text="${info.name != null and !info.name.isBlank() ? info.name : (maskedMemId != null and maskedMemId != '-' ? maskedMemId : '그린가든 회원')}">그린가든 회원</h2>
                 <p th:text="${info.lastLogin != null ? '최근 로그인 ' + #temporals.format(info.lastLogin, 'yyyy.MM.dd') : '최근 로그인 기록이 없습니다.'}">최근 로그인 2025-10-12</p>
             </div>
             <div class="profile-meta">
                 <dl>
                     <div class="row">
                         <dt>아이디</dt>
-                        <dd th:text="${info.memId != null ? info.memId : '-'}">test01</dd>
+                        <dd th:text="${maskedMemId != null ? maskedMemId : '-'}">test01</dd>
                         <dt>가입일</dt>
                         <dd th:text="${info.joinDate != null ? #temporals.format(info.joinDate, 'yyyy.MM.dd') : '-'}">2025.01.01</dd>
                     </div>
@@ -150,6 +150,20 @@
                             <input type="password" id="currentPassword" name="currentPassword" placeholder="현재 비밀번호를 입력하세요" required>
                         </div>
                         <small class="field-hint">정보 수정 또는 탈퇴 시 본인 확인을 위해 비밀번호가 필요합니다.</small>
+                    </div>
+                    <div class="form-row password-row">
+                        <label for="newPassword">새 비밀번호</label>
+                        <div class="password-field">
+                            <input type="password" id="newPassword" name="newPassword" placeholder="새 비밀번호를 입력하세요">
+                        </div>
+                        <small class="field-hint">변경하지 않으려면 비워두세요.</small>
+                    </div>
+                    <div class="form-row password-row">
+                        <label for="confirmPassword">새 비밀번호 확인</label>
+                        <div class="password-field">
+                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="새 비밀번호를 다시 입력하세요">
+                        </div>
+                        <p class="field-error" id="passwordMismatch" role="alert">새 비밀번호가 일치하지 않습니다.</p>
                     </div>
                 </div>
                 <div class="form-actions">

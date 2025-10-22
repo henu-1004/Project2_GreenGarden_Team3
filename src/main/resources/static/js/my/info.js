@@ -116,11 +116,85 @@
         });
     };
 
+    const bindPasswordValidation = () => {
+        const form = document.querySelector('.info-form');
+        if (!form) {
+            return;
+        }
+
+        const newPassword = form.querySelector('#newPassword');
+        const confirmPassword = form.querySelector('#confirmPassword');
+        const message = document.getElementById('passwordMismatch');
+
+        if (!newPassword || !confirmPassword || !message) {
+            return;
+        }
+
+        const setErrorState = (visible) => {
+            [newPassword, confirmPassword].forEach(input => {
+                if (!input) {
+                    return;
+                }
+                input.classList.toggle('input-error', visible);
+            });
+            message.classList.toggle('active', visible);
+        };
+
+        const validate = (shouldDisplayError = true) => {
+            const newValue = newPassword.value.trim();
+            const confirmValue = confirmPassword.value.trim();
+
+            if (!newValue) {
+                setErrorState(false);
+                return true;
+            }
+
+            if (!confirmValue) {
+                if (shouldDisplayError) {
+                    setErrorState(true);
+                } else {
+                    setErrorState(false);
+                }
+                return false;
+            }
+
+            if (newValue === confirmValue) {
+                setErrorState(false);
+                return true;
+            }
+
+            if (shouldDisplayError || confirmValue.length > 0) {
+                setErrorState(true);
+            } else {
+                setErrorState(false);
+            }
+            return false;
+        };
+
+        [newPassword, confirmPassword].forEach(input => {
+            input.addEventListener('input', () => {
+                if (!newPassword.value && !confirmPassword.value) {
+                    setErrorState(false);
+                    return;
+                }
+                validate(false);
+            });
+        });
+
+        form.addEventListener('submit', (event) => {
+            if (!validate(true)) {
+                event.preventDefault();
+                confirmPassword.focus();
+            }
+        });
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
         const trigger = document.querySelector(BUTTON_SELECTOR);
         if (trigger) {
             trigger.addEventListener('click', openPostcode);
         }
         bindWithdrawModal();
+        bindPasswordValidation();
     });
 })();

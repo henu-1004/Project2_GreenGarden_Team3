@@ -19,6 +19,8 @@ public class MyInfoForm {
     private String addressBasic;
     private String addressDetail;
     private String currentPassword;
+    private String newPassword;
+    private String confirmPassword;
 
     public static MyInfoForm from(MyInfoDTO dto) {
         MyInfoForm form = new MyInfoForm();
@@ -34,6 +36,8 @@ public class MyInfoForm {
         form.setAddressBasic(dto.getAddressBasic());
         form.setAddressDetail(dto.getAddressDetail());
         form.setCurrentPassword(null);
+        form.setNewPassword(null);
+        form.setConfirmPassword(null);
         return form;
     }
 }
