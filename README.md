@@ -32,6 +32,22 @@ GreenGarden은 일반 사용자와 관리자/판매자 관점의 기능을 함�
 
 ---
 
+## 🖼️ 실행 화면
+
+### 실행 화면 1
+
+<p align="center">
+  <img src="images/ex1.png" alt="FLOBANK 실행 화면 1" width="350">
+</p>
+
+### 실행 화면 2
+
+<p align="center">
+  <img src="images/ex2.png" alt="FLOBANK 실행 화면 2" width="350">
+</p>
+
+---
+
 ## 🛠 기술 스택
 
 ### Backend
