@@ -38,3 +38,10 @@ out/
 
 ### log ###
 /logs/**
+
+### Local secrets / environment ###
+.env
+.env.*
+!.env.example
+application-local.yml
+src/main/resources/application-local.yml
